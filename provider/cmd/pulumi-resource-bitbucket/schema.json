@@ -1,0 +1,3117 @@
+{
+    "name": "bitbucket",
+    "displayName": "Bitbucket Cloud",
+    "description": "A Pulumi package for creating and managing bitbucket cloud resources.",
+    "keywords": [
+        "pulumi",
+        "bitbucket",
+        "category/vcs"
+    ],
+    "homepage": "https://www.pulumi.com",
+    "license": "Apache-2.0",
+    "attribution": "This Pulumi package is based on the [`bitbucket` Terraform Provider](https://github.com/DrFaust92/terraform-provider-bitbucket).",
+    "repository": "https://github.com/ryan-pip/pulumi-bitbucket",
+    "pluginDownloadURL": "github://api.github.com/ryan-pip",
+    "publisher": "Pulumi",
+    "meta": {
+        "moduleFormat": "(.*)(?:/[^/]*)"
+    },
+    "language": {
+        "csharp": {
+            "packageReferences": {
+                "Pulumi": "3.*"
+            },
+            "compatibility": "tfbridge20"
+        },
+        "go": {
+            "importBasePath": "github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket",
+            "generateResourceContainerTypes": true,
+            "generateExtraInputTypes": true
+        },
+        "nodejs": {
+            "packageDescription": "A Pulumi package for creating and managing bitbucket cloud resources.",
+            "readme": "\u003e This provider is a derived work of the [Terraform Provider](https://github.com/DrFaust92/terraform-provider-bitbucket)\n\u003e distributed under [MPL 2.0](https://www.mozilla.org/en-US/MPL/2.0/). If you encounter a bug or missing feature,\n\u003e first check the [`pulumi-bitbucket` repo](https://github.com/ryan-pip/pulumi-bitbucket/issues); however, if that doesn't turn up anything,\n\u003e please consult the source [`terraform-provider-bitbucket` repo](https://github.com/DrFaust92/terraform-provider-bitbucket/issues).",
+            "dependencies": {
+                "@pulumi/pulumi": "^3.0.0"
+            },
+            "devDependencies": {
+                "@types/mime": "^2.0.0",
+                "@types/node": "^10.0.0"
+            },
+            "compatibility": "tfbridge20",
+            "disableUnionOutputTypes": true
+        },
+        "python": {
+            "requires": {
+                "pulumi": "\u003e=3.0.0,\u003c4.0.0"
+            },
+            "readme": "\u003e This provider is a derived work of the [Terraform Provider](https://github.com/DrFaust92/terraform-provider-bitbucket)\n\u003e distributed under [MPL 2.0](https://www.mozilla.org/en-US/MPL/2.0/). If you encounter a bug or missing feature,\n\u003e first check the [`pulumi-bitbucket` repo](https://github.com/ryan-pip/pulumi-bitbucket/issues); however, if that doesn't turn up anything,\n\u003e please consult the source [`terraform-provider-bitbucket` repo](https://github.com/DrFaust92/terraform-provider-bitbucket/issues).",
+            "compatibility": "tfbridge20",
+            "pyproject": {}
+        }
+    },
+    "config": {
+        "variables": {
+            "oauthClientId": {
+                "type": "string"
+            },
+            "oauthClientSecret": {
+                "type": "string"
+            },
+            "oauthToken": {
+                "type": "string"
+            },
+            "password": {
+                "type": "string"
+            },
+            "username": {
+                "type": "string"
+            }
+        }
+    },
+    "types": {
+        "bitbucket:index/BranchRestrictionGroup:BranchRestrictionGroup": {
+            "properties": {
+                "owner": {
+                    "type": "string"
+                },
+                "slug": {
+                    "type": "string"
+                }
+            },
+            "type": "object",
+            "required": [
+                "owner",
+                "slug"
+            ]
+        },
+        "bitbucket:index/BranchingModelBranchType:BranchingModelBranchType": {
+            "properties": {
+                "enabled": {
+                    "type": "boolean"
+                },
+                "kind": {
+                    "type": "string"
+                },
+                "prefix": {
+                    "type": "string"
+                }
+            },
+            "type": "object",
+            "required": [
+                "kind"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredOutputs": [
+                        "enabled",
+                        "kind"
+                    ]
+                }
+            }
+        },
+        "bitbucket:index/BranchingModelDevelopment:BranchingModelDevelopment": {
+            "properties": {
+                "branchDoesNotExist": {
+                    "type": "boolean"
+                },
+                "isValid": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "useMainbranch": {
+                    "type": "boolean"
+                }
+            },
+            "type": "object",
+            "language": {
+                "nodejs": {
+                    "requiredOutputs": [
+                        "isValid"
+                    ]
+                }
+            }
+        },
+        "bitbucket:index/BranchingModelProduction:BranchingModelProduction": {
+            "properties": {
+                "branchDoesNotExist": {
+                    "type": "boolean"
+                },
+                "enabled": {
+                    "type": "boolean"
+                },
+                "isValid": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "useMainbranch": {
+                    "type": "boolean"
+                }
+            },
+            "type": "object",
+            "language": {
+                "nodejs": {
+                    "requiredOutputs": [
+                        "isValid"
+                    ]
+                }
+            }
+        },
+        "bitbucket:index/DeploymentRestrictions:DeploymentRestrictions": {
+            "properties": {
+                "adminOnly": {
+                    "type": "boolean"
+                }
+            },
+            "type": "object"
+        },
+        "bitbucket:index/ForkedRepositoryLink:ForkedRepositoryLink": {
+            "properties": {
+                "avatar": {
+                    "$ref": "#/types/bitbucket:index/ForkedRepositoryLinkAvatar:ForkedRepositoryLinkAvatar"
+                }
+            },
+            "type": "object"
+        },
+        "bitbucket:index/ForkedRepositoryLinkAvatar:ForkedRepositoryLinkAvatar": {
+            "properties": {
+                "href": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "bitbucket:index/PipelineScheduleTarget:PipelineScheduleTarget": {
+            "properties": {
+                "refName": {
+                    "type": "string",
+                    "willReplaceOnChanges": true
+                },
+                "refType": {
+                    "type": "string",
+                    "willReplaceOnChanges": true
+                },
+                "selector": {
+                    "$ref": "#/types/bitbucket:index/PipelineScheduleTargetSelector:PipelineScheduleTargetSelector",
+                    "willReplaceOnChanges": true
+                }
+            },
+            "type": "object",
+            "required": [
+                "refName",
+                "refType",
+                "selector"
+            ]
+        },
+        "bitbucket:index/PipelineScheduleTargetSelector:PipelineScheduleTargetSelector": {
+            "properties": {
+                "pattern": {
+                    "type": "string",
+                    "willReplaceOnChanges": true
+                },
+                "type": {
+                    "type": "string",
+                    "willReplaceOnChanges": true
+                }
+            },
+            "type": "object",
+            "required": [
+                "pattern"
+            ]
+        },
+        "bitbucket:index/PipelineSshKnownHostPublicKey:PipelineSshKnownHostPublicKey": {
+            "properties": {
+                "key": {
+                    "type": "string"
+                },
+                "keyType": {
+                    "type": "string"
+                },
+                "md5Fingerprint": {
+                    "type": "string"
+                },
+                "sha256Fingerprint": {
+                    "type": "string"
+                }
+            },
+            "type": "object",
+            "required": [
+                "key",
+                "keyType"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredOutputs": [
+                        "key",
+                        "keyType",
+                        "md5Fingerprint",
+                        "sha256Fingerprint"
+                    ]
+                }
+            }
+        },
+        "bitbucket:index/ProjectBranchingModelBranchType:ProjectBranchingModelBranchType": {
+            "properties": {
+                "enabled": {
+                    "type": "boolean"
+                },
+                "kind": {
+                    "type": "string"
+                },
+                "prefix": {
+                    "type": "string"
+                }
+            },
+            "type": "object",
+            "required": [
+                "kind"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredOutputs": [
+                        "enabled",
+                        "kind"
+                    ]
+                }
+            }
+        },
+        "bitbucket:index/ProjectBranchingModelDevelopment:ProjectBranchingModelDevelopment": {
+            "properties": {
+                "branchDoesNotExist": {
+                    "type": "boolean"
+                },
+                "isValid": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "useMainbranch": {
+                    "type": "boolean"
+                }
+            },
+            "type": "object",
+            "language": {
+                "nodejs": {
+                    "requiredOutputs": [
+                        "isValid"
+                    ]
+                }
+            }
+        },
+        "bitbucket:index/ProjectBranchingModelProduction:ProjectBranchingModelProduction": {
+            "properties": {
+                "branchDoesNotExist": {
+                    "type": "boolean"
+                },
+                "enabled": {
+                    "type": "boolean"
+                },
+                "isValid": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "useMainbranch": {
+                    "type": "boolean"
+                }
+            },
+            "type": "object",
+            "language": {
+                "nodejs": {
+                    "requiredOutputs": [
+                        "isValid"
+                    ]
+                }
+            }
+        },
+        "bitbucket:index/ProjectLink:ProjectLink": {
+            "properties": {
+                "avatar": {
+                    "$ref": "#/types/bitbucket:index/ProjectLinkAvatar:ProjectLinkAvatar"
+                }
+            },
+            "type": "object"
+        },
+        "bitbucket:index/ProjectLinkAvatar:ProjectLinkAvatar": {
+            "properties": {
+                "href": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "bitbucket:index/RepositoryLink:RepositoryLink": {
+            "properties": {
+                "avatar": {
+                    "$ref": "#/types/bitbucket:index/RepositoryLinkAvatar:RepositoryLinkAvatar"
+                }
+            },
+            "type": "object"
+        },
+        "bitbucket:index/RepositoryLinkAvatar:RepositoryLinkAvatar": {
+            "properties": {
+                "href": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "bitbucket:index/getCurrentUserEmail:getCurrentUserEmail": {
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "isConfirmed": {
+                    "type": "boolean"
+                },
+                "isPrimary": {
+                    "type": "boolean"
+                }
+            },
+            "type": "object",
+            "required": [
+                "email",
+                "isConfirmed",
+                "isPrimary"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "bitbucket:index/getGroupsGroup:getGroupsGroup": {
+            "properties": {
+                "autoAdd": {
+                    "type": "boolean"
+                },
+                "emailForwardingDisabled": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "permission": {
+                    "type": "string"
+                },
+                "slug": {
+                    "type": "string"
+                }
+            },
+            "type": "object",
+            "required": [
+                "autoAdd",
+                "emailForwardingDisabled",
+                "name",
+                "permission",
+                "slug"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "bitbucket:index/getHookTypesHookType:getHookTypesHookType": {
+            "properties": {
+                "category": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "event": {
+                    "type": "string"
+                },
+                "label": {
+                    "type": "string"
+                }
+            },
+            "type": "object",
+            "required": [
+                "category",
+                "description",
+                "event",
+                "label"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "bitbucket:index/getIpRangesRange:getIpRangesRange": {
+            "properties": {
+                "cidr": {
+                    "type": "string"
+                },
+                "directions": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "mask": {
+                    "type": "string"
+                },
+                "maskLen": {
+                    "type": "integer"
+                },
+                "network": {
+                    "type": "string"
+                },
+                "products": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "regions": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "type": "object",
+            "required": [
+                "cidr",
+                "directions",
+                "mask",
+                "maskLen",
+                "network",
+                "products",
+                "regions"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        }
+    },
+    "provider": {
+        "description": "The provider type for the bitbucket package. By default, resources use package-wide configuration\nsettings, however an explicit `Provider` instance may be created and passed during resource\nconstruction to achieve fine-grained programmatic control over provider settings. See the\n[documentation](https://www.pulumi.com/docs/reference/programming-model/#providers) for more information.\n",
+        "properties": {
+            "oauthClientId": {
+                "type": "string"
+            },
+            "oauthClientSecret": {
+                "type": "string"
+            },
+            "oauthToken": {
+                "type": "string"
+            },
+            "password": {
+                "type": "string"
+            },
+            "username": {
+                "type": "string"
+            }
+        },
+        "inputProperties": {
+            "oauthClientId": {
+                "type": "string"
+            },
+            "oauthClientSecret": {
+                "type": "string"
+            },
+            "oauthToken": {
+                "type": "string"
+            },
+            "password": {
+                "type": "string"
+            },
+            "username": {
+                "type": "string"
+            }
+        }
+    },
+    "resources": {
+        "bitbucket:index/branchRestriction:BranchRestriction": {
+            "properties": {
+                "branchMatchKind": {
+                    "type": "string"
+                },
+                "branchType": {
+                    "type": "string"
+                },
+                "groups": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/bitbucket:index/BranchRestrictionGroup:BranchRestrictionGroup"
+                    }
+                },
+                "kind": {
+                    "type": "string"
+                },
+                "owner": {
+                    "type": "string"
+                },
+                "pattern": {
+                    "type": "string"
+                },
+                "repository": {
+                    "type": "string"
+                },
+                "users": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "value": {
+                    "type": "integer"
+                }
+            },
+            "required": [
+                "kind",
+                "owner",
+                "repository"
+            ],
+            "inputProperties": {
+                "branchMatchKind": {
+                    "type": "string"
+                },
+                "branchType": {
+                    "type": "string"
+                },
+                "groups": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/bitbucket:index/BranchRestrictionGroup:BranchRestrictionGroup"
+                    }
+                },
+                "kind": {
+                    "type": "string"
+                },
+                "owner": {
+                    "type": "string",
+                    "willReplaceOnChanges": true
+                },
+                "pattern": {
+                    "type": "string"
+                },
+                "repository": {
+                    "type": "string",
+                    "willReplaceOnChanges": true
+                },
+                "users": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "value": {
+                    "type": "integer"
+                }
+            },
+            "requiredInputs": [
+                "kind",
+                "owner",
+                "repository"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering BranchRestriction resources.\n",
+                "properties": {
+                    "branchMatchKind": {
+                        "type": "string"
+                    },
+                    "branchType": {
+                        "type": "string"
+                    },
+                    "groups": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/types/bitbucket:index/BranchRestrictionGroup:BranchRestrictionGroup"
+                        }
+                    },
+                    "kind": {
+                        "type": "string"
+                    },
+                    "owner": {
+                        "type": "string",
+                        "willReplaceOnChanges": true
+                    },
+                    "pattern": {
+                        "type": "string"
+                    },
+                    "repository": {
+                        "type": "string",
+                        "willReplaceOnChanges": true
+                    },
+                    "users": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "value": {
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "bitbucket:index/branchingModel:BranchingModel": {
+            "properties": {
+                "branchTypes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/bitbucket:index/BranchingModelBranchType:BranchingModelBranchType"
+                    }
+                },
+                "development": {
+                    "$ref": "#/types/bitbucket:index/BranchingModelDevelopment:BranchingModelDevelopment"
+                },
+                "owner": {
+                    "type": "string"
+                },
+                "production": {
+                    "$ref": "#/types/bitbucket:index/BranchingModelProduction:BranchingModelProduction"
+                },
+                "repository": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "branchTypes",
+                "development",
+                "owner",
+                "repository"
+            ],
+            "inputProperties": {
+                "branchTypes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/bitbucket:index/BranchingModelBranchType:BranchingModelBranchType"
+                    }
+                },
+                "development": {
+                    "$ref": "#/types/bitbucket:index/BranchingModelDevelopment:BranchingModelDevelopment"
+                },
+                "owner": {
+                    "type": "string",
+                    "willReplaceOnChanges": true
+                },
+                "production": {
+                    "$ref": "#/types/bitbucket:index/BranchingModelProduction:BranchingModelProduction"
+                },
+                "repository": {
+                    "type": "string",
+                    "willReplaceOnChanges": true
+                }
+            },
+            "requiredInputs": [
+                "development",
+                "owner",
+                "repository"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering BranchingModel resources.\n",
+                "properties": {
+                    "branchTypes": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/types/bitbucket:index/BranchingModelBranchType:BranchingModelBranchType"
+                        }
+                    },
+                    "development": {
+                        "$ref": "#/types/bitbucket:index/BranchingModelDevelopment:BranchingModelDevelopment"
+                    },
+                    "owner": {
+                        "type": "string",
+                        "willReplaceOnChanges": true
+                    },
+                    "production": {
+                        "$ref": "#/types/bitbucket:index/BranchingModelProduction:BranchingModelProduction"
+                    },
+                    "repository": {
+                        "type": "string",
+                        "willReplaceOnChanges": true
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "bitbucket:index/commitFile:CommitFile": {
+            "properties": {
+                "branch": {
+                    "type": "string"
+                },
+                "commitAuthor": {
+                    "type": "string",
+                    "description": "The SHA of the commit that modified the file\n"
+                },
+                "commitMessage": {
+                    "type": "string",
+                    "description": "The SHA of the commit that modified the file\n"
+                },
+                "commitSha": {
+                    "type": "string",
+                    "description": "The SHA of the commit that modified the file\n"
+                },
+                "content": {
+                    "type": "string"
+                },
+                "filename": {
+                    "type": "string"
+                },
+                "repoSlug": {
+                    "type": "string"
+                },
+                "workspace": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "branch",
+                "commitAuthor",
+                "commitMessage",
+                "commitSha",
+                "content",
+                "filename",
+                "repoSlug",
+                "workspace"
+            ],
+            "inputProperties": {
+                "branch": {
+                    "type": "string",
+                    "willReplaceOnChanges": true
+                },
+                "commitAuthor": {
+                    "type": "string",
+                    "description": "The SHA of the commit that modified the file\n",
+                    "willReplaceOnChanges": true
+                },
+                "commitMessage": {
+                    "type": "string",
+                    "description": "The SHA of the commit that modified the file\n",
+                    "willReplaceOnChanges": true
+                },
+                "content": {
+                    "type": "string",
+                    "willReplaceOnChanges": true
+                },
+                "filename": {
+                    "type": "string",
+                    "willReplaceOnChanges": true
+                },
+                "repoSlug": {
+                    "type": "string",
+                    "willReplaceOnChanges": true
+                },
+                "workspace": {
+                    "type": "string",
+                    "willReplaceOnChanges": true
+                }
+            },
+            "requiredInputs": [
+                "branch",
+                "commitAuthor",
+                "commitMessage",
+                "content",
+                "filename",
+                "repoSlug",
+                "workspace"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering CommitFile resources.\n",
+                "properties": {
+                    "branch": {
+                        "type": "string",
+                        "willReplaceOnChanges": true
+                    },
+                    "commitAuthor": {
+                        "type": "string",
+                        "description": "The SHA of the commit that modified the file\n",
+                        "willReplaceOnChanges": true
+                    },
+                    "commitMessage": {
+                        "type": "string",
+                        "description": "The SHA of the commit that modified the file\n",
+                        "willReplaceOnChanges": true
+                    },
+                    "commitSha": {
+                        "type": "string",
+                        "description": "The SHA of the commit that modified the file\n"
+                    },
+                    "content": {
+                        "type": "string",
+                        "willReplaceOnChanges": true
+                    },
+                    "filename": {
+                        "type": "string",
+                        "willReplaceOnChanges": true
+                    },
+                    "repoSlug": {
+                        "type": "string",
+                        "willReplaceOnChanges": true
+                    },
+                    "workspace": {
+                        "type": "string",
+                        "willReplaceOnChanges": true
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "bitbucket:index/defaultReviewers:DefaultReviewers": {
+            "properties": {
+                "owner": {
+                    "type": "string"
+                },
+                "repository": {
+                    "type": "string"
+                },
+                "reviewers": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": [
+                "owner",
+                "repository",
+                "reviewers"
+            ],
+            "inputProperties": {
+                "owner": {
+                    "type": "string",
+                    "willReplaceOnChanges": true
+                },
+                "repository": {
+                    "type": "string",
+                    "willReplaceOnChanges": true
+                },
+                "reviewers": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requiredInputs": [
+                "owner",
+                "repository",
+                "reviewers"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering DefaultReviewers resources.\n",
+                "properties": {
+                    "owner": {
+                        "type": "string",
+                        "willReplaceOnChanges": true
+                    },
+                    "repository": {
+                        "type": "string",
+                        "willReplaceOnChanges": true
+                    },
+                    "reviewers": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "bitbucket:index/deployKey:DeployKey": {
+            "properties": {
+                "comment": {
+                    "type": "string"
+                },
+                "key": {
+                    "type": "string"
+                },
+                "keyId": {
+                    "type": "string"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "repository": {
+                    "type": "string"
+                },
+                "workspace": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "comment",
+                "keyId",
+                "repository",
+                "workspace"
+            ],
+            "inputProperties": {
+                "key": {
+                    "type": "string",
+                    "willReplaceOnChanges": true
+                },
+                "label": {
+                    "type": "string"
+                },
+                "repository": {
+                    "type": "string",
+                    "willReplaceOnChanges": true
+                },
+                "workspace": {
+                    "type": "string",
+                    "willReplaceOnChanges": true
+                }
+            },
+            "requiredInputs": [
+                "repository",
+                "workspace"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering DeployKey resources.\n",
+                "properties": {
+                    "comment": {
+                        "type": "string"
+                    },
+                    "key": {
+                        "type": "string",
+                        "willReplaceOnChanges": true
+                    },
+                    "keyId": {
+                        "type": "string"
+                    },
+                    "label": {
+                        "type": "string"
+                    },
+                    "repository": {
+                        "type": "string",
+                        "willReplaceOnChanges": true
+                    },
+                    "workspace": {
+                        "type": "string",
+                        "willReplaceOnChanges": true
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "bitbucket:index/deployment:Deployment": {
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "repository": {
+                    "type": "string"
+                },
+                "restrictions": {
+                    "$ref": "#/types/bitbucket:index/DeploymentRestrictions:DeploymentRestrictions"
+                },
+                "stage": {
+                    "type": "string"
+                },
+                "uuid": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "name",
+                "repository",
+                "restrictions",
+                "stage",
+                "uuid"
+            ],
+            "inputProperties": {
+                "name": {
+                    "type": "string"
+                },
+                "repository": {
+                    "type": "string",
+                    "willReplaceOnChanges": true
+                },
+                "restrictions": {
+                    "$ref": "#/types/bitbucket:index/DeploymentRestrictions:DeploymentRestrictions"
+                },
+                "stage": {
+                    "type": "string",
+                    "willReplaceOnChanges": true
+                }
+            },
+            "requiredInputs": [
+                "repository",
+                "stage"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering Deployment resources.\n",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "repository": {
+                        "type": "string",
+                        "willReplaceOnChanges": true
+                    },
+                    "restrictions": {
+                        "$ref": "#/types/bitbucket:index/DeploymentRestrictions:DeploymentRestrictions"
+                    },
+                    "stage": {
+                        "type": "string",
+                        "willReplaceOnChanges": true
+                    },
+                    "uuid": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "bitbucket:index/deploymentVariable:DeploymentVariable": {
+            "properties": {
+                "deployment": {
+                    "type": "string"
+                },
+                "key": {
+                    "type": "string"
+                },
+                "secured": {
+                    "type": "boolean"
+                },
+                "uuid": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "string",
+                    "secret": true
+                }
+            },
+            "required": [
+                "deployment",
+                "key",
+                "uuid",
+                "value"
+            ],
+            "inputProperties": {
+                "deployment": {
+                    "type": "string"
+                },
+                "key": {
+                    "type": "string"
+                },
+                "secured": {
+                    "type": "boolean"
+                },
+                "value": {
+                    "type": "string",
+                    "secret": true
+                }
+            },
+            "requiredInputs": [
+                "deployment",
+                "key",
+                "value"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering DeploymentVariable resources.\n",
+                "properties": {
+                    "deployment": {
+                        "type": "string"
+                    },
+                    "key": {
+                        "type": "string"
+                    },
+                    "secured": {
+                        "type": "boolean"
+                    },
+                    "uuid": {
+                        "type": "string"
+                    },
+                    "value": {
+                        "type": "string",
+                        "secret": true
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "bitbucket:index/forkedRepository:ForkedRepository": {
+            "properties": {
+                "cloneHttps": {
+                    "type": "string"
+                },
+                "cloneSsh": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "forkPolicy": {
+                    "type": "string"
+                },
+                "hasIssues": {
+                    "type": "boolean"
+                },
+                "hasWiki": {
+                    "type": "boolean"
+                },
+                "isPrivate": {
+                    "type": "boolean"
+                },
+                "language": {
+                    "type": "string"
+                },
+                "link": {
+                    "$ref": "#/types/bitbucket:index/ForkedRepositoryLink:ForkedRepositoryLink"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "owner": {
+                    "type": "string"
+                },
+                "parent": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                },
+                "pipelinesEnabled": {
+                    "type": "boolean"
+                },
+                "projectKey": {
+                    "type": "string"
+                },
+                "scm": {
+                    "type": "string"
+                },
+                "slug": {
+                    "type": "string"
+                },
+                "uuid": {
+                    "type": "string"
+                },
+                "website": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "cloneHttps",
+                "cloneSsh",
+                "link",
+                "name",
+                "owner",
+                "parent",
+                "projectKey",
+                "scm",
+                "slug",
+                "uuid"
+            ],
+            "inputProperties": {
+                "description": {
+                    "type": "string"
+                },
+                "forkPolicy": {
+                    "type": "string"
+                },
+                "hasIssues": {
+                    "type": "boolean"
+                },
+                "hasWiki": {
+                    "type": "boolean"
+                },
+                "isPrivate": {
+                    "type": "boolean"
+                },
+                "language": {
+                    "type": "string"
+                },
+                "link": {
+                    "$ref": "#/types/bitbucket:index/ForkedRepositoryLink:ForkedRepositoryLink"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "owner": {
+                    "type": "string"
+                },
+                "parent": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "willReplaceOnChanges": true
+                },
+                "pipelinesEnabled": {
+                    "type": "boolean"
+                },
+                "projectKey": {
+                    "type": "string"
+                },
+                "slug": {
+                    "type": "string"
+                },
+                "website": {
+                    "type": "string"
+                }
+            },
+            "requiredInputs": [
+                "owner",
+                "parent"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering ForkedRepository resources.\n",
+                "properties": {
+                    "cloneHttps": {
+                        "type": "string"
+                    },
+                    "cloneSsh": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "forkPolicy": {
+                        "type": "string"
+                    },
+                    "hasIssues": {
+                        "type": "boolean"
+                    },
+                    "hasWiki": {
+                        "type": "boolean"
+                    },
+                    "isPrivate": {
+                        "type": "boolean"
+                    },
+                    "language": {
+                        "type": "string"
+                    },
+                    "link": {
+                        "$ref": "#/types/bitbucket:index/ForkedRepositoryLink:ForkedRepositoryLink"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "owner": {
+                        "type": "string"
+                    },
+                    "parent": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        },
+                        "willReplaceOnChanges": true
+                    },
+                    "pipelinesEnabled": {
+                        "type": "boolean"
+                    },
+                    "projectKey": {
+                        "type": "string"
+                    },
+                    "scm": {
+                        "type": "string"
+                    },
+                    "slug": {
+                        "type": "string"
+                    },
+                    "uuid": {
+                        "type": "string"
+                    },
+                    "website": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "bitbucket:index/group:Group": {
+            "properties": {
+                "autoAdd": {
+                    "type": "boolean"
+                },
+                "emailForwardingDisabled": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "permission": {
+                    "type": "string"
+                },
+                "slug": {
+                    "type": "string"
+                },
+                "workspace": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "name",
+                "slug",
+                "workspace"
+            ],
+            "inputProperties": {
+                "autoAdd": {
+                    "type": "boolean"
+                },
+                "emailForwardingDisabled": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "permission": {
+                    "type": "string"
+                },
+                "workspace": {
+                    "type": "string",
+                    "willReplaceOnChanges": true
+                }
+            },
+            "requiredInputs": [
+                "workspace"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering Group resources.\n",
+                "properties": {
+                    "autoAdd": {
+                        "type": "boolean"
+                    },
+                    "emailForwardingDisabled": {
+                        "type": "boolean"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "permission": {
+                        "type": "string"
+                    },
+                    "slug": {
+                        "type": "string"
+                    },
+                    "workspace": {
+                        "type": "string",
+                        "willReplaceOnChanges": true
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "bitbucket:index/groupMembership:GroupMembership": {
+            "properties": {
+                "groupSlug": {
+                    "type": "string"
+                },
+                "slug": {
+                    "type": "string"
+                },
+                "uuid": {
+                    "type": "string"
+                },
+                "workspace": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "groupSlug",
+                "slug",
+                "uuid",
+                "workspace"
+            ],
+            "inputProperties": {
+                "groupSlug": {
+                    "type": "string",
+                    "willReplaceOnChanges": true
+                },
+                "uuid": {
+                    "type": "string",
+                    "willReplaceOnChanges": true
+                },
+                "workspace": {
+                    "type": "string",
+                    "willReplaceOnChanges": true
+                }
+            },
+            "requiredInputs": [
+                "groupSlug",
+                "uuid",
+                "workspace"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering GroupMembership resources.\n",
+                "properties": {
+                    "groupSlug": {
+                        "type": "string",
+                        "willReplaceOnChanges": true
+                    },
+                    "slug": {
+                        "type": "string"
+                    },
+                    "uuid": {
+                        "type": "string",
+                        "willReplaceOnChanges": true
+                    },
+                    "workspace": {
+                        "type": "string",
+                        "willReplaceOnChanges": true
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "bitbucket:index/hook:Hook": {
+            "properties": {
+                "active": {
+                    "type": "boolean"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "events": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "owner": {
+                    "type": "string"
+                },
+                "repository": {
+                    "type": "string"
+                },
+                "skipCertVerification": {
+                    "type": "boolean"
+                },
+                "url": {
+                    "type": "string"
+                },
+                "uuid": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "description",
+                "events",
+                "owner",
+                "repository",
+                "url",
+                "uuid"
+            ],
+            "inputProperties": {
+                "active": {
+                    "type": "boolean"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "events": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "owner": {
+                    "type": "string",
+                    "willReplaceOnChanges": true
+                },
+                "repository": {
+                    "type": "string",
+                    "willReplaceOnChanges": true
+                },
+                "skipCertVerification": {
+                    "type": "boolean"
+                },
+                "url": {
+                    "type": "string"
+                }
+            },
+            "requiredInputs": [
+                "description",
+                "events",
+                "owner",
+                "repository",
+                "url"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering Hook resources.\n",
+                "properties": {
+                    "active": {
+                        "type": "boolean"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "events": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "owner": {
+                        "type": "string",
+                        "willReplaceOnChanges": true
+                    },
+                    "repository": {
+                        "type": "string",
+                        "willReplaceOnChanges": true
+                    },
+                    "skipCertVerification": {
+                        "type": "boolean"
+                    },
+                    "url": {
+                        "type": "string"
+                    },
+                    "uuid": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "bitbucket:index/pipelineSchedule:PipelineSchedule": {
+            "properties": {
+                "cronPattern": {
+                    "type": "string"
+                },
+                "enabled": {
+                    "type": "boolean"
+                },
+                "repository": {
+                    "type": "string"
+                },
+                "target": {
+                    "$ref": "#/types/bitbucket:index/PipelineScheduleTarget:PipelineScheduleTarget"
+                },
+                "uuid": {
+                    "type": "string"
+                },
+                "workspace": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "cronPattern",
+                "enabled",
+                "repository",
+                "target",
+                "uuid",
+                "workspace"
+            ],
+            "inputProperties": {
+                "cronPattern": {
+                    "type": "string",
+                    "willReplaceOnChanges": true
+                },
+                "enabled": {
+                    "type": "boolean"
+                },
+                "repository": {
+                    "type": "string",
+                    "willReplaceOnChanges": true
+                },
+                "target": {
+                    "$ref": "#/types/bitbucket:index/PipelineScheduleTarget:PipelineScheduleTarget",
+                    "willReplaceOnChanges": true
+                },
+                "workspace": {
+                    "type": "string",
+                    "willReplaceOnChanges": true
+                }
+            },
+            "requiredInputs": [
+                "cronPattern",
+                "enabled",
+                "repository",
+                "target",
+                "workspace"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering PipelineSchedule resources.\n",
+                "properties": {
+                    "cronPattern": {
+                        "type": "string",
+                        "willReplaceOnChanges": true
+                    },
+                    "enabled": {
+                        "type": "boolean"
+                    },
+                    "repository": {
+                        "type": "string",
+                        "willReplaceOnChanges": true
+                    },
+                    "target": {
+                        "$ref": "#/types/bitbucket:index/PipelineScheduleTarget:PipelineScheduleTarget",
+                        "willReplaceOnChanges": true
+                    },
+                    "uuid": {
+                        "type": "string"
+                    },
+                    "workspace": {
+                        "type": "string",
+                        "willReplaceOnChanges": true
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "bitbucket:index/pipelineSshKey:PipelineSshKey": {
+            "properties": {
+                "privateKey": {
+                    "type": "string"
+                },
+                "publicKey": {
+                    "type": "string"
+                },
+                "repository": {
+                    "type": "string"
+                },
+                "workspace": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "repository",
+                "workspace"
+            ],
+            "inputProperties": {
+                "privateKey": {
+                    "type": "string"
+                },
+                "publicKey": {
+                    "type": "string"
+                },
+                "repository": {
+                    "type": "string",
+                    "willReplaceOnChanges": true
+                },
+                "workspace": {
+                    "type": "string",
+                    "willReplaceOnChanges": true
+                }
+            },
+            "requiredInputs": [
+                "repository",
+                "workspace"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering PipelineSshKey resources.\n",
+                "properties": {
+                    "privateKey": {
+                        "type": "string"
+                    },
+                    "publicKey": {
+                        "type": "string"
+                    },
+                    "repository": {
+                        "type": "string",
+                        "willReplaceOnChanges": true
+                    },
+                    "workspace": {
+                        "type": "string",
+                        "willReplaceOnChanges": true
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "bitbucket:index/pipelineSshKnownHost:PipelineSshKnownHost": {
+            "properties": {
+                "hostname": {
+                    "type": "string"
+                },
+                "publicKey": {
+                    "$ref": "#/types/bitbucket:index/PipelineSshKnownHostPublicKey:PipelineSshKnownHostPublicKey"
+                },
+                "repository": {
+                    "type": "string"
+                },
+                "uuid": {
+                    "type": "string"
+                },
+                "workspace": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "publicKey",
+                "repository",
+                "uuid",
+                "workspace"
+            ],
+            "inputProperties": {
+                "hostname": {
+                    "type": "string"
+                },
+                "publicKey": {
+                    "$ref": "#/types/bitbucket:index/PipelineSshKnownHostPublicKey:PipelineSshKnownHostPublicKey"
+                },
+                "repository": {
+                    "type": "string",
+                    "willReplaceOnChanges": true
+                },
+                "workspace": {
+                    "type": "string",
+                    "willReplaceOnChanges": true
+                }
+            },
+            "requiredInputs": [
+                "publicKey",
+                "repository",
+                "workspace"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering PipelineSshKnownHost resources.\n",
+                "properties": {
+                    "hostname": {
+                        "type": "string"
+                    },
+                    "publicKey": {
+                        "$ref": "#/types/bitbucket:index/PipelineSshKnownHostPublicKey:PipelineSshKnownHostPublicKey"
+                    },
+                    "repository": {
+                        "type": "string",
+                        "willReplaceOnChanges": true
+                    },
+                    "uuid": {
+                        "type": "string"
+                    },
+                    "workspace": {
+                        "type": "string",
+                        "willReplaceOnChanges": true
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "bitbucket:index/project:Project": {
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "hasPubliclyVisibleRepos": {
+                    "type": "boolean"
+                },
+                "isPrivate": {
+                    "type": "boolean"
+                },
+                "key": {
+                    "type": "string"
+                },
+                "link": {
+                    "$ref": "#/types/bitbucket:index/ProjectLink:ProjectLink"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "owner": {
+                    "type": "string"
+                },
+                "uuid": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "hasPubliclyVisibleRepos",
+                "key",
+                "link",
+                "name",
+                "owner",
+                "uuid"
+            ],
+            "inputProperties": {
+                "description": {
+                    "type": "string"
+                },
+                "isPrivate": {
+                    "type": "boolean"
+                },
+                "key": {
+                    "type": "string"
+                },
+                "link": {
+                    "$ref": "#/types/bitbucket:index/ProjectLink:ProjectLink"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "owner": {
+                    "type": "string"
+                }
+            },
+            "requiredInputs": [
+                "key",
+                "owner"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering Project resources.\n",
+                "properties": {
+                    "description": {
+                        "type": "string"
+                    },
+                    "hasPubliclyVisibleRepos": {
+                        "type": "boolean"
+                    },
+                    "isPrivate": {
+                        "type": "boolean"
+                    },
+                    "key": {
+                        "type": "string"
+                    },
+                    "link": {
+                        "$ref": "#/types/bitbucket:index/ProjectLink:ProjectLink"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "owner": {
+                        "type": "string"
+                    },
+                    "uuid": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "bitbucket:index/projectBranchingModel:ProjectBranchingModel": {
+            "properties": {
+                "branchTypes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/bitbucket:index/ProjectBranchingModelBranchType:ProjectBranchingModelBranchType"
+                    }
+                },
+                "development": {
+                    "$ref": "#/types/bitbucket:index/ProjectBranchingModelDevelopment:ProjectBranchingModelDevelopment"
+                },
+                "production": {
+                    "$ref": "#/types/bitbucket:index/ProjectBranchingModelProduction:ProjectBranchingModelProduction"
+                },
+                "project": {
+                    "type": "string"
+                },
+                "workspace": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "branchTypes",
+                "development",
+                "project",
+                "workspace"
+            ],
+            "inputProperties": {
+                "branchTypes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/bitbucket:index/ProjectBranchingModelBranchType:ProjectBranchingModelBranchType"
+                    }
+                },
+                "development": {
+                    "$ref": "#/types/bitbucket:index/ProjectBranchingModelDevelopment:ProjectBranchingModelDevelopment"
+                },
+                "production": {
+                    "$ref": "#/types/bitbucket:index/ProjectBranchingModelProduction:ProjectBranchingModelProduction"
+                },
+                "project": {
+                    "type": "string",
+                    "willReplaceOnChanges": true
+                },
+                "workspace": {
+                    "type": "string",
+                    "willReplaceOnChanges": true
+                }
+            },
+            "requiredInputs": [
+                "development",
+                "project",
+                "workspace"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering ProjectBranchingModel resources.\n",
+                "properties": {
+                    "branchTypes": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/types/bitbucket:index/ProjectBranchingModelBranchType:ProjectBranchingModelBranchType"
+                        }
+                    },
+                    "development": {
+                        "$ref": "#/types/bitbucket:index/ProjectBranchingModelDevelopment:ProjectBranchingModelDevelopment"
+                    },
+                    "production": {
+                        "$ref": "#/types/bitbucket:index/ProjectBranchingModelProduction:ProjectBranchingModelProduction"
+                    },
+                    "project": {
+                        "type": "string",
+                        "willReplaceOnChanges": true
+                    },
+                    "workspace": {
+                        "type": "string",
+                        "willReplaceOnChanges": true
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "bitbucket:index/projectDefaultReviewers:ProjectDefaultReviewers": {
+            "properties": {
+                "project": {
+                    "type": "string"
+                },
+                "reviewers": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "workspace": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "project",
+                "reviewers",
+                "workspace"
+            ],
+            "inputProperties": {
+                "project": {
+                    "type": "string",
+                    "willReplaceOnChanges": true
+                },
+                "reviewers": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "workspace": {
+                    "type": "string",
+                    "willReplaceOnChanges": true
+                }
+            },
+            "requiredInputs": [
+                "project",
+                "reviewers",
+                "workspace"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering ProjectDefaultReviewers resources.\n",
+                "properties": {
+                    "project": {
+                        "type": "string",
+                        "willReplaceOnChanges": true
+                    },
+                    "reviewers": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "workspace": {
+                        "type": "string",
+                        "willReplaceOnChanges": true
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "bitbucket:index/repository:Repository": {
+            "properties": {
+                "cloneHttps": {
+                    "type": "string"
+                },
+                "cloneSsh": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "forkPolicy": {
+                    "type": "string"
+                },
+                "hasIssues": {
+                    "type": "boolean"
+                },
+                "hasWiki": {
+                    "type": "boolean"
+                },
+                "inheritBranchingModel": {
+                    "type": "boolean"
+                },
+                "inheritDefaultMergeStrategy": {
+                    "type": "boolean"
+                },
+                "isPrivate": {
+                    "type": "boolean"
+                },
+                "language": {
+                    "type": "string"
+                },
+                "link": {
+                    "$ref": "#/types/bitbucket:index/RepositoryLink:RepositoryLink"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "owner": {
+                    "type": "string"
+                },
+                "pipelinesEnabled": {
+                    "type": "boolean"
+                },
+                "projectKey": {
+                    "type": "string"
+                },
+                "scm": {
+                    "type": "string"
+                },
+                "slug": {
+                    "type": "string"
+                },
+                "uuid": {
+                    "type": "string"
+                },
+                "website": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "cloneHttps",
+                "cloneSsh",
+                "inheritBranchingModel",
+                "inheritDefaultMergeStrategy",
+                "link",
+                "name",
+                "owner",
+                "projectKey",
+                "slug",
+                "uuid"
+            ],
+            "inputProperties": {
+                "description": {
+                    "type": "string"
+                },
+                "forkPolicy": {
+                    "type": "string"
+                },
+                "hasIssues": {
+                    "type": "boolean"
+                },
+                "hasWiki": {
+                    "type": "boolean"
+                },
+                "inheritBranchingModel": {
+                    "type": "boolean"
+                },
+                "inheritDefaultMergeStrategy": {
+                    "type": "boolean"
+                },
+                "isPrivate": {
+                    "type": "boolean"
+                },
+                "language": {
+                    "type": "string"
+                },
+                "link": {
+                    "$ref": "#/types/bitbucket:index/RepositoryLink:RepositoryLink"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "owner": {
+                    "type": "string"
+                },
+                "pipelinesEnabled": {
+                    "type": "boolean"
+                },
+                "projectKey": {
+                    "type": "string"
+                },
+                "scm": {
+                    "type": "string"
+                },
+                "slug": {
+                    "type": "string"
+                },
+                "website": {
+                    "type": "string"
+                }
+            },
+            "requiredInputs": [
+                "owner"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering Repository resources.\n",
+                "properties": {
+                    "cloneHttps": {
+                        "type": "string"
+                    },
+                    "cloneSsh": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "forkPolicy": {
+                        "type": "string"
+                    },
+                    "hasIssues": {
+                        "type": "boolean"
+                    },
+                    "hasWiki": {
+                        "type": "boolean"
+                    },
+                    "inheritBranchingModel": {
+                        "type": "boolean"
+                    },
+                    "inheritDefaultMergeStrategy": {
+                        "type": "boolean"
+                    },
+                    "isPrivate": {
+                        "type": "boolean"
+                    },
+                    "language": {
+                        "type": "string"
+                    },
+                    "link": {
+                        "$ref": "#/types/bitbucket:index/RepositoryLink:RepositoryLink"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "owner": {
+                        "type": "string"
+                    },
+                    "pipelinesEnabled": {
+                        "type": "boolean"
+                    },
+                    "projectKey": {
+                        "type": "string"
+                    },
+                    "scm": {
+                        "type": "string"
+                    },
+                    "slug": {
+                        "type": "string"
+                    },
+                    "uuid": {
+                        "type": "string"
+                    },
+                    "website": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "bitbucket:index/repositoryGroupPermission:RepositoryGroupPermission": {
+            "properties": {
+                "groupSlug": {
+                    "type": "string"
+                },
+                "permission": {
+                    "type": "string"
+                },
+                "repoSlug": {
+                    "type": "string"
+                },
+                "workspace": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "groupSlug",
+                "permission",
+                "repoSlug",
+                "workspace"
+            ],
+            "inputProperties": {
+                "groupSlug": {
+                    "type": "string",
+                    "willReplaceOnChanges": true
+                },
+                "permission": {
+                    "type": "string"
+                },
+                "repoSlug": {
+                    "type": "string",
+                    "willReplaceOnChanges": true
+                },
+                "workspace": {
+                    "type": "string",
+                    "willReplaceOnChanges": true
+                }
+            },
+            "requiredInputs": [
+                "groupSlug",
+                "permission",
+                "repoSlug",
+                "workspace"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering RepositoryGroupPermission resources.\n",
+                "properties": {
+                    "groupSlug": {
+                        "type": "string",
+                        "willReplaceOnChanges": true
+                    },
+                    "permission": {
+                        "type": "string"
+                    },
+                    "repoSlug": {
+                        "type": "string",
+                        "willReplaceOnChanges": true
+                    },
+                    "workspace": {
+                        "type": "string",
+                        "willReplaceOnChanges": true
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "bitbucket:index/repositoryUserPermission:RepositoryUserPermission": {
+            "properties": {
+                "permission": {
+                    "type": "string"
+                },
+                "repoSlug": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                },
+                "workspace": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "permission",
+                "repoSlug",
+                "userId",
+                "workspace"
+            ],
+            "inputProperties": {
+                "permission": {
+                    "type": "string"
+                },
+                "repoSlug": {
+                    "type": "string",
+                    "willReplaceOnChanges": true
+                },
+                "userId": {
+                    "type": "string",
+                    "willReplaceOnChanges": true
+                },
+                "workspace": {
+                    "type": "string",
+                    "willReplaceOnChanges": true
+                }
+            },
+            "requiredInputs": [
+                "permission",
+                "repoSlug",
+                "userId",
+                "workspace"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering RepositoryUserPermission resources.\n",
+                "properties": {
+                    "permission": {
+                        "type": "string"
+                    },
+                    "repoSlug": {
+                        "type": "string",
+                        "willReplaceOnChanges": true
+                    },
+                    "userId": {
+                        "type": "string",
+                        "willReplaceOnChanges": true
+                    },
+                    "workspace": {
+                        "type": "string",
+                        "willReplaceOnChanges": true
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "bitbucket:index/repositoryVariable:RepositoryVariable": {
+            "properties": {
+                "key": {
+                    "type": "string"
+                },
+                "repository": {
+                    "type": "string"
+                },
+                "secured": {
+                    "type": "boolean"
+                },
+                "uuid": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "string",
+                    "secret": true
+                }
+            },
+            "required": [
+                "key",
+                "repository",
+                "uuid",
+                "value"
+            ],
+            "inputProperties": {
+                "key": {
+                    "type": "string"
+                },
+                "repository": {
+                    "type": "string"
+                },
+                "secured": {
+                    "type": "boolean"
+                },
+                "value": {
+                    "type": "string",
+                    "secret": true
+                }
+            },
+            "requiredInputs": [
+                "key",
+                "repository",
+                "value"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering RepositoryVariable resources.\n",
+                "properties": {
+                    "key": {
+                        "type": "string"
+                    },
+                    "repository": {
+                        "type": "string"
+                    },
+                    "secured": {
+                        "type": "boolean"
+                    },
+                    "uuid": {
+                        "type": "string"
+                    },
+                    "value": {
+                        "type": "string",
+                        "secret": true
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "bitbucket:index/sshKey:SshKey": {
+            "properties": {
+                "comment": {
+                    "type": "string"
+                },
+                "key": {
+                    "type": "string"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "user": {
+                    "type": "string"
+                },
+                "uuid": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "comment",
+                "user",
+                "uuid"
+            ],
+            "inputProperties": {
+                "key": {
+                    "type": "string",
+                    "willReplaceOnChanges": true
+                },
+                "label": {
+                    "type": "string"
+                },
+                "user": {
+                    "type": "string",
+                    "willReplaceOnChanges": true
+                }
+            },
+            "requiredInputs": [
+                "user"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering SshKey resources.\n",
+                "properties": {
+                    "comment": {
+                        "type": "string"
+                    },
+                    "key": {
+                        "type": "string",
+                        "willReplaceOnChanges": true
+                    },
+                    "label": {
+                        "type": "string"
+                    },
+                    "user": {
+                        "type": "string",
+                        "willReplaceOnChanges": true
+                    },
+                    "uuid": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "bitbucket:index/workspaceHook:WorkspaceHook": {
+            "properties": {
+                "active": {
+                    "type": "boolean"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "events": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "skipCertVerification": {
+                    "type": "boolean"
+                },
+                "url": {
+                    "type": "string"
+                },
+                "uuid": {
+                    "type": "string"
+                },
+                "workspace": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "description",
+                "events",
+                "url",
+                "uuid",
+                "workspace"
+            ],
+            "inputProperties": {
+                "active": {
+                    "type": "boolean"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "events": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "skipCertVerification": {
+                    "type": "boolean"
+                },
+                "url": {
+                    "type": "string"
+                },
+                "workspace": {
+                    "type": "string",
+                    "willReplaceOnChanges": true
+                }
+            },
+            "requiredInputs": [
+                "description",
+                "events",
+                "url",
+                "workspace"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering WorkspaceHook resources.\n",
+                "properties": {
+                    "active": {
+                        "type": "boolean"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "events": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "skipCertVerification": {
+                        "type": "boolean"
+                    },
+                    "url": {
+                        "type": "string"
+                    },
+                    "uuid": {
+                        "type": "string"
+                    },
+                    "workspace": {
+                        "type": "string",
+                        "willReplaceOnChanges": true
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "bitbucket:index/workspaceVariable:WorkspaceVariable": {
+            "properties": {
+                "key": {
+                    "type": "string"
+                },
+                "secured": {
+                    "type": "boolean"
+                },
+                "uuid": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "string",
+                    "secret": true
+                },
+                "workspace": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "key",
+                "uuid",
+                "value",
+                "workspace"
+            ],
+            "inputProperties": {
+                "key": {
+                    "type": "string"
+                },
+                "secured": {
+                    "type": "boolean"
+                },
+                "value": {
+                    "type": "string",
+                    "secret": true
+                },
+                "workspace": {
+                    "type": "string"
+                }
+            },
+            "requiredInputs": [
+                "key",
+                "value",
+                "workspace"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering WorkspaceVariable resources.\n",
+                "properties": {
+                    "key": {
+                        "type": "string"
+                    },
+                    "secured": {
+                        "type": "boolean"
+                    },
+                    "uuid": {
+                        "type": "string"
+                    },
+                    "value": {
+                        "type": "string",
+                        "secret": true
+                    },
+                    "workspace": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "functions": {
+        "bitbucket:index/getCurrentUser:getCurrentUser": {
+            "outputs": {
+                "description": "A collection of values returned by getCurrentUser.\n",
+                "properties": {
+                    "displayName": {
+                        "type": "string"
+                    },
+                    "emails": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/types/bitbucket:index/getCurrentUserEmail:getCurrentUserEmail"
+                        }
+                    },
+                    "id": {
+                        "type": "string",
+                        "description": "The provider-assigned unique ID for this managed resource.\n"
+                    },
+                    "username": {
+                        "type": "string"
+                    },
+                    "uuid": {
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "displayName",
+                    "emails",
+                    "username",
+                    "uuid",
+                    "id"
+                ]
+            }
+        },
+        "bitbucket:index/getDeployment:getDeployment": {
+            "inputs": {
+                "description": "A collection of arguments for invoking getDeployment.\n",
+                "properties": {
+                    "repository": {
+                        "type": "string"
+                    },
+                    "uuid": {
+                        "type": "string"
+                    },
+                    "workspace": {
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "repository",
+                    "uuid",
+                    "workspace"
+                ]
+            },
+            "outputs": {
+                "description": "A collection of values returned by getDeployment.\n",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "The provider-assigned unique ID for this managed resource.\n"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "repository": {
+                        "type": "string"
+                    },
+                    "stage": {
+                        "type": "string"
+                    },
+                    "uuid": {
+                        "type": "string"
+                    },
+                    "workspace": {
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "name",
+                    "repository",
+                    "stage",
+                    "uuid",
+                    "workspace",
+                    "id"
+                ]
+            }
+        },
+        "bitbucket:index/getGroup:getGroup": {
+            "inputs": {
+                "description": "A collection of arguments for invoking getGroup.\n",
+                "properties": {
+                    "slug": {
+                        "type": "string"
+                    },
+                    "workspace": {
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "slug",
+                    "workspace"
+                ]
+            },
+            "outputs": {
+                "description": "A collection of values returned by getGroup.\n",
+                "properties": {
+                    "autoAdd": {
+                        "type": "boolean"
+                    },
+                    "emailForwardingDisabled": {
+                        "type": "boolean"
+                    },
+                    "id": {
+                        "type": "string",
+                        "description": "The provider-assigned unique ID for this managed resource.\n"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "permission": {
+                        "type": "string"
+                    },
+                    "slug": {
+                        "type": "string"
+                    },
+                    "workspace": {
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "autoAdd",
+                    "emailForwardingDisabled",
+                    "name",
+                    "permission",
+                    "slug",
+                    "workspace",
+                    "id"
+                ]
+            }
+        },
+        "bitbucket:index/getGroupMembers:getGroupMembers": {
+            "inputs": {
+                "description": "A collection of arguments for invoking getGroupMembers.\n",
+                "properties": {
+                    "slug": {
+                        "type": "string"
+                    },
+                    "workspace": {
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "slug",
+                    "workspace"
+                ]
+            },
+            "outputs": {
+                "description": "A collection of values returned by getGroupMembers.\n",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "The provider-assigned unique ID for this managed resource.\n"
+                    },
+                    "members": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "slug": {
+                        "type": "string"
+                    },
+                    "workspace": {
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "members",
+                    "slug",
+                    "workspace",
+                    "id"
+                ]
+            }
+        },
+        "bitbucket:index/getGroups:getGroups": {
+            "inputs": {
+                "description": "A collection of arguments for invoking getGroups.\n",
+                "properties": {
+                    "workspace": {
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "workspace"
+                ]
+            },
+            "outputs": {
+                "description": "A collection of values returned by getGroups.\n",
+                "properties": {
+                    "groups": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/types/bitbucket:index/getGroupsGroup:getGroupsGroup"
+                        }
+                    },
+                    "id": {
+                        "type": "string",
+                        "description": "The provider-assigned unique ID for this managed resource.\n"
+                    },
+                    "workspace": {
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "groups",
+                    "workspace",
+                    "id"
+                ]
+            }
+        },
+        "bitbucket:index/getHookTypes:getHookTypes": {
+            "inputs": {
+                "description": "A collection of arguments for invoking getHookTypes.\n",
+                "properties": {
+                    "subjectType": {
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "subjectType"
+                ]
+            },
+            "outputs": {
+                "description": "A collection of values returned by getHookTypes.\n",
+                "properties": {
+                    "hookTypes": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/types/bitbucket:index/getHookTypesHookType:getHookTypesHookType"
+                        }
+                    },
+                    "id": {
+                        "type": "string",
+                        "description": "The provider-assigned unique ID for this managed resource.\n"
+                    },
+                    "subjectType": {
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "hookTypes",
+                    "subjectType",
+                    "id"
+                ]
+            }
+        },
+        "bitbucket:index/getIpRanges:getIpRanges": {
+            "outputs": {
+                "description": "A collection of values returned by getIpRanges.\n",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "The provider-assigned unique ID for this managed resource.\n"
+                    },
+                    "ranges": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/types/bitbucket:index/getIpRangesRange:getIpRangesRange"
+                        }
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "ranges",
+                    "id"
+                ]
+            }
+        },
+        "bitbucket:index/getPipelineOidcConfig:getPipelineOidcConfig": {
+            "inputs": {
+                "description": "A collection of arguments for invoking getPipelineOidcConfig.\n",
+                "properties": {
+                    "workspace": {
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "workspace"
+                ]
+            },
+            "outputs": {
+                "description": "A collection of values returned by getPipelineOidcConfig.\n",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "The provider-assigned unique ID for this managed resource.\n"
+                    },
+                    "oidcConfig": {
+                        "type": "string"
+                    },
+                    "workspace": {
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "oidcConfig",
+                    "workspace",
+                    "id"
+                ]
+            }
+        },
+        "bitbucket:index/getPipelineOidcConfigKeys:getPipelineOidcConfigKeys": {
+            "inputs": {
+                "description": "A collection of arguments for invoking getPipelineOidcConfigKeys.\n",
+                "properties": {
+                    "workspace": {
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "workspace"
+                ]
+            },
+            "outputs": {
+                "description": "A collection of values returned by getPipelineOidcConfigKeys.\n",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "The provider-assigned unique ID for this managed resource.\n"
+                    },
+                    "keys": {
+                        "type": "string",
+                        "secret": true
+                    },
+                    "workspace": {
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "keys",
+                    "workspace",
+                    "id"
+                ]
+            }
+        },
+        "bitbucket:index/getUser:getUser": {
+            "inputs": {
+                "description": "A collection of arguments for invoking getUser.\n",
+                "properties": {
+                    "displayName": {
+                        "type": "string"
+                    },
+                    "uuid": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "outputs": {
+                "description": "A collection of values returned by getUser.\n",
+                "properties": {
+                    "displayName": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "string",
+                        "description": "The provider-assigned unique ID for this managed resource.\n"
+                    },
+                    "username": {
+                        "type": "string"
+                    },
+                    "uuid": {
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "username",
+                    "id"
+                ]
+            }
+        },
+        "bitbucket:index/getWorkspace:getWorkspace": {
+            "inputs": {
+                "description": "A collection of arguments for invoking getWorkspace.\n",
+                "properties": {
+                    "workspace": {
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "workspace"
+                ]
+            },
+            "outputs": {
+                "description": "A collection of values returned by getWorkspace.\n",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "The provider-assigned unique ID for this managed resource.\n"
+                    },
+                    "isPrivate": {
+                        "type": "boolean"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "slug": {
+                        "type": "string"
+                    },
+                    "workspace": {
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "isPrivate",
+                    "name",
+                    "slug",
+                    "workspace",
+                    "id"
+                ]
+            }
+        },
+        "bitbucket:index/getWorkspaceMembers:getWorkspaceMembers": {
+            "inputs": {
+                "description": "A collection of arguments for invoking getWorkspaceMembers.\n",
+                "properties": {
+                    "workspace": {
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "workspace"
+                ]
+            },
+            "outputs": {
+                "description": "A collection of values returned by getWorkspaceMembers.\n",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "The provider-assigned unique ID for this managed resource.\n"
+                    },
+                    "members": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "workspace": {
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "members",
+                    "workspace",
+                    "id"
+                ]
+            }
+        }
+    }
+}
