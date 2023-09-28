@@ -17,21 +17,21 @@ __config__ = pulumi.Config('bitbucket')
 class _ExportableConfig(types.ModuleType):
     @property
     def oauth_client_id(self) -> Optional[str]:
-        return __config__.get('oauthClientId')
+        return __config__.get('oauthClientId') or _utilities.get_env('BITBUCKET_OAUTH_CLIENT_ID')
 
     @property
     def oauth_client_secret(self) -> Optional[str]:
-        return __config__.get('oauthClientSecret')
+        return __config__.get('oauthClientSecret') or _utilities.get_env('BITBUCKET_OAUTH_CLIENT_SECRET')
 
     @property
     def oauth_token(self) -> Optional[str]:
-        return __config__.get('oauthToken')
+        return __config__.get('oauthToken') or _utilities.get_env('BITBUCKET_OAUTH_TOKEN')
 
     @property
     def password(self) -> Optional[str]:
-        return __config__.get('password')
+        return __config__.get('password') or _utilities.get_env('BITBUCKET_PASSWORD')
 
     @property
     def username(self) -> Optional[str]:
-        return __config__.get('username')
+        return __config__.get('username') or _utilities.get_env('BITBUCKET_USERNAME')
 

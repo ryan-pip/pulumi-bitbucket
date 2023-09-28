@@ -12,17 +12,57 @@ import (
 var _ = internal.GetEnvOrDefault
 
 func GetOauthClientId(ctx *pulumi.Context) string {
-	return config.Get(ctx, "bitbucket:oauthClientId")
+	v, err := config.Try(ctx, "bitbucket:oauthClientId")
+	if err == nil {
+		return v
+	}
+	var value string
+	if d := internal.GetEnvOrDefault(nil, nil, "BITBUCKET_OAUTH_CLIENT_ID"); d != nil {
+		value = d.(string)
+	}
+	return value
 }
 func GetOauthClientSecret(ctx *pulumi.Context) string {
-	return config.Get(ctx, "bitbucket:oauthClientSecret")
+	v, err := config.Try(ctx, "bitbucket:oauthClientSecret")
+	if err == nil {
+		return v
+	}
+	var value string
+	if d := internal.GetEnvOrDefault(nil, nil, "BITBUCKET_OAUTH_CLIENT_SECRET"); d != nil {
+		value = d.(string)
+	}
+	return value
 }
 func GetOauthToken(ctx *pulumi.Context) string {
-	return config.Get(ctx, "bitbucket:oauthToken")
+	v, err := config.Try(ctx, "bitbucket:oauthToken")
+	if err == nil {
+		return v
+	}
+	var value string
+	if d := internal.GetEnvOrDefault(nil, nil, "BITBUCKET_OAUTH_TOKEN"); d != nil {
+		value = d.(string)
+	}
+	return value
 }
 func GetPassword(ctx *pulumi.Context) string {
-	return config.Get(ctx, "bitbucket:password")
+	v, err := config.Try(ctx, "bitbucket:password")
+	if err == nil {
+		return v
+	}
+	var value string
+	if d := internal.GetEnvOrDefault(nil, nil, "BITBUCKET_PASSWORD"); d != nil {
+		value = d.(string)
+	}
+	return value
 }
 func GetUsername(ctx *pulumi.Context) string {
-	return config.Get(ctx, "bitbucket:username")
+	v, err := config.Try(ctx, "bitbucket:username")
+	if err == nil {
+		return v
+	}
+	var value string
+	if d := internal.GetEnvOrDefault(nil, nil, "BITBUCKET_USERNAME"); d != nil {
+		value = d.(string)
+	}
+	return value
 }

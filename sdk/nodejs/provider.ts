@@ -42,11 +42,11 @@ export class Provider extends pulumi.ProviderResource {
         let resourceInputs: pulumi.Inputs = {};
         opts = opts || {};
         {
-            resourceInputs["oauthClientId"] = args ? args.oauthClientId : undefined;
-            resourceInputs["oauthClientSecret"] = args ? args.oauthClientSecret : undefined;
-            resourceInputs["oauthToken"] = args ? args.oauthToken : undefined;
-            resourceInputs["password"] = args ? args.password : undefined;
-            resourceInputs["username"] = args ? args.username : undefined;
+            resourceInputs["oauthClientId"] = (args ? args.oauthClientId : undefined) ?? utilities.getEnv("BITBUCKET_OAUTH_CLIENT_ID");
+            resourceInputs["oauthClientSecret"] = (args ? args.oauthClientSecret : undefined) ?? utilities.getEnv("BITBUCKET_OAUTH_CLIENT_SECRET");
+            resourceInputs["oauthToken"] = (args ? args.oauthToken : undefined) ?? utilities.getEnv("BITBUCKET_OAUTH_TOKEN");
+            resourceInputs["password"] = (args ? args.password : undefined) ?? utilities.getEnv("BITBUCKET_PASSWORD");
+            resourceInputs["username"] = (args ? args.username : undefined) ?? utilities.getEnv("BITBUCKET_USERNAME");
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
         super(Provider.__pulumiType, name, resourceInputs, opts);

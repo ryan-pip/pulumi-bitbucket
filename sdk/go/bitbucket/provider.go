@@ -33,6 +33,31 @@ func NewProvider(ctx *pulumi.Context,
 		args = &ProviderArgs{}
 	}
 
+	if args.OauthClientId == nil {
+		if d := internal.GetEnvOrDefault(nil, nil, "BITBUCKET_OAUTH_CLIENT_ID"); d != nil {
+			args.OauthClientId = pulumi.StringPtr(d.(string))
+		}
+	}
+	if args.OauthClientSecret == nil {
+		if d := internal.GetEnvOrDefault(nil, nil, "BITBUCKET_OAUTH_CLIENT_SECRET"); d != nil {
+			args.OauthClientSecret = pulumi.StringPtr(d.(string))
+		}
+	}
+	if args.OauthToken == nil {
+		if d := internal.GetEnvOrDefault(nil, nil, "BITBUCKET_OAUTH_TOKEN"); d != nil {
+			args.OauthToken = pulumi.StringPtr(d.(string))
+		}
+	}
+	if args.Password == nil {
+		if d := internal.GetEnvOrDefault(nil, nil, "BITBUCKET_PASSWORD"); d != nil {
+			args.Password = pulumi.StringPtr(d.(string))
+		}
+	}
+	if args.Username == nil {
+		if d := internal.GetEnvOrDefault(nil, nil, "BITBUCKET_USERNAME"); d != nil {
+			args.Username = pulumi.StringPtr(d.(string))
+		}
+	}
 	opts = internal.PkgResourceDefaultOpts(opts)
 	var resource Provider
 	err := ctx.RegisterResource("pulumi:providers:bitbucket", name, args, &resource, opts...)

@@ -22,14 +22,24 @@ class ProviderArgs:
         """
         The set of arguments for constructing a Provider resource.
         """
+        if oauth_client_id is None:
+            oauth_client_id = _utilities.get_env('BITBUCKET_OAUTH_CLIENT_ID')
         if oauth_client_id is not None:
             pulumi.set(__self__, "oauth_client_id", oauth_client_id)
+        if oauth_client_secret is None:
+            oauth_client_secret = _utilities.get_env('BITBUCKET_OAUTH_CLIENT_SECRET')
         if oauth_client_secret is not None:
             pulumi.set(__self__, "oauth_client_secret", oauth_client_secret)
+        if oauth_token is None:
+            oauth_token = _utilities.get_env('BITBUCKET_OAUTH_TOKEN')
         if oauth_token is not None:
             pulumi.set(__self__, "oauth_token", oauth_token)
+        if password is None:
+            password = _utilities.get_env('BITBUCKET_PASSWORD')
         if password is not None:
             pulumi.set(__self__, "password", password)
+        if username is None:
+            username = _utilities.get_env('BITBUCKET_USERNAME')
         if username is not None:
             pulumi.set(__self__, "username", username)
 
@@ -140,10 +150,20 @@ class Provider(pulumi.ProviderResource):
                 raise TypeError('__props__ is only valid when passed in combination with a valid opts.id to get an existing resource')
             __props__ = ProviderArgs.__new__(ProviderArgs)
 
+            if oauth_client_id is None:
+                oauth_client_id = _utilities.get_env('BITBUCKET_OAUTH_CLIENT_ID')
             __props__.__dict__["oauth_client_id"] = oauth_client_id
+            if oauth_client_secret is None:
+                oauth_client_secret = _utilities.get_env('BITBUCKET_OAUTH_CLIENT_SECRET')
             __props__.__dict__["oauth_client_secret"] = oauth_client_secret
+            if oauth_token is None:
+                oauth_token = _utilities.get_env('BITBUCKET_OAUTH_TOKEN')
             __props__.__dict__["oauth_token"] = oauth_token
+            if password is None:
+                password = _utilities.get_env('BITBUCKET_PASSWORD')
             __props__.__dict__["password"] = password
+            if username is None:
+                username = _utilities.get_env('BITBUCKET_USERNAME')
             __props__.__dict__["username"] = username
         super(Provider, __self__).__init__(
             'bitbucket',

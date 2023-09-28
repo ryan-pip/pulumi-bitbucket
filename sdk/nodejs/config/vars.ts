@@ -10,7 +10,7 @@ const __config = new pulumi.Config("bitbucket");
 export declare const oauthClientId: string | undefined;
 Object.defineProperty(exports, "oauthClientId", {
     get() {
-        return __config.get("oauthClientId");
+        return __config.get("oauthClientId") ?? utilities.getEnv("BITBUCKET_OAUTH_CLIENT_ID");
     },
     enumerable: true,
 });
@@ -18,7 +18,7 @@ Object.defineProperty(exports, "oauthClientId", {
 export declare const oauthClientSecret: string | undefined;
 Object.defineProperty(exports, "oauthClientSecret", {
     get() {
-        return __config.get("oauthClientSecret");
+        return __config.get("oauthClientSecret") ?? utilities.getEnv("BITBUCKET_OAUTH_CLIENT_SECRET");
     },
     enumerable: true,
 });
@@ -26,7 +26,7 @@ Object.defineProperty(exports, "oauthClientSecret", {
 export declare const oauthToken: string | undefined;
 Object.defineProperty(exports, "oauthToken", {
     get() {
-        return __config.get("oauthToken");
+        return __config.get("oauthToken") ?? utilities.getEnv("BITBUCKET_OAUTH_TOKEN");
     },
     enumerable: true,
 });
@@ -34,7 +34,7 @@ Object.defineProperty(exports, "oauthToken", {
 export declare const password: string | undefined;
 Object.defineProperty(exports, "password", {
     get() {
-        return __config.get("password");
+        return __config.get("password") ?? utilities.getEnv("BITBUCKET_PASSWORD");
     },
     enumerable: true,
 });
@@ -42,7 +42,7 @@ Object.defineProperty(exports, "password", {
 export declare const username: string | undefined;
 Object.defineProperty(exports, "username", {
     get() {
-        return __config.get("username");
+        return __config.get("username") ?? utilities.getEnv("BITBUCKET_USERNAME");
     },
     enumerable: true,
 });
