@@ -53,19 +53,44 @@
     "config": {
         "variables": {
             "oauthClientId": {
-                "type": "string"
+                "type": "string",
+                "defaultInfo": {
+                    "environment": [
+                        "BITBUCKET_OAUTH_CLIENT_ID"
+                    ]
+                }
             },
             "oauthClientSecret": {
-                "type": "string"
+                "type": "string",
+                "defaultInfo": {
+                    "environment": [
+                        "BITBUCKET_OAUTH_CLIENT_SECRET"
+                    ]
+                }
             },
             "oauthToken": {
-                "type": "string"
+                "type": "string",
+                "defaultInfo": {
+                    "environment": [
+                        "BITBUCKET_OAUTH_TOKEN"
+                    ]
+                }
             },
             "password": {
-                "type": "string"
+                "type": "string",
+                "defaultInfo": {
+                    "environment": [
+                        "BITBUCKET_PASSWORD"
+                    ]
+                }
             },
             "username": {
-                "type": "string"
+                "type": "string",
+                "defaultInfo": {
+                    "environment": [
+                        "BITBUCKET_USERNAME"
+                    ]
+                }
             }
         }
     },
@@ -517,19 +542,44 @@
         },
         "inputProperties": {
             "oauthClientId": {
-                "type": "string"
+                "type": "string",
+                "defaultInfo": {
+                    "environment": [
+                        "BITBUCKET_OAUTH_CLIENT_ID"
+                    ]
+                }
             },
             "oauthClientSecret": {
-                "type": "string"
+                "type": "string",
+                "defaultInfo": {
+                    "environment": [
+                        "BITBUCKET_OAUTH_CLIENT_SECRET"
+                    ]
+                }
             },
             "oauthToken": {
-                "type": "string"
+                "type": "string",
+                "defaultInfo": {
+                    "environment": [
+                        "BITBUCKET_OAUTH_TOKEN"
+                    ]
+                }
             },
             "password": {
-                "type": "string"
+                "type": "string",
+                "defaultInfo": {
+                    "environment": [
+                        "BITBUCKET_PASSWORD"
+                    ]
+                }
             },
             "username": {
-                "type": "string"
+                "type": "string",
+                "defaultInfo": {
+                    "environment": [
+                        "BITBUCKET_USERNAME"
+                    ]
+                }
             }
         }
     },

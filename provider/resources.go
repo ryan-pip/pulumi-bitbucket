@@ -82,15 +82,32 @@ func Provider() tfbridge.ProviderInfo {
 		// The GitHub Org for the provider - defaults to `terraform-providers`. Note that this
 		// should match the TF provider module's require directive, not any replace directives.
 		GitHubOrg: "DrFaust92",
-		Config:    map[string]*tfbridge.SchemaInfo{
-			// Add any required configuration here, or remove the example below if
-			// no additional points are required.
-			// "region": {
-			// 	Type: tfbridge.MakeType("region", "Region"),
-			// 	Default: &tfbridge.DefaultInfo{
-			// 		EnvVars: []string{"AWS_REGION", "AWS_DEFAULT_REGION"},
-			// 	},
-			// },
+		Config: map[string]*tfbridge.SchemaInfo{
+			"username": {
+				Default: &tfbridge.DefaultInfo{
+					EnvVars: []string{"BITBUCKET_USERNAME"},
+				},
+			},
+			"password": {
+				Default: &tfbridge.DefaultInfo{
+					EnvVars: []string{"BITBUCKET_PASSWORD"},
+				},
+			},
+			"oauth_client_id": {
+				Default: &tfbridge.DefaultInfo{
+					EnvVars: []string{"BITBUCKET_OAUTH_CLIENT_ID"},
+				},
+			},
+			"oauth_client_secret": {
+				Default: &tfbridge.DefaultInfo{
+					EnvVars: []string{"BITBUCKET_OAUTH_CLIENT_SECRET"},
+				},
+			},
+			"oauth_token": {
+				Default: &tfbridge.DefaultInfo{
+					EnvVars: []string{"BITBUCKET_OAUTH_TOKEN"},
+				},
+			},
 		},
 		PreConfigureCallback: preConfigureCallback,
 		Resources:            map[string]*tfbridge.ResourceInfo{
