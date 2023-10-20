@@ -2,6 +2,8 @@
 
 The Pulumi Bitbucket Cloud Resource Provider lets you manage [Bitbucket](https://bitbucket.org/product) resources.
 
+This provider is just a bridge of the terraform provider [terraform-provider-bitbucket](https://registry.terraform.io/providers/DrFaust92/bitbucket/latest) published and maintained by DrFaust92.
+
 ## Installing
 
 This package is available for several languages/platforms:
@@ -25,7 +27,7 @@ yarn add @pulumi/bitbucket
 To use from Python, install using `pip`:
 
 ```bash
-pip install pulumi_bitbucket
+pip install pulumi-bitbucket
 ```
 
 ### Go
