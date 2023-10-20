@@ -4,49 +4,16 @@ The Pulumi Bitbucket Cloud Resource Provider lets you manage [Bitbucket](https:/
 
 ## Installing
 
-This package is available for several languages/platforms:
-
-### Node.js (JavaScript/TypeScript)
-
-To use from JavaScript or TypeScript in Node.js, install using either `npm`:
-
-```bash
-npm install @pulumi/foo
-```
-
-or `yarn`:
-
-```bash
-yarn add @pulumi/foo
-```
-
 ### Python
 
 To use from Python, install using `pip`:
 
 ```bash
-pip install pulumi_foo
+pip install pulumi_bitbucket
 ```
 
-### Go
 
-To use from Go, use `go get` to grab the latest version of the library:
-
-```bash
-go get github.com/pulumi/pulumi-foo/sdk/go/...
-```
-
-### .NET
-
-To use from .NET, install using `dotnet add package`:
-
-```bash
-dotnet add package Pulumi.Foo
-```
-
-## Configuration
-
-The following configuration points are available for the `foo` provider:
+The following configuration points are available for the `bitbucket` provider:
 
 - `bitbucket:username` (environment: `BITBUCKET_USERNAME`) - (Optional) Username to use for authentication via Basic Auth.
 - `bitbucket:password` (environment: `BITBUCKET_PASSWORD`) - (Optional) Password to use for authentication via Basic Auth
@@ -56,4 +23,4 @@ The following configuration points are available for the `foo` provider:
 
 ## Reference
 
-For detailed reference documentation, please visit [the Pulumi registry](https://www.pulumi.com/registry/packages/pulumi-bitbucket/api-docs/).
+
