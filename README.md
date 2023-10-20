@@ -11,13 +11,13 @@ This package is available for several languages/platforms:
 To use from JavaScript or TypeScript in Node.js, install using either `npm`:
 
 ```bash
-npm install @pulumi/foo
+npm install @pulumi/bitbucket
 ```
 
 or `yarn`:
 
 ```bash
-yarn add @pulumi/foo
+yarn add @pulumi/bitbucket
 ```
 
 ### Python
@@ -25,7 +25,7 @@ yarn add @pulumi/foo
 To use from Python, install using `pip`:
 
 ```bash
-pip install pulumi_foo
+pip install pulumi_bitbucket
 ```
 
 ### Go
@@ -33,7 +33,7 @@ pip install pulumi_foo
 To use from Go, use `go get` to grab the latest version of the library:
 
 ```bash
-go get github.com/pulumi/pulumi-foo/sdk/go/...
+go get github.com/ryan-pip/pulumi-bitbucket/sdk/go/...
 ```
 
 ### .NET
@@ -41,12 +41,12 @@ go get github.com/pulumi/pulumi-foo/sdk/go/...
 To use from .NET, install using `dotnet add package`:
 
 ```bash
-dotnet add package Pulumi.Foo
+dotnet add package Pulumi.Bitbucket
 ```
 
 ## Configuration
 
-The following configuration points are available for the `foo` provider:
+The following configuration points are available for the `bitbucket` provider:
 
 - `bitbucket:username` (environment: `BITBUCKET_USERNAME`) - (Optional) Username to use for authentication via Basic Auth.
 - `bitbucket:password` (environment: `BITBUCKET_PASSWORD`) - (Optional) Password to use for authentication via Basic Auth
@@ -56,4 +56,4 @@ The following configuration points are available for the `foo` provider:
 
 ## Reference
 
-For detailed reference documentation, please visit [the Pulumi registry](https://www.pulumi.com/registry/packages/pulumi-bitbucket/api-docs/).
+For detailed reference documentation, please visit [the github repo](https://github.com/ryan-pip/pulumi-bitbucket).
