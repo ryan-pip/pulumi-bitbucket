@@ -13,13 +13,13 @@ This package is available for several languages/platforms:
 To use from JavaScript or TypeScript in Node.js, install using either `npm`:
 
 ```bash
-npm install @pulumi/bitbucket
+npm install @ryan-pip/bitbucket
 ```
 
 or `yarn`:
 
 ```bash
-yarn add @pulumi/bitbucket
+yarn add @ryan-pip/bitbucket
 ```
 
 ### Python
