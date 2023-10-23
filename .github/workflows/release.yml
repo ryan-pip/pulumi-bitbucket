@@ -10,8 +10,8 @@ env:
   # AND PUBLISH_NPM: TRUE. IF YOU WANT TO PUBLISH TO A PRIVATE NPM REGISTRY
   # THEN ENSURE THE NPM_REGISTRY_URL IS CHANGED
   # NODE_AUTH_TOKEN: ${{ YOUR NPM TOKEN HERE }}
-  # NPM_TOKEN: ${{ YOUR NPM TOKEN HERE }}
-  PUBLISH_NPM: false
+  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+  PUBLISH_NPM: true
   NPM_REGISTRY_URL: https://registry.npmjs.org
   # IF YOU NEED TO PUBLISH A NUGET PACKAGE THEN ENSURE AN NUGET_PUBLISH_KEY
   # SECRET IS SET AND PUBLISH_NUGET: TRUE. IF YOU WANT TO PUBLISH TO AN ALTERNATIVE
@@ -130,19 +130,19 @@ jobs:
         name: Publish package to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          packages-dir: ${{github.workspace}}/sdk/python/bin/dist
+          packages-dir: ${{ github.workspace }}/sdk/python/bin/dist
 
       - if: ${{ matrix.language == 'nodejs' && env.PUBLISH_NPM == 'true' }}
-        uses: JS-DevTools/npm-publish@v1
+        uses: JS-DevTools/npm-publish@v3
         with:
           access: "public"
           token: ${{ env.NPM_TOKEN }}
-          package: ${{github.workspace}}/sdk/nodejs/bin/package.json
+          package: ${{ github.workspace }}/sdk/nodejs/bin/package.json
 
       - if: ${{ matrix.language == 'dotnet' && env.PUBLISH_NUGET == 'true' }}
         name: publish nuget package
         run: |
-          dotnet nuget push ${{github.workspace}}/sdk/dotnet/bin/Debug/*.nupkg -s ${{ env.NUGET_FEED_URL }} -k ${{ env.NUGET_PUBLISH_KEY }}
+          dotnet nuget push ${{ github.workspace }}/sdk/dotnet/bin/Debug/*.nupkg -s ${{ env.NUGET_FEED_URL }} -k ${{ env.NUGET_PUBLISH_KEY }}
           echo "done publishing packages"
 
     strategy:
