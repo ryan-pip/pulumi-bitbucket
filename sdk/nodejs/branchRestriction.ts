@@ -17,7 +17,7 @@ import * as utilities from "./utilities";
  *
  * ```typescript
  * import * as pulumi from "@pulumi/pulumi";
- * import * as bitbucket from "@pulumi/bitbucket";
+ * import * as bitbucket from "@ryan-pip/pulumi_bitbucket";
  *
  * const master = new bitbucket.BranchRestriction("master", {
  *     groups: [{

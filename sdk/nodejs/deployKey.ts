@@ -15,7 +15,7 @@ import * as utilities from "./utilities";
  *
  * ```typescript
  * import * as pulumi from "@pulumi/pulumi";
- * import * as bitbucket from "@pulumi/bitbucket";
+ * import * as bitbucket from "@ryan-pip/pulumi_bitbucket";
  *
  * const test = new bitbucket.DeployKey("test", {
  *     key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKqP3Cr632C2dNhhgKVcon4ldUSAeKiku2yP9O9/bDtY",
