@@ -14,6 +14,7 @@ __all__ = [
     'GetCurrentUserResult',
     'AwaitableGetCurrentUserResult',
     'get_current_user',
+    'get_current_user_output',
 ]
 
 @pulumi.output_type
@@ -41,11 +42,17 @@ class GetCurrentUserResult:
     @property
     @pulumi.getter(name="displayName")
     def display_name(self) -> str:
+        """
+        the display name that the user wants to use for GDPR
+        """
         return pulumi.get(self, "display_name")
 
     @property
     @pulumi.getter
     def emails(self) -> Sequence['outputs.GetCurrentUserEmailResult']:
+        """
+        The email address.
+        """
         return pulumi.get(self, "emails")
 
     @property
@@ -59,11 +66,17 @@ class GetCurrentUserResult:
     @property
     @pulumi.getter
     def username(self) -> str:
+        """
+        The Username.
+        """
         return pulumi.get(self, "username")
 
     @property
     @pulumi.getter
     def uuid(self) -> str:
+        """
+        the uuid that bitbucket users to connect a user to various objects
+        """
         return pulumi.get(self, "uuid")
 
 
@@ -82,7 +95,18 @@ class AwaitableGetCurrentUserResult(GetCurrentUserResult):
 
 def get_current_user(opts: Optional[pulumi.InvokeOptions] = None) -> AwaitableGetCurrentUserResult:
     """
-    Use this data source to access information about an existing resource.
+    Provides a way to fetch data of the current user.
+
+    OAuth2 Scopes: `account`
+
+    ## Example Usage
+
+    ```python
+    import pulumi
+    import pulumi_bitbucket as bitbucket
+
+    example = bitbucket.get_current_user()
+    ```
     """
     __args__ = dict()
     opts = pulumi.InvokeOptions.merge(_utilities.get_invoke_opts_defaults(), opts)
@@ -94,3 +118,22 @@ def get_current_user(opts: Optional[pulumi.InvokeOptions] = None) -> AwaitableGe
         id=pulumi.get(__ret__, 'id'),
         username=pulumi.get(__ret__, 'username'),
         uuid=pulumi.get(__ret__, 'uuid'))
+
+
+@_utilities.lift_output_func(get_current_user)
+def get_current_user_output(opts: Optional[pulumi.InvokeOptions] = None) -> pulumi.Output[GetCurrentUserResult]:
+    """
+    Provides a way to fetch data of the current user.
+
+    OAuth2 Scopes: `account`
+
+    ## Example Usage
+
+    ```python
+    import pulumi
+    import pulumi_bitbucket as bitbucket
+
+    example = bitbucket.get_current_user()
+    ```
+    """
+    ...

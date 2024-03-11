@@ -8,10 +8,38 @@ import (
 	"reflect"
 
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket/internal"
 )
 
+// Provides a way to fetch data of hook types.
+//
+// OAuth2 Scopes: `none`
+//
+// ## Example Usage
+//
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := bitbucket.GetHookTypes(ctx, &bitbucket.GetHookTypesArgs{
+//				SubjectType: "workspace",
+//			}, nil)
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
 func GetHookTypes(ctx *pulumi.Context, args *GetHookTypesArgs, opts ...pulumi.InvokeOption) (*GetHookTypesResult, error) {
 	opts = internal.PkgInvokeDefaultOpts(opts)
 	var rv GetHookTypesResult
@@ -24,11 +52,13 @@ func GetHookTypes(ctx *pulumi.Context, args *GetHookTypesArgs, opts ...pulumi.In
 
 // A collection of arguments for invoking getHookTypes.
 type GetHookTypesArgs struct {
+	// A resource or subject type. Valid values are `workspace`, `user`, `repository`, `team`.
 	SubjectType string `pulumi:"subjectType"`
 }
 
 // A collection of values returned by getHookTypes.
 type GetHookTypesResult struct {
+	// A Set of Hook Event Types. See Hook Types below.
 	HookTypes []GetHookTypesHookType `pulumi:"hookTypes"`
 	// The provider-assigned unique ID for this managed resource.
 	Id          string `pulumi:"id"`
@@ -50,6 +80,7 @@ func GetHookTypesOutput(ctx *pulumi.Context, args GetHookTypesOutputArgs, opts .
 
 // A collection of arguments for invoking getHookTypes.
 type GetHookTypesOutputArgs struct {
+	// A resource or subject type. Valid values are `workspace`, `user`, `repository`, `team`.
 	SubjectType pulumi.StringInput `pulumi:"subjectType"`
 }
 
@@ -72,12 +103,7 @@ func (o GetHookTypesResultOutput) ToGetHookTypesResultOutputWithContext(ctx cont
 	return o
 }
 
-func (o GetHookTypesResultOutput) ToOutput(ctx context.Context) pulumix.Output[GetHookTypesResult] {
-	return pulumix.Output[GetHookTypesResult]{
-		OutputState: o.OutputState,
-	}
-}
-
+// A Set of Hook Event Types. See Hook Types below.
 func (o GetHookTypesResultOutput) HookTypes() GetHookTypesHookTypeArrayOutput {
 	return o.ApplyT(func(v GetHookTypesResult) []GetHookTypesHookType { return v.HookTypes }).(GetHookTypesHookTypeArrayOutput)
 }

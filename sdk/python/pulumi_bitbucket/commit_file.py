@@ -23,8 +23,13 @@ class CommitFileArgs:
                  workspace: pulumi.Input[str]):
         """
         The set of arguments for constructing a CommitFile resource.
-        :param pulumi.Input[str] commit_author: The SHA of the commit that modified the file
-        :param pulumi.Input[str] commit_message: The SHA of the commit that modified the file
+        :param pulumi.Input[str] branch: Git branch.
+        :param pulumi.Input[str] commit_author: Committer author to use.
+        :param pulumi.Input[str] commit_message: The message of the commit.
+        :param pulumi.Input[str] content: The file content.
+        :param pulumi.Input[str] filename: The path of the file to manage.
+        :param pulumi.Input[str] repo_slug: The repository slug.
+        :param pulumi.Input[str] workspace: The workspace id.
         """
         pulumi.set(__self__, "branch", branch)
         pulumi.set(__self__, "commit_author", commit_author)
@@ -37,6 +42,9 @@ class CommitFileArgs:
     @property
     @pulumi.getter
     def branch(self) -> pulumi.Input[str]:
+        """
+        Git branch.
+        """
         return pulumi.get(self, "branch")
 
     @branch.setter
@@ -47,7 +55,7 @@ class CommitFileArgs:
     @pulumi.getter(name="commitAuthor")
     def commit_author(self) -> pulumi.Input[str]:
         """
-        The SHA of the commit that modified the file
+        Committer author to use.
         """
         return pulumi.get(self, "commit_author")
 
@@ -59,7 +67,7 @@ class CommitFileArgs:
     @pulumi.getter(name="commitMessage")
     def commit_message(self) -> pulumi.Input[str]:
         """
-        The SHA of the commit that modified the file
+        The message of the commit.
         """
         return pulumi.get(self, "commit_message")
 
@@ -70,6 +78,9 @@ class CommitFileArgs:
     @property
     @pulumi.getter
     def content(self) -> pulumi.Input[str]:
+        """
+        The file content.
+        """
         return pulumi.get(self, "content")
 
     @content.setter
@@ -79,6 +90,9 @@ class CommitFileArgs:
     @property
     @pulumi.getter
     def filename(self) -> pulumi.Input[str]:
+        """
+        The path of the file to manage.
+        """
         return pulumi.get(self, "filename")
 
     @filename.setter
@@ -88,6 +102,9 @@ class CommitFileArgs:
     @property
     @pulumi.getter(name="repoSlug")
     def repo_slug(self) -> pulumi.Input[str]:
+        """
+        The repository slug.
+        """
         return pulumi.get(self, "repo_slug")
 
     @repo_slug.setter
@@ -97,6 +114,9 @@ class CommitFileArgs:
     @property
     @pulumi.getter
     def workspace(self) -> pulumi.Input[str]:
+        """
+        The workspace id.
+        """
         return pulumi.get(self, "workspace")
 
     @workspace.setter
@@ -117,9 +137,14 @@ class _CommitFileState:
                  workspace: Optional[pulumi.Input[str]] = None):
         """
         Input properties used for looking up and filtering CommitFile resources.
-        :param pulumi.Input[str] commit_author: The SHA of the commit that modified the file
-        :param pulumi.Input[str] commit_message: The SHA of the commit that modified the file
+        :param pulumi.Input[str] branch: Git branch.
+        :param pulumi.Input[str] commit_author: Committer author to use.
+        :param pulumi.Input[str] commit_message: The message of the commit.
         :param pulumi.Input[str] commit_sha: The SHA of the commit that modified the file
+        :param pulumi.Input[str] content: The file content.
+        :param pulumi.Input[str] filename: The path of the file to manage.
+        :param pulumi.Input[str] repo_slug: The repository slug.
+        :param pulumi.Input[str] workspace: The workspace id.
         """
         if branch is not None:
             pulumi.set(__self__, "branch", branch)
@@ -141,6 +166,9 @@ class _CommitFileState:
     @property
     @pulumi.getter
     def branch(self) -> Optional[pulumi.Input[str]]:
+        """
+        Git branch.
+        """
         return pulumi.get(self, "branch")
 
     @branch.setter
@@ -151,7 +179,7 @@ class _CommitFileState:
     @pulumi.getter(name="commitAuthor")
     def commit_author(self) -> Optional[pulumi.Input[str]]:
         """
-        The SHA of the commit that modified the file
+        Committer author to use.
         """
         return pulumi.get(self, "commit_author")
 
@@ -163,7 +191,7 @@ class _CommitFileState:
     @pulumi.getter(name="commitMessage")
     def commit_message(self) -> Optional[pulumi.Input[str]]:
         """
-        The SHA of the commit that modified the file
+        The message of the commit.
         """
         return pulumi.get(self, "commit_message")
 
@@ -186,6 +214,9 @@ class _CommitFileState:
     @property
     @pulumi.getter
     def content(self) -> Optional[pulumi.Input[str]]:
+        """
+        The file content.
+        """
         return pulumi.get(self, "content")
 
     @content.setter
@@ -195,6 +226,9 @@ class _CommitFileState:
     @property
     @pulumi.getter
     def filename(self) -> Optional[pulumi.Input[str]]:
+        """
+        The path of the file to manage.
+        """
         return pulumi.get(self, "filename")
 
     @filename.setter
@@ -204,6 +238,9 @@ class _CommitFileState:
     @property
     @pulumi.getter(name="repoSlug")
     def repo_slug(self) -> Optional[pulumi.Input[str]]:
+        """
+        The repository slug.
+        """
         return pulumi.get(self, "repo_slug")
 
     @repo_slug.setter
@@ -213,6 +250,9 @@ class _CommitFileState:
     @property
     @pulumi.getter
     def workspace(self) -> Optional[pulumi.Input[str]]:
+        """
+        The workspace id.
+        """
         return pulumi.get(self, "workspace")
 
     @workspace.setter
@@ -234,11 +274,37 @@ class CommitFile(pulumi.CustomResource):
                  workspace: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         """
-        Create a CommitFile resource with the given unique name, props, and options.
+        Commit a file.
+
+        This resource allows you to create a commit within a Bitbucket repository.
+
+        OAuth2 Scopes: `repository:write`
+
+        ## Example Usage
+
+        ```python
+        import pulumi
+        import pulumi_bitbucket as bitbucket
+
+        test = bitbucket.CommitFile("test",
+            branch="main",
+            commit_author="Test <test@test.local>",
+            commit_message="test",
+            content="abc",
+            filename="README.md",
+            repo_slug="test",
+            workspace="test")
+        ```
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
-        :param pulumi.Input[str] commit_author: The SHA of the commit that modified the file
-        :param pulumi.Input[str] commit_message: The SHA of the commit that modified the file
+        :param pulumi.Input[str] branch: Git branch.
+        :param pulumi.Input[str] commit_author: Committer author to use.
+        :param pulumi.Input[str] commit_message: The message of the commit.
+        :param pulumi.Input[str] content: The file content.
+        :param pulumi.Input[str] filename: The path of the file to manage.
+        :param pulumi.Input[str] repo_slug: The repository slug.
+        :param pulumi.Input[str] workspace: The workspace id.
         """
         ...
     @overload
@@ -247,7 +313,28 @@ class CommitFile(pulumi.CustomResource):
                  args: CommitFileArgs,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
-        Create a CommitFile resource with the given unique name, props, and options.
+        Commit a file.
+
+        This resource allows you to create a commit within a Bitbucket repository.
+
+        OAuth2 Scopes: `repository:write`
+
+        ## Example Usage
+
+        ```python
+        import pulumi
+        import pulumi_bitbucket as bitbucket
+
+        test = bitbucket.CommitFile("test",
+            branch="main",
+            commit_author="Test <test@test.local>",
+            commit_message="test",
+            content="abc",
+            filename="README.md",
+            repo_slug="test",
+            workspace="test")
+        ```
+
         :param str resource_name: The name of the resource.
         :param CommitFileArgs args: The arguments to use to populate this resource's properties.
         :param pulumi.ResourceOptions opts: Options for the resource.
@@ -326,9 +413,14 @@ class CommitFile(pulumi.CustomResource):
         :param str resource_name: The unique name of the resulting resource.
         :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
-        :param pulumi.Input[str] commit_author: The SHA of the commit that modified the file
-        :param pulumi.Input[str] commit_message: The SHA of the commit that modified the file
+        :param pulumi.Input[str] branch: Git branch.
+        :param pulumi.Input[str] commit_author: Committer author to use.
+        :param pulumi.Input[str] commit_message: The message of the commit.
         :param pulumi.Input[str] commit_sha: The SHA of the commit that modified the file
+        :param pulumi.Input[str] content: The file content.
+        :param pulumi.Input[str] filename: The path of the file to manage.
+        :param pulumi.Input[str] repo_slug: The repository slug.
+        :param pulumi.Input[str] workspace: The workspace id.
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
 
@@ -347,13 +439,16 @@ class CommitFile(pulumi.CustomResource):
     @property
     @pulumi.getter
     def branch(self) -> pulumi.Output[str]:
+        """
+        Git branch.
+        """
         return pulumi.get(self, "branch")
 
     @property
     @pulumi.getter(name="commitAuthor")
     def commit_author(self) -> pulumi.Output[str]:
         """
-        The SHA of the commit that modified the file
+        Committer author to use.
         """
         return pulumi.get(self, "commit_author")
 
@@ -361,7 +456,7 @@ class CommitFile(pulumi.CustomResource):
     @pulumi.getter(name="commitMessage")
     def commit_message(self) -> pulumi.Output[str]:
         """
-        The SHA of the commit that modified the file
+        The message of the commit.
         """
         return pulumi.get(self, "commit_message")
 
@@ -376,20 +471,32 @@ class CommitFile(pulumi.CustomResource):
     @property
     @pulumi.getter
     def content(self) -> pulumi.Output[str]:
+        """
+        The file content.
+        """
         return pulumi.get(self, "content")
 
     @property
     @pulumi.getter
     def filename(self) -> pulumi.Output[str]:
+        """
+        The path of the file to manage.
+        """
         return pulumi.get(self, "filename")
 
     @property
     @pulumi.getter(name="repoSlug")
     def repo_slug(self) -> pulumi.Output[str]:
+        """
+        The repository slug.
+        """
         return pulumi.get(self, "repo_slug")
 
     @property
     @pulumi.getter
     def workspace(self) -> pulumi.Output[str]:
+        """
+        The workspace id.
+        """
         return pulumi.get(self, "workspace")
 

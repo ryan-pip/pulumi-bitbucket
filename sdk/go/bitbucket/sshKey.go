@@ -9,18 +9,65 @@ import (
 
 	"errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket/internal"
 )
 
+// Provides a Bitbucket SSH Key resource.
+//
+// This allows you to manage your SSH Keys for a user.
+//
+// OAuth2 Scopes: `account` and `account:write`
+//
+// ## Example Usage
+//
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := bitbucket.NewSshKey(ctx, "test", &bitbucket.SshKeyArgs{
+//				User:  pulumi.Any(data.Bitbucket_current_user.Test.Uuid),
+//				Key:   pulumi.String("ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKqP3Cr632C2dNhhgKVcon4ldUSAeKiku2yP9O9/bDtY"),
+//				Label: pulumi.String("test-key"),
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
+//
+// ## Import
+//
+// SSH Keys can be imported using their `user-id/key-id` ID, e.g.
+//
+// ```sh
+//
+//	$ pulumi import bitbucket:index/sshKey:SshKey key user-id/key-id
+//
+// ```
 type SshKey struct {
 	pulumi.CustomResourceState
 
-	Comment pulumi.StringOutput    `pulumi:"comment"`
-	Key     pulumi.StringPtrOutput `pulumi:"key"`
-	Label   pulumi.StringPtrOutput `pulumi:"label"`
-	User    pulumi.StringOutput    `pulumi:"user"`
-	Uuid    pulumi.StringOutput    `pulumi:"uuid"`
+	// The comment parsed from the SSH key (if present)
+	Comment pulumi.StringOutput `pulumi:"comment"`
+	// The SSH public key value in OpenSSH format.
+	Key pulumi.StringPtrOutput `pulumi:"key"`
+	// The user-defined label for the SSH key
+	Label pulumi.StringPtrOutput `pulumi:"label"`
+	// This can either be the UUID of the account, surrounded by curly-braces, for example: {account UUID}, OR an Atlassian Account ID.
+	User pulumi.StringOutput `pulumi:"user"`
+	// The SSH key's UUID value.
+	Uuid pulumi.StringOutput `pulumi:"uuid"`
 }
 
 // NewSshKey registers a new resource with the given unique name, arguments, and options.
@@ -56,19 +103,29 @@ func GetSshKey(ctx *pulumi.Context,
 
 // Input properties used for looking up and filtering SshKey resources.
 type sshKeyState struct {
+	// The comment parsed from the SSH key (if present)
 	Comment *string `pulumi:"comment"`
-	Key     *string `pulumi:"key"`
-	Label   *string `pulumi:"label"`
-	User    *string `pulumi:"user"`
-	Uuid    *string `pulumi:"uuid"`
+	// The SSH public key value in OpenSSH format.
+	Key *string `pulumi:"key"`
+	// The user-defined label for the SSH key
+	Label *string `pulumi:"label"`
+	// This can either be the UUID of the account, surrounded by curly-braces, for example: {account UUID}, OR an Atlassian Account ID.
+	User *string `pulumi:"user"`
+	// The SSH key's UUID value.
+	Uuid *string `pulumi:"uuid"`
 }
 
 type SshKeyState struct {
+	// The comment parsed from the SSH key (if present)
 	Comment pulumi.StringPtrInput
-	Key     pulumi.StringPtrInput
-	Label   pulumi.StringPtrInput
-	User    pulumi.StringPtrInput
-	Uuid    pulumi.StringPtrInput
+	// The SSH public key value in OpenSSH format.
+	Key pulumi.StringPtrInput
+	// The user-defined label for the SSH key
+	Label pulumi.StringPtrInput
+	// This can either be the UUID of the account, surrounded by curly-braces, for example: {account UUID}, OR an Atlassian Account ID.
+	User pulumi.StringPtrInput
+	// The SSH key's UUID value.
+	Uuid pulumi.StringPtrInput
 }
 
 func (SshKeyState) ElementType() reflect.Type {
@@ -76,16 +133,22 @@ func (SshKeyState) ElementType() reflect.Type {
 }
 
 type sshKeyArgs struct {
-	Key   *string `pulumi:"key"`
+	// The SSH public key value in OpenSSH format.
+	Key *string `pulumi:"key"`
+	// The user-defined label for the SSH key
 	Label *string `pulumi:"label"`
-	User  string  `pulumi:"user"`
+	// This can either be the UUID of the account, surrounded by curly-braces, for example: {account UUID}, OR an Atlassian Account ID.
+	User string `pulumi:"user"`
 }
 
 // The set of arguments for constructing a SshKey resource.
 type SshKeyArgs struct {
-	Key   pulumi.StringPtrInput
+	// The SSH public key value in OpenSSH format.
+	Key pulumi.StringPtrInput
+	// The user-defined label for the SSH key
 	Label pulumi.StringPtrInput
-	User  pulumi.StringInput
+	// This can either be the UUID of the account, surrounded by curly-braces, for example: {account UUID}, OR an Atlassian Account ID.
+	User pulumi.StringInput
 }
 
 func (SshKeyArgs) ElementType() reflect.Type {
@@ -109,12 +172,6 @@ func (i *SshKey) ToSshKeyOutput() SshKeyOutput {
 
 func (i *SshKey) ToSshKeyOutputWithContext(ctx context.Context) SshKeyOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(SshKeyOutput)
-}
-
-func (i *SshKey) ToOutput(ctx context.Context) pulumix.Output[*SshKey] {
-	return pulumix.Output[*SshKey]{
-		OutputState: i.ToSshKeyOutputWithContext(ctx).OutputState,
-	}
 }
 
 // SshKeyArrayInput is an input type that accepts SshKeyArray and SshKeyArrayOutput values.
@@ -142,12 +199,6 @@ func (i SshKeyArray) ToSshKeyArrayOutputWithContext(ctx context.Context) SshKeyA
 	return pulumi.ToOutputWithContext(ctx, i).(SshKeyArrayOutput)
 }
 
-func (i SshKeyArray) ToOutput(ctx context.Context) pulumix.Output[[]*SshKey] {
-	return pulumix.Output[[]*SshKey]{
-		OutputState: i.ToSshKeyArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 // SshKeyMapInput is an input type that accepts SshKeyMap and SshKeyMapOutput values.
 // You can construct a concrete instance of `SshKeyMapInput` via:
 //
@@ -173,12 +224,6 @@ func (i SshKeyMap) ToSshKeyMapOutputWithContext(ctx context.Context) SshKeyMapOu
 	return pulumi.ToOutputWithContext(ctx, i).(SshKeyMapOutput)
 }
 
-func (i SshKeyMap) ToOutput(ctx context.Context) pulumix.Output[map[string]*SshKey] {
-	return pulumix.Output[map[string]*SshKey]{
-		OutputState: i.ToSshKeyMapOutputWithContext(ctx).OutputState,
-	}
-}
-
 type SshKeyOutput struct{ *pulumi.OutputState }
 
 func (SshKeyOutput) ElementType() reflect.Type {
@@ -193,28 +238,27 @@ func (o SshKeyOutput) ToSshKeyOutputWithContext(ctx context.Context) SshKeyOutpu
 	return o
 }
 
-func (o SshKeyOutput) ToOutput(ctx context.Context) pulumix.Output[*SshKey] {
-	return pulumix.Output[*SshKey]{
-		OutputState: o.OutputState,
-	}
-}
-
+// The comment parsed from the SSH key (if present)
 func (o SshKeyOutput) Comment() pulumi.StringOutput {
 	return o.ApplyT(func(v *SshKey) pulumi.StringOutput { return v.Comment }).(pulumi.StringOutput)
 }
 
+// The SSH public key value in OpenSSH format.
 func (o SshKeyOutput) Key() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *SshKey) pulumi.StringPtrOutput { return v.Key }).(pulumi.StringPtrOutput)
 }
 
+// The user-defined label for the SSH key
 func (o SshKeyOutput) Label() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *SshKey) pulumi.StringPtrOutput { return v.Label }).(pulumi.StringPtrOutput)
 }
 
+// This can either be the UUID of the account, surrounded by curly-braces, for example: {account UUID}, OR an Atlassian Account ID.
 func (o SshKeyOutput) User() pulumi.StringOutput {
 	return o.ApplyT(func(v *SshKey) pulumi.StringOutput { return v.User }).(pulumi.StringOutput)
 }
 
+// The SSH key's UUID value.
 func (o SshKeyOutput) Uuid() pulumi.StringOutput {
 	return o.ApplyT(func(v *SshKey) pulumi.StringOutput { return v.Uuid }).(pulumi.StringOutput)
 }
@@ -231,12 +275,6 @@ func (o SshKeyArrayOutput) ToSshKeyArrayOutput() SshKeyArrayOutput {
 
 func (o SshKeyArrayOutput) ToSshKeyArrayOutputWithContext(ctx context.Context) SshKeyArrayOutput {
 	return o
-}
-
-func (o SshKeyArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]*SshKey] {
-	return pulumix.Output[[]*SshKey]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o SshKeyArrayOutput) Index(i pulumi.IntInput) SshKeyOutput {
@@ -257,12 +295,6 @@ func (o SshKeyMapOutput) ToSshKeyMapOutput() SshKeyMapOutput {
 
 func (o SshKeyMapOutput) ToSshKeyMapOutputWithContext(ctx context.Context) SshKeyMapOutput {
 	return o
-}
-
-func (o SshKeyMapOutput) ToOutput(ctx context.Context) pulumix.Output[map[string]*SshKey] {
-	return pulumix.Output[map[string]*SshKey]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o SshKeyMapOutput) MapIndex(k pulumi.StringInput) SshKeyOutput {

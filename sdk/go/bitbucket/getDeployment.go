@@ -8,10 +8,40 @@ import (
 	"reflect"
 
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket/internal"
 )
 
+// Provides a way to fetch data on a Deployment.
+//
+// OAuth2 Scopes: `none`
+//
+// ## Example Usage
+//
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := bitbucket.LookupDeployment(ctx, &bitbucket.LookupDeploymentArgs{
+//				Repository: "example",
+//				Uuid:       "example",
+//				Workspace:  "example",
+//			}, nil)
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
 func LookupDeployment(ctx *pulumi.Context, args *LookupDeploymentArgs, opts ...pulumi.InvokeOption) (*LookupDeploymentResult, error) {
 	opts = internal.PkgInvokeDefaultOpts(opts)
 	var rv LookupDeploymentResult
@@ -24,20 +54,25 @@ func LookupDeployment(ctx *pulumi.Context, args *LookupDeploymentArgs, opts ...p
 
 // A collection of arguments for invoking getDeployment.
 type LookupDeploymentArgs struct {
+	// The repository name.
 	Repository string `pulumi:"repository"`
-	Uuid       string `pulumi:"uuid"`
-	Workspace  string `pulumi:"workspace"`
+	// The environment UUID.
+	Uuid string `pulumi:"uuid"`
+	// The workspace name.
+	Workspace string `pulumi:"workspace"`
 }
 
 // A collection of values returned by getDeployment.
 type LookupDeploymentResult struct {
 	// The provider-assigned unique ID for this managed resource.
-	Id         string `pulumi:"id"`
+	Id string `pulumi:"id"`
+	// The name of the environment.
 	Name       string `pulumi:"name"`
 	Repository string `pulumi:"repository"`
-	Stage      string `pulumi:"stage"`
-	Uuid       string `pulumi:"uuid"`
-	Workspace  string `pulumi:"workspace"`
+	// The stage (Test, Staging, Production).
+	Stage     string `pulumi:"stage"`
+	Uuid      string `pulumi:"uuid"`
+	Workspace string `pulumi:"workspace"`
 }
 
 func LookupDeploymentOutput(ctx *pulumi.Context, args LookupDeploymentOutputArgs, opts ...pulumi.InvokeOption) LookupDeploymentResultOutput {
@@ -55,9 +90,12 @@ func LookupDeploymentOutput(ctx *pulumi.Context, args LookupDeploymentOutputArgs
 
 // A collection of arguments for invoking getDeployment.
 type LookupDeploymentOutputArgs struct {
+	// The repository name.
 	Repository pulumi.StringInput `pulumi:"repository"`
-	Uuid       pulumi.StringInput `pulumi:"uuid"`
-	Workspace  pulumi.StringInput `pulumi:"workspace"`
+	// The environment UUID.
+	Uuid pulumi.StringInput `pulumi:"uuid"`
+	// The workspace name.
+	Workspace pulumi.StringInput `pulumi:"workspace"`
 }
 
 func (LookupDeploymentOutputArgs) ElementType() reflect.Type {
@@ -79,17 +117,12 @@ func (o LookupDeploymentResultOutput) ToLookupDeploymentResultOutputWithContext(
 	return o
 }
 
-func (o LookupDeploymentResultOutput) ToOutput(ctx context.Context) pulumix.Output[LookupDeploymentResult] {
-	return pulumix.Output[LookupDeploymentResult]{
-		OutputState: o.OutputState,
-	}
-}
-
 // The provider-assigned unique ID for this managed resource.
 func (o LookupDeploymentResultOutput) Id() pulumi.StringOutput {
 	return o.ApplyT(func(v LookupDeploymentResult) string { return v.Id }).(pulumi.StringOutput)
 }
 
+// The name of the environment.
 func (o LookupDeploymentResultOutput) Name() pulumi.StringOutput {
 	return o.ApplyT(func(v LookupDeploymentResult) string { return v.Name }).(pulumi.StringOutput)
 }
@@ -98,6 +131,7 @@ func (o LookupDeploymentResultOutput) Repository() pulumi.StringOutput {
 	return o.ApplyT(func(v LookupDeploymentResult) string { return v.Repository }).(pulumi.StringOutput)
 }
 
+// The stage (Test, Staging, Production).
 func (o LookupDeploymentResultOutput) Stage() pulumi.StringOutput {
 	return o.ApplyT(func(v LookupDeploymentResult) string { return v.Stage }).(pulumi.StringOutput)
 }

@@ -34,12 +34,20 @@ class BranchRestrictionGroupArgs:
     def __init__(__self__, *,
                  owner: pulumi.Input[str],
                  slug: pulumi.Input[str]):
+        """
+        :param pulumi.Input[str] owner: The owner of this repository. Can be you or any team you
+               have write access to.
+        """
         pulumi.set(__self__, "owner", owner)
         pulumi.set(__self__, "slug", slug)
 
     @property
     @pulumi.getter
     def owner(self) -> pulumi.Input[str]:
+        """
+        The owner of this repository. Can be you or any team you
+        have write access to.
+        """
         return pulumi.get(self, "owner")
 
     @owner.setter
@@ -62,6 +70,11 @@ class BranchingModelBranchTypeArgs:
                  kind: pulumi.Input[str],
                  enabled: Optional[pulumi.Input[bool]] = None,
                  prefix: Optional[pulumi.Input[str]] = None):
+        """
+        :param pulumi.Input[str] kind: The kind of the branch type. Valid values are `feature`, `bugfix`, `release`, `hotfix`.
+        :param pulumi.Input[bool] enabled: Whether the branch type is enabled or not. A disabled branch type may contain an invalid `prefix`.
+        :param pulumi.Input[str] prefix: The prefix for this branch type. A branch with this prefix will be classified as per kind. The prefix of an enabled branch type must be a valid branch prefix. Additionally, it cannot be blank, empty or null. The prefix for a disabled branch type can be empty or invalid.
+        """
         pulumi.set(__self__, "kind", kind)
         if enabled is not None:
             pulumi.set(__self__, "enabled", enabled)
@@ -71,6 +84,9 @@ class BranchingModelBranchTypeArgs:
     @property
     @pulumi.getter
     def kind(self) -> pulumi.Input[str]:
+        """
+        The kind of the branch type. Valid values are `feature`, `bugfix`, `release`, `hotfix`.
+        """
         return pulumi.get(self, "kind")
 
     @kind.setter
@@ -80,6 +96,9 @@ class BranchingModelBranchTypeArgs:
     @property
     @pulumi.getter
     def enabled(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Whether the branch type is enabled or not. A disabled branch type may contain an invalid `prefix`.
+        """
         return pulumi.get(self, "enabled")
 
     @enabled.setter
@@ -89,6 +108,9 @@ class BranchingModelBranchTypeArgs:
     @property
     @pulumi.getter
     def prefix(self) -> Optional[pulumi.Input[str]]:
+        """
+        The prefix for this branch type. A branch with this prefix will be classified as per kind. The prefix of an enabled branch type must be a valid branch prefix. Additionally, it cannot be blank, empty or null. The prefix for a disabled branch type can be empty or invalid.
+        """
         return pulumi.get(self, "prefix")
 
     @prefix.setter
@@ -103,6 +125,11 @@ class BranchingModelDevelopmentArgs:
                  is_valid: Optional[pulumi.Input[bool]] = None,
                  name: Optional[pulumi.Input[str]] = None,
                  use_mainbranch: Optional[pulumi.Input[bool]] = None):
+        """
+        :param pulumi.Input[bool] branch_does_not_exist: Optional and only returned for a repository's branching model. Indicates if the indicated branch exists on the repository (`false`) or not (`true`). This is useful for determining a fallback to the mainbranch when a repository is inheriting its project's branching model.
+        :param pulumi.Input[str] name: The configured branch. It must be null when `use_mainbranch` is true. Otherwise it must be a non-empty value. It is possible for the configured branch to not exist (e.g. it was deleted after the settings are set).
+        :param pulumi.Input[bool] use_mainbranch: Indicates if the setting points at an explicit branch (`false`) or tracks the main branch (`true`). When `true` the name must be null or not provided. When `false` the name must contain a non-empty branch name.
+        """
         if branch_does_not_exist is not None:
             pulumi.set(__self__, "branch_does_not_exist", branch_does_not_exist)
         if is_valid is not None:
@@ -115,6 +142,9 @@ class BranchingModelDevelopmentArgs:
     @property
     @pulumi.getter(name="branchDoesNotExist")
     def branch_does_not_exist(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Optional and only returned for a repository's branching model. Indicates if the indicated branch exists on the repository (`false`) or not (`true`). This is useful for determining a fallback to the mainbranch when a repository is inheriting its project's branching model.
+        """
         return pulumi.get(self, "branch_does_not_exist")
 
     @branch_does_not_exist.setter
@@ -133,6 +163,9 @@ class BranchingModelDevelopmentArgs:
     @property
     @pulumi.getter
     def name(self) -> Optional[pulumi.Input[str]]:
+        """
+        The configured branch. It must be null when `use_mainbranch` is true. Otherwise it must be a non-empty value. It is possible for the configured branch to not exist (e.g. it was deleted after the settings are set).
+        """
         return pulumi.get(self, "name")
 
     @name.setter
@@ -142,6 +175,9 @@ class BranchingModelDevelopmentArgs:
     @property
     @pulumi.getter(name="useMainbranch")
     def use_mainbranch(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Indicates if the setting points at an explicit branch (`false`) or tracks the main branch (`true`). When `true` the name must be null or not provided. When `false` the name must contain a non-empty branch name.
+        """
         return pulumi.get(self, "use_mainbranch")
 
     @use_mainbranch.setter
@@ -157,6 +193,12 @@ class BranchingModelProductionArgs:
                  is_valid: Optional[pulumi.Input[bool]] = None,
                  name: Optional[pulumi.Input[str]] = None,
                  use_mainbranch: Optional[pulumi.Input[bool]] = None):
+        """
+        :param pulumi.Input[bool] branch_does_not_exist: Optional and only returned for a repository's branching model. Indicates if the indicated branch exists on the repository (`false`) or not (`true`). This is useful for determining a fallback to the mainbranch when a repository is inheriting its project's branching model.
+        :param pulumi.Input[bool] enabled: Indicates if branch is enabled or not.
+        :param pulumi.Input[str] name: The configured branch. It must be null when `use_mainbranch` is true. Otherwise it must be a non-empty value. It is possible for the configured branch to not exist (e.g. it was deleted after the settings are set).
+        :param pulumi.Input[bool] use_mainbranch: Indicates if the setting points at an explicit branch (`false`) or tracks the main branch (`true`). When `true` the name must be null or not provided. When `false` the name must contain a non-empty branch name.
+        """
         if branch_does_not_exist is not None:
             pulumi.set(__self__, "branch_does_not_exist", branch_does_not_exist)
         if enabled is not None:
@@ -171,6 +213,9 @@ class BranchingModelProductionArgs:
     @property
     @pulumi.getter(name="branchDoesNotExist")
     def branch_does_not_exist(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Optional and only returned for a repository's branching model. Indicates if the indicated branch exists on the repository (`false`) or not (`true`). This is useful for determining a fallback to the mainbranch when a repository is inheriting its project's branching model.
+        """
         return pulumi.get(self, "branch_does_not_exist")
 
     @branch_does_not_exist.setter
@@ -180,6 +225,9 @@ class BranchingModelProductionArgs:
     @property
     @pulumi.getter
     def enabled(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Indicates if branch is enabled or not.
+        """
         return pulumi.get(self, "enabled")
 
     @enabled.setter
@@ -198,6 +246,9 @@ class BranchingModelProductionArgs:
     @property
     @pulumi.getter
     def name(self) -> Optional[pulumi.Input[str]]:
+        """
+        The configured branch. It must be null when `use_mainbranch` is true. Otherwise it must be a non-empty value. It is possible for the configured branch to not exist (e.g. it was deleted after the settings are set).
+        """
         return pulumi.get(self, "name")
 
     @name.setter
@@ -207,6 +258,9 @@ class BranchingModelProductionArgs:
     @property
     @pulumi.getter(name="useMainbranch")
     def use_mainbranch(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Indicates if the setting points at an explicit branch (`false`) or tracks the main branch (`true`). When `true` the name must be null or not provided. When `false` the name must contain a non-empty branch name.
+        """
         return pulumi.get(self, "use_mainbranch")
 
     @use_mainbranch.setter
@@ -218,12 +272,18 @@ class BranchingModelProductionArgs:
 class DeploymentRestrictionsArgs:
     def __init__(__self__, *,
                  admin_only: Optional[pulumi.Input[bool]] = None):
+        """
+        :param pulumi.Input[bool] admin_only: Only Admins can deploy this deployment stage.
+        """
         if admin_only is not None:
             pulumi.set(__self__, "admin_only", admin_only)
 
     @property
     @pulumi.getter(name="adminOnly")
     def admin_only(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Only Admins can deploy this deployment stage.
+        """
         return pulumi.get(self, "admin_only")
 
     @admin_only.setter
@@ -235,12 +295,18 @@ class DeploymentRestrictionsArgs:
 class ForkedRepositoryLinkArgs:
     def __init__(__self__, *,
                  avatar: Optional[pulumi.Input['ForkedRepositoryLinkAvatarArgs']] = None):
+        """
+        :param pulumi.Input['ForkedRepositoryLinkAvatarArgs'] avatar: An avatar link to a resource related to this object. See Avatar Below.
+        """
         if avatar is not None:
             pulumi.set(__self__, "avatar", avatar)
 
     @property
     @pulumi.getter
     def avatar(self) -> Optional[pulumi.Input['ForkedRepositoryLinkAvatarArgs']]:
+        """
+        An avatar link to a resource related to this object. See Avatar Below.
+        """
         return pulumi.get(self, "avatar")
 
     @avatar.setter
@@ -252,12 +318,18 @@ class ForkedRepositoryLinkArgs:
 class ForkedRepositoryLinkAvatarArgs:
     def __init__(__self__, *,
                  href: Optional[pulumi.Input[str]] = None):
+        """
+        :param pulumi.Input[str] href: href of the avatar.
+        """
         if href is not None:
             pulumi.set(__self__, "href", href)
 
     @property
     @pulumi.getter
     def href(self) -> Optional[pulumi.Input[str]]:
+        """
+        href of the avatar.
+        """
         return pulumi.get(self, "href")
 
     @href.setter
@@ -271,6 +343,11 @@ class PipelineScheduleTargetArgs:
                  ref_name: pulumi.Input[str],
                  ref_type: pulumi.Input[str],
                  selector: pulumi.Input['PipelineScheduleTargetSelectorArgs']):
+        """
+        :param pulumi.Input[str] ref_name: The name of the reference.
+        :param pulumi.Input[str] ref_type: The type of reference. Valid values are `branch` and `tag`.
+        :param pulumi.Input['PipelineScheduleTargetSelectorArgs'] selector: Selector spec. See Selector below.
+        """
         pulumi.set(__self__, "ref_name", ref_name)
         pulumi.set(__self__, "ref_type", ref_type)
         pulumi.set(__self__, "selector", selector)
@@ -278,6 +355,9 @@ class PipelineScheduleTargetArgs:
     @property
     @pulumi.getter(name="refName")
     def ref_name(self) -> pulumi.Input[str]:
+        """
+        The name of the reference.
+        """
         return pulumi.get(self, "ref_name")
 
     @ref_name.setter
@@ -287,6 +367,9 @@ class PipelineScheduleTargetArgs:
     @property
     @pulumi.getter(name="refType")
     def ref_type(self) -> pulumi.Input[str]:
+        """
+        The type of reference. Valid values are `branch` and `tag`.
+        """
         return pulumi.get(self, "ref_type")
 
     @ref_type.setter
@@ -296,6 +379,9 @@ class PipelineScheduleTargetArgs:
     @property
     @pulumi.getter
     def selector(self) -> pulumi.Input['PipelineScheduleTargetSelectorArgs']:
+        """
+        Selector spec. See Selector below.
+        """
         return pulumi.get(self, "selector")
 
     @selector.setter
@@ -308,6 +394,10 @@ class PipelineScheduleTargetSelectorArgs:
     def __init__(__self__, *,
                  pattern: pulumi.Input[str],
                  type: Optional[pulumi.Input[str]] = None):
+        """
+        :param pulumi.Input[str] pattern: The name of the matching pipeline definition.
+        :param pulumi.Input[str] type: Selector type. Default value is `branches`.
+        """
         pulumi.set(__self__, "pattern", pattern)
         if type is not None:
             pulumi.set(__self__, "type", type)
@@ -315,6 +405,9 @@ class PipelineScheduleTargetSelectorArgs:
     @property
     @pulumi.getter
     def pattern(self) -> pulumi.Input[str]:
+        """
+        The name of the matching pipeline definition.
+        """
         return pulumi.get(self, "pattern")
 
     @pattern.setter
@@ -324,6 +417,9 @@ class PipelineScheduleTargetSelectorArgs:
     @property
     @pulumi.getter
     def type(self) -> Optional[pulumi.Input[str]]:
+        """
+        Selector type. Default value is `branches`.
+        """
         return pulumi.get(self, "type")
 
     @type.setter
@@ -338,6 +434,10 @@ class PipelineSshKnownHostPublicKeyArgs:
                  key_type: pulumi.Input[str],
                  md5_fingerprint: Optional[pulumi.Input[str]] = None,
                  sha256_fingerprint: Optional[pulumi.Input[str]] = None):
+        """
+        :param pulumi.Input[str] key: The plain public key.
+        :param pulumi.Input[str] key_type: The type of the public key. Valid values are `ssh-ed25519`, `ecdsa-sha2-nistp256`, `ssh-rsa`, and `ssh-dss`.
+        """
         pulumi.set(__self__, "key", key)
         pulumi.set(__self__, "key_type", key_type)
         if md5_fingerprint is not None:
@@ -348,6 +448,9 @@ class PipelineSshKnownHostPublicKeyArgs:
     @property
     @pulumi.getter
     def key(self) -> pulumi.Input[str]:
+        """
+        The plain public key.
+        """
         return pulumi.get(self, "key")
 
     @key.setter
@@ -357,6 +460,9 @@ class PipelineSshKnownHostPublicKeyArgs:
     @property
     @pulumi.getter(name="keyType")
     def key_type(self) -> pulumi.Input[str]:
+        """
+        The type of the public key. Valid values are `ssh-ed25519`, `ecdsa-sha2-nistp256`, `ssh-rsa`, and `ssh-dss`.
+        """
         return pulumi.get(self, "key_type")
 
     @key_type.setter
@@ -388,6 +494,11 @@ class ProjectBranchingModelBranchTypeArgs:
                  kind: pulumi.Input[str],
                  enabled: Optional[pulumi.Input[bool]] = None,
                  prefix: Optional[pulumi.Input[str]] = None):
+        """
+        :param pulumi.Input[str] kind: The kind of the branch type. Valid values are `feature`, `bugfix`, `release`, `hotfix`.
+        :param pulumi.Input[bool] enabled: Whether the branch type is enabled or not. A disabled branch type may contain an invalid `prefix`.
+        :param pulumi.Input[str] prefix: The prefix for this branch type. A branch with this prefix will be classified as per kind. The prefix of an enabled branch type must be a valid branch prefix. Additionally, it cannot be blank, empty or null. The prefix for a disabled branch type can be empty or invalid.
+        """
         pulumi.set(__self__, "kind", kind)
         if enabled is not None:
             pulumi.set(__self__, "enabled", enabled)
@@ -397,6 +508,9 @@ class ProjectBranchingModelBranchTypeArgs:
     @property
     @pulumi.getter
     def kind(self) -> pulumi.Input[str]:
+        """
+        The kind of the branch type. Valid values are `feature`, `bugfix`, `release`, `hotfix`.
+        """
         return pulumi.get(self, "kind")
 
     @kind.setter
@@ -406,6 +520,9 @@ class ProjectBranchingModelBranchTypeArgs:
     @property
     @pulumi.getter
     def enabled(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Whether the branch type is enabled or not. A disabled branch type may contain an invalid `prefix`.
+        """
         return pulumi.get(self, "enabled")
 
     @enabled.setter
@@ -415,6 +532,9 @@ class ProjectBranchingModelBranchTypeArgs:
     @property
     @pulumi.getter
     def prefix(self) -> Optional[pulumi.Input[str]]:
+        """
+        The prefix for this branch type. A branch with this prefix will be classified as per kind. The prefix of an enabled branch type must be a valid branch prefix. Additionally, it cannot be blank, empty or null. The prefix for a disabled branch type can be empty or invalid.
+        """
         return pulumi.get(self, "prefix")
 
     @prefix.setter
@@ -429,6 +549,11 @@ class ProjectBranchingModelDevelopmentArgs:
                  is_valid: Optional[pulumi.Input[bool]] = None,
                  name: Optional[pulumi.Input[str]] = None,
                  use_mainbranch: Optional[pulumi.Input[bool]] = None):
+        """
+        :param pulumi.Input[bool] branch_does_not_exist: Optional and only returned for a project's branching model. Indicates if the indicated branch exists on the project (`false`) or not (`true`). This is useful for determining a fallback to the mainbranch when a project is inheriting its project's branching model.
+        :param pulumi.Input[str] name: The configured branch. It must be null when `use_mainbranch` is true. Otherwise it must be a non-empty value. It is possible for the configured branch to not exist (e.g. it was deleted after the settings are set).
+        :param pulumi.Input[bool] use_mainbranch: Indicates if the setting points at an explicit branch (`false`) or tracks the main branch (`true`). When `true` the name must be null or not provided. When `false` the name must contain a non-empty branch name.
+        """
         if branch_does_not_exist is not None:
             pulumi.set(__self__, "branch_does_not_exist", branch_does_not_exist)
         if is_valid is not None:
@@ -441,6 +566,9 @@ class ProjectBranchingModelDevelopmentArgs:
     @property
     @pulumi.getter(name="branchDoesNotExist")
     def branch_does_not_exist(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Optional and only returned for a project's branching model. Indicates if the indicated branch exists on the project (`false`) or not (`true`). This is useful for determining a fallback to the mainbranch when a project is inheriting its project's branching model.
+        """
         return pulumi.get(self, "branch_does_not_exist")
 
     @branch_does_not_exist.setter
@@ -459,6 +587,9 @@ class ProjectBranchingModelDevelopmentArgs:
     @property
     @pulumi.getter
     def name(self) -> Optional[pulumi.Input[str]]:
+        """
+        The configured branch. It must be null when `use_mainbranch` is true. Otherwise it must be a non-empty value. It is possible for the configured branch to not exist (e.g. it was deleted after the settings are set).
+        """
         return pulumi.get(self, "name")
 
     @name.setter
@@ -468,6 +599,9 @@ class ProjectBranchingModelDevelopmentArgs:
     @property
     @pulumi.getter(name="useMainbranch")
     def use_mainbranch(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Indicates if the setting points at an explicit branch (`false`) or tracks the main branch (`true`). When `true` the name must be null or not provided. When `false` the name must contain a non-empty branch name.
+        """
         return pulumi.get(self, "use_mainbranch")
 
     @use_mainbranch.setter
@@ -483,6 +617,12 @@ class ProjectBranchingModelProductionArgs:
                  is_valid: Optional[pulumi.Input[bool]] = None,
                  name: Optional[pulumi.Input[str]] = None,
                  use_mainbranch: Optional[pulumi.Input[bool]] = None):
+        """
+        :param pulumi.Input[bool] branch_does_not_exist: Optional and only returned for a project's branching model. Indicates if the indicated branch exists on the project (`false`) or not (`true`). This is useful for determining a fallback to the mainbranch when a project is inheriting its project's branching model.
+        :param pulumi.Input[bool] enabled: Indicates if branch is enabled or not.
+        :param pulumi.Input[str] name: The configured branch. It must be null when `use_mainbranch` is true. Otherwise it must be a non-empty value. It is possible for the configured branch to not exist (e.g. it was deleted after the settings are set).
+        :param pulumi.Input[bool] use_mainbranch: Indicates if the setting points at an explicit branch (`false`) or tracks the main branch (`true`). When `true` the name must be null or not provided. When `false` the name must contain a non-empty branch name.
+        """
         if branch_does_not_exist is not None:
             pulumi.set(__self__, "branch_does_not_exist", branch_does_not_exist)
         if enabled is not None:
@@ -497,6 +637,9 @@ class ProjectBranchingModelProductionArgs:
     @property
     @pulumi.getter(name="branchDoesNotExist")
     def branch_does_not_exist(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Optional and only returned for a project's branching model. Indicates if the indicated branch exists on the project (`false`) or not (`true`). This is useful for determining a fallback to the mainbranch when a project is inheriting its project's branching model.
+        """
         return pulumi.get(self, "branch_does_not_exist")
 
     @branch_does_not_exist.setter
@@ -506,6 +649,9 @@ class ProjectBranchingModelProductionArgs:
     @property
     @pulumi.getter
     def enabled(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Indicates if branch is enabled or not.
+        """
         return pulumi.get(self, "enabled")
 
     @enabled.setter
@@ -524,6 +670,9 @@ class ProjectBranchingModelProductionArgs:
     @property
     @pulumi.getter
     def name(self) -> Optional[pulumi.Input[str]]:
+        """
+        The configured branch. It must be null when `use_mainbranch` is true. Otherwise it must be a non-empty value. It is possible for the configured branch to not exist (e.g. it was deleted after the settings are set).
+        """
         return pulumi.get(self, "name")
 
     @name.setter
@@ -533,6 +682,9 @@ class ProjectBranchingModelProductionArgs:
     @property
     @pulumi.getter(name="useMainbranch")
     def use_mainbranch(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Indicates if the setting points at an explicit branch (`false`) or tracks the main branch (`true`). When `true` the name must be null or not provided. When `false` the name must contain a non-empty branch name.
+        """
         return pulumi.get(self, "use_mainbranch")
 
     @use_mainbranch.setter
@@ -544,12 +696,18 @@ class ProjectBranchingModelProductionArgs:
 class ProjectLinkArgs:
     def __init__(__self__, *,
                  avatar: Optional[pulumi.Input['ProjectLinkAvatarArgs']] = None):
+        """
+        :param pulumi.Input['ProjectLinkAvatarArgs'] avatar: An avatar link to a resource related to this object. See Avatar Below.
+        """
         if avatar is not None:
             pulumi.set(__self__, "avatar", avatar)
 
     @property
     @pulumi.getter
     def avatar(self) -> Optional[pulumi.Input['ProjectLinkAvatarArgs']]:
+        """
+        An avatar link to a resource related to this object. See Avatar Below.
+        """
         return pulumi.get(self, "avatar")
 
     @avatar.setter
@@ -561,12 +719,18 @@ class ProjectLinkArgs:
 class ProjectLinkAvatarArgs:
     def __init__(__self__, *,
                  href: Optional[pulumi.Input[str]] = None):
+        """
+        :param pulumi.Input[str] href: href of the avatar.
+        """
         if href is not None:
             pulumi.set(__self__, "href", href)
 
     @property
     @pulumi.getter
     def href(self) -> Optional[pulumi.Input[str]]:
+        """
+        href of the avatar.
+        """
         return pulumi.get(self, "href")
 
     @href.setter
@@ -578,12 +742,18 @@ class ProjectLinkAvatarArgs:
 class RepositoryLinkArgs:
     def __init__(__self__, *,
                  avatar: Optional[pulumi.Input['RepositoryLinkAvatarArgs']] = None):
+        """
+        :param pulumi.Input['RepositoryLinkAvatarArgs'] avatar: An avatar link to a resource related to this object. See Avatar Below.
+        """
         if avatar is not None:
             pulumi.set(__self__, "avatar", avatar)
 
     @property
     @pulumi.getter
     def avatar(self) -> Optional[pulumi.Input['RepositoryLinkAvatarArgs']]:
+        """
+        An avatar link to a resource related to this object. See Avatar Below.
+        """
         return pulumi.get(self, "avatar")
 
     @avatar.setter
@@ -595,12 +765,18 @@ class RepositoryLinkArgs:
 class RepositoryLinkAvatarArgs:
     def __init__(__self__, *,
                  href: Optional[pulumi.Input[str]] = None):
+        """
+        :param pulumi.Input[str] href: href of the avatar.
+        """
         if href is not None:
             pulumi.set(__self__, "href", href)
 
     @property
     @pulumi.getter
     def href(self) -> Optional[pulumi.Input[str]]:
+        """
+        href of the avatar.
+        """
         return pulumi.get(self, "href")
 
     @href.setter

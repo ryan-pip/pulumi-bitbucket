@@ -6,6 +6,20 @@ import * as inputs from "./types/input";
 import * as outputs from "./types/output";
 import * as utilities from "./utilities";
 
+/**
+ * Provides a way to fetch IP Ranges for whitelisting.
+ *
+ * OAuth2 Scopes: `none`
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as bitbucket from "@pulumi/bitbucket";
+ *
+ * const example = bitbucket.getIpRanges({});
+ * ```
+ */
 export function getIpRanges(opts?: pulumi.InvokeOptions): Promise<GetIpRangesResult> {
 
     opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
@@ -21,8 +35,25 @@ export interface GetIpRangesResult {
      * The provider-assigned unique ID for this managed resource.
      */
     readonly id: string;
+    /**
+     * A Set of IP Ranges. See Ranges below.
+     */
     readonly ranges: outputs.GetIpRangesRange[];
 }
+/**
+ * Provides a way to fetch IP Ranges for whitelisting.
+ *
+ * OAuth2 Scopes: `none`
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as bitbucket from "@pulumi/bitbucket";
+ *
+ * const example = bitbucket.getIpRanges({});
+ * ```
+ */
 export function getIpRangesOutput(opts?: pulumi.InvokeOptions): pulumi.Output<GetIpRangesResult> {
     return pulumi.output(getIpRanges(opts))
 }

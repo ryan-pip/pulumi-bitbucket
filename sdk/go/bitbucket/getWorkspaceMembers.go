@@ -8,10 +8,38 @@ import (
 	"reflect"
 
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket/internal"
 )
 
+// Provides a way to fetch data on a the members of a workspace.
+//
+// OAuth2 Scopes: `account`
+//
+// ## Example Usage
+//
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := bitbucket.GetWorkspaceMembers(ctx, &bitbucket.GetWorkspaceMembersArgs{
+//				Workspace: "gob",
+//			}, nil)
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
 func GetWorkspaceMembers(ctx *pulumi.Context, args *GetWorkspaceMembersArgs, opts ...pulumi.InvokeOption) (*GetWorkspaceMembersResult, error) {
 	opts = internal.PkgInvokeDefaultOpts(opts)
 	var rv GetWorkspaceMembersResult
@@ -24,15 +52,21 @@ func GetWorkspaceMembers(ctx *pulumi.Context, args *GetWorkspaceMembersArgs, opt
 
 // A collection of arguments for invoking getWorkspaceMembers.
 type GetWorkspaceMembersArgs struct {
+	// This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces.
 	Workspace string `pulumi:"workspace"`
 }
 
 // A collection of values returned by getWorkspaceMembers.
 type GetWorkspaceMembersResult struct {
 	// The provider-assigned unique ID for this managed resource.
-	Id        string   `pulumi:"id"`
+	Id string `pulumi:"id"`
+	// A set of string containing the member UUIDs.
+	//
+	// Deprecated: use workspace_members instead
 	Members   []string `pulumi:"members"`
 	Workspace string   `pulumi:"workspace"`
+	// A set of workspace member objects. See Workspace Members below.
+	WorkspaceMembers []GetWorkspaceMembersWorkspaceMember `pulumi:"workspaceMembers"`
 }
 
 func GetWorkspaceMembersOutput(ctx *pulumi.Context, args GetWorkspaceMembersOutputArgs, opts ...pulumi.InvokeOption) GetWorkspaceMembersResultOutput {
@@ -50,6 +84,7 @@ func GetWorkspaceMembersOutput(ctx *pulumi.Context, args GetWorkspaceMembersOutp
 
 // A collection of arguments for invoking getWorkspaceMembers.
 type GetWorkspaceMembersOutputArgs struct {
+	// This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces.
 	Workspace pulumi.StringInput `pulumi:"workspace"`
 }
 
@@ -72,23 +107,25 @@ func (o GetWorkspaceMembersResultOutput) ToGetWorkspaceMembersResultOutputWithCo
 	return o
 }
 
-func (o GetWorkspaceMembersResultOutput) ToOutput(ctx context.Context) pulumix.Output[GetWorkspaceMembersResult] {
-	return pulumix.Output[GetWorkspaceMembersResult]{
-		OutputState: o.OutputState,
-	}
-}
-
 // The provider-assigned unique ID for this managed resource.
 func (o GetWorkspaceMembersResultOutput) Id() pulumi.StringOutput {
 	return o.ApplyT(func(v GetWorkspaceMembersResult) string { return v.Id }).(pulumi.StringOutput)
 }
 
+// A set of string containing the member UUIDs.
+//
+// Deprecated: use workspace_members instead
 func (o GetWorkspaceMembersResultOutput) Members() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v GetWorkspaceMembersResult) []string { return v.Members }).(pulumi.StringArrayOutput)
 }
 
 func (o GetWorkspaceMembersResultOutput) Workspace() pulumi.StringOutput {
 	return o.ApplyT(func(v GetWorkspaceMembersResult) string { return v.Workspace }).(pulumi.StringOutput)
+}
+
+// A set of workspace member objects. See Workspace Members below.
+func (o GetWorkspaceMembersResultOutput) WorkspaceMembers() GetWorkspaceMembersWorkspaceMemberArrayOutput {
+	return o.ApplyT(func(v GetWorkspaceMembersResult) []GetWorkspaceMembersWorkspaceMember { return v.WorkspaceMembers }).(GetWorkspaceMembersWorkspaceMemberArrayOutput)
 }
 
 func init() {

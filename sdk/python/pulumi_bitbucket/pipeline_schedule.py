@@ -23,6 +23,11 @@ class PipelineScheduleArgs:
                  workspace: pulumi.Input[str]):
         """
         The set of arguments for constructing a PipelineSchedule resource.
+        :param pulumi.Input[str] cron_pattern: The cron expression that the schedule applies.
+        :param pulumi.Input[bool] enabled: Whether the schedule is enabled.
+        :param pulumi.Input[str] repository: The Repository to create schedule in.
+        :param pulumi.Input['PipelineScheduleTargetArgs'] target: Schedule Target definition. See Target below.
+        :param pulumi.Input[str] workspace: The Workspace where the repository resides.
         """
         pulumi.set(__self__, "cron_pattern", cron_pattern)
         pulumi.set(__self__, "enabled", enabled)
@@ -33,6 +38,9 @@ class PipelineScheduleArgs:
     @property
     @pulumi.getter(name="cronPattern")
     def cron_pattern(self) -> pulumi.Input[str]:
+        """
+        The cron expression that the schedule applies.
+        """
         return pulumi.get(self, "cron_pattern")
 
     @cron_pattern.setter
@@ -42,6 +50,9 @@ class PipelineScheduleArgs:
     @property
     @pulumi.getter
     def enabled(self) -> pulumi.Input[bool]:
+        """
+        Whether the schedule is enabled.
+        """
         return pulumi.get(self, "enabled")
 
     @enabled.setter
@@ -51,6 +62,9 @@ class PipelineScheduleArgs:
     @property
     @pulumi.getter
     def repository(self) -> pulumi.Input[str]:
+        """
+        The Repository to create schedule in.
+        """
         return pulumi.get(self, "repository")
 
     @repository.setter
@@ -60,6 +74,9 @@ class PipelineScheduleArgs:
     @property
     @pulumi.getter
     def target(self) -> pulumi.Input['PipelineScheduleTargetArgs']:
+        """
+        Schedule Target definition. See Target below.
+        """
         return pulumi.get(self, "target")
 
     @target.setter
@@ -69,6 +86,9 @@ class PipelineScheduleArgs:
     @property
     @pulumi.getter
     def workspace(self) -> pulumi.Input[str]:
+        """
+        The Workspace where the repository resides.
+        """
         return pulumi.get(self, "workspace")
 
     @workspace.setter
@@ -87,6 +107,12 @@ class _PipelineScheduleState:
                  workspace: Optional[pulumi.Input[str]] = None):
         """
         Input properties used for looking up and filtering PipelineSchedule resources.
+        :param pulumi.Input[str] cron_pattern: The cron expression that the schedule applies.
+        :param pulumi.Input[bool] enabled: Whether the schedule is enabled.
+        :param pulumi.Input[str] repository: The Repository to create schedule in.
+        :param pulumi.Input['PipelineScheduleTargetArgs'] target: Schedule Target definition. See Target below.
+        :param pulumi.Input[str] uuid: The UUID identifying the schedule.
+        :param pulumi.Input[str] workspace: The Workspace where the repository resides.
         """
         if cron_pattern is not None:
             pulumi.set(__self__, "cron_pattern", cron_pattern)
@@ -104,6 +130,9 @@ class _PipelineScheduleState:
     @property
     @pulumi.getter(name="cronPattern")
     def cron_pattern(self) -> Optional[pulumi.Input[str]]:
+        """
+        The cron expression that the schedule applies.
+        """
         return pulumi.get(self, "cron_pattern")
 
     @cron_pattern.setter
@@ -113,6 +142,9 @@ class _PipelineScheduleState:
     @property
     @pulumi.getter
     def enabled(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Whether the schedule is enabled.
+        """
         return pulumi.get(self, "enabled")
 
     @enabled.setter
@@ -122,6 +154,9 @@ class _PipelineScheduleState:
     @property
     @pulumi.getter
     def repository(self) -> Optional[pulumi.Input[str]]:
+        """
+        The Repository to create schedule in.
+        """
         return pulumi.get(self, "repository")
 
     @repository.setter
@@ -131,6 +166,9 @@ class _PipelineScheduleState:
     @property
     @pulumi.getter
     def target(self) -> Optional[pulumi.Input['PipelineScheduleTargetArgs']]:
+        """
+        Schedule Target definition. See Target below.
+        """
         return pulumi.get(self, "target")
 
     @target.setter
@@ -140,6 +178,9 @@ class _PipelineScheduleState:
     @property
     @pulumi.getter
     def uuid(self) -> Optional[pulumi.Input[str]]:
+        """
+        The UUID identifying the schedule.
+        """
         return pulumi.get(self, "uuid")
 
     @uuid.setter
@@ -149,6 +190,9 @@ class _PipelineScheduleState:
     @property
     @pulumi.getter
     def workspace(self) -> Optional[pulumi.Input[str]]:
+        """
+        The Workspace where the repository resides.
+        """
         return pulumi.get(self, "workspace")
 
     @workspace.setter
@@ -168,9 +212,47 @@ class PipelineSchedule(pulumi.CustomResource):
                  workspace: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         """
-        Create a PipelineSchedule resource with the given unique name, props, and options.
+        Provides a Bitbucket Pipeline Schedule resource.
+
+        This allows you to manage your Pipeline Schedules for a repository.
+
+        OAuth2 Scopes: `none`
+
+        ## Example Usage
+
+        ```python
+        import pulumi
+        import pulumi_bitbucket as bitbucket
+
+        test = bitbucket.PipelineSchedule("test",
+            workspace="example",
+            repository=bitbucket_repository["test"]["name"],
+            cron_pattern="0 30 * * * ? *",
+            enabled=True,
+            target=bitbucket.PipelineScheduleTargetArgs(
+                ref_name="master",
+                ref_type="branch",
+                selector=bitbucket.PipelineScheduleTargetSelectorArgs(
+                    pattern="staging",
+                ),
+            ))
+        ```
+
+        ## Import
+
+        Pipeline Schedules can be imported using their `workspace/repo-slug/uuid` ID, e.g.
+
+        ```sh
+         $ pulumi import bitbucket:index/pipelineSchedule:PipelineSchedule schedule workspace/repo-slug/uuid
+        ```
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[str] cron_pattern: The cron expression that the schedule applies.
+        :param pulumi.Input[bool] enabled: Whether the schedule is enabled.
+        :param pulumi.Input[str] repository: The Repository to create schedule in.
+        :param pulumi.Input[pulumi.InputType['PipelineScheduleTargetArgs']] target: Schedule Target definition. See Target below.
+        :param pulumi.Input[str] workspace: The Workspace where the repository resides.
         """
         ...
     @overload
@@ -179,7 +261,40 @@ class PipelineSchedule(pulumi.CustomResource):
                  args: PipelineScheduleArgs,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
-        Create a PipelineSchedule resource with the given unique name, props, and options.
+        Provides a Bitbucket Pipeline Schedule resource.
+
+        This allows you to manage your Pipeline Schedules for a repository.
+
+        OAuth2 Scopes: `none`
+
+        ## Example Usage
+
+        ```python
+        import pulumi
+        import pulumi_bitbucket as bitbucket
+
+        test = bitbucket.PipelineSchedule("test",
+            workspace="example",
+            repository=bitbucket_repository["test"]["name"],
+            cron_pattern="0 30 * * * ? *",
+            enabled=True,
+            target=bitbucket.PipelineScheduleTargetArgs(
+                ref_name="master",
+                ref_type="branch",
+                selector=bitbucket.PipelineScheduleTargetSelectorArgs(
+                    pattern="staging",
+                ),
+            ))
+        ```
+
+        ## Import
+
+        Pipeline Schedules can be imported using their `workspace/repo-slug/uuid` ID, e.g.
+
+        ```sh
+         $ pulumi import bitbucket:index/pipelineSchedule:PipelineSchedule schedule workspace/repo-slug/uuid
+        ```
+
         :param str resource_name: The name of the resource.
         :param PipelineScheduleArgs args: The arguments to use to populate this resource's properties.
         :param pulumi.ResourceOptions opts: Options for the resource.
@@ -248,6 +363,12 @@ class PipelineSchedule(pulumi.CustomResource):
         :param str resource_name: The unique name of the resulting resource.
         :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[str] cron_pattern: The cron expression that the schedule applies.
+        :param pulumi.Input[bool] enabled: Whether the schedule is enabled.
+        :param pulumi.Input[str] repository: The Repository to create schedule in.
+        :param pulumi.Input[pulumi.InputType['PipelineScheduleTargetArgs']] target: Schedule Target definition. See Target below.
+        :param pulumi.Input[str] uuid: The UUID identifying the schedule.
+        :param pulumi.Input[str] workspace: The Workspace where the repository resides.
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
 
@@ -264,30 +385,48 @@ class PipelineSchedule(pulumi.CustomResource):
     @property
     @pulumi.getter(name="cronPattern")
     def cron_pattern(self) -> pulumi.Output[str]:
+        """
+        The cron expression that the schedule applies.
+        """
         return pulumi.get(self, "cron_pattern")
 
     @property
     @pulumi.getter
     def enabled(self) -> pulumi.Output[bool]:
+        """
+        Whether the schedule is enabled.
+        """
         return pulumi.get(self, "enabled")
 
     @property
     @pulumi.getter
     def repository(self) -> pulumi.Output[str]:
+        """
+        The Repository to create schedule in.
+        """
         return pulumi.get(self, "repository")
 
     @property
     @pulumi.getter
     def target(self) -> pulumi.Output['outputs.PipelineScheduleTarget']:
+        """
+        Schedule Target definition. See Target below.
+        """
         return pulumi.get(self, "target")
 
     @property
     @pulumi.getter
     def uuid(self) -> pulumi.Output[str]:
+        """
+        The UUID identifying the schedule.
+        """
         return pulumi.get(self, "uuid")
 
     @property
     @pulumi.getter
     def workspace(self) -> pulumi.Output[str]:
+        """
+        The Workspace where the repository resides.
+        """
         return pulumi.get(self, "workspace")
 

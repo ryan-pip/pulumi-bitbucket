@@ -9,18 +9,73 @@ import (
 
 	"errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket/internal"
 )
 
+// This resource allows you to setup pipelines variables to manage your builds with. Once you have enabled pipelines on your repository you can then further setup variables here to use.
+//
+// OAuth2 Scopes: `none`
+//
+// ## Example Usage
+//
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			monorepo, err := bitbucket.NewRepository(ctx, "monorepo", &bitbucket.RepositoryArgs{
+//				Owner:            pulumi.String("gob"),
+//				PipelinesEnabled: pulumi.Bool(true),
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			_, err = bitbucket.NewRepositoryVariable(ctx, "debug", &bitbucket.RepositoryVariableArgs{
+//				Key:        pulumi.String("DEBUG"),
+//				Value:      pulumi.String("true"),
+//				Repository: monorepo.ID(),
+//				Secured:    pulumi.Bool(false),
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
+//
+// ## Import
+//
+// Repository Variables can be imported using their `workspace/repository/key/uuid` ID, e.g.
+//
+// ```sh
+//
+//	$ pulumi import bitbucket:index/repositoryVariable:RepositoryVariable example workspace/repository/key/uuid
+//
+// ```
 type RepositoryVariable struct {
 	pulumi.CustomResourceState
 
-	Key        pulumi.StringOutput  `pulumi:"key"`
-	Repository pulumi.StringOutput  `pulumi:"repository"`
-	Secured    pulumi.BoolPtrOutput `pulumi:"secured"`
-	Uuid       pulumi.StringOutput  `pulumi:"uuid"`
-	Value      pulumi.StringOutput  `pulumi:"value"`
+	// The key of the key value pair
+	Key pulumi.StringOutput `pulumi:"key"`
+	// The repository ID you want to put this variable onto. (of form workspace-id/repository-id)
+	Repository pulumi.StringOutput `pulumi:"repository"`
+	// If you want to make this viewable in the UI.
+	Secured pulumi.BoolPtrOutput `pulumi:"secured"`
+	// (Computed) The UUID identifying the variable.
+	Uuid pulumi.StringOutput `pulumi:"uuid"`
+	// The value of the key. This will not be returned if `secured` is set to true from API and wont be drift detected by provider.
+	Value pulumi.StringOutput `pulumi:"value"`
+	// (Computed) The workspace the variable is created in.
+	Workspace pulumi.StringOutput `pulumi:"workspace"`
 }
 
 // NewRepositoryVariable registers a new resource with the given unique name, arguments, and options.
@@ -69,19 +124,33 @@ func GetRepositoryVariable(ctx *pulumi.Context,
 
 // Input properties used for looking up and filtering RepositoryVariable resources.
 type repositoryVariableState struct {
-	Key        *string `pulumi:"key"`
+	// The key of the key value pair
+	Key *string `pulumi:"key"`
+	// The repository ID you want to put this variable onto. (of form workspace-id/repository-id)
 	Repository *string `pulumi:"repository"`
-	Secured    *bool   `pulumi:"secured"`
-	Uuid       *string `pulumi:"uuid"`
-	Value      *string `pulumi:"value"`
+	// If you want to make this viewable in the UI.
+	Secured *bool `pulumi:"secured"`
+	// (Computed) The UUID identifying the variable.
+	Uuid *string `pulumi:"uuid"`
+	// The value of the key. This will not be returned if `secured` is set to true from API and wont be drift detected by provider.
+	Value *string `pulumi:"value"`
+	// (Computed) The workspace the variable is created in.
+	Workspace *string `pulumi:"workspace"`
 }
 
 type RepositoryVariableState struct {
-	Key        pulumi.StringPtrInput
+	// The key of the key value pair
+	Key pulumi.StringPtrInput
+	// The repository ID you want to put this variable onto. (of form workspace-id/repository-id)
 	Repository pulumi.StringPtrInput
-	Secured    pulumi.BoolPtrInput
-	Uuid       pulumi.StringPtrInput
-	Value      pulumi.StringPtrInput
+	// If you want to make this viewable in the UI.
+	Secured pulumi.BoolPtrInput
+	// (Computed) The UUID identifying the variable.
+	Uuid pulumi.StringPtrInput
+	// The value of the key. This will not be returned if `secured` is set to true from API and wont be drift detected by provider.
+	Value pulumi.StringPtrInput
+	// (Computed) The workspace the variable is created in.
+	Workspace pulumi.StringPtrInput
 }
 
 func (RepositoryVariableState) ElementType() reflect.Type {
@@ -89,18 +158,26 @@ func (RepositoryVariableState) ElementType() reflect.Type {
 }
 
 type repositoryVariableArgs struct {
-	Key        string `pulumi:"key"`
+	// The key of the key value pair
+	Key string `pulumi:"key"`
+	// The repository ID you want to put this variable onto. (of form workspace-id/repository-id)
 	Repository string `pulumi:"repository"`
-	Secured    *bool  `pulumi:"secured"`
-	Value      string `pulumi:"value"`
+	// If you want to make this viewable in the UI.
+	Secured *bool `pulumi:"secured"`
+	// The value of the key. This will not be returned if `secured` is set to true from API and wont be drift detected by provider.
+	Value string `pulumi:"value"`
 }
 
 // The set of arguments for constructing a RepositoryVariable resource.
 type RepositoryVariableArgs struct {
-	Key        pulumi.StringInput
+	// The key of the key value pair
+	Key pulumi.StringInput
+	// The repository ID you want to put this variable onto. (of form workspace-id/repository-id)
 	Repository pulumi.StringInput
-	Secured    pulumi.BoolPtrInput
-	Value      pulumi.StringInput
+	// If you want to make this viewable in the UI.
+	Secured pulumi.BoolPtrInput
+	// The value of the key. This will not be returned if `secured` is set to true from API and wont be drift detected by provider.
+	Value pulumi.StringInput
 }
 
 func (RepositoryVariableArgs) ElementType() reflect.Type {
@@ -124,12 +201,6 @@ func (i *RepositoryVariable) ToRepositoryVariableOutput() RepositoryVariableOutp
 
 func (i *RepositoryVariable) ToRepositoryVariableOutputWithContext(ctx context.Context) RepositoryVariableOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(RepositoryVariableOutput)
-}
-
-func (i *RepositoryVariable) ToOutput(ctx context.Context) pulumix.Output[*RepositoryVariable] {
-	return pulumix.Output[*RepositoryVariable]{
-		OutputState: i.ToRepositoryVariableOutputWithContext(ctx).OutputState,
-	}
 }
 
 // RepositoryVariableArrayInput is an input type that accepts RepositoryVariableArray and RepositoryVariableArrayOutput values.
@@ -157,12 +228,6 @@ func (i RepositoryVariableArray) ToRepositoryVariableArrayOutputWithContext(ctx 
 	return pulumi.ToOutputWithContext(ctx, i).(RepositoryVariableArrayOutput)
 }
 
-func (i RepositoryVariableArray) ToOutput(ctx context.Context) pulumix.Output[[]*RepositoryVariable] {
-	return pulumix.Output[[]*RepositoryVariable]{
-		OutputState: i.ToRepositoryVariableArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 // RepositoryVariableMapInput is an input type that accepts RepositoryVariableMap and RepositoryVariableMapOutput values.
 // You can construct a concrete instance of `RepositoryVariableMapInput` via:
 //
@@ -188,12 +253,6 @@ func (i RepositoryVariableMap) ToRepositoryVariableMapOutputWithContext(ctx cont
 	return pulumi.ToOutputWithContext(ctx, i).(RepositoryVariableMapOutput)
 }
 
-func (i RepositoryVariableMap) ToOutput(ctx context.Context) pulumix.Output[map[string]*RepositoryVariable] {
-	return pulumix.Output[map[string]*RepositoryVariable]{
-		OutputState: i.ToRepositoryVariableMapOutputWithContext(ctx).OutputState,
-	}
-}
-
 type RepositoryVariableOutput struct{ *pulumi.OutputState }
 
 func (RepositoryVariableOutput) ElementType() reflect.Type {
@@ -208,30 +267,34 @@ func (o RepositoryVariableOutput) ToRepositoryVariableOutputWithContext(ctx cont
 	return o
 }
 
-func (o RepositoryVariableOutput) ToOutput(ctx context.Context) pulumix.Output[*RepositoryVariable] {
-	return pulumix.Output[*RepositoryVariable]{
-		OutputState: o.OutputState,
-	}
-}
-
+// The key of the key value pair
 func (o RepositoryVariableOutput) Key() pulumi.StringOutput {
 	return o.ApplyT(func(v *RepositoryVariable) pulumi.StringOutput { return v.Key }).(pulumi.StringOutput)
 }
 
+// The repository ID you want to put this variable onto. (of form workspace-id/repository-id)
 func (o RepositoryVariableOutput) Repository() pulumi.StringOutput {
 	return o.ApplyT(func(v *RepositoryVariable) pulumi.StringOutput { return v.Repository }).(pulumi.StringOutput)
 }
 
+// If you want to make this viewable in the UI.
 func (o RepositoryVariableOutput) Secured() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *RepositoryVariable) pulumi.BoolPtrOutput { return v.Secured }).(pulumi.BoolPtrOutput)
 }
 
+// (Computed) The UUID identifying the variable.
 func (o RepositoryVariableOutput) Uuid() pulumi.StringOutput {
 	return o.ApplyT(func(v *RepositoryVariable) pulumi.StringOutput { return v.Uuid }).(pulumi.StringOutput)
 }
 
+// The value of the key. This will not be returned if `secured` is set to true from API and wont be drift detected by provider.
 func (o RepositoryVariableOutput) Value() pulumi.StringOutput {
 	return o.ApplyT(func(v *RepositoryVariable) pulumi.StringOutput { return v.Value }).(pulumi.StringOutput)
+}
+
+// (Computed) The workspace the variable is created in.
+func (o RepositoryVariableOutput) Workspace() pulumi.StringOutput {
+	return o.ApplyT(func(v *RepositoryVariable) pulumi.StringOutput { return v.Workspace }).(pulumi.StringOutput)
 }
 
 type RepositoryVariableArrayOutput struct{ *pulumi.OutputState }
@@ -246,12 +309,6 @@ func (o RepositoryVariableArrayOutput) ToRepositoryVariableArrayOutput() Reposit
 
 func (o RepositoryVariableArrayOutput) ToRepositoryVariableArrayOutputWithContext(ctx context.Context) RepositoryVariableArrayOutput {
 	return o
-}
-
-func (o RepositoryVariableArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]*RepositoryVariable] {
-	return pulumix.Output[[]*RepositoryVariable]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o RepositoryVariableArrayOutput) Index(i pulumi.IntInput) RepositoryVariableOutput {
@@ -272,12 +329,6 @@ func (o RepositoryVariableMapOutput) ToRepositoryVariableMapOutput() RepositoryV
 
 func (o RepositoryVariableMapOutput) ToRepositoryVariableMapOutputWithContext(ctx context.Context) RepositoryVariableMapOutput {
 	return o
-}
-
-func (o RepositoryVariableMapOutput) ToOutput(ctx context.Context) pulumix.Output[map[string]*RepositoryVariable] {
-	return pulumix.Output[map[string]*RepositoryVariable]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o RepositoryVariableMapOutput) MapIndex(k pulumi.StringInput) RepositoryVariableOutput {

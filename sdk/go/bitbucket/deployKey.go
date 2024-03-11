@@ -9,19 +9,68 @@ import (
 
 	"errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket/internal"
 )
 
+// Provides a Bitbucket Deploy Key resource.
+//
+// This allows you to manage your Deploy Keys for a repository.
+//
+// OAuth2 Scopes: `repository` and `repository:admin`
+//
+// ## Example Usage
+//
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := bitbucket.NewDeployKey(ctx, "test", &bitbucket.DeployKeyArgs{
+//				Key:        pulumi.String("ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKqP3Cr632C2dNhhgKVcon4ldUSAeKiku2yP9O9/bDtY"),
+//				Label:      pulumi.String("test-key"),
+//				Repository: pulumi.String("example"),
+//				Workspace:  pulumi.String("example"),
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
+//
+// ## Import
+//
+// Deploy Keys can be imported using their `workspace/repo-slug/key-id` ID, e.g.
+//
+// ```sh
+//
+//	$ pulumi import bitbucket:index/deployKey:DeployKey key workspace/repo-slug/key-id
+//
+// ```
 type DeployKey struct {
 	pulumi.CustomResourceState
 
-	Comment    pulumi.StringOutput    `pulumi:"comment"`
-	Key        pulumi.StringPtrOutput `pulumi:"key"`
-	KeyId      pulumi.StringOutput    `pulumi:"keyId"`
-	Label      pulumi.StringPtrOutput `pulumi:"label"`
-	Repository pulumi.StringOutput    `pulumi:"repository"`
-	Workspace  pulumi.StringOutput    `pulumi:"workspace"`
+	// The comment parsed from the Deploy key (if present)
+	Comment pulumi.StringOutput `pulumi:"comment"`
+	// The SSH public key value in OpenSSH format.
+	Key pulumi.StringPtrOutput `pulumi:"key"`
+	// The Deploy key's ID.
+	KeyId pulumi.StringOutput `pulumi:"keyId"`
+	// The user-defined label for the Deploy key
+	Label pulumi.StringPtrOutput `pulumi:"label"`
+	// The Repository to create deploy key in.
+	Repository pulumi.StringOutput `pulumi:"repository"`
+	// The Workspace where the repository resides.
+	Workspace pulumi.StringOutput `pulumi:"workspace"`
 }
 
 // NewDeployKey registers a new resource with the given unique name, arguments, and options.
@@ -60,21 +109,33 @@ func GetDeployKey(ctx *pulumi.Context,
 
 // Input properties used for looking up and filtering DeployKey resources.
 type deployKeyState struct {
-	Comment    *string `pulumi:"comment"`
-	Key        *string `pulumi:"key"`
-	KeyId      *string `pulumi:"keyId"`
-	Label      *string `pulumi:"label"`
+	// The comment parsed from the Deploy key (if present)
+	Comment *string `pulumi:"comment"`
+	// The SSH public key value in OpenSSH format.
+	Key *string `pulumi:"key"`
+	// The Deploy key's ID.
+	KeyId *string `pulumi:"keyId"`
+	// The user-defined label for the Deploy key
+	Label *string `pulumi:"label"`
+	// The Repository to create deploy key in.
 	Repository *string `pulumi:"repository"`
-	Workspace  *string `pulumi:"workspace"`
+	// The Workspace where the repository resides.
+	Workspace *string `pulumi:"workspace"`
 }
 
 type DeployKeyState struct {
-	Comment    pulumi.StringPtrInput
-	Key        pulumi.StringPtrInput
-	KeyId      pulumi.StringPtrInput
-	Label      pulumi.StringPtrInput
+	// The comment parsed from the Deploy key (if present)
+	Comment pulumi.StringPtrInput
+	// The SSH public key value in OpenSSH format.
+	Key pulumi.StringPtrInput
+	// The Deploy key's ID.
+	KeyId pulumi.StringPtrInput
+	// The user-defined label for the Deploy key
+	Label pulumi.StringPtrInput
+	// The Repository to create deploy key in.
 	Repository pulumi.StringPtrInput
-	Workspace  pulumi.StringPtrInput
+	// The Workspace where the repository resides.
+	Workspace pulumi.StringPtrInput
 }
 
 func (DeployKeyState) ElementType() reflect.Type {
@@ -82,18 +143,26 @@ func (DeployKeyState) ElementType() reflect.Type {
 }
 
 type deployKeyArgs struct {
-	Key        *string `pulumi:"key"`
-	Label      *string `pulumi:"label"`
-	Repository string  `pulumi:"repository"`
-	Workspace  string  `pulumi:"workspace"`
+	// The SSH public key value in OpenSSH format.
+	Key *string `pulumi:"key"`
+	// The user-defined label for the Deploy key
+	Label *string `pulumi:"label"`
+	// The Repository to create deploy key in.
+	Repository string `pulumi:"repository"`
+	// The Workspace where the repository resides.
+	Workspace string `pulumi:"workspace"`
 }
 
 // The set of arguments for constructing a DeployKey resource.
 type DeployKeyArgs struct {
-	Key        pulumi.StringPtrInput
-	Label      pulumi.StringPtrInput
+	// The SSH public key value in OpenSSH format.
+	Key pulumi.StringPtrInput
+	// The user-defined label for the Deploy key
+	Label pulumi.StringPtrInput
+	// The Repository to create deploy key in.
 	Repository pulumi.StringInput
-	Workspace  pulumi.StringInput
+	// The Workspace where the repository resides.
+	Workspace pulumi.StringInput
 }
 
 func (DeployKeyArgs) ElementType() reflect.Type {
@@ -117,12 +186,6 @@ func (i *DeployKey) ToDeployKeyOutput() DeployKeyOutput {
 
 func (i *DeployKey) ToDeployKeyOutputWithContext(ctx context.Context) DeployKeyOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(DeployKeyOutput)
-}
-
-func (i *DeployKey) ToOutput(ctx context.Context) pulumix.Output[*DeployKey] {
-	return pulumix.Output[*DeployKey]{
-		OutputState: i.ToDeployKeyOutputWithContext(ctx).OutputState,
-	}
 }
 
 // DeployKeyArrayInput is an input type that accepts DeployKeyArray and DeployKeyArrayOutput values.
@@ -150,12 +213,6 @@ func (i DeployKeyArray) ToDeployKeyArrayOutputWithContext(ctx context.Context) D
 	return pulumi.ToOutputWithContext(ctx, i).(DeployKeyArrayOutput)
 }
 
-func (i DeployKeyArray) ToOutput(ctx context.Context) pulumix.Output[[]*DeployKey] {
-	return pulumix.Output[[]*DeployKey]{
-		OutputState: i.ToDeployKeyArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 // DeployKeyMapInput is an input type that accepts DeployKeyMap and DeployKeyMapOutput values.
 // You can construct a concrete instance of `DeployKeyMapInput` via:
 //
@@ -181,12 +238,6 @@ func (i DeployKeyMap) ToDeployKeyMapOutputWithContext(ctx context.Context) Deplo
 	return pulumi.ToOutputWithContext(ctx, i).(DeployKeyMapOutput)
 }
 
-func (i DeployKeyMap) ToOutput(ctx context.Context) pulumix.Output[map[string]*DeployKey] {
-	return pulumix.Output[map[string]*DeployKey]{
-		OutputState: i.ToDeployKeyMapOutputWithContext(ctx).OutputState,
-	}
-}
-
 type DeployKeyOutput struct{ *pulumi.OutputState }
 
 func (DeployKeyOutput) ElementType() reflect.Type {
@@ -201,32 +252,32 @@ func (o DeployKeyOutput) ToDeployKeyOutputWithContext(ctx context.Context) Deplo
 	return o
 }
 
-func (o DeployKeyOutput) ToOutput(ctx context.Context) pulumix.Output[*DeployKey] {
-	return pulumix.Output[*DeployKey]{
-		OutputState: o.OutputState,
-	}
-}
-
+// The comment parsed from the Deploy key (if present)
 func (o DeployKeyOutput) Comment() pulumi.StringOutput {
 	return o.ApplyT(func(v *DeployKey) pulumi.StringOutput { return v.Comment }).(pulumi.StringOutput)
 }
 
+// The SSH public key value in OpenSSH format.
 func (o DeployKeyOutput) Key() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *DeployKey) pulumi.StringPtrOutput { return v.Key }).(pulumi.StringPtrOutput)
 }
 
+// The Deploy key's ID.
 func (o DeployKeyOutput) KeyId() pulumi.StringOutput {
 	return o.ApplyT(func(v *DeployKey) pulumi.StringOutput { return v.KeyId }).(pulumi.StringOutput)
 }
 
+// The user-defined label for the Deploy key
 func (o DeployKeyOutput) Label() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *DeployKey) pulumi.StringPtrOutput { return v.Label }).(pulumi.StringPtrOutput)
 }
 
+// The Repository to create deploy key in.
 func (o DeployKeyOutput) Repository() pulumi.StringOutput {
 	return o.ApplyT(func(v *DeployKey) pulumi.StringOutput { return v.Repository }).(pulumi.StringOutput)
 }
 
+// The Workspace where the repository resides.
 func (o DeployKeyOutput) Workspace() pulumi.StringOutput {
 	return o.ApplyT(func(v *DeployKey) pulumi.StringOutput { return v.Workspace }).(pulumi.StringOutput)
 }
@@ -243,12 +294,6 @@ func (o DeployKeyArrayOutput) ToDeployKeyArrayOutput() DeployKeyArrayOutput {
 
 func (o DeployKeyArrayOutput) ToDeployKeyArrayOutputWithContext(ctx context.Context) DeployKeyArrayOutput {
 	return o
-}
-
-func (o DeployKeyArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]*DeployKey] {
-	return pulumix.Output[[]*DeployKey]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o DeployKeyArrayOutput) Index(i pulumi.IntInput) DeployKeyOutput {
@@ -269,12 +314,6 @@ func (o DeployKeyMapOutput) ToDeployKeyMapOutput() DeployKeyMapOutput {
 
 func (o DeployKeyMapOutput) ToDeployKeyMapOutputWithContext(ctx context.Context) DeployKeyMapOutput {
 	return o
-}
-
-func (o DeployKeyMapOutput) ToOutput(ctx context.Context) pulumix.Output[map[string]*DeployKey] {
-	return pulumix.Output[map[string]*DeployKey]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o DeployKeyMapOutput) MapIndex(k pulumi.StringInput) DeployKeyOutput {

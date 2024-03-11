@@ -9,18 +9,64 @@ import (
 
 	"errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket/internal"
 )
 
+// This resource allows you to configure workspace variables.
+//
+// OAuth2 Scopes: `none`
+//
+// ## Example Usage
+//
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := bitbucket.NewWorkspaceVariable(ctx, "country", &bitbucket.WorkspaceVariableArgs{
+//				Workspace: pulumi.Any(bitbucket_workspace.Test.Id),
+//				Key:       pulumi.String("COUNTRY"),
+//				Value:     pulumi.String("Kenya"),
+//				Secured:   pulumi.Bool(false),
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
+//
+// ## Import
+//
+// Workspace Variables can be imported using their `workspace-id/uuid` ID, e.g.
+//
+// ```sh
+//
+//	$ pulumi import bitbucket:index/workspaceVariable:WorkspaceVariable example workspace-id/uuid
+//
+// ```
 type WorkspaceVariable struct {
 	pulumi.CustomResourceState
 
-	Key       pulumi.StringOutput  `pulumi:"key"`
-	Secured   pulumi.BoolPtrOutput `pulumi:"secured"`
-	Uuid      pulumi.StringOutput  `pulumi:"uuid"`
-	Value     pulumi.StringOutput  `pulumi:"value"`
-	Workspace pulumi.StringOutput  `pulumi:"workspace"`
+	// The unique name of the variable.
+	Key pulumi.StringOutput `pulumi:"key"`
+	// If true, this variable will be treated as secured. The value will never be exposed in the logs or the REST API.
+	Secured pulumi.BoolPtrOutput `pulumi:"secured"`
+	// (Computed) The UUID identifying the variable.
+	Uuid pulumi.StringOutput `pulumi:"uuid"`
+	// The value of the variable.
+	Value pulumi.StringOutput `pulumi:"value"`
+	// The workspace ID you want to assign this variable to.
+	Workspace pulumi.StringOutput `pulumi:"workspace"`
 }
 
 // NewWorkspaceVariable registers a new resource with the given unique name, arguments, and options.
@@ -69,18 +115,28 @@ func GetWorkspaceVariable(ctx *pulumi.Context,
 
 // Input properties used for looking up and filtering WorkspaceVariable resources.
 type workspaceVariableState struct {
-	Key       *string `pulumi:"key"`
-	Secured   *bool   `pulumi:"secured"`
-	Uuid      *string `pulumi:"uuid"`
-	Value     *string `pulumi:"value"`
+	// The unique name of the variable.
+	Key *string `pulumi:"key"`
+	// If true, this variable will be treated as secured. The value will never be exposed in the logs or the REST API.
+	Secured *bool `pulumi:"secured"`
+	// (Computed) The UUID identifying the variable.
+	Uuid *string `pulumi:"uuid"`
+	// The value of the variable.
+	Value *string `pulumi:"value"`
+	// The workspace ID you want to assign this variable to.
 	Workspace *string `pulumi:"workspace"`
 }
 
 type WorkspaceVariableState struct {
-	Key       pulumi.StringPtrInput
-	Secured   pulumi.BoolPtrInput
-	Uuid      pulumi.StringPtrInput
-	Value     pulumi.StringPtrInput
+	// The unique name of the variable.
+	Key pulumi.StringPtrInput
+	// If true, this variable will be treated as secured. The value will never be exposed in the logs or the REST API.
+	Secured pulumi.BoolPtrInput
+	// (Computed) The UUID identifying the variable.
+	Uuid pulumi.StringPtrInput
+	// The value of the variable.
+	Value pulumi.StringPtrInput
+	// The workspace ID you want to assign this variable to.
 	Workspace pulumi.StringPtrInput
 }
 
@@ -89,17 +145,25 @@ func (WorkspaceVariableState) ElementType() reflect.Type {
 }
 
 type workspaceVariableArgs struct {
-	Key       string `pulumi:"key"`
-	Secured   *bool  `pulumi:"secured"`
-	Value     string `pulumi:"value"`
+	// The unique name of the variable.
+	Key string `pulumi:"key"`
+	// If true, this variable will be treated as secured. The value will never be exposed in the logs or the REST API.
+	Secured *bool `pulumi:"secured"`
+	// The value of the variable.
+	Value string `pulumi:"value"`
+	// The workspace ID you want to assign this variable to.
 	Workspace string `pulumi:"workspace"`
 }
 
 // The set of arguments for constructing a WorkspaceVariable resource.
 type WorkspaceVariableArgs struct {
-	Key       pulumi.StringInput
-	Secured   pulumi.BoolPtrInput
-	Value     pulumi.StringInput
+	// The unique name of the variable.
+	Key pulumi.StringInput
+	// If true, this variable will be treated as secured. The value will never be exposed in the logs or the REST API.
+	Secured pulumi.BoolPtrInput
+	// The value of the variable.
+	Value pulumi.StringInput
+	// The workspace ID you want to assign this variable to.
 	Workspace pulumi.StringInput
 }
 
@@ -124,12 +188,6 @@ func (i *WorkspaceVariable) ToWorkspaceVariableOutput() WorkspaceVariableOutput 
 
 func (i *WorkspaceVariable) ToWorkspaceVariableOutputWithContext(ctx context.Context) WorkspaceVariableOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(WorkspaceVariableOutput)
-}
-
-func (i *WorkspaceVariable) ToOutput(ctx context.Context) pulumix.Output[*WorkspaceVariable] {
-	return pulumix.Output[*WorkspaceVariable]{
-		OutputState: i.ToWorkspaceVariableOutputWithContext(ctx).OutputState,
-	}
 }
 
 // WorkspaceVariableArrayInput is an input type that accepts WorkspaceVariableArray and WorkspaceVariableArrayOutput values.
@@ -157,12 +215,6 @@ func (i WorkspaceVariableArray) ToWorkspaceVariableArrayOutputWithContext(ctx co
 	return pulumi.ToOutputWithContext(ctx, i).(WorkspaceVariableArrayOutput)
 }
 
-func (i WorkspaceVariableArray) ToOutput(ctx context.Context) pulumix.Output[[]*WorkspaceVariable] {
-	return pulumix.Output[[]*WorkspaceVariable]{
-		OutputState: i.ToWorkspaceVariableArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 // WorkspaceVariableMapInput is an input type that accepts WorkspaceVariableMap and WorkspaceVariableMapOutput values.
 // You can construct a concrete instance of `WorkspaceVariableMapInput` via:
 //
@@ -188,12 +240,6 @@ func (i WorkspaceVariableMap) ToWorkspaceVariableMapOutputWithContext(ctx contex
 	return pulumi.ToOutputWithContext(ctx, i).(WorkspaceVariableMapOutput)
 }
 
-func (i WorkspaceVariableMap) ToOutput(ctx context.Context) pulumix.Output[map[string]*WorkspaceVariable] {
-	return pulumix.Output[map[string]*WorkspaceVariable]{
-		OutputState: i.ToWorkspaceVariableMapOutputWithContext(ctx).OutputState,
-	}
-}
-
 type WorkspaceVariableOutput struct{ *pulumi.OutputState }
 
 func (WorkspaceVariableOutput) ElementType() reflect.Type {
@@ -208,28 +254,27 @@ func (o WorkspaceVariableOutput) ToWorkspaceVariableOutputWithContext(ctx contex
 	return o
 }
 
-func (o WorkspaceVariableOutput) ToOutput(ctx context.Context) pulumix.Output[*WorkspaceVariable] {
-	return pulumix.Output[*WorkspaceVariable]{
-		OutputState: o.OutputState,
-	}
-}
-
+// The unique name of the variable.
 func (o WorkspaceVariableOutput) Key() pulumi.StringOutput {
 	return o.ApplyT(func(v *WorkspaceVariable) pulumi.StringOutput { return v.Key }).(pulumi.StringOutput)
 }
 
+// If true, this variable will be treated as secured. The value will never be exposed in the logs or the REST API.
 func (o WorkspaceVariableOutput) Secured() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *WorkspaceVariable) pulumi.BoolPtrOutput { return v.Secured }).(pulumi.BoolPtrOutput)
 }
 
+// (Computed) The UUID identifying the variable.
 func (o WorkspaceVariableOutput) Uuid() pulumi.StringOutput {
 	return o.ApplyT(func(v *WorkspaceVariable) pulumi.StringOutput { return v.Uuid }).(pulumi.StringOutput)
 }
 
+// The value of the variable.
 func (o WorkspaceVariableOutput) Value() pulumi.StringOutput {
 	return o.ApplyT(func(v *WorkspaceVariable) pulumi.StringOutput { return v.Value }).(pulumi.StringOutput)
 }
 
+// The workspace ID you want to assign this variable to.
 func (o WorkspaceVariableOutput) Workspace() pulumi.StringOutput {
 	return o.ApplyT(func(v *WorkspaceVariable) pulumi.StringOutput { return v.Workspace }).(pulumi.StringOutput)
 }
@@ -246,12 +291,6 @@ func (o WorkspaceVariableArrayOutput) ToWorkspaceVariableArrayOutput() Workspace
 
 func (o WorkspaceVariableArrayOutput) ToWorkspaceVariableArrayOutputWithContext(ctx context.Context) WorkspaceVariableArrayOutput {
 	return o
-}
-
-func (o WorkspaceVariableArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]*WorkspaceVariable] {
-	return pulumix.Output[[]*WorkspaceVariable]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o WorkspaceVariableArrayOutput) Index(i pulumi.IntInput) WorkspaceVariableOutput {
@@ -272,12 +311,6 @@ func (o WorkspaceVariableMapOutput) ToWorkspaceVariableMapOutput() WorkspaceVari
 
 func (o WorkspaceVariableMapOutput) ToWorkspaceVariableMapOutputWithContext(ctx context.Context) WorkspaceVariableMapOutput {
 	return o
-}
-
-func (o WorkspaceVariableMapOutput) ToOutput(ctx context.Context) pulumix.Output[map[string]*WorkspaceVariable] {
-	return pulumix.Output[map[string]*WorkspaceVariable]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o WorkspaceVariableMapOutput) MapIndex(k pulumi.StringInput) WorkspaceVariableOutput {

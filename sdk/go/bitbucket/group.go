@@ -9,19 +9,71 @@ import (
 
 	"errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket/internal"
 )
 
+// Provides a Bitbucket group resource.
+//
+// This allows you to manage your groups.
+//
+// ## Example Usage
+//
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			testWorkspace, err := bitbucket.GetWorkspace(ctx, &bitbucket.GetWorkspaceArgs{
+//				Workspace: "example",
+//			}, nil)
+//			if err != nil {
+//				return err
+//			}
+//			_, err = bitbucket.NewGroup(ctx, "testGroup", &bitbucket.GroupArgs{
+//				Workspace:  *pulumi.String(testWorkspace.Id),
+//				AutoAdd:    pulumi.Bool(true),
+//				Permission: pulumi.String("read"),
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
+//
+// ## Import
+//
+// Groups can be imported using their `workspace/group-slug` ID, e.g.
+//
+// ```sh
+//
+//	$ pulumi import bitbucket:index/group:Group group my-workspace/group-slug
+//
+// ```
 type Group struct {
 	pulumi.CustomResourceState
 
-	AutoAdd                 pulumi.BoolPtrOutput   `pulumi:"autoAdd"`
-	EmailForwardingDisabled pulumi.BoolPtrOutput   `pulumi:"emailForwardingDisabled"`
-	Name                    pulumi.StringOutput    `pulumi:"name"`
-	Permission              pulumi.StringPtrOutput `pulumi:"permission"`
-	Slug                    pulumi.StringOutput    `pulumi:"slug"`
-	Workspace               pulumi.StringOutput    `pulumi:"workspace"`
+	// Whether to automatically add users the group
+	AutoAdd pulumi.BoolPtrOutput `pulumi:"autoAdd"`
+	// Whether to disable email forwarding for group.
+	EmailForwardingDisabled pulumi.BoolPtrOutput `pulumi:"emailForwardingDisabled"`
+	// The name of the group.
+	Name pulumi.StringOutput `pulumi:"name"`
+	// One of `read`, `write`, and `admin`.
+	Permission pulumi.StringPtrOutput `pulumi:"permission"`
+	// The groups slug.
+	Slug pulumi.StringOutput `pulumi:"slug"`
+	// The workspace of this repository.
+	Workspace pulumi.StringOutput `pulumi:"workspace"`
 }
 
 // NewGroup registers a new resource with the given unique name, arguments, and options.
@@ -57,21 +109,33 @@ func GetGroup(ctx *pulumi.Context,
 
 // Input properties used for looking up and filtering Group resources.
 type groupState struct {
-	AutoAdd                 *bool   `pulumi:"autoAdd"`
-	EmailForwardingDisabled *bool   `pulumi:"emailForwardingDisabled"`
-	Name                    *string `pulumi:"name"`
-	Permission              *string `pulumi:"permission"`
-	Slug                    *string `pulumi:"slug"`
-	Workspace               *string `pulumi:"workspace"`
+	// Whether to automatically add users the group
+	AutoAdd *bool `pulumi:"autoAdd"`
+	// Whether to disable email forwarding for group.
+	EmailForwardingDisabled *bool `pulumi:"emailForwardingDisabled"`
+	// The name of the group.
+	Name *string `pulumi:"name"`
+	// One of `read`, `write`, and `admin`.
+	Permission *string `pulumi:"permission"`
+	// The groups slug.
+	Slug *string `pulumi:"slug"`
+	// The workspace of this repository.
+	Workspace *string `pulumi:"workspace"`
 }
 
 type GroupState struct {
-	AutoAdd                 pulumi.BoolPtrInput
+	// Whether to automatically add users the group
+	AutoAdd pulumi.BoolPtrInput
+	// Whether to disable email forwarding for group.
 	EmailForwardingDisabled pulumi.BoolPtrInput
-	Name                    pulumi.StringPtrInput
-	Permission              pulumi.StringPtrInput
-	Slug                    pulumi.StringPtrInput
-	Workspace               pulumi.StringPtrInput
+	// The name of the group.
+	Name pulumi.StringPtrInput
+	// One of `read`, `write`, and `admin`.
+	Permission pulumi.StringPtrInput
+	// The groups slug.
+	Slug pulumi.StringPtrInput
+	// The workspace of this repository.
+	Workspace pulumi.StringPtrInput
 }
 
 func (GroupState) ElementType() reflect.Type {
@@ -79,20 +143,30 @@ func (GroupState) ElementType() reflect.Type {
 }
 
 type groupArgs struct {
-	AutoAdd                 *bool   `pulumi:"autoAdd"`
-	EmailForwardingDisabled *bool   `pulumi:"emailForwardingDisabled"`
-	Name                    *string `pulumi:"name"`
-	Permission              *string `pulumi:"permission"`
-	Workspace               string  `pulumi:"workspace"`
+	// Whether to automatically add users the group
+	AutoAdd *bool `pulumi:"autoAdd"`
+	// Whether to disable email forwarding for group.
+	EmailForwardingDisabled *bool `pulumi:"emailForwardingDisabled"`
+	// The name of the group.
+	Name *string `pulumi:"name"`
+	// One of `read`, `write`, and `admin`.
+	Permission *string `pulumi:"permission"`
+	// The workspace of this repository.
+	Workspace string `pulumi:"workspace"`
 }
 
 // The set of arguments for constructing a Group resource.
 type GroupArgs struct {
-	AutoAdd                 pulumi.BoolPtrInput
+	// Whether to automatically add users the group
+	AutoAdd pulumi.BoolPtrInput
+	// Whether to disable email forwarding for group.
 	EmailForwardingDisabled pulumi.BoolPtrInput
-	Name                    pulumi.StringPtrInput
-	Permission              pulumi.StringPtrInput
-	Workspace               pulumi.StringInput
+	// The name of the group.
+	Name pulumi.StringPtrInput
+	// One of `read`, `write`, and `admin`.
+	Permission pulumi.StringPtrInput
+	// The workspace of this repository.
+	Workspace pulumi.StringInput
 }
 
 func (GroupArgs) ElementType() reflect.Type {
@@ -116,12 +190,6 @@ func (i *Group) ToGroupOutput() GroupOutput {
 
 func (i *Group) ToGroupOutputWithContext(ctx context.Context) GroupOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(GroupOutput)
-}
-
-func (i *Group) ToOutput(ctx context.Context) pulumix.Output[*Group] {
-	return pulumix.Output[*Group]{
-		OutputState: i.ToGroupOutputWithContext(ctx).OutputState,
-	}
 }
 
 // GroupArrayInput is an input type that accepts GroupArray and GroupArrayOutput values.
@@ -149,12 +217,6 @@ func (i GroupArray) ToGroupArrayOutputWithContext(ctx context.Context) GroupArra
 	return pulumi.ToOutputWithContext(ctx, i).(GroupArrayOutput)
 }
 
-func (i GroupArray) ToOutput(ctx context.Context) pulumix.Output[[]*Group] {
-	return pulumix.Output[[]*Group]{
-		OutputState: i.ToGroupArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 // GroupMapInput is an input type that accepts GroupMap and GroupMapOutput values.
 // You can construct a concrete instance of `GroupMapInput` via:
 //
@@ -180,12 +242,6 @@ func (i GroupMap) ToGroupMapOutputWithContext(ctx context.Context) GroupMapOutpu
 	return pulumi.ToOutputWithContext(ctx, i).(GroupMapOutput)
 }
 
-func (i GroupMap) ToOutput(ctx context.Context) pulumix.Output[map[string]*Group] {
-	return pulumix.Output[map[string]*Group]{
-		OutputState: i.ToGroupMapOutputWithContext(ctx).OutputState,
-	}
-}
-
 type GroupOutput struct{ *pulumi.OutputState }
 
 func (GroupOutput) ElementType() reflect.Type {
@@ -200,32 +256,32 @@ func (o GroupOutput) ToGroupOutputWithContext(ctx context.Context) GroupOutput {
 	return o
 }
 
-func (o GroupOutput) ToOutput(ctx context.Context) pulumix.Output[*Group] {
-	return pulumix.Output[*Group]{
-		OutputState: o.OutputState,
-	}
-}
-
+// Whether to automatically add users the group
 func (o GroupOutput) AutoAdd() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *Group) pulumi.BoolPtrOutput { return v.AutoAdd }).(pulumi.BoolPtrOutput)
 }
 
+// Whether to disable email forwarding for group.
 func (o GroupOutput) EmailForwardingDisabled() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *Group) pulumi.BoolPtrOutput { return v.EmailForwardingDisabled }).(pulumi.BoolPtrOutput)
 }
 
+// The name of the group.
 func (o GroupOutput) Name() pulumi.StringOutput {
 	return o.ApplyT(func(v *Group) pulumi.StringOutput { return v.Name }).(pulumi.StringOutput)
 }
 
+// One of `read`, `write`, and `admin`.
 func (o GroupOutput) Permission() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Group) pulumi.StringPtrOutput { return v.Permission }).(pulumi.StringPtrOutput)
 }
 
+// The groups slug.
 func (o GroupOutput) Slug() pulumi.StringOutput {
 	return o.ApplyT(func(v *Group) pulumi.StringOutput { return v.Slug }).(pulumi.StringOutput)
 }
 
+// The workspace of this repository.
 func (o GroupOutput) Workspace() pulumi.StringOutput {
 	return o.ApplyT(func(v *Group) pulumi.StringOutput { return v.Workspace }).(pulumi.StringOutput)
 }
@@ -242,12 +298,6 @@ func (o GroupArrayOutput) ToGroupArrayOutput() GroupArrayOutput {
 
 func (o GroupArrayOutput) ToGroupArrayOutputWithContext(ctx context.Context) GroupArrayOutput {
 	return o
-}
-
-func (o GroupArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]*Group] {
-	return pulumix.Output[[]*Group]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o GroupArrayOutput) Index(i pulumi.IntInput) GroupOutput {
@@ -268,12 +318,6 @@ func (o GroupMapOutput) ToGroupMapOutput() GroupMapOutput {
 
 func (o GroupMapOutput) ToGroupMapOutputWithContext(ctx context.Context) GroupMapOutput {
 	return o
-}
-
-func (o GroupMapOutput) ToOutput(ctx context.Context) pulumix.Output[map[string]*Group] {
-	return pulumix.Output[map[string]*Group]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o GroupMapOutput) MapIndex(k pulumi.StringInput) GroupOutput {

@@ -15,6 +15,7 @@ from .deployment_variable import *
 from .forked_repository import *
 from .get_current_user import *
 from .get_deployment import *
+from .get_deployments import *
 from .get_group import *
 from .get_group_members import *
 from .get_groups import *
@@ -34,6 +35,8 @@ from .pipeline_ssh_known_host import *
 from .project import *
 from .project_branching_model import *
 from .project_default_reviewers import *
+from .project_group_permission import *
+from .project_user_permission import *
 from .provider import *
 from .repository import *
 from .repository_group_permission import *
@@ -189,6 +192,22 @@ _utilities.register(
   "fqn": "pulumi_bitbucket",
   "classes": {
    "bitbucket:index/projectDefaultReviewers:ProjectDefaultReviewers": "ProjectDefaultReviewers"
+  }
+ },
+ {
+  "pkg": "bitbucket",
+  "mod": "index/projectGroupPermission",
+  "fqn": "pulumi_bitbucket",
+  "classes": {
+   "bitbucket:index/projectGroupPermission:ProjectGroupPermission": "ProjectGroupPermission"
+  }
+ },
+ {
+  "pkg": "bitbucket",
+  "mod": "index/projectUserPermission",
+  "fqn": "pulumi_bitbucket",
+  "classes": {
+   "bitbucket:index/projectUserPermission:ProjectUserPermission": "ProjectUserPermission"
   }
  },
  {

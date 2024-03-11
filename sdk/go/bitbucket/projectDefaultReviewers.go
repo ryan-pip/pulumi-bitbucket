@@ -9,16 +9,68 @@ import (
 
 	"errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket/internal"
 )
 
+// Provides support for setting up default reviewers for your project. You must however have the UUID of the user available. Since Bitbucket has removed usernames from its APIs the best case is to use the UUID via the data provider.
+//
+// OAuth2 Scopes: `project:admin`
+//
+// ## Example Usage
+//
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			reviewer, err := bitbucket.GetUser(ctx, &bitbucket.GetUserArgs{
+//				Uuid: pulumi.StringRef("{account UUID}"),
+//			}, nil)
+//			if err != nil {
+//				return err
+//			}
+//			_, err = bitbucket.NewProjectDefaultReviewers(ctx, "infrastructure", &bitbucket.ProjectDefaultReviewersArgs{
+//				Workspace: pulumi.String("myteam"),
+//				Project:   pulumi.String("TERRAFORM"),
+//				Reviewers: pulumi.StringArray{
+//					*pulumi.String(reviewer.Uuid),
+//				},
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
+//
+// ## Import
+//
+// Project Default Reviewers can be imported using the workspace and project separated by a (`/`) and the end, e.g.,
+//
+// ```sh
+//
+//	$ pulumi import bitbucket:index/projectDefaultReviewers:ProjectDefaultReviewers example myteam/terraform-code
+//
+// ```
 type ProjectDefaultReviewers struct {
 	pulumi.CustomResourceState
 
-	Project   pulumi.StringOutput      `pulumi:"project"`
+	// The key of the project.
+	Project pulumi.StringOutput `pulumi:"project"`
+	// A list of reviewers to use.
 	Reviewers pulumi.StringArrayOutput `pulumi:"reviewers"`
-	Workspace pulumi.StringOutput      `pulumi:"workspace"`
+	// The workspace of this project. Can be you or any team you
+	// have write access to.
+	Workspace pulumi.StringOutput `pulumi:"workspace"`
 }
 
 // NewProjectDefaultReviewers registers a new resource with the given unique name, arguments, and options.
@@ -60,14 +112,22 @@ func GetProjectDefaultReviewers(ctx *pulumi.Context,
 
 // Input properties used for looking up and filtering ProjectDefaultReviewers resources.
 type projectDefaultReviewersState struct {
-	Project   *string  `pulumi:"project"`
+	// The key of the project.
+	Project *string `pulumi:"project"`
+	// A list of reviewers to use.
 	Reviewers []string `pulumi:"reviewers"`
-	Workspace *string  `pulumi:"workspace"`
+	// The workspace of this project. Can be you or any team you
+	// have write access to.
+	Workspace *string `pulumi:"workspace"`
 }
 
 type ProjectDefaultReviewersState struct {
-	Project   pulumi.StringPtrInput
+	// The key of the project.
+	Project pulumi.StringPtrInput
+	// A list of reviewers to use.
 	Reviewers pulumi.StringArrayInput
+	// The workspace of this project. Can be you or any team you
+	// have write access to.
 	Workspace pulumi.StringPtrInput
 }
 
@@ -76,15 +136,23 @@ func (ProjectDefaultReviewersState) ElementType() reflect.Type {
 }
 
 type projectDefaultReviewersArgs struct {
-	Project   string   `pulumi:"project"`
+	// The key of the project.
+	Project string `pulumi:"project"`
+	// A list of reviewers to use.
 	Reviewers []string `pulumi:"reviewers"`
-	Workspace string   `pulumi:"workspace"`
+	// The workspace of this project. Can be you or any team you
+	// have write access to.
+	Workspace string `pulumi:"workspace"`
 }
 
 // The set of arguments for constructing a ProjectDefaultReviewers resource.
 type ProjectDefaultReviewersArgs struct {
-	Project   pulumi.StringInput
+	// The key of the project.
+	Project pulumi.StringInput
+	// A list of reviewers to use.
 	Reviewers pulumi.StringArrayInput
+	// The workspace of this project. Can be you or any team you
+	// have write access to.
 	Workspace pulumi.StringInput
 }
 
@@ -109,12 +177,6 @@ func (i *ProjectDefaultReviewers) ToProjectDefaultReviewersOutput() ProjectDefau
 
 func (i *ProjectDefaultReviewers) ToProjectDefaultReviewersOutputWithContext(ctx context.Context) ProjectDefaultReviewersOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(ProjectDefaultReviewersOutput)
-}
-
-func (i *ProjectDefaultReviewers) ToOutput(ctx context.Context) pulumix.Output[*ProjectDefaultReviewers] {
-	return pulumix.Output[*ProjectDefaultReviewers]{
-		OutputState: i.ToProjectDefaultReviewersOutputWithContext(ctx).OutputState,
-	}
 }
 
 // ProjectDefaultReviewersArrayInput is an input type that accepts ProjectDefaultReviewersArray and ProjectDefaultReviewersArrayOutput values.
@@ -142,12 +204,6 @@ func (i ProjectDefaultReviewersArray) ToProjectDefaultReviewersArrayOutputWithCo
 	return pulumi.ToOutputWithContext(ctx, i).(ProjectDefaultReviewersArrayOutput)
 }
 
-func (i ProjectDefaultReviewersArray) ToOutput(ctx context.Context) pulumix.Output[[]*ProjectDefaultReviewers] {
-	return pulumix.Output[[]*ProjectDefaultReviewers]{
-		OutputState: i.ToProjectDefaultReviewersArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 // ProjectDefaultReviewersMapInput is an input type that accepts ProjectDefaultReviewersMap and ProjectDefaultReviewersMapOutput values.
 // You can construct a concrete instance of `ProjectDefaultReviewersMapInput` via:
 //
@@ -173,12 +229,6 @@ func (i ProjectDefaultReviewersMap) ToProjectDefaultReviewersMapOutputWithContex
 	return pulumi.ToOutputWithContext(ctx, i).(ProjectDefaultReviewersMapOutput)
 }
 
-func (i ProjectDefaultReviewersMap) ToOutput(ctx context.Context) pulumix.Output[map[string]*ProjectDefaultReviewers] {
-	return pulumix.Output[map[string]*ProjectDefaultReviewers]{
-		OutputState: i.ToProjectDefaultReviewersMapOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ProjectDefaultReviewersOutput struct{ *pulumi.OutputState }
 
 func (ProjectDefaultReviewersOutput) ElementType() reflect.Type {
@@ -193,20 +243,18 @@ func (o ProjectDefaultReviewersOutput) ToProjectDefaultReviewersOutputWithContex
 	return o
 }
 
-func (o ProjectDefaultReviewersOutput) ToOutput(ctx context.Context) pulumix.Output[*ProjectDefaultReviewers] {
-	return pulumix.Output[*ProjectDefaultReviewers]{
-		OutputState: o.OutputState,
-	}
-}
-
+// The key of the project.
 func (o ProjectDefaultReviewersOutput) Project() pulumi.StringOutput {
 	return o.ApplyT(func(v *ProjectDefaultReviewers) pulumi.StringOutput { return v.Project }).(pulumi.StringOutput)
 }
 
+// A list of reviewers to use.
 func (o ProjectDefaultReviewersOutput) Reviewers() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v *ProjectDefaultReviewers) pulumi.StringArrayOutput { return v.Reviewers }).(pulumi.StringArrayOutput)
 }
 
+// The workspace of this project. Can be you or any team you
+// have write access to.
 func (o ProjectDefaultReviewersOutput) Workspace() pulumi.StringOutput {
 	return o.ApplyT(func(v *ProjectDefaultReviewers) pulumi.StringOutput { return v.Workspace }).(pulumi.StringOutput)
 }
@@ -223,12 +271,6 @@ func (o ProjectDefaultReviewersArrayOutput) ToProjectDefaultReviewersArrayOutput
 
 func (o ProjectDefaultReviewersArrayOutput) ToProjectDefaultReviewersArrayOutputWithContext(ctx context.Context) ProjectDefaultReviewersArrayOutput {
 	return o
-}
-
-func (o ProjectDefaultReviewersArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]*ProjectDefaultReviewers] {
-	return pulumix.Output[[]*ProjectDefaultReviewers]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ProjectDefaultReviewersArrayOutput) Index(i pulumi.IntInput) ProjectDefaultReviewersOutput {
@@ -249,12 +291,6 @@ func (o ProjectDefaultReviewersMapOutput) ToProjectDefaultReviewersMapOutput() P
 
 func (o ProjectDefaultReviewersMapOutput) ToProjectDefaultReviewersMapOutputWithContext(ctx context.Context) ProjectDefaultReviewersMapOutput {
 	return o
-}
-
-func (o ProjectDefaultReviewersMapOutput) ToOutput(ctx context.Context) pulumix.Output[map[string]*ProjectDefaultReviewers] {
-	return pulumix.Output[map[string]*ProjectDefaultReviewers]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ProjectDefaultReviewersMapOutput) MapIndex(k pulumi.StringInput) ProjectDefaultReviewersOutput {

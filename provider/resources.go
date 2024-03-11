@@ -81,7 +81,9 @@ func Provider() tfbridge.ProviderInfo {
 		Repository: "https://github.com/ryan-pip/pulumi-bitbucket",
 		// The GitHub Org for the provider - defaults to `terraform-providers`. Note that this
 		// should match the TF provider module's require directive, not any replace directives.
-		GitHubOrg: "DrFaust92",
+		GitHubOrg:         "DrFaust92",
+		TFProviderVersion: "2.40.0",
+		UpstreamRepoPath:  "./upstream",
 		Config: map[string]*tfbridge.SchemaInfo{
 			"username": {
 				Default: &tfbridge.DefaultInfo{

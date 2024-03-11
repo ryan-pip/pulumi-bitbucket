@@ -19,9 +19,20 @@ class WorkspaceHookArgs:
                  url: pulumi.Input[str],
                  workspace: pulumi.Input[str],
                  active: Optional[pulumi.Input[bool]] = None,
+                 history_enabled: Optional[pulumi.Input[bool]] = None,
+                 secret: Optional[pulumi.Input[str]] = None,
                  skip_cert_verification: Optional[pulumi.Input[bool]] = None):
         """
         The set of arguments for constructing a WorkspaceHook resource.
+        :param pulumi.Input[str] description: The name / description to show in the UI.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] events: The events this webhook is subscribed to. Valid values can be found at [Bitbucket Webhook Docs](https://developer.atlassian.com/cloud/bitbucket/rest/api-group-repositories/#api-repositories-workspace-repo-slug-hooks-post).
+        :param pulumi.Input[str] url: Where to POST to.
+        :param pulumi.Input[str] workspace: The workspace of this repository. Can be you or any team you
+               have write access to.
+        :param pulumi.Input[bool] active: Whether the webhook configuration is active or not (Default: `true`).
+        :param pulumi.Input[bool] history_enabled: Whether a webhook history is enabled.
+        :param pulumi.Input[str] secret: A Webhook secret value. Passing a null or empty secret or not passing a secret will leave the webhook's secret unset. This value is not returned on read and cannot resolve diffs or be imported as its not returned back from bitbucket API.
+        :param pulumi.Input[bool] skip_cert_verification: Whether to skip certificate verification or not (Default: `true`).
         """
         pulumi.set(__self__, "description", description)
         pulumi.set(__self__, "events", events)
@@ -29,12 +40,19 @@ class WorkspaceHookArgs:
         pulumi.set(__self__, "workspace", workspace)
         if active is not None:
             pulumi.set(__self__, "active", active)
+        if history_enabled is not None:
+            pulumi.set(__self__, "history_enabled", history_enabled)
+        if secret is not None:
+            pulumi.set(__self__, "secret", secret)
         if skip_cert_verification is not None:
             pulumi.set(__self__, "skip_cert_verification", skip_cert_verification)
 
     @property
     @pulumi.getter
     def description(self) -> pulumi.Input[str]:
+        """
+        The name / description to show in the UI.
+        """
         return pulumi.get(self, "description")
 
     @description.setter
@@ -44,6 +62,9 @@ class WorkspaceHookArgs:
     @property
     @pulumi.getter
     def events(self) -> pulumi.Input[Sequence[pulumi.Input[str]]]:
+        """
+        The events this webhook is subscribed to. Valid values can be found at [Bitbucket Webhook Docs](https://developer.atlassian.com/cloud/bitbucket/rest/api-group-repositories/#api-repositories-workspace-repo-slug-hooks-post).
+        """
         return pulumi.get(self, "events")
 
     @events.setter
@@ -53,6 +74,9 @@ class WorkspaceHookArgs:
     @property
     @pulumi.getter
     def url(self) -> pulumi.Input[str]:
+        """
+        Where to POST to.
+        """
         return pulumi.get(self, "url")
 
     @url.setter
@@ -62,6 +86,10 @@ class WorkspaceHookArgs:
     @property
     @pulumi.getter
     def workspace(self) -> pulumi.Input[str]:
+        """
+        The workspace of this repository. Can be you or any team you
+        have write access to.
+        """
         return pulumi.get(self, "workspace")
 
     @workspace.setter
@@ -71,6 +99,9 @@ class WorkspaceHookArgs:
     @property
     @pulumi.getter
     def active(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Whether the webhook configuration is active or not (Default: `true`).
+        """
         return pulumi.get(self, "active")
 
     @active.setter
@@ -78,8 +109,35 @@ class WorkspaceHookArgs:
         pulumi.set(self, "active", value)
 
     @property
+    @pulumi.getter(name="historyEnabled")
+    def history_enabled(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Whether a webhook history is enabled.
+        """
+        return pulumi.get(self, "history_enabled")
+
+    @history_enabled.setter
+    def history_enabled(self, value: Optional[pulumi.Input[bool]]):
+        pulumi.set(self, "history_enabled", value)
+
+    @property
+    @pulumi.getter
+    def secret(self) -> Optional[pulumi.Input[str]]:
+        """
+        A Webhook secret value. Passing a null or empty secret or not passing a secret will leave the webhook's secret unset. This value is not returned on read and cannot resolve diffs or be imported as its not returned back from bitbucket API.
+        """
+        return pulumi.get(self, "secret")
+
+    @secret.setter
+    def secret(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "secret", value)
+
+    @property
     @pulumi.getter(name="skipCertVerification")
     def skip_cert_verification(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Whether to skip certificate verification or not (Default: `true`).
+        """
         return pulumi.get(self, "skip_cert_verification")
 
     @skip_cert_verification.setter
@@ -93,12 +151,26 @@ class _WorkspaceHookState:
                  active: Optional[pulumi.Input[bool]] = None,
                  description: Optional[pulumi.Input[str]] = None,
                  events: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 history_enabled: Optional[pulumi.Input[bool]] = None,
+                 secret: Optional[pulumi.Input[str]] = None,
+                 secret_set: Optional[pulumi.Input[bool]] = None,
                  skip_cert_verification: Optional[pulumi.Input[bool]] = None,
                  url: Optional[pulumi.Input[str]] = None,
                  uuid: Optional[pulumi.Input[str]] = None,
                  workspace: Optional[pulumi.Input[str]] = None):
         """
         Input properties used for looking up and filtering WorkspaceHook resources.
+        :param pulumi.Input[bool] active: Whether the webhook configuration is active or not (Default: `true`).
+        :param pulumi.Input[str] description: The name / description to show in the UI.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] events: The events this webhook is subscribed to. Valid values can be found at [Bitbucket Webhook Docs](https://developer.atlassian.com/cloud/bitbucket/rest/api-group-repositories/#api-repositories-workspace-repo-slug-hooks-post).
+        :param pulumi.Input[bool] history_enabled: Whether a webhook history is enabled.
+        :param pulumi.Input[str] secret: A Webhook secret value. Passing a null or empty secret or not passing a secret will leave the webhook's secret unset. This value is not returned on read and cannot resolve diffs or be imported as its not returned back from bitbucket API.
+        :param pulumi.Input[bool] secret_set: Whether a webhook secret is set.
+        :param pulumi.Input[bool] skip_cert_verification: Whether to skip certificate verification or not (Default: `true`).
+        :param pulumi.Input[str] url: Where to POST to.
+        :param pulumi.Input[str] uuid: The UUID of the workspace webhook.
+        :param pulumi.Input[str] workspace: The workspace of this repository. Can be you or any team you
+               have write access to.
         """
         if active is not None:
             pulumi.set(__self__, "active", active)
@@ -106,6 +178,12 @@ class _WorkspaceHookState:
             pulumi.set(__self__, "description", description)
         if events is not None:
             pulumi.set(__self__, "events", events)
+        if history_enabled is not None:
+            pulumi.set(__self__, "history_enabled", history_enabled)
+        if secret is not None:
+            pulumi.set(__self__, "secret", secret)
+        if secret_set is not None:
+            pulumi.set(__self__, "secret_set", secret_set)
         if skip_cert_verification is not None:
             pulumi.set(__self__, "skip_cert_verification", skip_cert_verification)
         if url is not None:
@@ -118,6 +196,9 @@ class _WorkspaceHookState:
     @property
     @pulumi.getter
     def active(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Whether the webhook configuration is active or not (Default: `true`).
+        """
         return pulumi.get(self, "active")
 
     @active.setter
@@ -127,6 +208,9 @@ class _WorkspaceHookState:
     @property
     @pulumi.getter
     def description(self) -> Optional[pulumi.Input[str]]:
+        """
+        The name / description to show in the UI.
+        """
         return pulumi.get(self, "description")
 
     @description.setter
@@ -136,6 +220,9 @@ class _WorkspaceHookState:
     @property
     @pulumi.getter
     def events(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+        """
+        The events this webhook is subscribed to. Valid values can be found at [Bitbucket Webhook Docs](https://developer.atlassian.com/cloud/bitbucket/rest/api-group-repositories/#api-repositories-workspace-repo-slug-hooks-post).
+        """
         return pulumi.get(self, "events")
 
     @events.setter
@@ -143,8 +230,47 @@ class _WorkspaceHookState:
         pulumi.set(self, "events", value)
 
     @property
+    @pulumi.getter(name="historyEnabled")
+    def history_enabled(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Whether a webhook history is enabled.
+        """
+        return pulumi.get(self, "history_enabled")
+
+    @history_enabled.setter
+    def history_enabled(self, value: Optional[pulumi.Input[bool]]):
+        pulumi.set(self, "history_enabled", value)
+
+    @property
+    @pulumi.getter
+    def secret(self) -> Optional[pulumi.Input[str]]:
+        """
+        A Webhook secret value. Passing a null or empty secret or not passing a secret will leave the webhook's secret unset. This value is not returned on read and cannot resolve diffs or be imported as its not returned back from bitbucket API.
+        """
+        return pulumi.get(self, "secret")
+
+    @secret.setter
+    def secret(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "secret", value)
+
+    @property
+    @pulumi.getter(name="secretSet")
+    def secret_set(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Whether a webhook secret is set.
+        """
+        return pulumi.get(self, "secret_set")
+
+    @secret_set.setter
+    def secret_set(self, value: Optional[pulumi.Input[bool]]):
+        pulumi.set(self, "secret_set", value)
+
+    @property
     @pulumi.getter(name="skipCertVerification")
     def skip_cert_verification(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Whether to skip certificate verification or not (Default: `true`).
+        """
         return pulumi.get(self, "skip_cert_verification")
 
     @skip_cert_verification.setter
@@ -154,6 +280,9 @@ class _WorkspaceHookState:
     @property
     @pulumi.getter
     def url(self) -> Optional[pulumi.Input[str]]:
+        """
+        Where to POST to.
+        """
         return pulumi.get(self, "url")
 
     @url.setter
@@ -163,6 +292,9 @@ class _WorkspaceHookState:
     @property
     @pulumi.getter
     def uuid(self) -> Optional[pulumi.Input[str]]:
+        """
+        The UUID of the workspace webhook.
+        """
         return pulumi.get(self, "uuid")
 
     @uuid.setter
@@ -172,6 +304,10 @@ class _WorkspaceHookState:
     @property
     @pulumi.getter
     def workspace(self) -> Optional[pulumi.Input[str]]:
+        """
+        The workspace of this repository. Can be you or any team you
+        have write access to.
+        """
         return pulumi.get(self, "workspace")
 
     @workspace.setter
@@ -187,14 +323,51 @@ class WorkspaceHook(pulumi.CustomResource):
                  active: Optional[pulumi.Input[bool]] = None,
                  description: Optional[pulumi.Input[str]] = None,
                  events: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 history_enabled: Optional[pulumi.Input[bool]] = None,
+                 secret: Optional[pulumi.Input[str]] = None,
                  skip_cert_verification: Optional[pulumi.Input[bool]] = None,
                  url: Optional[pulumi.Input[str]] = None,
                  workspace: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         """
-        Create a WorkspaceHook resource with the given unique name, props, and options.
+        Provides a Bitbucket workspace hook resource.
+
+        This allows you to manage your webhooks on a workspace.
+
+        OAuth2 Scopes: `webhook`
+
+        ## Example Usage
+
+        ```python
+        import pulumi
+        import pulumi_bitbucket as bitbucket
+
+        deploy_on_push = bitbucket.WorkspaceHook("deployOnPush",
+            description="Deploy the code via my webhook",
+            events=["repo:push"],
+            url="https://mywebhookservice.mycompany.com/deploy-on-push",
+            workspace="myteam")
+        ```
+
+        ## Import
+
+        Hooks can be imported using their `workspace/hook-id` ID, e.g.
+
+        ```sh
+         $ pulumi import bitbucket:index/workspaceHook:WorkspaceHook hook my-account/hook-id
+        ```
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[bool] active: Whether the webhook configuration is active or not (Default: `true`).
+        :param pulumi.Input[str] description: The name / description to show in the UI.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] events: The events this webhook is subscribed to. Valid values can be found at [Bitbucket Webhook Docs](https://developer.atlassian.com/cloud/bitbucket/rest/api-group-repositories/#api-repositories-workspace-repo-slug-hooks-post).
+        :param pulumi.Input[bool] history_enabled: Whether a webhook history is enabled.
+        :param pulumi.Input[str] secret: A Webhook secret value. Passing a null or empty secret or not passing a secret will leave the webhook's secret unset. This value is not returned on read and cannot resolve diffs or be imported as its not returned back from bitbucket API.
+        :param pulumi.Input[bool] skip_cert_verification: Whether to skip certificate verification or not (Default: `true`).
+        :param pulumi.Input[str] url: Where to POST to.
+        :param pulumi.Input[str] workspace: The workspace of this repository. Can be you or any team you
+               have write access to.
         """
         ...
     @overload
@@ -203,7 +376,33 @@ class WorkspaceHook(pulumi.CustomResource):
                  args: WorkspaceHookArgs,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
-        Create a WorkspaceHook resource with the given unique name, props, and options.
+        Provides a Bitbucket workspace hook resource.
+
+        This allows you to manage your webhooks on a workspace.
+
+        OAuth2 Scopes: `webhook`
+
+        ## Example Usage
+
+        ```python
+        import pulumi
+        import pulumi_bitbucket as bitbucket
+
+        deploy_on_push = bitbucket.WorkspaceHook("deployOnPush",
+            description="Deploy the code via my webhook",
+            events=["repo:push"],
+            url="https://mywebhookservice.mycompany.com/deploy-on-push",
+            workspace="myteam")
+        ```
+
+        ## Import
+
+        Hooks can be imported using their `workspace/hook-id` ID, e.g.
+
+        ```sh
+         $ pulumi import bitbucket:index/workspaceHook:WorkspaceHook hook my-account/hook-id
+        ```
+
         :param str resource_name: The name of the resource.
         :param WorkspaceHookArgs args: The arguments to use to populate this resource's properties.
         :param pulumi.ResourceOptions opts: Options for the resource.
@@ -222,6 +421,8 @@ class WorkspaceHook(pulumi.CustomResource):
                  active: Optional[pulumi.Input[bool]] = None,
                  description: Optional[pulumi.Input[str]] = None,
                  events: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 history_enabled: Optional[pulumi.Input[bool]] = None,
+                 secret: Optional[pulumi.Input[str]] = None,
                  skip_cert_verification: Optional[pulumi.Input[bool]] = None,
                  url: Optional[pulumi.Input[str]] = None,
                  workspace: Optional[pulumi.Input[str]] = None,
@@ -241,6 +442,8 @@ class WorkspaceHook(pulumi.CustomResource):
             if events is None and not opts.urn:
                 raise TypeError("Missing required property 'events'")
             __props__.__dict__["events"] = events
+            __props__.__dict__["history_enabled"] = history_enabled
+            __props__.__dict__["secret"] = None if secret is None else pulumi.Output.secret(secret)
             __props__.__dict__["skip_cert_verification"] = skip_cert_verification
             if url is None and not opts.urn:
                 raise TypeError("Missing required property 'url'")
@@ -248,7 +451,10 @@ class WorkspaceHook(pulumi.CustomResource):
             if workspace is None and not opts.urn:
                 raise TypeError("Missing required property 'workspace'")
             __props__.__dict__["workspace"] = workspace
+            __props__.__dict__["secret_set"] = None
             __props__.__dict__["uuid"] = None
+        secret_opts = pulumi.ResourceOptions(additional_secret_outputs=["secret"])
+        opts = pulumi.ResourceOptions.merge(opts, secret_opts)
         super(WorkspaceHook, __self__).__init__(
             'bitbucket:index/workspaceHook:WorkspaceHook',
             resource_name,
@@ -262,6 +468,9 @@ class WorkspaceHook(pulumi.CustomResource):
             active: Optional[pulumi.Input[bool]] = None,
             description: Optional[pulumi.Input[str]] = None,
             events: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+            history_enabled: Optional[pulumi.Input[bool]] = None,
+            secret: Optional[pulumi.Input[str]] = None,
+            secret_set: Optional[pulumi.Input[bool]] = None,
             skip_cert_verification: Optional[pulumi.Input[bool]] = None,
             url: Optional[pulumi.Input[str]] = None,
             uuid: Optional[pulumi.Input[str]] = None,
@@ -273,6 +482,17 @@ class WorkspaceHook(pulumi.CustomResource):
         :param str resource_name: The unique name of the resulting resource.
         :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[bool] active: Whether the webhook configuration is active or not (Default: `true`).
+        :param pulumi.Input[str] description: The name / description to show in the UI.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] events: The events this webhook is subscribed to. Valid values can be found at [Bitbucket Webhook Docs](https://developer.atlassian.com/cloud/bitbucket/rest/api-group-repositories/#api-repositories-workspace-repo-slug-hooks-post).
+        :param pulumi.Input[bool] history_enabled: Whether a webhook history is enabled.
+        :param pulumi.Input[str] secret: A Webhook secret value. Passing a null or empty secret or not passing a secret will leave the webhook's secret unset. This value is not returned on read and cannot resolve diffs or be imported as its not returned back from bitbucket API.
+        :param pulumi.Input[bool] secret_set: Whether a webhook secret is set.
+        :param pulumi.Input[bool] skip_cert_verification: Whether to skip certificate verification or not (Default: `true`).
+        :param pulumi.Input[str] url: Where to POST to.
+        :param pulumi.Input[str] uuid: The UUID of the workspace webhook.
+        :param pulumi.Input[str] workspace: The workspace of this repository. Can be you or any team you
+               have write access to.
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
 
@@ -281,6 +501,9 @@ class WorkspaceHook(pulumi.CustomResource):
         __props__.__dict__["active"] = active
         __props__.__dict__["description"] = description
         __props__.__dict__["events"] = events
+        __props__.__dict__["history_enabled"] = history_enabled
+        __props__.__dict__["secret"] = secret
+        __props__.__dict__["secret_set"] = secret_set
         __props__.__dict__["skip_cert_verification"] = skip_cert_verification
         __props__.__dict__["url"] = url
         __props__.__dict__["uuid"] = uuid
@@ -290,35 +513,81 @@ class WorkspaceHook(pulumi.CustomResource):
     @property
     @pulumi.getter
     def active(self) -> pulumi.Output[Optional[bool]]:
+        """
+        Whether the webhook configuration is active or not (Default: `true`).
+        """
         return pulumi.get(self, "active")
 
     @property
     @pulumi.getter
     def description(self) -> pulumi.Output[str]:
+        """
+        The name / description to show in the UI.
+        """
         return pulumi.get(self, "description")
 
     @property
     @pulumi.getter
     def events(self) -> pulumi.Output[Sequence[str]]:
+        """
+        The events this webhook is subscribed to. Valid values can be found at [Bitbucket Webhook Docs](https://developer.atlassian.com/cloud/bitbucket/rest/api-group-repositories/#api-repositories-workspace-repo-slug-hooks-post).
+        """
         return pulumi.get(self, "events")
+
+    @property
+    @pulumi.getter(name="historyEnabled")
+    def history_enabled(self) -> pulumi.Output[Optional[bool]]:
+        """
+        Whether a webhook history is enabled.
+        """
+        return pulumi.get(self, "history_enabled")
+
+    @property
+    @pulumi.getter
+    def secret(self) -> pulumi.Output[Optional[str]]:
+        """
+        A Webhook secret value. Passing a null or empty secret or not passing a secret will leave the webhook's secret unset. This value is not returned on read and cannot resolve diffs or be imported as its not returned back from bitbucket API.
+        """
+        return pulumi.get(self, "secret")
+
+    @property
+    @pulumi.getter(name="secretSet")
+    def secret_set(self) -> pulumi.Output[bool]:
+        """
+        Whether a webhook secret is set.
+        """
+        return pulumi.get(self, "secret_set")
 
     @property
     @pulumi.getter(name="skipCertVerification")
     def skip_cert_verification(self) -> pulumi.Output[Optional[bool]]:
+        """
+        Whether to skip certificate verification or not (Default: `true`).
+        """
         return pulumi.get(self, "skip_cert_verification")
 
     @property
     @pulumi.getter
     def url(self) -> pulumi.Output[str]:
+        """
+        Where to POST to.
+        """
         return pulumi.get(self, "url")
 
     @property
     @pulumi.getter
     def uuid(self) -> pulumi.Output[str]:
+        """
+        The UUID of the workspace webhook.
+        """
         return pulumi.get(self, "uuid")
 
     @property
     @pulumi.getter
     def workspace(self) -> pulumi.Output[str]:
+        """
+        The workspace of this repository. Can be you or any team you
+        have write access to.
+        """
         return pulumi.get(self, "workspace")
 

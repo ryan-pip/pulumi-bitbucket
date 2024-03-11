@@ -19,6 +19,10 @@ class ProjectDefaultReviewersArgs:
                  workspace: pulumi.Input[str]):
         """
         The set of arguments for constructing a ProjectDefaultReviewers resource.
+        :param pulumi.Input[str] project: The key of the project.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] reviewers: A list of reviewers to use.
+        :param pulumi.Input[str] workspace: The workspace of this project. Can be you or any team you
+               have write access to.
         """
         pulumi.set(__self__, "project", project)
         pulumi.set(__self__, "reviewers", reviewers)
@@ -27,6 +31,9 @@ class ProjectDefaultReviewersArgs:
     @property
     @pulumi.getter
     def project(self) -> pulumi.Input[str]:
+        """
+        The key of the project.
+        """
         return pulumi.get(self, "project")
 
     @project.setter
@@ -36,6 +43,9 @@ class ProjectDefaultReviewersArgs:
     @property
     @pulumi.getter
     def reviewers(self) -> pulumi.Input[Sequence[pulumi.Input[str]]]:
+        """
+        A list of reviewers to use.
+        """
         return pulumi.get(self, "reviewers")
 
     @reviewers.setter
@@ -45,6 +55,10 @@ class ProjectDefaultReviewersArgs:
     @property
     @pulumi.getter
     def workspace(self) -> pulumi.Input[str]:
+        """
+        The workspace of this project. Can be you or any team you
+        have write access to.
+        """
         return pulumi.get(self, "workspace")
 
     @workspace.setter
@@ -60,6 +74,10 @@ class _ProjectDefaultReviewersState:
                  workspace: Optional[pulumi.Input[str]] = None):
         """
         Input properties used for looking up and filtering ProjectDefaultReviewers resources.
+        :param pulumi.Input[str] project: The key of the project.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] reviewers: A list of reviewers to use.
+        :param pulumi.Input[str] workspace: The workspace of this project. Can be you or any team you
+               have write access to.
         """
         if project is not None:
             pulumi.set(__self__, "project", project)
@@ -71,6 +89,9 @@ class _ProjectDefaultReviewersState:
     @property
     @pulumi.getter
     def project(self) -> Optional[pulumi.Input[str]]:
+        """
+        The key of the project.
+        """
         return pulumi.get(self, "project")
 
     @project.setter
@@ -80,6 +101,9 @@ class _ProjectDefaultReviewersState:
     @property
     @pulumi.getter
     def reviewers(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+        """
+        A list of reviewers to use.
+        """
         return pulumi.get(self, "reviewers")
 
     @reviewers.setter
@@ -89,6 +113,10 @@ class _ProjectDefaultReviewersState:
     @property
     @pulumi.getter
     def workspace(self) -> Optional[pulumi.Input[str]]:
+        """
+        The workspace of this project. Can be you or any team you
+        have write access to.
+        """
         return pulumi.get(self, "workspace")
 
     @workspace.setter
@@ -106,9 +134,37 @@ class ProjectDefaultReviewers(pulumi.CustomResource):
                  workspace: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         """
-        Create a ProjectDefaultReviewers resource with the given unique name, props, and options.
+        Provides support for setting up default reviewers for your project. You must however have the UUID of the user available. Since Bitbucket has removed usernames from its APIs the best case is to use the UUID via the data provider.
+
+        OAuth2 Scopes: `project:admin`
+
+        ## Example Usage
+
+        ```python
+        import pulumi
+        import pulumi_bitbucket as bitbucket
+
+        reviewer = bitbucket.get_user(uuid="{account UUID}")
+        infrastructure = bitbucket.ProjectDefaultReviewers("infrastructure",
+            workspace="myteam",
+            project="TERRAFORM",
+            reviewers=[reviewer.uuid])
+        ```
+
+        ## Import
+
+        Project Default Reviewers can be imported using the workspace and project separated by a (`/`) and the end, e.g.,
+
+        ```sh
+         $ pulumi import bitbucket:index/projectDefaultReviewers:ProjectDefaultReviewers example myteam/terraform-code
+        ```
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[str] project: The key of the project.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] reviewers: A list of reviewers to use.
+        :param pulumi.Input[str] workspace: The workspace of this project. Can be you or any team you
+               have write access to.
         """
         ...
     @overload
@@ -117,7 +173,31 @@ class ProjectDefaultReviewers(pulumi.CustomResource):
                  args: ProjectDefaultReviewersArgs,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
-        Create a ProjectDefaultReviewers resource with the given unique name, props, and options.
+        Provides support for setting up default reviewers for your project. You must however have the UUID of the user available. Since Bitbucket has removed usernames from its APIs the best case is to use the UUID via the data provider.
+
+        OAuth2 Scopes: `project:admin`
+
+        ## Example Usage
+
+        ```python
+        import pulumi
+        import pulumi_bitbucket as bitbucket
+
+        reviewer = bitbucket.get_user(uuid="{account UUID}")
+        infrastructure = bitbucket.ProjectDefaultReviewers("infrastructure",
+            workspace="myteam",
+            project="TERRAFORM",
+            reviewers=[reviewer.uuid])
+        ```
+
+        ## Import
+
+        Project Default Reviewers can be imported using the workspace and project separated by a (`/`) and the end, e.g.,
+
+        ```sh
+         $ pulumi import bitbucket:index/projectDefaultReviewers:ProjectDefaultReviewers example myteam/terraform-code
+        ```
+
         :param str resource_name: The name of the resource.
         :param ProjectDefaultReviewersArgs args: The arguments to use to populate this resource's properties.
         :param pulumi.ResourceOptions opts: Options for the resource.
@@ -174,6 +254,10 @@ class ProjectDefaultReviewers(pulumi.CustomResource):
         :param str resource_name: The unique name of the resulting resource.
         :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[str] project: The key of the project.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] reviewers: A list of reviewers to use.
+        :param pulumi.Input[str] workspace: The workspace of this project. Can be you or any team you
+               have write access to.
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
 
@@ -187,15 +271,25 @@ class ProjectDefaultReviewers(pulumi.CustomResource):
     @property
     @pulumi.getter
     def project(self) -> pulumi.Output[str]:
+        """
+        The key of the project.
+        """
         return pulumi.get(self, "project")
 
     @property
     @pulumi.getter
     def reviewers(self) -> pulumi.Output[Sequence[str]]:
+        """
+        A list of reviewers to use.
+        """
         return pulumi.get(self, "reviewers")
 
     @property
     @pulumi.getter
     def workspace(self) -> pulumi.Output[str]:
+        """
+        The workspace of this project. Can be you or any team you
+        have write access to.
+        """
         return pulumi.get(self, "workspace")
 

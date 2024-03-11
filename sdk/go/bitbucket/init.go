@@ -55,6 +55,10 @@ func (m *module) Construct(ctx *pulumi.Context, name, typ, urn string) (r pulumi
 		r = &ProjectBranchingModel{}
 	case "bitbucket:index/projectDefaultReviewers:ProjectDefaultReviewers":
 		r = &ProjectDefaultReviewers{}
+	case "bitbucket:index/projectGroupPermission:ProjectGroupPermission":
+		r = &ProjectGroupPermission{}
+	case "bitbucket:index/projectUserPermission:ProjectUserPermission":
+		r = &ProjectUserPermission{}
 	case "bitbucket:index/repository:Repository":
 		r = &Repository{}
 	case "bitbucket:index/repositoryGroupPermission:RepositoryGroupPermission":
@@ -183,6 +187,16 @@ func init() {
 	pulumi.RegisterResourceModule(
 		"bitbucket",
 		"index/projectDefaultReviewers",
+		&module{version},
+	)
+	pulumi.RegisterResourceModule(
+		"bitbucket",
+		"index/projectGroupPermission",
+		&module{version},
+	)
+	pulumi.RegisterResourceModule(
+		"bitbucket",
+		"index/projectUserPermission",
 		&module{version},
 	)
 	pulumi.RegisterResourceModule(

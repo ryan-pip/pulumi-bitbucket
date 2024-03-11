@@ -6,6 +6,22 @@ import * as inputs from "./types/input";
 import * as outputs from "./types/output";
 import * as utilities from "./utilities";
 
+/**
+ * Provides a way to fetch data of hook types.
+ *
+ * OAuth2 Scopes: `none`
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as bitbucket from "@pulumi/bitbucket";
+ *
+ * const example = bitbucket.getHookTypes({
+ *     subjectType: "workspace",
+ * });
+ * ```
+ */
 export function getHookTypes(args: GetHookTypesArgs, opts?: pulumi.InvokeOptions): Promise<GetHookTypesResult> {
 
     opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
@@ -18,6 +34,9 @@ export function getHookTypes(args: GetHookTypesArgs, opts?: pulumi.InvokeOptions
  * A collection of arguments for invoking getHookTypes.
  */
 export interface GetHookTypesArgs {
+    /**
+     * A resource or subject type. Valid values are `workspace`, `user`, `repository`, `team`.
+     */
     subjectType: string;
 }
 
@@ -25,6 +44,9 @@ export interface GetHookTypesArgs {
  * A collection of values returned by getHookTypes.
  */
 export interface GetHookTypesResult {
+    /**
+     * A Set of Hook Event Types. See Hook Types below.
+     */
     readonly hookTypes: outputs.GetHookTypesHookType[];
     /**
      * The provider-assigned unique ID for this managed resource.
@@ -32,6 +54,22 @@ export interface GetHookTypesResult {
     readonly id: string;
     readonly subjectType: string;
 }
+/**
+ * Provides a way to fetch data of hook types.
+ *
+ * OAuth2 Scopes: `none`
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as bitbucket from "@pulumi/bitbucket";
+ *
+ * const example = bitbucket.getHookTypes({
+ *     subjectType: "workspace",
+ * });
+ * ```
+ */
 export function getHookTypesOutput(args: GetHookTypesOutputArgs, opts?: pulumi.InvokeOptions): pulumi.Output<GetHookTypesResult> {
     return pulumi.output(args).apply((a: any) => getHookTypes(a, opts))
 }
@@ -40,5 +78,8 @@ export function getHookTypesOutput(args: GetHookTypesOutputArgs, opts?: pulumi.I
  * A collection of arguments for invoking getHookTypes.
  */
 export interface GetHookTypesOutputArgs {
+    /**
+     * A resource or subject type. Valid values are `workspace`, `user`, `repository`, `team`.
+     */
     subjectType: pulumi.Input<string>;
 }

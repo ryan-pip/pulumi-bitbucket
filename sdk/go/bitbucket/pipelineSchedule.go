@@ -9,19 +9,75 @@ import (
 
 	"errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket/internal"
 )
 
+// Provides a Bitbucket Pipeline Schedule resource.
+//
+// This allows you to manage your Pipeline Schedules for a repository.
+//
+// OAuth2 Scopes: `none`
+//
+// ## Example Usage
+//
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := bitbucket.NewPipelineSchedule(ctx, "test", &bitbucket.PipelineScheduleArgs{
+//				Workspace:   pulumi.String("example"),
+//				Repository:  pulumi.Any(bitbucket_repository.Test.Name),
+//				CronPattern: pulumi.String("0 30 * * * ? *"),
+//				Enabled:     pulumi.Bool(true),
+//				Target: &bitbucket.PipelineScheduleTargetArgs{
+//					RefName: pulumi.String("master"),
+//					RefType: pulumi.String("branch"),
+//					Selector: &bitbucket.PipelineScheduleTargetSelectorArgs{
+//						Pattern: pulumi.String("staging"),
+//					},
+//				},
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
+//
+// ## Import
+//
+// Pipeline Schedules can be imported using their `workspace/repo-slug/uuid` ID, e.g.
+//
+// ```sh
+//
+//	$ pulumi import bitbucket:index/pipelineSchedule:PipelineSchedule schedule workspace/repo-slug/uuid
+//
+// ```
 type PipelineSchedule struct {
 	pulumi.CustomResourceState
 
-	CronPattern pulumi.StringOutput          `pulumi:"cronPattern"`
-	Enabled     pulumi.BoolOutput            `pulumi:"enabled"`
-	Repository  pulumi.StringOutput          `pulumi:"repository"`
-	Target      PipelineScheduleTargetOutput `pulumi:"target"`
-	Uuid        pulumi.StringOutput          `pulumi:"uuid"`
-	Workspace   pulumi.StringOutput          `pulumi:"workspace"`
+	// The cron expression that the schedule applies.
+	CronPattern pulumi.StringOutput `pulumi:"cronPattern"`
+	// Whether the schedule is enabled.
+	Enabled pulumi.BoolOutput `pulumi:"enabled"`
+	// The Repository to create schedule in.
+	Repository pulumi.StringOutput `pulumi:"repository"`
+	// Schedule Target definition. See Target below.
+	Target PipelineScheduleTargetOutput `pulumi:"target"`
+	// The UUID identifying the schedule.
+	Uuid pulumi.StringOutput `pulumi:"uuid"`
+	// The Workspace where the repository resides.
+	Workspace pulumi.StringOutput `pulumi:"workspace"`
 }
 
 // NewPipelineSchedule registers a new resource with the given unique name, arguments, and options.
@@ -69,21 +125,33 @@ func GetPipelineSchedule(ctx *pulumi.Context,
 
 // Input properties used for looking up and filtering PipelineSchedule resources.
 type pipelineScheduleState struct {
-	CronPattern *string                 `pulumi:"cronPattern"`
-	Enabled     *bool                   `pulumi:"enabled"`
-	Repository  *string                 `pulumi:"repository"`
-	Target      *PipelineScheduleTarget `pulumi:"target"`
-	Uuid        *string                 `pulumi:"uuid"`
-	Workspace   *string                 `pulumi:"workspace"`
+	// The cron expression that the schedule applies.
+	CronPattern *string `pulumi:"cronPattern"`
+	// Whether the schedule is enabled.
+	Enabled *bool `pulumi:"enabled"`
+	// The Repository to create schedule in.
+	Repository *string `pulumi:"repository"`
+	// Schedule Target definition. See Target below.
+	Target *PipelineScheduleTarget `pulumi:"target"`
+	// The UUID identifying the schedule.
+	Uuid *string `pulumi:"uuid"`
+	// The Workspace where the repository resides.
+	Workspace *string `pulumi:"workspace"`
 }
 
 type PipelineScheduleState struct {
+	// The cron expression that the schedule applies.
 	CronPattern pulumi.StringPtrInput
-	Enabled     pulumi.BoolPtrInput
-	Repository  pulumi.StringPtrInput
-	Target      PipelineScheduleTargetPtrInput
-	Uuid        pulumi.StringPtrInput
-	Workspace   pulumi.StringPtrInput
+	// Whether the schedule is enabled.
+	Enabled pulumi.BoolPtrInput
+	// The Repository to create schedule in.
+	Repository pulumi.StringPtrInput
+	// Schedule Target definition. See Target below.
+	Target PipelineScheduleTargetPtrInput
+	// The UUID identifying the schedule.
+	Uuid pulumi.StringPtrInput
+	// The Workspace where the repository resides.
+	Workspace pulumi.StringPtrInput
 }
 
 func (PipelineScheduleState) ElementType() reflect.Type {
@@ -91,20 +159,30 @@ func (PipelineScheduleState) ElementType() reflect.Type {
 }
 
 type pipelineScheduleArgs struct {
-	CronPattern string                 `pulumi:"cronPattern"`
-	Enabled     bool                   `pulumi:"enabled"`
-	Repository  string                 `pulumi:"repository"`
-	Target      PipelineScheduleTarget `pulumi:"target"`
-	Workspace   string                 `pulumi:"workspace"`
+	// The cron expression that the schedule applies.
+	CronPattern string `pulumi:"cronPattern"`
+	// Whether the schedule is enabled.
+	Enabled bool `pulumi:"enabled"`
+	// The Repository to create schedule in.
+	Repository string `pulumi:"repository"`
+	// Schedule Target definition. See Target below.
+	Target PipelineScheduleTarget `pulumi:"target"`
+	// The Workspace where the repository resides.
+	Workspace string `pulumi:"workspace"`
 }
 
 // The set of arguments for constructing a PipelineSchedule resource.
 type PipelineScheduleArgs struct {
+	// The cron expression that the schedule applies.
 	CronPattern pulumi.StringInput
-	Enabled     pulumi.BoolInput
-	Repository  pulumi.StringInput
-	Target      PipelineScheduleTargetInput
-	Workspace   pulumi.StringInput
+	// Whether the schedule is enabled.
+	Enabled pulumi.BoolInput
+	// The Repository to create schedule in.
+	Repository pulumi.StringInput
+	// Schedule Target definition. See Target below.
+	Target PipelineScheduleTargetInput
+	// The Workspace where the repository resides.
+	Workspace pulumi.StringInput
 }
 
 func (PipelineScheduleArgs) ElementType() reflect.Type {
@@ -128,12 +206,6 @@ func (i *PipelineSchedule) ToPipelineScheduleOutput() PipelineScheduleOutput {
 
 func (i *PipelineSchedule) ToPipelineScheduleOutputWithContext(ctx context.Context) PipelineScheduleOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(PipelineScheduleOutput)
-}
-
-func (i *PipelineSchedule) ToOutput(ctx context.Context) pulumix.Output[*PipelineSchedule] {
-	return pulumix.Output[*PipelineSchedule]{
-		OutputState: i.ToPipelineScheduleOutputWithContext(ctx).OutputState,
-	}
 }
 
 // PipelineScheduleArrayInput is an input type that accepts PipelineScheduleArray and PipelineScheduleArrayOutput values.
@@ -161,12 +233,6 @@ func (i PipelineScheduleArray) ToPipelineScheduleArrayOutputWithContext(ctx cont
 	return pulumi.ToOutputWithContext(ctx, i).(PipelineScheduleArrayOutput)
 }
 
-func (i PipelineScheduleArray) ToOutput(ctx context.Context) pulumix.Output[[]*PipelineSchedule] {
-	return pulumix.Output[[]*PipelineSchedule]{
-		OutputState: i.ToPipelineScheduleArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 // PipelineScheduleMapInput is an input type that accepts PipelineScheduleMap and PipelineScheduleMapOutput values.
 // You can construct a concrete instance of `PipelineScheduleMapInput` via:
 //
@@ -192,12 +258,6 @@ func (i PipelineScheduleMap) ToPipelineScheduleMapOutputWithContext(ctx context.
 	return pulumi.ToOutputWithContext(ctx, i).(PipelineScheduleMapOutput)
 }
 
-func (i PipelineScheduleMap) ToOutput(ctx context.Context) pulumix.Output[map[string]*PipelineSchedule] {
-	return pulumix.Output[map[string]*PipelineSchedule]{
-		OutputState: i.ToPipelineScheduleMapOutputWithContext(ctx).OutputState,
-	}
-}
-
 type PipelineScheduleOutput struct{ *pulumi.OutputState }
 
 func (PipelineScheduleOutput) ElementType() reflect.Type {
@@ -212,32 +272,32 @@ func (o PipelineScheduleOutput) ToPipelineScheduleOutputWithContext(ctx context.
 	return o
 }
 
-func (o PipelineScheduleOutput) ToOutput(ctx context.Context) pulumix.Output[*PipelineSchedule] {
-	return pulumix.Output[*PipelineSchedule]{
-		OutputState: o.OutputState,
-	}
-}
-
+// The cron expression that the schedule applies.
 func (o PipelineScheduleOutput) CronPattern() pulumi.StringOutput {
 	return o.ApplyT(func(v *PipelineSchedule) pulumi.StringOutput { return v.CronPattern }).(pulumi.StringOutput)
 }
 
+// Whether the schedule is enabled.
 func (o PipelineScheduleOutput) Enabled() pulumi.BoolOutput {
 	return o.ApplyT(func(v *PipelineSchedule) pulumi.BoolOutput { return v.Enabled }).(pulumi.BoolOutput)
 }
 
+// The Repository to create schedule in.
 func (o PipelineScheduleOutput) Repository() pulumi.StringOutput {
 	return o.ApplyT(func(v *PipelineSchedule) pulumi.StringOutput { return v.Repository }).(pulumi.StringOutput)
 }
 
+// Schedule Target definition. See Target below.
 func (o PipelineScheduleOutput) Target() PipelineScheduleTargetOutput {
 	return o.ApplyT(func(v *PipelineSchedule) PipelineScheduleTargetOutput { return v.Target }).(PipelineScheduleTargetOutput)
 }
 
+// The UUID identifying the schedule.
 func (o PipelineScheduleOutput) Uuid() pulumi.StringOutput {
 	return o.ApplyT(func(v *PipelineSchedule) pulumi.StringOutput { return v.Uuid }).(pulumi.StringOutput)
 }
 
+// The Workspace where the repository resides.
 func (o PipelineScheduleOutput) Workspace() pulumi.StringOutput {
 	return o.ApplyT(func(v *PipelineSchedule) pulumi.StringOutput { return v.Workspace }).(pulumi.StringOutput)
 }
@@ -254,12 +314,6 @@ func (o PipelineScheduleArrayOutput) ToPipelineScheduleArrayOutput() PipelineSch
 
 func (o PipelineScheduleArrayOutput) ToPipelineScheduleArrayOutputWithContext(ctx context.Context) PipelineScheduleArrayOutput {
 	return o
-}
-
-func (o PipelineScheduleArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]*PipelineSchedule] {
-	return pulumix.Output[[]*PipelineSchedule]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o PipelineScheduleArrayOutput) Index(i pulumi.IntInput) PipelineScheduleOutput {
@@ -280,12 +334,6 @@ func (o PipelineScheduleMapOutput) ToPipelineScheduleMapOutput() PipelineSchedul
 
 func (o PipelineScheduleMapOutput) ToPipelineScheduleMapOutputWithContext(ctx context.Context) PipelineScheduleMapOutput {
 	return o
-}
-
-func (o PipelineScheduleMapOutput) ToOutput(ctx context.Context) pulumix.Output[map[string]*PipelineSchedule] {
-	return pulumix.Output[map[string]*PipelineSchedule]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o PipelineScheduleMapOutput) MapIndex(k pulumi.StringInput) PipelineScheduleOutput {

@@ -36,6 +36,9 @@ class GetGroupsResult:
     @property
     @pulumi.getter
     def groups(self) -> Sequence['outputs.GetGroupsGroupResult']:
+        """
+        The list of groups in the workspace. See Group below for structure of each element
+        """
         return pulumi.get(self, "groups")
 
     @property
@@ -66,7 +69,19 @@ class AwaitableGetGroupsResult(GetGroupsResult):
 def get_groups(workspace: Optional[str] = None,
                opts: Optional[pulumi.InvokeOptions] = None) -> AwaitableGetGroupsResult:
     """
-    Use this data source to access information about an existing resource.
+    Provides a way to fetch data of groups in a workspace.
+
+    ## Example Usage
+
+    ```python
+    import pulumi
+    import pulumi_bitbucket as bitbucket
+
+    example = bitbucket.get_groups(workspace="example")
+    ```
+
+
+    :param str workspace: The UUID that bitbucket groupss to connect a groups to various objects
     """
     __args__ = dict()
     __args__['workspace'] = workspace
@@ -83,6 +98,18 @@ def get_groups(workspace: Optional[str] = None,
 def get_groups_output(workspace: Optional[pulumi.Input[str]] = None,
                       opts: Optional[pulumi.InvokeOptions] = None) -> pulumi.Output[GetGroupsResult]:
     """
-    Use this data source to access information about an existing resource.
+    Provides a way to fetch data of groups in a workspace.
+
+    ## Example Usage
+
+    ```python
+    import pulumi
+    import pulumi_bitbucket as bitbucket
+
+    example = bitbucket.get_groups(workspace="example")
+    ```
+
+
+    :param str workspace: The UUID that bitbucket groupss to connect a groups to various objects
     """
     ...

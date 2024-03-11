@@ -34,6 +34,26 @@ class RepositoryArgs:
                  website: Optional[pulumi.Input[str]] = None):
         """
         The set of arguments for constructing a Repository resource.
+        :param pulumi.Input[str] owner: The owner of this repository. Can be you or any team you
+               have write access to.
+        :param pulumi.Input[str] description: What the description of the repo is.
+        :param pulumi.Input[str] fork_policy: What the fork policy should be. Defaults to
+               `allow_forks`. Valid values are `allow_forks`, `no_public_forks`, `no_forks`.
+        :param pulumi.Input[bool] has_issues: If this should have issues turned on or not.
+        :param pulumi.Input[bool] has_wiki: If this should have wiki turned on or not.
+        :param pulumi.Input[bool] inherit_branching_model: Whether to inherit branching model from project.
+        :param pulumi.Input[bool] inherit_default_merge_strategy: Whether to inherit default merge strategy from project.
+        :param pulumi.Input[bool] is_private: If this should be private or not. Defaults to `true`.
+        :param pulumi.Input[str] language: What the language of this repository should be.
+        :param pulumi.Input['RepositoryLinkArgs'] link: A set of links to a resource related to this object. See Link Below.
+        :param pulumi.Input[str] name: The name of the repository.
+        :param pulumi.Input[bool] pipelines_enabled: Turn on to enable pipelines support.
+        :param pulumi.Input[str] project_key: If you want to have this repo associated with a
+               project.
+        :param pulumi.Input[str] scm: What SCM you want to use. Valid options are `hg` or `git`.
+               Defaults to `git`.
+        :param pulumi.Input[str] slug: The slug of the repository.
+        :param pulumi.Input[str] website: URL of website associated with this repository.
         """
         pulumi.set(__self__, "owner", owner)
         if description is not None:
@@ -70,6 +90,10 @@ class RepositoryArgs:
     @property
     @pulumi.getter
     def owner(self) -> pulumi.Input[str]:
+        """
+        The owner of this repository. Can be you or any team you
+        have write access to.
+        """
         return pulumi.get(self, "owner")
 
     @owner.setter
@@ -79,6 +103,9 @@ class RepositoryArgs:
     @property
     @pulumi.getter
     def description(self) -> Optional[pulumi.Input[str]]:
+        """
+        What the description of the repo is.
+        """
         return pulumi.get(self, "description")
 
     @description.setter
@@ -88,6 +115,10 @@ class RepositoryArgs:
     @property
     @pulumi.getter(name="forkPolicy")
     def fork_policy(self) -> Optional[pulumi.Input[str]]:
+        """
+        What the fork policy should be. Defaults to
+        `allow_forks`. Valid values are `allow_forks`, `no_public_forks`, `no_forks`.
+        """
         return pulumi.get(self, "fork_policy")
 
     @fork_policy.setter
@@ -97,6 +128,9 @@ class RepositoryArgs:
     @property
     @pulumi.getter(name="hasIssues")
     def has_issues(self) -> Optional[pulumi.Input[bool]]:
+        """
+        If this should have issues turned on or not.
+        """
         return pulumi.get(self, "has_issues")
 
     @has_issues.setter
@@ -106,6 +140,9 @@ class RepositoryArgs:
     @property
     @pulumi.getter(name="hasWiki")
     def has_wiki(self) -> Optional[pulumi.Input[bool]]:
+        """
+        If this should have wiki turned on or not.
+        """
         return pulumi.get(self, "has_wiki")
 
     @has_wiki.setter
@@ -115,6 +152,9 @@ class RepositoryArgs:
     @property
     @pulumi.getter(name="inheritBranchingModel")
     def inherit_branching_model(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Whether to inherit branching model from project.
+        """
         return pulumi.get(self, "inherit_branching_model")
 
     @inherit_branching_model.setter
@@ -124,6 +164,9 @@ class RepositoryArgs:
     @property
     @pulumi.getter(name="inheritDefaultMergeStrategy")
     def inherit_default_merge_strategy(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Whether to inherit default merge strategy from project.
+        """
         return pulumi.get(self, "inherit_default_merge_strategy")
 
     @inherit_default_merge_strategy.setter
@@ -133,6 +176,9 @@ class RepositoryArgs:
     @property
     @pulumi.getter(name="isPrivate")
     def is_private(self) -> Optional[pulumi.Input[bool]]:
+        """
+        If this should be private or not. Defaults to `true`.
+        """
         return pulumi.get(self, "is_private")
 
     @is_private.setter
@@ -142,6 +188,9 @@ class RepositoryArgs:
     @property
     @pulumi.getter
     def language(self) -> Optional[pulumi.Input[str]]:
+        """
+        What the language of this repository should be.
+        """
         return pulumi.get(self, "language")
 
     @language.setter
@@ -151,6 +200,9 @@ class RepositoryArgs:
     @property
     @pulumi.getter
     def link(self) -> Optional[pulumi.Input['RepositoryLinkArgs']]:
+        """
+        A set of links to a resource related to this object. See Link Below.
+        """
         return pulumi.get(self, "link")
 
     @link.setter
@@ -160,6 +212,9 @@ class RepositoryArgs:
     @property
     @pulumi.getter
     def name(self) -> Optional[pulumi.Input[str]]:
+        """
+        The name of the repository.
+        """
         return pulumi.get(self, "name")
 
     @name.setter
@@ -169,6 +224,9 @@ class RepositoryArgs:
     @property
     @pulumi.getter(name="pipelinesEnabled")
     def pipelines_enabled(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Turn on to enable pipelines support.
+        """
         return pulumi.get(self, "pipelines_enabled")
 
     @pipelines_enabled.setter
@@ -178,6 +236,10 @@ class RepositoryArgs:
     @property
     @pulumi.getter(name="projectKey")
     def project_key(self) -> Optional[pulumi.Input[str]]:
+        """
+        If you want to have this repo associated with a
+        project.
+        """
         return pulumi.get(self, "project_key")
 
     @project_key.setter
@@ -187,6 +249,10 @@ class RepositoryArgs:
     @property
     @pulumi.getter
     def scm(self) -> Optional[pulumi.Input[str]]:
+        """
+        What SCM you want to use. Valid options are `hg` or `git`.
+        Defaults to `git`.
+        """
         return pulumi.get(self, "scm")
 
     @scm.setter
@@ -196,6 +262,9 @@ class RepositoryArgs:
     @property
     @pulumi.getter
     def slug(self) -> Optional[pulumi.Input[str]]:
+        """
+        The slug of the repository.
+        """
         return pulumi.get(self, "slug")
 
     @slug.setter
@@ -205,6 +274,9 @@ class RepositoryArgs:
     @property
     @pulumi.getter
     def website(self) -> Optional[pulumi.Input[str]]:
+        """
+        URL of website associated with this repository.
+        """
         return pulumi.get(self, "website")
 
     @website.setter
@@ -236,6 +308,29 @@ class _RepositoryState:
                  website: Optional[pulumi.Input[str]] = None):
         """
         Input properties used for looking up and filtering Repository resources.
+        :param pulumi.Input[str] clone_https: The HTTPS clone URL.
+        :param pulumi.Input[str] clone_ssh: The SSH clone URL.
+        :param pulumi.Input[str] description: What the description of the repo is.
+        :param pulumi.Input[str] fork_policy: What the fork policy should be. Defaults to
+               `allow_forks`. Valid values are `allow_forks`, `no_public_forks`, `no_forks`.
+        :param pulumi.Input[bool] has_issues: If this should have issues turned on or not.
+        :param pulumi.Input[bool] has_wiki: If this should have wiki turned on or not.
+        :param pulumi.Input[bool] inherit_branching_model: Whether to inherit branching model from project.
+        :param pulumi.Input[bool] inherit_default_merge_strategy: Whether to inherit default merge strategy from project.
+        :param pulumi.Input[bool] is_private: If this should be private or not. Defaults to `true`.
+        :param pulumi.Input[str] language: What the language of this repository should be.
+        :param pulumi.Input['RepositoryLinkArgs'] link: A set of links to a resource related to this object. See Link Below.
+        :param pulumi.Input[str] name: The name of the repository.
+        :param pulumi.Input[str] owner: The owner of this repository. Can be you or any team you
+               have write access to.
+        :param pulumi.Input[bool] pipelines_enabled: Turn on to enable pipelines support.
+        :param pulumi.Input[str] project_key: If you want to have this repo associated with a
+               project.
+        :param pulumi.Input[str] scm: What SCM you want to use. Valid options are `hg` or `git`.
+               Defaults to `git`.
+        :param pulumi.Input[str] slug: The slug of the repository.
+        :param pulumi.Input[str] uuid: the uuid of the repository resource.
+        :param pulumi.Input[str] website: URL of website associated with this repository.
         """
         if clone_https is not None:
             pulumi.set(__self__, "clone_https", clone_https)
@@ -279,6 +374,9 @@ class _RepositoryState:
     @property
     @pulumi.getter(name="cloneHttps")
     def clone_https(self) -> Optional[pulumi.Input[str]]:
+        """
+        The HTTPS clone URL.
+        """
         return pulumi.get(self, "clone_https")
 
     @clone_https.setter
@@ -288,6 +386,9 @@ class _RepositoryState:
     @property
     @pulumi.getter(name="cloneSsh")
     def clone_ssh(self) -> Optional[pulumi.Input[str]]:
+        """
+        The SSH clone URL.
+        """
         return pulumi.get(self, "clone_ssh")
 
     @clone_ssh.setter
@@ -297,6 +398,9 @@ class _RepositoryState:
     @property
     @pulumi.getter
     def description(self) -> Optional[pulumi.Input[str]]:
+        """
+        What the description of the repo is.
+        """
         return pulumi.get(self, "description")
 
     @description.setter
@@ -306,6 +410,10 @@ class _RepositoryState:
     @property
     @pulumi.getter(name="forkPolicy")
     def fork_policy(self) -> Optional[pulumi.Input[str]]:
+        """
+        What the fork policy should be. Defaults to
+        `allow_forks`. Valid values are `allow_forks`, `no_public_forks`, `no_forks`.
+        """
         return pulumi.get(self, "fork_policy")
 
     @fork_policy.setter
@@ -315,6 +423,9 @@ class _RepositoryState:
     @property
     @pulumi.getter(name="hasIssues")
     def has_issues(self) -> Optional[pulumi.Input[bool]]:
+        """
+        If this should have issues turned on or not.
+        """
         return pulumi.get(self, "has_issues")
 
     @has_issues.setter
@@ -324,6 +435,9 @@ class _RepositoryState:
     @property
     @pulumi.getter(name="hasWiki")
     def has_wiki(self) -> Optional[pulumi.Input[bool]]:
+        """
+        If this should have wiki turned on or not.
+        """
         return pulumi.get(self, "has_wiki")
 
     @has_wiki.setter
@@ -333,6 +447,9 @@ class _RepositoryState:
     @property
     @pulumi.getter(name="inheritBranchingModel")
     def inherit_branching_model(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Whether to inherit branching model from project.
+        """
         return pulumi.get(self, "inherit_branching_model")
 
     @inherit_branching_model.setter
@@ -342,6 +459,9 @@ class _RepositoryState:
     @property
     @pulumi.getter(name="inheritDefaultMergeStrategy")
     def inherit_default_merge_strategy(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Whether to inherit default merge strategy from project.
+        """
         return pulumi.get(self, "inherit_default_merge_strategy")
 
     @inherit_default_merge_strategy.setter
@@ -351,6 +471,9 @@ class _RepositoryState:
     @property
     @pulumi.getter(name="isPrivate")
     def is_private(self) -> Optional[pulumi.Input[bool]]:
+        """
+        If this should be private or not. Defaults to `true`.
+        """
         return pulumi.get(self, "is_private")
 
     @is_private.setter
@@ -360,6 +483,9 @@ class _RepositoryState:
     @property
     @pulumi.getter
     def language(self) -> Optional[pulumi.Input[str]]:
+        """
+        What the language of this repository should be.
+        """
         return pulumi.get(self, "language")
 
     @language.setter
@@ -369,6 +495,9 @@ class _RepositoryState:
     @property
     @pulumi.getter
     def link(self) -> Optional[pulumi.Input['RepositoryLinkArgs']]:
+        """
+        A set of links to a resource related to this object. See Link Below.
+        """
         return pulumi.get(self, "link")
 
     @link.setter
@@ -378,6 +507,9 @@ class _RepositoryState:
     @property
     @pulumi.getter
     def name(self) -> Optional[pulumi.Input[str]]:
+        """
+        The name of the repository.
+        """
         return pulumi.get(self, "name")
 
     @name.setter
@@ -387,6 +519,10 @@ class _RepositoryState:
     @property
     @pulumi.getter
     def owner(self) -> Optional[pulumi.Input[str]]:
+        """
+        The owner of this repository. Can be you or any team you
+        have write access to.
+        """
         return pulumi.get(self, "owner")
 
     @owner.setter
@@ -396,6 +532,9 @@ class _RepositoryState:
     @property
     @pulumi.getter(name="pipelinesEnabled")
     def pipelines_enabled(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Turn on to enable pipelines support.
+        """
         return pulumi.get(self, "pipelines_enabled")
 
     @pipelines_enabled.setter
@@ -405,6 +544,10 @@ class _RepositoryState:
     @property
     @pulumi.getter(name="projectKey")
     def project_key(self) -> Optional[pulumi.Input[str]]:
+        """
+        If you want to have this repo associated with a
+        project.
+        """
         return pulumi.get(self, "project_key")
 
     @project_key.setter
@@ -414,6 +557,10 @@ class _RepositoryState:
     @property
     @pulumi.getter
     def scm(self) -> Optional[pulumi.Input[str]]:
+        """
+        What SCM you want to use. Valid options are `hg` or `git`.
+        Defaults to `git`.
+        """
         return pulumi.get(self, "scm")
 
     @scm.setter
@@ -423,6 +570,9 @@ class _RepositoryState:
     @property
     @pulumi.getter
     def slug(self) -> Optional[pulumi.Input[str]]:
+        """
+        The slug of the repository.
+        """
         return pulumi.get(self, "slug")
 
     @slug.setter
@@ -432,6 +582,9 @@ class _RepositoryState:
     @property
     @pulumi.getter
     def uuid(self) -> Optional[pulumi.Input[str]]:
+        """
+        the uuid of the repository resource.
+        """
         return pulumi.get(self, "uuid")
 
     @uuid.setter
@@ -441,6 +594,9 @@ class _RepositoryState:
     @property
     @pulumi.getter
     def website(self) -> Optional[pulumi.Input[str]]:
+        """
+        URL of website associated with this repository.
+        """
         return pulumi.get(self, "website")
 
     @website.setter
@@ -471,9 +627,64 @@ class Repository(pulumi.CustomResource):
                  website: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         """
-        Create a Repository resource with the given unique name, props, and options.
+        Provides a Bitbucket repository resource.
+
+        This resource allows you manage your repositories such as scm type, if it is
+        private, how to fork the repository and other options.
+
+        OAuth2 Scopes: `repository`, `repository:admin`, and `repository:delete`
+
+        ## Example Usage
+
+        ```python
+        import pulumi
+        import pulumi_bitbucket as bitbucket
+
+        infrastructure = bitbucket.Repository("infrastructure", owner="myteam")
+        ```
+
+        If you want to create a repository with a CamelCase name, you should provide
+        a separate slug
+
+        ```python
+        import pulumi
+        import pulumi_bitbucket as bitbucket
+
+        infrastructure = bitbucket.Repository("infrastructure",
+            owner="myteam",
+            slug="terraform-code")
+        ```
+
+        ## Import
+
+        Repositories can be imported using their `owner/name` ID, e.g.
+
+        ```sh
+         $ pulumi import bitbucket:index/repository:Repository my-repo my-account/my-repo
+        ```
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[str] description: What the description of the repo is.
+        :param pulumi.Input[str] fork_policy: What the fork policy should be. Defaults to
+               `allow_forks`. Valid values are `allow_forks`, `no_public_forks`, `no_forks`.
+        :param pulumi.Input[bool] has_issues: If this should have issues turned on or not.
+        :param pulumi.Input[bool] has_wiki: If this should have wiki turned on or not.
+        :param pulumi.Input[bool] inherit_branching_model: Whether to inherit branching model from project.
+        :param pulumi.Input[bool] inherit_default_merge_strategy: Whether to inherit default merge strategy from project.
+        :param pulumi.Input[bool] is_private: If this should be private or not. Defaults to `true`.
+        :param pulumi.Input[str] language: What the language of this repository should be.
+        :param pulumi.Input[pulumi.InputType['RepositoryLinkArgs']] link: A set of links to a resource related to this object. See Link Below.
+        :param pulumi.Input[str] name: The name of the repository.
+        :param pulumi.Input[str] owner: The owner of this repository. Can be you or any team you
+               have write access to.
+        :param pulumi.Input[bool] pipelines_enabled: Turn on to enable pipelines support.
+        :param pulumi.Input[str] project_key: If you want to have this repo associated with a
+               project.
+        :param pulumi.Input[str] scm: What SCM you want to use. Valid options are `hg` or `git`.
+               Defaults to `git`.
+        :param pulumi.Input[str] slug: The slug of the repository.
+        :param pulumi.Input[str] website: URL of website associated with this repository.
         """
         ...
     @overload
@@ -482,7 +693,42 @@ class Repository(pulumi.CustomResource):
                  args: RepositoryArgs,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
-        Create a Repository resource with the given unique name, props, and options.
+        Provides a Bitbucket repository resource.
+
+        This resource allows you manage your repositories such as scm type, if it is
+        private, how to fork the repository and other options.
+
+        OAuth2 Scopes: `repository`, `repository:admin`, and `repository:delete`
+
+        ## Example Usage
+
+        ```python
+        import pulumi
+        import pulumi_bitbucket as bitbucket
+
+        infrastructure = bitbucket.Repository("infrastructure", owner="myteam")
+        ```
+
+        If you want to create a repository with a CamelCase name, you should provide
+        a separate slug
+
+        ```python
+        import pulumi
+        import pulumi_bitbucket as bitbucket
+
+        infrastructure = bitbucket.Repository("infrastructure",
+            owner="myteam",
+            slug="terraform-code")
+        ```
+
+        ## Import
+
+        Repositories can be imported using their `owner/name` ID, e.g.
+
+        ```sh
+         $ pulumi import bitbucket:index/repository:Repository my-repo my-account/my-repo
+        ```
+
         :param str resource_name: The name of the resource.
         :param RepositoryArgs args: The arguments to use to populate this resource's properties.
         :param pulumi.ResourceOptions opts: Options for the resource.
@@ -580,6 +826,29 @@ class Repository(pulumi.CustomResource):
         :param str resource_name: The unique name of the resulting resource.
         :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[str] clone_https: The HTTPS clone URL.
+        :param pulumi.Input[str] clone_ssh: The SSH clone URL.
+        :param pulumi.Input[str] description: What the description of the repo is.
+        :param pulumi.Input[str] fork_policy: What the fork policy should be. Defaults to
+               `allow_forks`. Valid values are `allow_forks`, `no_public_forks`, `no_forks`.
+        :param pulumi.Input[bool] has_issues: If this should have issues turned on or not.
+        :param pulumi.Input[bool] has_wiki: If this should have wiki turned on or not.
+        :param pulumi.Input[bool] inherit_branching_model: Whether to inherit branching model from project.
+        :param pulumi.Input[bool] inherit_default_merge_strategy: Whether to inherit default merge strategy from project.
+        :param pulumi.Input[bool] is_private: If this should be private or not. Defaults to `true`.
+        :param pulumi.Input[str] language: What the language of this repository should be.
+        :param pulumi.Input[pulumi.InputType['RepositoryLinkArgs']] link: A set of links to a resource related to this object. See Link Below.
+        :param pulumi.Input[str] name: The name of the repository.
+        :param pulumi.Input[str] owner: The owner of this repository. Can be you or any team you
+               have write access to.
+        :param pulumi.Input[bool] pipelines_enabled: Turn on to enable pipelines support.
+        :param pulumi.Input[str] project_key: If you want to have this repo associated with a
+               project.
+        :param pulumi.Input[str] scm: What SCM you want to use. Valid options are `hg` or `git`.
+               Defaults to `git`.
+        :param pulumi.Input[str] slug: The slug of the repository.
+        :param pulumi.Input[str] uuid: the uuid of the repository resource.
+        :param pulumi.Input[str] website: URL of website associated with this repository.
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
 
@@ -609,95 +878,156 @@ class Repository(pulumi.CustomResource):
     @property
     @pulumi.getter(name="cloneHttps")
     def clone_https(self) -> pulumi.Output[str]:
+        """
+        The HTTPS clone URL.
+        """
         return pulumi.get(self, "clone_https")
 
     @property
     @pulumi.getter(name="cloneSsh")
     def clone_ssh(self) -> pulumi.Output[str]:
+        """
+        The SSH clone URL.
+        """
         return pulumi.get(self, "clone_ssh")
 
     @property
     @pulumi.getter
     def description(self) -> pulumi.Output[Optional[str]]:
+        """
+        What the description of the repo is.
+        """
         return pulumi.get(self, "description")
 
     @property
     @pulumi.getter(name="forkPolicy")
     def fork_policy(self) -> pulumi.Output[Optional[str]]:
+        """
+        What the fork policy should be. Defaults to
+        `allow_forks`. Valid values are `allow_forks`, `no_public_forks`, `no_forks`.
+        """
         return pulumi.get(self, "fork_policy")
 
     @property
     @pulumi.getter(name="hasIssues")
     def has_issues(self) -> pulumi.Output[Optional[bool]]:
+        """
+        If this should have issues turned on or not.
+        """
         return pulumi.get(self, "has_issues")
 
     @property
     @pulumi.getter(name="hasWiki")
     def has_wiki(self) -> pulumi.Output[Optional[bool]]:
+        """
+        If this should have wiki turned on or not.
+        """
         return pulumi.get(self, "has_wiki")
 
     @property
     @pulumi.getter(name="inheritBranchingModel")
     def inherit_branching_model(self) -> pulumi.Output[bool]:
+        """
+        Whether to inherit branching model from project.
+        """
         return pulumi.get(self, "inherit_branching_model")
 
     @property
     @pulumi.getter(name="inheritDefaultMergeStrategy")
     def inherit_default_merge_strategy(self) -> pulumi.Output[bool]:
+        """
+        Whether to inherit default merge strategy from project.
+        """
         return pulumi.get(self, "inherit_default_merge_strategy")
 
     @property
     @pulumi.getter(name="isPrivate")
     def is_private(self) -> pulumi.Output[Optional[bool]]:
+        """
+        If this should be private or not. Defaults to `true`.
+        """
         return pulumi.get(self, "is_private")
 
     @property
     @pulumi.getter
     def language(self) -> pulumi.Output[Optional[str]]:
+        """
+        What the language of this repository should be.
+        """
         return pulumi.get(self, "language")
 
     @property
     @pulumi.getter
     def link(self) -> pulumi.Output['outputs.RepositoryLink']:
+        """
+        A set of links to a resource related to this object. See Link Below.
+        """
         return pulumi.get(self, "link")
 
     @property
     @pulumi.getter
     def name(self) -> pulumi.Output[str]:
+        """
+        The name of the repository.
+        """
         return pulumi.get(self, "name")
 
     @property
     @pulumi.getter
     def owner(self) -> pulumi.Output[str]:
+        """
+        The owner of this repository. Can be you or any team you
+        have write access to.
+        """
         return pulumi.get(self, "owner")
 
     @property
     @pulumi.getter(name="pipelinesEnabled")
     def pipelines_enabled(self) -> pulumi.Output[Optional[bool]]:
+        """
+        Turn on to enable pipelines support.
+        """
         return pulumi.get(self, "pipelines_enabled")
 
     @property
     @pulumi.getter(name="projectKey")
     def project_key(self) -> pulumi.Output[str]:
+        """
+        If you want to have this repo associated with a
+        project.
+        """
         return pulumi.get(self, "project_key")
 
     @property
     @pulumi.getter
     def scm(self) -> pulumi.Output[Optional[str]]:
+        """
+        What SCM you want to use. Valid options are `hg` or `git`.
+        Defaults to `git`.
+        """
         return pulumi.get(self, "scm")
 
     @property
     @pulumi.getter
     def slug(self) -> pulumi.Output[str]:
+        """
+        The slug of the repository.
+        """
         return pulumi.get(self, "slug")
 
     @property
     @pulumi.getter
     def uuid(self) -> pulumi.Output[str]:
+        """
+        the uuid of the repository resource.
+        """
         return pulumi.get(self, "uuid")
 
     @property
     @pulumi.getter
     def website(self) -> pulumi.Output[Optional[str]]:
+        """
+        URL of website associated with this repository.
+        """
         return pulumi.get(self, "website")
 

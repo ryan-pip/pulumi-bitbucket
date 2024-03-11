@@ -20,6 +20,10 @@ class DeployKeyArgs:
                  label: Optional[pulumi.Input[str]] = None):
         """
         The set of arguments for constructing a DeployKey resource.
+        :param pulumi.Input[str] repository: The Repository to create deploy key in.
+        :param pulumi.Input[str] workspace: The Workspace where the repository resides.
+        :param pulumi.Input[str] key: The SSH public key value in OpenSSH format.
+        :param pulumi.Input[str] label: The user-defined label for the Deploy key
         """
         pulumi.set(__self__, "repository", repository)
         pulumi.set(__self__, "workspace", workspace)
@@ -31,6 +35,9 @@ class DeployKeyArgs:
     @property
     @pulumi.getter
     def repository(self) -> pulumi.Input[str]:
+        """
+        The Repository to create deploy key in.
+        """
         return pulumi.get(self, "repository")
 
     @repository.setter
@@ -40,6 +47,9 @@ class DeployKeyArgs:
     @property
     @pulumi.getter
     def workspace(self) -> pulumi.Input[str]:
+        """
+        The Workspace where the repository resides.
+        """
         return pulumi.get(self, "workspace")
 
     @workspace.setter
@@ -49,6 +59,9 @@ class DeployKeyArgs:
     @property
     @pulumi.getter
     def key(self) -> Optional[pulumi.Input[str]]:
+        """
+        The SSH public key value in OpenSSH format.
+        """
         return pulumi.get(self, "key")
 
     @key.setter
@@ -58,6 +71,9 @@ class DeployKeyArgs:
     @property
     @pulumi.getter
     def label(self) -> Optional[pulumi.Input[str]]:
+        """
+        The user-defined label for the Deploy key
+        """
         return pulumi.get(self, "label")
 
     @label.setter
@@ -76,6 +92,12 @@ class _DeployKeyState:
                  workspace: Optional[pulumi.Input[str]] = None):
         """
         Input properties used for looking up and filtering DeployKey resources.
+        :param pulumi.Input[str] comment: The comment parsed from the Deploy key (if present)
+        :param pulumi.Input[str] key: The SSH public key value in OpenSSH format.
+        :param pulumi.Input[str] key_id: The Deploy key's ID.
+        :param pulumi.Input[str] label: The user-defined label for the Deploy key
+        :param pulumi.Input[str] repository: The Repository to create deploy key in.
+        :param pulumi.Input[str] workspace: The Workspace where the repository resides.
         """
         if comment is not None:
             pulumi.set(__self__, "comment", comment)
@@ -93,6 +115,9 @@ class _DeployKeyState:
     @property
     @pulumi.getter
     def comment(self) -> Optional[pulumi.Input[str]]:
+        """
+        The comment parsed from the Deploy key (if present)
+        """
         return pulumi.get(self, "comment")
 
     @comment.setter
@@ -102,6 +127,9 @@ class _DeployKeyState:
     @property
     @pulumi.getter
     def key(self) -> Optional[pulumi.Input[str]]:
+        """
+        The SSH public key value in OpenSSH format.
+        """
         return pulumi.get(self, "key")
 
     @key.setter
@@ -111,6 +139,9 @@ class _DeployKeyState:
     @property
     @pulumi.getter(name="keyId")
     def key_id(self) -> Optional[pulumi.Input[str]]:
+        """
+        The Deploy key's ID.
+        """
         return pulumi.get(self, "key_id")
 
     @key_id.setter
@@ -120,6 +151,9 @@ class _DeployKeyState:
     @property
     @pulumi.getter
     def label(self) -> Optional[pulumi.Input[str]]:
+        """
+        The user-defined label for the Deploy key
+        """
         return pulumi.get(self, "label")
 
     @label.setter
@@ -129,6 +163,9 @@ class _DeployKeyState:
     @property
     @pulumi.getter
     def repository(self) -> Optional[pulumi.Input[str]]:
+        """
+        The Repository to create deploy key in.
+        """
         return pulumi.get(self, "repository")
 
     @repository.setter
@@ -138,6 +175,9 @@ class _DeployKeyState:
     @property
     @pulumi.getter
     def workspace(self) -> Optional[pulumi.Input[str]]:
+        """
+        The Workspace where the repository resides.
+        """
         return pulumi.get(self, "workspace")
 
     @workspace.setter
@@ -156,9 +196,39 @@ class DeployKey(pulumi.CustomResource):
                  workspace: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         """
-        Create a DeployKey resource with the given unique name, props, and options.
+        Provides a Bitbucket Deploy Key resource.
+
+        This allows you to manage your Deploy Keys for a repository.
+
+        OAuth2 Scopes: `repository` and `repository:admin`
+
+        ## Example Usage
+
+        ```python
+        import pulumi
+        import pulumi_bitbucket as bitbucket
+
+        test = bitbucket.DeployKey("test",
+            key="ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKqP3Cr632C2dNhhgKVcon4ldUSAeKiku2yP9O9/bDtY",
+            label="test-key",
+            repository="example",
+            workspace="example")
+        ```
+
+        ## Import
+
+        Deploy Keys can be imported using their `workspace/repo-slug/key-id` ID, e.g.
+
+        ```sh
+         $ pulumi import bitbucket:index/deployKey:DeployKey key workspace/repo-slug/key-id
+        ```
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[str] key: The SSH public key value in OpenSSH format.
+        :param pulumi.Input[str] label: The user-defined label for the Deploy key
+        :param pulumi.Input[str] repository: The Repository to create deploy key in.
+        :param pulumi.Input[str] workspace: The Workspace where the repository resides.
         """
         ...
     @overload
@@ -167,7 +237,33 @@ class DeployKey(pulumi.CustomResource):
                  args: DeployKeyArgs,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
-        Create a DeployKey resource with the given unique name, props, and options.
+        Provides a Bitbucket Deploy Key resource.
+
+        This allows you to manage your Deploy Keys for a repository.
+
+        OAuth2 Scopes: `repository` and `repository:admin`
+
+        ## Example Usage
+
+        ```python
+        import pulumi
+        import pulumi_bitbucket as bitbucket
+
+        test = bitbucket.DeployKey("test",
+            key="ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKqP3Cr632C2dNhhgKVcon4ldUSAeKiku2yP9O9/bDtY",
+            label="test-key",
+            repository="example",
+            workspace="example")
+        ```
+
+        ## Import
+
+        Deploy Keys can be imported using their `workspace/repo-slug/key-id` ID, e.g.
+
+        ```sh
+         $ pulumi import bitbucket:index/deployKey:DeployKey key workspace/repo-slug/key-id
+        ```
+
         :param str resource_name: The name of the resource.
         :param DeployKeyArgs args: The arguments to use to populate this resource's properties.
         :param pulumi.ResourceOptions opts: Options for the resource.
@@ -229,6 +325,12 @@ class DeployKey(pulumi.CustomResource):
         :param str resource_name: The unique name of the resulting resource.
         :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[str] comment: The comment parsed from the Deploy key (if present)
+        :param pulumi.Input[str] key: The SSH public key value in OpenSSH format.
+        :param pulumi.Input[str] key_id: The Deploy key's ID.
+        :param pulumi.Input[str] label: The user-defined label for the Deploy key
+        :param pulumi.Input[str] repository: The Repository to create deploy key in.
+        :param pulumi.Input[str] workspace: The Workspace where the repository resides.
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
 
@@ -245,30 +347,48 @@ class DeployKey(pulumi.CustomResource):
     @property
     @pulumi.getter
     def comment(self) -> pulumi.Output[str]:
+        """
+        The comment parsed from the Deploy key (if present)
+        """
         return pulumi.get(self, "comment")
 
     @property
     @pulumi.getter
     def key(self) -> pulumi.Output[Optional[str]]:
+        """
+        The SSH public key value in OpenSSH format.
+        """
         return pulumi.get(self, "key")
 
     @property
     @pulumi.getter(name="keyId")
     def key_id(self) -> pulumi.Output[str]:
+        """
+        The Deploy key's ID.
+        """
         return pulumi.get(self, "key_id")
 
     @property
     @pulumi.getter
     def label(self) -> pulumi.Output[Optional[str]]:
+        """
+        The user-defined label for the Deploy key
+        """
         return pulumi.get(self, "label")
 
     @property
     @pulumi.getter
     def repository(self) -> pulumi.Output[str]:
+        """
+        The Repository to create deploy key in.
+        """
         return pulumi.get(self, "repository")
 
     @property
     @pulumi.getter
     def workspace(self) -> pulumi.Output[str]:
+        """
+        The Workspace where the repository resides.
+        """
         return pulumi.get(self, "workspace")
 

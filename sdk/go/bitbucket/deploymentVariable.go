@@ -9,18 +9,78 @@ import (
 
 	"errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket/internal"
 )
 
+// This resource allows you to configure deployment variables.
+//
+// OAuth2 Scopes: `none`
+//
+// ## Example Usage
+//
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			monorepo, err := bitbucket.NewRepository(ctx, "monorepo", &bitbucket.RepositoryArgs{
+//				Owner:            pulumi.String("gob"),
+//				PipelinesEnabled: pulumi.Bool(true),
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			test, err := bitbucket.NewDeployment(ctx, "test", &bitbucket.DeploymentArgs{
+//				Repository: monorepo.ID(),
+//				Stage:      pulumi.String("Test"),
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			_, err = bitbucket.NewDeploymentVariable(ctx, "country", &bitbucket.DeploymentVariableArgs{
+//				Deployment: test.ID(),
+//				Key:        pulumi.String("COUNTRY"),
+//				Value:      pulumi.String("Kenya"),
+//				Secured:    pulumi.Bool(false),
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
+//
+// ## Import
+//
+// Deployment Variables can be imported using their `deployment-id/uuid` ID, e.g.
+//
+// ```sh
+//
+//	$ pulumi import bitbucket:index/deploymentVariable:DeploymentVariable example deployment-id/uuid
+//
+// ```
 type DeploymentVariable struct {
 	pulumi.CustomResourceState
 
-	Deployment pulumi.StringOutput  `pulumi:"deployment"`
-	Key        pulumi.StringOutput  `pulumi:"key"`
-	Secured    pulumi.BoolPtrOutput `pulumi:"secured"`
-	Uuid       pulumi.StringOutput  `pulumi:"uuid"`
-	Value      pulumi.StringOutput  `pulumi:"value"`
+	// The deployment ID you want to assign this variable to.
+	Deployment pulumi.StringOutput `pulumi:"deployment"`
+	// The unique name of the variable.
+	Key pulumi.StringOutput `pulumi:"key"`
+	// If true, this variable will be treated as secured. The value will never be exposed in the logs or the REST API.
+	Secured pulumi.BoolPtrOutput `pulumi:"secured"`
+	// (Computed) The UUID identifying the variable.
+	Uuid pulumi.StringOutput `pulumi:"uuid"`
+	// The value of the variable.
+	Value pulumi.StringOutput `pulumi:"value"`
 }
 
 // NewDeploymentVariable registers a new resource with the given unique name, arguments, and options.
@@ -69,19 +129,29 @@ func GetDeploymentVariable(ctx *pulumi.Context,
 
 // Input properties used for looking up and filtering DeploymentVariable resources.
 type deploymentVariableState struct {
+	// The deployment ID you want to assign this variable to.
 	Deployment *string `pulumi:"deployment"`
-	Key        *string `pulumi:"key"`
-	Secured    *bool   `pulumi:"secured"`
-	Uuid       *string `pulumi:"uuid"`
-	Value      *string `pulumi:"value"`
+	// The unique name of the variable.
+	Key *string `pulumi:"key"`
+	// If true, this variable will be treated as secured. The value will never be exposed in the logs or the REST API.
+	Secured *bool `pulumi:"secured"`
+	// (Computed) The UUID identifying the variable.
+	Uuid *string `pulumi:"uuid"`
+	// The value of the variable.
+	Value *string `pulumi:"value"`
 }
 
 type DeploymentVariableState struct {
+	// The deployment ID you want to assign this variable to.
 	Deployment pulumi.StringPtrInput
-	Key        pulumi.StringPtrInput
-	Secured    pulumi.BoolPtrInput
-	Uuid       pulumi.StringPtrInput
-	Value      pulumi.StringPtrInput
+	// The unique name of the variable.
+	Key pulumi.StringPtrInput
+	// If true, this variable will be treated as secured. The value will never be exposed in the logs or the REST API.
+	Secured pulumi.BoolPtrInput
+	// (Computed) The UUID identifying the variable.
+	Uuid pulumi.StringPtrInput
+	// The value of the variable.
+	Value pulumi.StringPtrInput
 }
 
 func (DeploymentVariableState) ElementType() reflect.Type {
@@ -89,18 +159,26 @@ func (DeploymentVariableState) ElementType() reflect.Type {
 }
 
 type deploymentVariableArgs struct {
+	// The deployment ID you want to assign this variable to.
 	Deployment string `pulumi:"deployment"`
-	Key        string `pulumi:"key"`
-	Secured    *bool  `pulumi:"secured"`
-	Value      string `pulumi:"value"`
+	// The unique name of the variable.
+	Key string `pulumi:"key"`
+	// If true, this variable will be treated as secured. The value will never be exposed in the logs or the REST API.
+	Secured *bool `pulumi:"secured"`
+	// The value of the variable.
+	Value string `pulumi:"value"`
 }
 
 // The set of arguments for constructing a DeploymentVariable resource.
 type DeploymentVariableArgs struct {
+	// The deployment ID you want to assign this variable to.
 	Deployment pulumi.StringInput
-	Key        pulumi.StringInput
-	Secured    pulumi.BoolPtrInput
-	Value      pulumi.StringInput
+	// The unique name of the variable.
+	Key pulumi.StringInput
+	// If true, this variable will be treated as secured. The value will never be exposed in the logs or the REST API.
+	Secured pulumi.BoolPtrInput
+	// The value of the variable.
+	Value pulumi.StringInput
 }
 
 func (DeploymentVariableArgs) ElementType() reflect.Type {
@@ -124,12 +202,6 @@ func (i *DeploymentVariable) ToDeploymentVariableOutput() DeploymentVariableOutp
 
 func (i *DeploymentVariable) ToDeploymentVariableOutputWithContext(ctx context.Context) DeploymentVariableOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(DeploymentVariableOutput)
-}
-
-func (i *DeploymentVariable) ToOutput(ctx context.Context) pulumix.Output[*DeploymentVariable] {
-	return pulumix.Output[*DeploymentVariable]{
-		OutputState: i.ToDeploymentVariableOutputWithContext(ctx).OutputState,
-	}
 }
 
 // DeploymentVariableArrayInput is an input type that accepts DeploymentVariableArray and DeploymentVariableArrayOutput values.
@@ -157,12 +229,6 @@ func (i DeploymentVariableArray) ToDeploymentVariableArrayOutputWithContext(ctx 
 	return pulumi.ToOutputWithContext(ctx, i).(DeploymentVariableArrayOutput)
 }
 
-func (i DeploymentVariableArray) ToOutput(ctx context.Context) pulumix.Output[[]*DeploymentVariable] {
-	return pulumix.Output[[]*DeploymentVariable]{
-		OutputState: i.ToDeploymentVariableArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 // DeploymentVariableMapInput is an input type that accepts DeploymentVariableMap and DeploymentVariableMapOutput values.
 // You can construct a concrete instance of `DeploymentVariableMapInput` via:
 //
@@ -188,12 +254,6 @@ func (i DeploymentVariableMap) ToDeploymentVariableMapOutputWithContext(ctx cont
 	return pulumi.ToOutputWithContext(ctx, i).(DeploymentVariableMapOutput)
 }
 
-func (i DeploymentVariableMap) ToOutput(ctx context.Context) pulumix.Output[map[string]*DeploymentVariable] {
-	return pulumix.Output[map[string]*DeploymentVariable]{
-		OutputState: i.ToDeploymentVariableMapOutputWithContext(ctx).OutputState,
-	}
-}
-
 type DeploymentVariableOutput struct{ *pulumi.OutputState }
 
 func (DeploymentVariableOutput) ElementType() reflect.Type {
@@ -208,28 +268,27 @@ func (o DeploymentVariableOutput) ToDeploymentVariableOutputWithContext(ctx cont
 	return o
 }
 
-func (o DeploymentVariableOutput) ToOutput(ctx context.Context) pulumix.Output[*DeploymentVariable] {
-	return pulumix.Output[*DeploymentVariable]{
-		OutputState: o.OutputState,
-	}
-}
-
+// The deployment ID you want to assign this variable to.
 func (o DeploymentVariableOutput) Deployment() pulumi.StringOutput {
 	return o.ApplyT(func(v *DeploymentVariable) pulumi.StringOutput { return v.Deployment }).(pulumi.StringOutput)
 }
 
+// The unique name of the variable.
 func (o DeploymentVariableOutput) Key() pulumi.StringOutput {
 	return o.ApplyT(func(v *DeploymentVariable) pulumi.StringOutput { return v.Key }).(pulumi.StringOutput)
 }
 
+// If true, this variable will be treated as secured. The value will never be exposed in the logs or the REST API.
 func (o DeploymentVariableOutput) Secured() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *DeploymentVariable) pulumi.BoolPtrOutput { return v.Secured }).(pulumi.BoolPtrOutput)
 }
 
+// (Computed) The UUID identifying the variable.
 func (o DeploymentVariableOutput) Uuid() pulumi.StringOutput {
 	return o.ApplyT(func(v *DeploymentVariable) pulumi.StringOutput { return v.Uuid }).(pulumi.StringOutput)
 }
 
+// The value of the variable.
 func (o DeploymentVariableOutput) Value() pulumi.StringOutput {
 	return o.ApplyT(func(v *DeploymentVariable) pulumi.StringOutput { return v.Value }).(pulumi.StringOutput)
 }
@@ -246,12 +305,6 @@ func (o DeploymentVariableArrayOutput) ToDeploymentVariableArrayOutput() Deploym
 
 func (o DeploymentVariableArrayOutput) ToDeploymentVariableArrayOutputWithContext(ctx context.Context) DeploymentVariableArrayOutput {
 	return o
-}
-
-func (o DeploymentVariableArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]*DeploymentVariable] {
-	return pulumix.Output[[]*DeploymentVariable]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o DeploymentVariableArrayOutput) Index(i pulumi.IntInput) DeploymentVariableOutput {
@@ -272,12 +325,6 @@ func (o DeploymentVariableMapOutput) ToDeploymentVariableMapOutput() DeploymentV
 
 func (o DeploymentVariableMapOutput) ToDeploymentVariableMapOutputWithContext(ctx context.Context) DeploymentVariableMapOutput {
 	return o
-}
-
-func (o DeploymentVariableMapOutput) ToOutput(ctx context.Context) pulumix.Output[map[string]*DeploymentVariable] {
-	return pulumix.Output[map[string]*DeploymentVariable]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o DeploymentVariableMapOutput) MapIndex(k pulumi.StringInput) DeploymentVariableOutput {

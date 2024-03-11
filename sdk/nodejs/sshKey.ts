@@ -4,6 +4,34 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "./utilities";
 
+/**
+ * Provides a Bitbucket SSH Key resource.
+ *
+ * This allows you to manage your SSH Keys for a user.
+ *
+ * OAuth2 Scopes: `account` and `account:write`
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as bitbucket from "@pulumi/bitbucket";
+ *
+ * const test = new bitbucket.SshKey("test", {
+ *     user: data.bitbucket_current_user.test.uuid,
+ *     key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKqP3Cr632C2dNhhgKVcon4ldUSAeKiku2yP9O9/bDtY",
+ *     label: "test-key",
+ * });
+ * ```
+ *
+ * ## Import
+ *
+ * SSH Keys can be imported using their `user-id/key-id` ID, e.g.
+ *
+ * ```sh
+ *  $ pulumi import bitbucket:index/sshKey:SshKey key user-id/key-id
+ * ```
+ */
 export class SshKey extends pulumi.CustomResource {
     /**
      * Get an existing SshKey resource's state with the given name, ID, and optional extra
@@ -32,10 +60,25 @@ export class SshKey extends pulumi.CustomResource {
         return obj['__pulumiType'] === SshKey.__pulumiType;
     }
 
+    /**
+     * The comment parsed from the SSH key (if present)
+     */
     public /*out*/ readonly comment!: pulumi.Output<string>;
+    /**
+     * The SSH public key value in OpenSSH format.
+     */
     public readonly key!: pulumi.Output<string | undefined>;
+    /**
+     * The user-defined label for the SSH key
+     */
     public readonly label!: pulumi.Output<string | undefined>;
+    /**
+     * This can either be the UUID of the account, surrounded by curly-braces, for example: {account UUID}, OR an Atlassian Account ID.
+     */
     public readonly user!: pulumi.Output<string>;
+    /**
+     * The SSH key's UUID value.
+     */
     public /*out*/ readonly uuid!: pulumi.Output<string>;
 
     /**
@@ -76,10 +119,25 @@ export class SshKey extends pulumi.CustomResource {
  * Input properties used for looking up and filtering SshKey resources.
  */
 export interface SshKeyState {
+    /**
+     * The comment parsed from the SSH key (if present)
+     */
     comment?: pulumi.Input<string>;
+    /**
+     * The SSH public key value in OpenSSH format.
+     */
     key?: pulumi.Input<string>;
+    /**
+     * The user-defined label for the SSH key
+     */
     label?: pulumi.Input<string>;
+    /**
+     * This can either be the UUID of the account, surrounded by curly-braces, for example: {account UUID}, OR an Atlassian Account ID.
+     */
     user?: pulumi.Input<string>;
+    /**
+     * The SSH key's UUID value.
+     */
     uuid?: pulumi.Input<string>;
 }
 
@@ -87,7 +145,16 @@ export interface SshKeyState {
  * The set of arguments for constructing a SshKey resource.
  */
 export interface SshKeyArgs {
+    /**
+     * The SSH public key value in OpenSSH format.
+     */
     key?: pulumi.Input<string>;
+    /**
+     * The user-defined label for the SSH key
+     */
     label?: pulumi.Input<string>;
+    /**
+     * This can either be the UUID of the account, surrounded by curly-braces, for example: {account UUID}, OR an Atlassian Account ID.
+     */
     user: pulumi.Input<string>;
 }

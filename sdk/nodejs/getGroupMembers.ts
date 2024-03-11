@@ -2,8 +2,25 @@
 // *** Do not edit by hand unless you're certain you know what you are doing! ***
 
 import * as pulumi from "@pulumi/pulumi";
+import * as inputs from "./types/input";
+import * as outputs from "./types/output";
 import * as utilities from "./utilities";
 
+/**
+ * Provides a way to fetch data of group members.
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as bitbucket from "@pulumi/bitbucket";
+ *
+ * const example = bitbucket.getGroupMembers({
+ *     slug: "example",
+ *     workspace: "example",
+ * });
+ * ```
+ */
 export function getGroupMembers(args: GetGroupMembersArgs, opts?: pulumi.InvokeOptions): Promise<GetGroupMembersResult> {
 
     opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
@@ -17,7 +34,13 @@ export function getGroupMembers(args: GetGroupMembersArgs, opts?: pulumi.InvokeO
  * A collection of arguments for invoking getGroupMembers.
  */
 export interface GetGroupMembersArgs {
+    /**
+     * The group's slug.
+     */
     slug: string;
+    /**
+     * The UUID that bitbucket groups to connect a group to various objects
+     */
     workspace: string;
 }
 
@@ -26,13 +49,37 @@ export interface GetGroupMembersArgs {
  */
 export interface GetGroupMembersResult {
     /**
+     * A set of group member objects. See Group Member below.
+     */
+    readonly groupMembers: outputs.GetGroupMembersGroupMember[];
+    /**
      * The provider-assigned unique ID for this managed resource.
      */
     readonly id: string;
+    /**
+     * A list of group member uuid.
+     *
+     * @deprecated use group_members instead
+     */
     readonly members: string[];
     readonly slug: string;
     readonly workspace: string;
 }
+/**
+ * Provides a way to fetch data of group members.
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as bitbucket from "@pulumi/bitbucket";
+ *
+ * const example = bitbucket.getGroupMembers({
+ *     slug: "example",
+ *     workspace: "example",
+ * });
+ * ```
+ */
 export function getGroupMembersOutput(args: GetGroupMembersOutputArgs, opts?: pulumi.InvokeOptions): pulumi.Output<GetGroupMembersResult> {
     return pulumi.output(args).apply((a: any) => getGroupMembers(a, opts))
 }
@@ -41,6 +88,12 @@ export function getGroupMembersOutput(args: GetGroupMembersOutputArgs, opts?: pu
  * A collection of arguments for invoking getGroupMembers.
  */
 export interface GetGroupMembersOutputArgs {
+    /**
+     * The group's slug.
+     */
     slug: pulumi.Input<string>;
+    /**
+     * The UUID that bitbucket groups to connect a group to various objects
+     */
     workspace: pulumi.Input<string>;
 }

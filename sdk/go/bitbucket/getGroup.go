@@ -8,10 +8,37 @@ import (
 	"reflect"
 
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket/internal"
 )
 
+// Provides a way to fetch data of a group.
+//
+// ## Example Usage
+//
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := bitbucket.LookupGroup(ctx, &bitbucket.LookupGroupArgs{
+//				Slug:      "example",
+//				Workspace: "example",
+//			}, nil)
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
 func LookupGroup(ctx *pulumi.Context, args *LookupGroupArgs, opts ...pulumi.InvokeOption) (*LookupGroupResult, error) {
 	opts = internal.PkgInvokeDefaultOpts(opts)
 	var rv LookupGroupResult
@@ -24,17 +51,23 @@ func LookupGroup(ctx *pulumi.Context, args *LookupGroupArgs, opts ...pulumi.Invo
 
 // A collection of arguments for invoking getGroup.
 type LookupGroupArgs struct {
-	Slug      string `pulumi:"slug"`
+	// The group's slug.
+	Slug string `pulumi:"slug"`
+	// The UUID that bitbucket groups to connect a group to various objects
 	Workspace string `pulumi:"workspace"`
 }
 
 // A collection of values returned by getGroup.
 type LookupGroupResult struct {
-	AutoAdd                 bool `pulumi:"autoAdd"`
+	// Whether to automatically add users the group
+	AutoAdd bool `pulumi:"autoAdd"`
+	// Whether to disable email forwarding for group.
 	EmailForwardingDisabled bool `pulumi:"emailForwardingDisabled"`
 	// The provider-assigned unique ID for this managed resource.
-	Id         string `pulumi:"id"`
-	Name       string `pulumi:"name"`
+	Id string `pulumi:"id"`
+	// The name of the group.
+	Name string `pulumi:"name"`
+	// One of `read`, `write`, and `admin`.
 	Permission string `pulumi:"permission"`
 	Slug       string `pulumi:"slug"`
 	Workspace  string `pulumi:"workspace"`
@@ -55,7 +88,9 @@ func LookupGroupOutput(ctx *pulumi.Context, args LookupGroupOutputArgs, opts ...
 
 // A collection of arguments for invoking getGroup.
 type LookupGroupOutputArgs struct {
-	Slug      pulumi.StringInput `pulumi:"slug"`
+	// The group's slug.
+	Slug pulumi.StringInput `pulumi:"slug"`
+	// The UUID that bitbucket groups to connect a group to various objects
 	Workspace pulumi.StringInput `pulumi:"workspace"`
 }
 
@@ -78,16 +113,12 @@ func (o LookupGroupResultOutput) ToLookupGroupResultOutputWithContext(ctx contex
 	return o
 }
 
-func (o LookupGroupResultOutput) ToOutput(ctx context.Context) pulumix.Output[LookupGroupResult] {
-	return pulumix.Output[LookupGroupResult]{
-		OutputState: o.OutputState,
-	}
-}
-
+// Whether to automatically add users the group
 func (o LookupGroupResultOutput) AutoAdd() pulumi.BoolOutput {
 	return o.ApplyT(func(v LookupGroupResult) bool { return v.AutoAdd }).(pulumi.BoolOutput)
 }
 
+// Whether to disable email forwarding for group.
 func (o LookupGroupResultOutput) EmailForwardingDisabled() pulumi.BoolOutput {
 	return o.ApplyT(func(v LookupGroupResult) bool { return v.EmailForwardingDisabled }).(pulumi.BoolOutput)
 }
@@ -97,10 +128,12 @@ func (o LookupGroupResultOutput) Id() pulumi.StringOutput {
 	return o.ApplyT(func(v LookupGroupResult) string { return v.Id }).(pulumi.StringOutput)
 }
 
+// The name of the group.
 func (o LookupGroupResultOutput) Name() pulumi.StringOutput {
 	return o.ApplyT(func(v LookupGroupResult) string { return v.Name }).(pulumi.StringOutput)
 }
 
+// One of `read`, `write`, and `admin`.
 func (o LookupGroupResultOutput) Permission() pulumi.StringOutput {
 	return o.ApplyT(func(v LookupGroupResult) string { return v.Permission }).(pulumi.StringOutput)
 }

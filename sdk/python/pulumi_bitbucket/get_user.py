@@ -38,6 +38,9 @@ class GetUserResult:
     @property
     @pulumi.getter(name="displayName")
     def display_name(self) -> Optional[str]:
+        """
+        the display name that the user wants to use for GDPR
+        """
         return pulumi.get(self, "display_name")
 
     @property
@@ -56,6 +59,9 @@ class GetUserResult:
     @property
     @pulumi.getter
     def uuid(self) -> Optional[str]:
+        """
+        the uuid that bitbucket users to connect a user to various objects
+        """
         return pulumi.get(self, "uuid")
 
 
@@ -75,7 +81,20 @@ def get_user(display_name: Optional[str] = None,
              uuid: Optional[str] = None,
              opts: Optional[pulumi.InvokeOptions] = None) -> AwaitableGetUserResult:
     """
-    Use this data source to access information about an existing resource.
+    Provides a way to fetch data on a user.
+
+    ## Example Usage
+
+    ```python
+    import pulumi
+    import pulumi_bitbucket as bitbucket
+
+    reviewer = bitbucket.get_user(uuid="{account UUID}")
+    ```
+
+
+    :param str display_name: the display name that the user wants to use for GDPR
+    :param str uuid: The UUID that bitbucket users to connect a user to various objects
     """
     __args__ = dict()
     __args__['displayName'] = display_name
@@ -95,6 +114,19 @@ def get_user_output(display_name: Optional[pulumi.Input[Optional[str]]] = None,
                     uuid: Optional[pulumi.Input[Optional[str]]] = None,
                     opts: Optional[pulumi.InvokeOptions] = None) -> pulumi.Output[GetUserResult]:
     """
-    Use this data source to access information about an existing resource.
+    Provides a way to fetch data on a user.
+
+    ## Example Usage
+
+    ```python
+    import pulumi
+    import pulumi_bitbucket as bitbucket
+
+    reviewer = bitbucket.get_user(uuid="{account UUID}")
+    ```
+
+
+    :param str display_name: the display name that the user wants to use for GDPR
+    :param str uuid: The UUID that bitbucket users to connect a user to various objects
     """
     ...

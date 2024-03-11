@@ -9,23 +9,64 @@ import (
 
 	"errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket/internal"
 )
 
+// Commit a file.
+//
+// This resource allows you to create a commit within a Bitbucket repository.
+//
+// OAuth2 Scopes: `repository:write`
+//
+// ## Example Usage
+//
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := bitbucket.NewCommitFile(ctx, "test", &bitbucket.CommitFileArgs{
+//				Branch:        pulumi.String("main"),
+//				CommitAuthor:  pulumi.String("Test <test@test.local>"),
+//				CommitMessage: pulumi.String("test"),
+//				Content:       pulumi.String("abc"),
+//				Filename:      pulumi.String("README.md"),
+//				RepoSlug:      pulumi.String("test"),
+//				Workspace:     pulumi.String("test"),
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
 type CommitFile struct {
 	pulumi.CustomResourceState
 
+	// Git branch.
 	Branch pulumi.StringOutput `pulumi:"branch"`
-	// The SHA of the commit that modified the file
+	// Committer author to use.
 	CommitAuthor pulumi.StringOutput `pulumi:"commitAuthor"`
-	// The SHA of the commit that modified the file
+	// The message of the commit.
 	CommitMessage pulumi.StringOutput `pulumi:"commitMessage"`
 	// The SHA of the commit that modified the file
 	CommitSha pulumi.StringOutput `pulumi:"commitSha"`
-	Content   pulumi.StringOutput `pulumi:"content"`
-	Filename  pulumi.StringOutput `pulumi:"filename"`
-	RepoSlug  pulumi.StringOutput `pulumi:"repoSlug"`
+	// The file content.
+	Content pulumi.StringOutput `pulumi:"content"`
+	// The path of the file to manage.
+	Filename pulumi.StringOutput `pulumi:"filename"`
+	// The repository slug.
+	RepoSlug pulumi.StringOutput `pulumi:"repoSlug"`
+	// The workspace id.
 	Workspace pulumi.StringOutput `pulumi:"workspace"`
 }
 
@@ -80,30 +121,40 @@ func GetCommitFile(ctx *pulumi.Context,
 
 // Input properties used for looking up and filtering CommitFile resources.
 type commitFileState struct {
+	// Git branch.
 	Branch *string `pulumi:"branch"`
-	// The SHA of the commit that modified the file
+	// Committer author to use.
 	CommitAuthor *string `pulumi:"commitAuthor"`
-	// The SHA of the commit that modified the file
+	// The message of the commit.
 	CommitMessage *string `pulumi:"commitMessage"`
 	// The SHA of the commit that modified the file
 	CommitSha *string `pulumi:"commitSha"`
-	Content   *string `pulumi:"content"`
-	Filename  *string `pulumi:"filename"`
-	RepoSlug  *string `pulumi:"repoSlug"`
+	// The file content.
+	Content *string `pulumi:"content"`
+	// The path of the file to manage.
+	Filename *string `pulumi:"filename"`
+	// The repository slug.
+	RepoSlug *string `pulumi:"repoSlug"`
+	// The workspace id.
 	Workspace *string `pulumi:"workspace"`
 }
 
 type CommitFileState struct {
+	// Git branch.
 	Branch pulumi.StringPtrInput
-	// The SHA of the commit that modified the file
+	// Committer author to use.
 	CommitAuthor pulumi.StringPtrInput
-	// The SHA of the commit that modified the file
+	// The message of the commit.
 	CommitMessage pulumi.StringPtrInput
 	// The SHA of the commit that modified the file
 	CommitSha pulumi.StringPtrInput
-	Content   pulumi.StringPtrInput
-	Filename  pulumi.StringPtrInput
-	RepoSlug  pulumi.StringPtrInput
+	// The file content.
+	Content pulumi.StringPtrInput
+	// The path of the file to manage.
+	Filename pulumi.StringPtrInput
+	// The repository slug.
+	RepoSlug pulumi.StringPtrInput
+	// The workspace id.
 	Workspace pulumi.StringPtrInput
 }
 
@@ -112,28 +163,38 @@ func (CommitFileState) ElementType() reflect.Type {
 }
 
 type commitFileArgs struct {
+	// Git branch.
 	Branch string `pulumi:"branch"`
-	// The SHA of the commit that modified the file
+	// Committer author to use.
 	CommitAuthor string `pulumi:"commitAuthor"`
-	// The SHA of the commit that modified the file
+	// The message of the commit.
 	CommitMessage string `pulumi:"commitMessage"`
-	Content       string `pulumi:"content"`
-	Filename      string `pulumi:"filename"`
-	RepoSlug      string `pulumi:"repoSlug"`
-	Workspace     string `pulumi:"workspace"`
+	// The file content.
+	Content string `pulumi:"content"`
+	// The path of the file to manage.
+	Filename string `pulumi:"filename"`
+	// The repository slug.
+	RepoSlug string `pulumi:"repoSlug"`
+	// The workspace id.
+	Workspace string `pulumi:"workspace"`
 }
 
 // The set of arguments for constructing a CommitFile resource.
 type CommitFileArgs struct {
+	// Git branch.
 	Branch pulumi.StringInput
-	// The SHA of the commit that modified the file
+	// Committer author to use.
 	CommitAuthor pulumi.StringInput
-	// The SHA of the commit that modified the file
+	// The message of the commit.
 	CommitMessage pulumi.StringInput
-	Content       pulumi.StringInput
-	Filename      pulumi.StringInput
-	RepoSlug      pulumi.StringInput
-	Workspace     pulumi.StringInput
+	// The file content.
+	Content pulumi.StringInput
+	// The path of the file to manage.
+	Filename pulumi.StringInput
+	// The repository slug.
+	RepoSlug pulumi.StringInput
+	// The workspace id.
+	Workspace pulumi.StringInput
 }
 
 func (CommitFileArgs) ElementType() reflect.Type {
@@ -157,12 +218,6 @@ func (i *CommitFile) ToCommitFileOutput() CommitFileOutput {
 
 func (i *CommitFile) ToCommitFileOutputWithContext(ctx context.Context) CommitFileOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(CommitFileOutput)
-}
-
-func (i *CommitFile) ToOutput(ctx context.Context) pulumix.Output[*CommitFile] {
-	return pulumix.Output[*CommitFile]{
-		OutputState: i.ToCommitFileOutputWithContext(ctx).OutputState,
-	}
 }
 
 // CommitFileArrayInput is an input type that accepts CommitFileArray and CommitFileArrayOutput values.
@@ -190,12 +245,6 @@ func (i CommitFileArray) ToCommitFileArrayOutputWithContext(ctx context.Context)
 	return pulumi.ToOutputWithContext(ctx, i).(CommitFileArrayOutput)
 }
 
-func (i CommitFileArray) ToOutput(ctx context.Context) pulumix.Output[[]*CommitFile] {
-	return pulumix.Output[[]*CommitFile]{
-		OutputState: i.ToCommitFileArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 // CommitFileMapInput is an input type that accepts CommitFileMap and CommitFileMapOutput values.
 // You can construct a concrete instance of `CommitFileMapInput` via:
 //
@@ -221,12 +270,6 @@ func (i CommitFileMap) ToCommitFileMapOutputWithContext(ctx context.Context) Com
 	return pulumi.ToOutputWithContext(ctx, i).(CommitFileMapOutput)
 }
 
-func (i CommitFileMap) ToOutput(ctx context.Context) pulumix.Output[map[string]*CommitFile] {
-	return pulumix.Output[map[string]*CommitFile]{
-		OutputState: i.ToCommitFileMapOutputWithContext(ctx).OutputState,
-	}
-}
-
 type CommitFileOutput struct{ *pulumi.OutputState }
 
 func (CommitFileOutput) ElementType() reflect.Type {
@@ -241,22 +284,17 @@ func (o CommitFileOutput) ToCommitFileOutputWithContext(ctx context.Context) Com
 	return o
 }
 
-func (o CommitFileOutput) ToOutput(ctx context.Context) pulumix.Output[*CommitFile] {
-	return pulumix.Output[*CommitFile]{
-		OutputState: o.OutputState,
-	}
-}
-
+// Git branch.
 func (o CommitFileOutput) Branch() pulumi.StringOutput {
 	return o.ApplyT(func(v *CommitFile) pulumi.StringOutput { return v.Branch }).(pulumi.StringOutput)
 }
 
-// The SHA of the commit that modified the file
+// Committer author to use.
 func (o CommitFileOutput) CommitAuthor() pulumi.StringOutput {
 	return o.ApplyT(func(v *CommitFile) pulumi.StringOutput { return v.CommitAuthor }).(pulumi.StringOutput)
 }
 
-// The SHA of the commit that modified the file
+// The message of the commit.
 func (o CommitFileOutput) CommitMessage() pulumi.StringOutput {
 	return o.ApplyT(func(v *CommitFile) pulumi.StringOutput { return v.CommitMessage }).(pulumi.StringOutput)
 }
@@ -266,18 +304,22 @@ func (o CommitFileOutput) CommitSha() pulumi.StringOutput {
 	return o.ApplyT(func(v *CommitFile) pulumi.StringOutput { return v.CommitSha }).(pulumi.StringOutput)
 }
 
+// The file content.
 func (o CommitFileOutput) Content() pulumi.StringOutput {
 	return o.ApplyT(func(v *CommitFile) pulumi.StringOutput { return v.Content }).(pulumi.StringOutput)
 }
 
+// The path of the file to manage.
 func (o CommitFileOutput) Filename() pulumi.StringOutput {
 	return o.ApplyT(func(v *CommitFile) pulumi.StringOutput { return v.Filename }).(pulumi.StringOutput)
 }
 
+// The repository slug.
 func (o CommitFileOutput) RepoSlug() pulumi.StringOutput {
 	return o.ApplyT(func(v *CommitFile) pulumi.StringOutput { return v.RepoSlug }).(pulumi.StringOutput)
 }
 
+// The workspace id.
 func (o CommitFileOutput) Workspace() pulumi.StringOutput {
 	return o.ApplyT(func(v *CommitFile) pulumi.StringOutput { return v.Workspace }).(pulumi.StringOutput)
 }
@@ -294,12 +336,6 @@ func (o CommitFileArrayOutput) ToCommitFileArrayOutput() CommitFileArrayOutput {
 
 func (o CommitFileArrayOutput) ToCommitFileArrayOutputWithContext(ctx context.Context) CommitFileArrayOutput {
 	return o
-}
-
-func (o CommitFileArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]*CommitFile] {
-	return pulumix.Output[[]*CommitFile]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o CommitFileArrayOutput) Index(i pulumi.IntInput) CommitFileOutput {
@@ -320,12 +356,6 @@ func (o CommitFileMapOutput) ToCommitFileMapOutput() CommitFileMapOutput {
 
 func (o CommitFileMapOutput) ToCommitFileMapOutputWithContext(ctx context.Context) CommitFileMapOutput {
 	return o
-}
-
-func (o CommitFileMapOutput) ToOutput(ctx context.Context) pulumix.Output[map[string]*CommitFile] {
-	return pulumix.Output[map[string]*CommitFile]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o CommitFileMapOutput) MapIndex(k pulumi.StringInput) CommitFileOutput {

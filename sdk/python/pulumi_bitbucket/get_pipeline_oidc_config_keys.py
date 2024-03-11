@@ -65,7 +65,21 @@ class AwaitableGetPipelineOidcConfigKeysResult(GetPipelineOidcConfigKeysResult):
 def get_pipeline_oidc_config_keys(workspace: Optional[str] = None,
                                   opts: Optional[pulumi.InvokeOptions] = None) -> AwaitableGetPipelineOidcConfigKeysResult:
     """
-    Use this data source to access information about an existing resource.
+    Provides a way to fetch data on a pipeline OIDC Config Keys.
+
+    OAuth2 Scopes: `none`
+
+    ## Example Usage
+
+    ```python
+    import pulumi
+    import pulumi_bitbucket as bitbucket
+
+    example = bitbucket.get_pipeline_oidc_config_keys(workspace="example")
+    ```
+
+
+    :param str workspace: The workspace to fetch pipeline oidc config keys.
     """
     __args__ = dict()
     __args__['workspace'] = workspace
@@ -82,6 +96,20 @@ def get_pipeline_oidc_config_keys(workspace: Optional[str] = None,
 def get_pipeline_oidc_config_keys_output(workspace: Optional[pulumi.Input[str]] = None,
                                          opts: Optional[pulumi.InvokeOptions] = None) -> pulumi.Output[GetPipelineOidcConfigKeysResult]:
     """
-    Use this data source to access information about an existing resource.
+    Provides a way to fetch data on a pipeline OIDC Config Keys.
+
+    OAuth2 Scopes: `none`
+
+    ## Example Usage
+
+    ```python
+    import pulumi
+    import pulumi_bitbucket as bitbucket
+
+    example = bitbucket.get_pipeline_oidc_config_keys(workspace="example")
+    ```
+
+
+    :param str workspace: The workspace to fetch pipeline oidc config keys.
     """
     ...

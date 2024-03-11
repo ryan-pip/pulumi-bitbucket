@@ -21,6 +21,11 @@ class GroupArgs:
                  permission: Optional[pulumi.Input[str]] = None):
         """
         The set of arguments for constructing a Group resource.
+        :param pulumi.Input[str] workspace: The workspace of this repository.
+        :param pulumi.Input[bool] auto_add: Whether to automatically add users the group
+        :param pulumi.Input[bool] email_forwarding_disabled: Whether to disable email forwarding for group.
+        :param pulumi.Input[str] name: The name of the group.
+        :param pulumi.Input[str] permission: One of `read`, `write`, and `admin`.
         """
         pulumi.set(__self__, "workspace", workspace)
         if auto_add is not None:
@@ -35,6 +40,9 @@ class GroupArgs:
     @property
     @pulumi.getter
     def workspace(self) -> pulumi.Input[str]:
+        """
+        The workspace of this repository.
+        """
         return pulumi.get(self, "workspace")
 
     @workspace.setter
@@ -44,6 +52,9 @@ class GroupArgs:
     @property
     @pulumi.getter(name="autoAdd")
     def auto_add(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Whether to automatically add users the group
+        """
         return pulumi.get(self, "auto_add")
 
     @auto_add.setter
@@ -53,6 +64,9 @@ class GroupArgs:
     @property
     @pulumi.getter(name="emailForwardingDisabled")
     def email_forwarding_disabled(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Whether to disable email forwarding for group.
+        """
         return pulumi.get(self, "email_forwarding_disabled")
 
     @email_forwarding_disabled.setter
@@ -62,6 +76,9 @@ class GroupArgs:
     @property
     @pulumi.getter
     def name(self) -> Optional[pulumi.Input[str]]:
+        """
+        The name of the group.
+        """
         return pulumi.get(self, "name")
 
     @name.setter
@@ -71,6 +88,9 @@ class GroupArgs:
     @property
     @pulumi.getter
     def permission(self) -> Optional[pulumi.Input[str]]:
+        """
+        One of `read`, `write`, and `admin`.
+        """
         return pulumi.get(self, "permission")
 
     @permission.setter
@@ -89,6 +109,12 @@ class _GroupState:
                  workspace: Optional[pulumi.Input[str]] = None):
         """
         Input properties used for looking up and filtering Group resources.
+        :param pulumi.Input[bool] auto_add: Whether to automatically add users the group
+        :param pulumi.Input[bool] email_forwarding_disabled: Whether to disable email forwarding for group.
+        :param pulumi.Input[str] name: The name of the group.
+        :param pulumi.Input[str] permission: One of `read`, `write`, and `admin`.
+        :param pulumi.Input[str] slug: The groups slug.
+        :param pulumi.Input[str] workspace: The workspace of this repository.
         """
         if auto_add is not None:
             pulumi.set(__self__, "auto_add", auto_add)
@@ -106,6 +132,9 @@ class _GroupState:
     @property
     @pulumi.getter(name="autoAdd")
     def auto_add(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Whether to automatically add users the group
+        """
         return pulumi.get(self, "auto_add")
 
     @auto_add.setter
@@ -115,6 +144,9 @@ class _GroupState:
     @property
     @pulumi.getter(name="emailForwardingDisabled")
     def email_forwarding_disabled(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Whether to disable email forwarding for group.
+        """
         return pulumi.get(self, "email_forwarding_disabled")
 
     @email_forwarding_disabled.setter
@@ -124,6 +156,9 @@ class _GroupState:
     @property
     @pulumi.getter
     def name(self) -> Optional[pulumi.Input[str]]:
+        """
+        The name of the group.
+        """
         return pulumi.get(self, "name")
 
     @name.setter
@@ -133,6 +168,9 @@ class _GroupState:
     @property
     @pulumi.getter
     def permission(self) -> Optional[pulumi.Input[str]]:
+        """
+        One of `read`, `write`, and `admin`.
+        """
         return pulumi.get(self, "permission")
 
     @permission.setter
@@ -142,6 +180,9 @@ class _GroupState:
     @property
     @pulumi.getter
     def slug(self) -> Optional[pulumi.Input[str]]:
+        """
+        The groups slug.
+        """
         return pulumi.get(self, "slug")
 
     @slug.setter
@@ -151,6 +192,9 @@ class _GroupState:
     @property
     @pulumi.getter
     def workspace(self) -> Optional[pulumi.Input[str]]:
+        """
+        The workspace of this repository.
+        """
         return pulumi.get(self, "workspace")
 
     @workspace.setter
@@ -170,9 +214,38 @@ class Group(pulumi.CustomResource):
                  workspace: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         """
-        Create a Group resource with the given unique name, props, and options.
+        Provides a Bitbucket group resource.
+
+        This allows you to manage your groups.
+
+        ## Example Usage
+
+        ```python
+        import pulumi
+        import pulumi_bitbucket as bitbucket
+
+        test_workspace = bitbucket.get_workspace(workspace="example")
+        test_group = bitbucket.Group("testGroup",
+            workspace=test_workspace.id,
+            auto_add=True,
+            permission="read")
+        ```
+
+        ## Import
+
+        Groups can be imported using their `workspace/group-slug` ID, e.g.
+
+        ```sh
+         $ pulumi import bitbucket:index/group:Group group my-workspace/group-slug
+        ```
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[bool] auto_add: Whether to automatically add users the group
+        :param pulumi.Input[bool] email_forwarding_disabled: Whether to disable email forwarding for group.
+        :param pulumi.Input[str] name: The name of the group.
+        :param pulumi.Input[str] permission: One of `read`, `write`, and `admin`.
+        :param pulumi.Input[str] workspace: The workspace of this repository.
         """
         ...
     @overload
@@ -181,7 +254,31 @@ class Group(pulumi.CustomResource):
                  args: GroupArgs,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
-        Create a Group resource with the given unique name, props, and options.
+        Provides a Bitbucket group resource.
+
+        This allows you to manage your groups.
+
+        ## Example Usage
+
+        ```python
+        import pulumi
+        import pulumi_bitbucket as bitbucket
+
+        test_workspace = bitbucket.get_workspace(workspace="example")
+        test_group = bitbucket.Group("testGroup",
+            workspace=test_workspace.id,
+            auto_add=True,
+            permission="read")
+        ```
+
+        ## Import
+
+        Groups can be imported using their `workspace/group-slug` ID, e.g.
+
+        ```sh
+         $ pulumi import bitbucket:index/group:Group group my-workspace/group-slug
+        ```
+
         :param str resource_name: The name of the resource.
         :param GroupArgs args: The arguments to use to populate this resource's properties.
         :param pulumi.ResourceOptions opts: Options for the resource.
@@ -242,6 +339,12 @@ class Group(pulumi.CustomResource):
         :param str resource_name: The unique name of the resulting resource.
         :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[bool] auto_add: Whether to automatically add users the group
+        :param pulumi.Input[bool] email_forwarding_disabled: Whether to disable email forwarding for group.
+        :param pulumi.Input[str] name: The name of the group.
+        :param pulumi.Input[str] permission: One of `read`, `write`, and `admin`.
+        :param pulumi.Input[str] slug: The groups slug.
+        :param pulumi.Input[str] workspace: The workspace of this repository.
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
 
@@ -258,30 +361,48 @@ class Group(pulumi.CustomResource):
     @property
     @pulumi.getter(name="autoAdd")
     def auto_add(self) -> pulumi.Output[Optional[bool]]:
+        """
+        Whether to automatically add users the group
+        """
         return pulumi.get(self, "auto_add")
 
     @property
     @pulumi.getter(name="emailForwardingDisabled")
     def email_forwarding_disabled(self) -> pulumi.Output[Optional[bool]]:
+        """
+        Whether to disable email forwarding for group.
+        """
         return pulumi.get(self, "email_forwarding_disabled")
 
     @property
     @pulumi.getter
     def name(self) -> pulumi.Output[str]:
+        """
+        The name of the group.
+        """
         return pulumi.get(self, "name")
 
     @property
     @pulumi.getter
     def permission(self) -> pulumi.Output[Optional[str]]:
+        """
+        One of `read`, `write`, and `admin`.
+        """
         return pulumi.get(self, "permission")
 
     @property
     @pulumi.getter
     def slug(self) -> pulumi.Output[str]:
+        """
+        The groups slug.
+        """
         return pulumi.get(self, "slug")
 
     @property
     @pulumi.getter
     def workspace(self) -> pulumi.Output[str]:
+        """
+        The workspace of this repository.
+        """
         return pulumi.get(self, "workspace")
 

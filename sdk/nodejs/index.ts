@@ -55,6 +55,11 @@ export const getDeployment: typeof import("./getDeployment").getDeployment = nul
 export const getDeploymentOutput: typeof import("./getDeployment").getDeploymentOutput = null as any;
 utilities.lazyLoad(exports, ["getDeployment","getDeploymentOutput"], () => require("./getDeployment"));
 
+export { GetDeploymentsArgs, GetDeploymentsResult, GetDeploymentsOutputArgs } from "./getDeployments";
+export const getDeployments: typeof import("./getDeployments").getDeployments = null as any;
+export const getDeploymentsOutput: typeof import("./getDeployments").getDeploymentsOutput = null as any;
+utilities.lazyLoad(exports, ["getDeployments","getDeploymentsOutput"], () => require("./getDeployments"));
+
 export { GetGroupArgs, GetGroupResult, GetGroupOutputArgs } from "./getGroup";
 export const getGroup: typeof import("./getGroup").getGroup = null as any;
 export const getGroupOutput: typeof import("./getGroup").getGroupOutput = null as any;
@@ -150,6 +155,16 @@ export type ProjectDefaultReviewers = import("./projectDefaultReviewers").Projec
 export const ProjectDefaultReviewers: typeof import("./projectDefaultReviewers").ProjectDefaultReviewers = null as any;
 utilities.lazyLoad(exports, ["ProjectDefaultReviewers"], () => require("./projectDefaultReviewers"));
 
+export { ProjectGroupPermissionArgs, ProjectGroupPermissionState } from "./projectGroupPermission";
+export type ProjectGroupPermission = import("./projectGroupPermission").ProjectGroupPermission;
+export const ProjectGroupPermission: typeof import("./projectGroupPermission").ProjectGroupPermission = null as any;
+utilities.lazyLoad(exports, ["ProjectGroupPermission"], () => require("./projectGroupPermission"));
+
+export { ProjectUserPermissionArgs, ProjectUserPermissionState } from "./projectUserPermission";
+export type ProjectUserPermission = import("./projectUserPermission").ProjectUserPermission;
+export const ProjectUserPermission: typeof import("./projectUserPermission").ProjectUserPermission = null as any;
+utilities.lazyLoad(exports, ["ProjectUserPermission"], () => require("./projectUserPermission"));
+
 export { ProviderArgs } from "./provider";
 export type Provider = import("./provider").Provider;
 export const Provider: typeof import("./provider").Provider = null as any;
@@ -238,6 +253,10 @@ const _module = {
                 return new ProjectBranchingModel(name, <any>undefined, { urn })
             case "bitbucket:index/projectDefaultReviewers:ProjectDefaultReviewers":
                 return new ProjectDefaultReviewers(name, <any>undefined, { urn })
+            case "bitbucket:index/projectGroupPermission:ProjectGroupPermission":
+                return new ProjectGroupPermission(name, <any>undefined, { urn })
+            case "bitbucket:index/projectUserPermission:ProjectUserPermission":
+                return new ProjectUserPermission(name, <any>undefined, { urn })
             case "bitbucket:index/repository:Repository":
                 return new Repository(name, <any>undefined, { urn })
             case "bitbucket:index/repositoryGroupPermission:RepositoryGroupPermission":
@@ -274,6 +293,8 @@ pulumi.runtime.registerResourceModule("bitbucket", "index/pipelineSshKnownHost",
 pulumi.runtime.registerResourceModule("bitbucket", "index/project", _module)
 pulumi.runtime.registerResourceModule("bitbucket", "index/projectBranchingModel", _module)
 pulumi.runtime.registerResourceModule("bitbucket", "index/projectDefaultReviewers", _module)
+pulumi.runtime.registerResourceModule("bitbucket", "index/projectGroupPermission", _module)
+pulumi.runtime.registerResourceModule("bitbucket", "index/projectUserPermission", _module)
 pulumi.runtime.registerResourceModule("bitbucket", "index/repository", _module)
 pulumi.runtime.registerResourceModule("bitbucket", "index/repositoryGroupPermission", _module)
 pulumi.runtime.registerResourceModule("bitbucket", "index/repositoryUserPermission", _module)

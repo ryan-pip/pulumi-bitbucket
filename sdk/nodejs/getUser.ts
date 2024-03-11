@@ -4,6 +4,20 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "./utilities";
 
+/**
+ * Provides a way to fetch data on a user.
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as bitbucket from "@pulumi/bitbucket";
+ *
+ * const reviewer = bitbucket.getUser({
+ *     uuid: "{account UUID}",
+ * });
+ * ```
+ */
 export function getUser(args?: GetUserArgs, opts?: pulumi.InvokeOptions): Promise<GetUserResult> {
     args = args || {};
 
@@ -18,7 +32,13 @@ export function getUser(args?: GetUserArgs, opts?: pulumi.InvokeOptions): Promis
  * A collection of arguments for invoking getUser.
  */
 export interface GetUserArgs {
+    /**
+     * the display name that the user wants to use for GDPR
+     */
     displayName?: string;
+    /**
+     * The UUID that bitbucket users to connect a user to various objects
+     */
     uuid?: string;
 }
 
@@ -26,14 +46,34 @@ export interface GetUserArgs {
  * A collection of values returned by getUser.
  */
 export interface GetUserResult {
+    /**
+     * the display name that the user wants to use for GDPR
+     */
     readonly displayName?: string;
     /**
      * The provider-assigned unique ID for this managed resource.
      */
     readonly id: string;
     readonly username: string;
+    /**
+     * the uuid that bitbucket users to connect a user to various objects
+     */
     readonly uuid?: string;
 }
+/**
+ * Provides a way to fetch data on a user.
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as bitbucket from "@pulumi/bitbucket";
+ *
+ * const reviewer = bitbucket.getUser({
+ *     uuid: "{account UUID}",
+ * });
+ * ```
+ */
 export function getUserOutput(args?: GetUserOutputArgs, opts?: pulumi.InvokeOptions): pulumi.Output<GetUserResult> {
     return pulumi.output(args).apply((a: any) => getUser(a, opts))
 }
@@ -42,6 +82,12 @@ export function getUserOutput(args?: GetUserOutputArgs, opts?: pulumi.InvokeOpti
  * A collection of arguments for invoking getUser.
  */
 export interface GetUserOutputArgs {
+    /**
+     * the display name that the user wants to use for GDPR
+     */
     displayName?: pulumi.Input<string>;
+    /**
+     * The UUID that bitbucket users to connect a user to various objects
+     */
     uuid?: pulumi.Input<string>;
 }

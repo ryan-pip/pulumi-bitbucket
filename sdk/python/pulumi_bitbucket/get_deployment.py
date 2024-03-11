@@ -52,6 +52,9 @@ class GetDeploymentResult:
     @property
     @pulumi.getter
     def name(self) -> str:
+        """
+        The name of the environment.
+        """
         return pulumi.get(self, "name")
 
     @property
@@ -62,6 +65,9 @@ class GetDeploymentResult:
     @property
     @pulumi.getter
     def stage(self) -> str:
+        """
+        The stage (Test, Staging, Production).
+        """
         return pulumi.get(self, "stage")
 
     @property
@@ -94,7 +100,25 @@ def get_deployment(repository: Optional[str] = None,
                    workspace: Optional[str] = None,
                    opts: Optional[pulumi.InvokeOptions] = None) -> AwaitableGetDeploymentResult:
     """
-    Use this data source to access information about an existing resource.
+    Provides a way to fetch data on a Deployment.
+
+    OAuth2 Scopes: `none`
+
+    ## Example Usage
+
+    ```python
+    import pulumi
+    import pulumi_bitbucket as bitbucket
+
+    example = bitbucket.get_deployment(repository="example",
+        uuid="example",
+        workspace="example")
+    ```
+
+
+    :param str repository: The repository name.
+    :param str uuid: The environment UUID.
+    :param str workspace: The workspace name.
     """
     __args__ = dict()
     __args__['repository'] = repository
@@ -118,6 +142,24 @@ def get_deployment_output(repository: Optional[pulumi.Input[str]] = None,
                           workspace: Optional[pulumi.Input[str]] = None,
                           opts: Optional[pulumi.InvokeOptions] = None) -> pulumi.Output[GetDeploymentResult]:
     """
-    Use this data source to access information about an existing resource.
+    Provides a way to fetch data on a Deployment.
+
+    OAuth2 Scopes: `none`
+
+    ## Example Usage
+
+    ```python
+    import pulumi
+    import pulumi_bitbucket as bitbucket
+
+    example = bitbucket.get_deployment(repository="example",
+        uuid="example",
+        workspace="example")
+    ```
+
+
+    :param str repository: The repository name.
+    :param str uuid: The environment UUID.
+    :param str workspace: The workspace name.
     """
     ...

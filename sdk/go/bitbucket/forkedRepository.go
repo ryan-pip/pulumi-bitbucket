@@ -9,31 +9,129 @@ import (
 
 	"errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket/internal"
 )
 
+// Provides a Bitbucket repository resource that is forked from a parent repo.
+//
+// This resource allows you manage properties of the fork, if it is
+// private, how to fork the repository and other options. SCM cannot be overridden,
+// as it is inherited from the parent repository. Creation will fail if the parent
+// repo has `noForks` as its fork policy.
+//
+// OAuth2 Scopes: `repository`, `repository:admin`, and `repository:delete`
+//
+// ## Example Usage
+//
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := bitbucket.NewForkedRepository(ctx, "infrastructure", &bitbucket.ForkedRepositoryArgs{
+//				Owner: pulumi.String("myteam"),
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
+//
+// If you want to create a repository with a CamelCase name, you should provide
+// a separate slug
+//
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := bitbucket.NewForkedRepository(ctx, "infrastructure", &bitbucket.ForkedRepositoryArgs{
+//				Owner: pulumi.String("myteam"),
+//				Slug:  pulumi.String("terraform-code"),
+//				Parent: pulumi.StringMap{
+//					"owner": pulumi.Any(bitbucket_repository.Test.Owner),
+//					"slug":  pulumi.Any(bitbucket_repository.Test.Slug),
+//				},
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
+//
+// ## Import
+//
+// Repositories can be imported using their `owner/name` ID, e.g.
+//
+// ```sh
+//
+//	$ pulumi import bitbucket:index/forkedRepository:ForkedRepository my-repo my-account/my-repo
+//
+// ```
 type ForkedRepository struct {
 	pulumi.CustomResourceState
 
-	CloneHttps       pulumi.StringOutput        `pulumi:"cloneHttps"`
-	CloneSsh         pulumi.StringOutput        `pulumi:"cloneSsh"`
-	Description      pulumi.StringPtrOutput     `pulumi:"description"`
-	ForkPolicy       pulumi.StringPtrOutput     `pulumi:"forkPolicy"`
-	HasIssues        pulumi.BoolPtrOutput       `pulumi:"hasIssues"`
-	HasWiki          pulumi.BoolPtrOutput       `pulumi:"hasWiki"`
-	IsPrivate        pulumi.BoolPtrOutput       `pulumi:"isPrivate"`
-	Language         pulumi.StringPtrOutput     `pulumi:"language"`
-	Link             ForkedRepositoryLinkOutput `pulumi:"link"`
-	Name             pulumi.StringOutput        `pulumi:"name"`
-	Owner            pulumi.StringOutput        `pulumi:"owner"`
-	Parent           pulumi.StringMapOutput     `pulumi:"parent"`
-	PipelinesEnabled pulumi.BoolPtrOutput       `pulumi:"pipelinesEnabled"`
-	ProjectKey       pulumi.StringOutput        `pulumi:"projectKey"`
-	Scm              pulumi.StringOutput        `pulumi:"scm"`
-	Slug             pulumi.StringOutput        `pulumi:"slug"`
-	Uuid             pulumi.StringOutput        `pulumi:"uuid"`
-	Website          pulumi.StringPtrOutput     `pulumi:"website"`
+	// The HTTPS clone URL.
+	CloneHttps pulumi.StringOutput `pulumi:"cloneHttps"`
+	// The SSH clone URL.
+	CloneSsh pulumi.StringOutput `pulumi:"cloneSsh"`
+	// What the description of the repo is.
+	Description pulumi.StringPtrOutput `pulumi:"description"`
+	// What the fork policy should be. Defaults to
+	// `allowForks`. Valid values are `allowForks`, `noPublicForks`, `noForks`.
+	ForkPolicy pulumi.StringPtrOutput `pulumi:"forkPolicy"`
+	// If this should have issues turned on or not.
+	HasIssues pulumi.BoolPtrOutput `pulumi:"hasIssues"`
+	// If this should have wiki turned on or not.
+	HasWiki pulumi.BoolPtrOutput `pulumi:"hasWiki"`
+	// If this should be private or not. Defaults to `true`. Note that if
+	// the parent repo has `noPublicForks` as its fork policy, the resource may
+	// fail to be created.
+	IsPrivate pulumi.BoolPtrOutput `pulumi:"isPrivate"`
+	// What the language of this repository should be.
+	Language pulumi.StringPtrOutput `pulumi:"language"`
+	// A set of links to a resource related to this object. See Link Below.
+	Link ForkedRepositoryLinkOutput `pulumi:"link"`
+	// The name of the repository.
+	Name pulumi.StringOutput `pulumi:"name"`
+	// The owner of this repository. Can be you or any team you
+	// have write access to.
+	Owner pulumi.StringOutput `pulumi:"owner"`
+	// The repository to fork from. See Parent below.
+	Parent pulumi.StringMapOutput `pulumi:"parent"`
+	// Turn on to enable pipelines support.
+	PipelinesEnabled pulumi.BoolPtrOutput `pulumi:"pipelinesEnabled"`
+	// If you want to have this repo associated with a
+	// project.
+	ProjectKey pulumi.StringOutput `pulumi:"projectKey"`
+	// The SCM of the resource. Either `hg` or `git`.
+	Scm pulumi.StringOutput `pulumi:"scm"`
+	// The slug of the repository.
+	Slug pulumi.StringOutput `pulumi:"slug"`
+	// The uuid of the repository resource.
+	Uuid pulumi.StringOutput `pulumi:"uuid"`
+	// URL of website associated with this repository.
+	Website pulumi.StringPtrOutput `pulumi:"website"`
 }
 
 // NewForkedRepository registers a new resource with the given unique name, arguments, and options.
@@ -72,45 +170,91 @@ func GetForkedRepository(ctx *pulumi.Context,
 
 // Input properties used for looking up and filtering ForkedRepository resources.
 type forkedRepositoryState struct {
-	CloneHttps       *string               `pulumi:"cloneHttps"`
-	CloneSsh         *string               `pulumi:"cloneSsh"`
-	Description      *string               `pulumi:"description"`
-	ForkPolicy       *string               `pulumi:"forkPolicy"`
-	HasIssues        *bool                 `pulumi:"hasIssues"`
-	HasWiki          *bool                 `pulumi:"hasWiki"`
-	IsPrivate        *bool                 `pulumi:"isPrivate"`
-	Language         *string               `pulumi:"language"`
-	Link             *ForkedRepositoryLink `pulumi:"link"`
-	Name             *string               `pulumi:"name"`
-	Owner            *string               `pulumi:"owner"`
-	Parent           map[string]string     `pulumi:"parent"`
-	PipelinesEnabled *bool                 `pulumi:"pipelinesEnabled"`
-	ProjectKey       *string               `pulumi:"projectKey"`
-	Scm              *string               `pulumi:"scm"`
-	Slug             *string               `pulumi:"slug"`
-	Uuid             *string               `pulumi:"uuid"`
-	Website          *string               `pulumi:"website"`
+	// The HTTPS clone URL.
+	CloneHttps *string `pulumi:"cloneHttps"`
+	// The SSH clone URL.
+	CloneSsh *string `pulumi:"cloneSsh"`
+	// What the description of the repo is.
+	Description *string `pulumi:"description"`
+	// What the fork policy should be. Defaults to
+	// `allowForks`. Valid values are `allowForks`, `noPublicForks`, `noForks`.
+	ForkPolicy *string `pulumi:"forkPolicy"`
+	// If this should have issues turned on or not.
+	HasIssues *bool `pulumi:"hasIssues"`
+	// If this should have wiki turned on or not.
+	HasWiki *bool `pulumi:"hasWiki"`
+	// If this should be private or not. Defaults to `true`. Note that if
+	// the parent repo has `noPublicForks` as its fork policy, the resource may
+	// fail to be created.
+	IsPrivate *bool `pulumi:"isPrivate"`
+	// What the language of this repository should be.
+	Language *string `pulumi:"language"`
+	// A set of links to a resource related to this object. See Link Below.
+	Link *ForkedRepositoryLink `pulumi:"link"`
+	// The name of the repository.
+	Name *string `pulumi:"name"`
+	// The owner of this repository. Can be you or any team you
+	// have write access to.
+	Owner *string `pulumi:"owner"`
+	// The repository to fork from. See Parent below.
+	Parent map[string]string `pulumi:"parent"`
+	// Turn on to enable pipelines support.
+	PipelinesEnabled *bool `pulumi:"pipelinesEnabled"`
+	// If you want to have this repo associated with a
+	// project.
+	ProjectKey *string `pulumi:"projectKey"`
+	// The SCM of the resource. Either `hg` or `git`.
+	Scm *string `pulumi:"scm"`
+	// The slug of the repository.
+	Slug *string `pulumi:"slug"`
+	// The uuid of the repository resource.
+	Uuid *string `pulumi:"uuid"`
+	// URL of website associated with this repository.
+	Website *string `pulumi:"website"`
 }
 
 type ForkedRepositoryState struct {
-	CloneHttps       pulumi.StringPtrInput
-	CloneSsh         pulumi.StringPtrInput
-	Description      pulumi.StringPtrInput
-	ForkPolicy       pulumi.StringPtrInput
-	HasIssues        pulumi.BoolPtrInput
-	HasWiki          pulumi.BoolPtrInput
-	IsPrivate        pulumi.BoolPtrInput
-	Language         pulumi.StringPtrInput
-	Link             ForkedRepositoryLinkPtrInput
-	Name             pulumi.StringPtrInput
-	Owner            pulumi.StringPtrInput
-	Parent           pulumi.StringMapInput
+	// The HTTPS clone URL.
+	CloneHttps pulumi.StringPtrInput
+	// The SSH clone URL.
+	CloneSsh pulumi.StringPtrInput
+	// What the description of the repo is.
+	Description pulumi.StringPtrInput
+	// What the fork policy should be. Defaults to
+	// `allowForks`. Valid values are `allowForks`, `noPublicForks`, `noForks`.
+	ForkPolicy pulumi.StringPtrInput
+	// If this should have issues turned on or not.
+	HasIssues pulumi.BoolPtrInput
+	// If this should have wiki turned on or not.
+	HasWiki pulumi.BoolPtrInput
+	// If this should be private or not. Defaults to `true`. Note that if
+	// the parent repo has `noPublicForks` as its fork policy, the resource may
+	// fail to be created.
+	IsPrivate pulumi.BoolPtrInput
+	// What the language of this repository should be.
+	Language pulumi.StringPtrInput
+	// A set of links to a resource related to this object. See Link Below.
+	Link ForkedRepositoryLinkPtrInput
+	// The name of the repository.
+	Name pulumi.StringPtrInput
+	// The owner of this repository. Can be you or any team you
+	// have write access to.
+	Owner pulumi.StringPtrInput
+	// The repository to fork from. See Parent below.
+	Parent pulumi.StringMapInput
+	// Turn on to enable pipelines support.
 	PipelinesEnabled pulumi.BoolPtrInput
-	ProjectKey       pulumi.StringPtrInput
-	Scm              pulumi.StringPtrInput
-	Slug             pulumi.StringPtrInput
-	Uuid             pulumi.StringPtrInput
-	Website          pulumi.StringPtrInput
+	// If you want to have this repo associated with a
+	// project.
+	ProjectKey pulumi.StringPtrInput
+	// The SCM of the resource. Either `hg` or `git`.
+	Scm pulumi.StringPtrInput
+	// The slug of the repository.
+	Slug pulumi.StringPtrInput
+	// The uuid of the repository resource.
+	Uuid pulumi.StringPtrInput
+	// URL of website associated with this repository.
+	Website pulumi.StringPtrInput
 }
 
 func (ForkedRepositoryState) ElementType() reflect.Type {
@@ -118,38 +262,76 @@ func (ForkedRepositoryState) ElementType() reflect.Type {
 }
 
 type forkedRepositoryArgs struct {
-	Description      *string               `pulumi:"description"`
-	ForkPolicy       *string               `pulumi:"forkPolicy"`
-	HasIssues        *bool                 `pulumi:"hasIssues"`
-	HasWiki          *bool                 `pulumi:"hasWiki"`
-	IsPrivate        *bool                 `pulumi:"isPrivate"`
-	Language         *string               `pulumi:"language"`
-	Link             *ForkedRepositoryLink `pulumi:"link"`
-	Name             *string               `pulumi:"name"`
-	Owner            string                `pulumi:"owner"`
-	Parent           map[string]string     `pulumi:"parent"`
-	PipelinesEnabled *bool                 `pulumi:"pipelinesEnabled"`
-	ProjectKey       *string               `pulumi:"projectKey"`
-	Slug             *string               `pulumi:"slug"`
-	Website          *string               `pulumi:"website"`
+	// What the description of the repo is.
+	Description *string `pulumi:"description"`
+	// What the fork policy should be. Defaults to
+	// `allowForks`. Valid values are `allowForks`, `noPublicForks`, `noForks`.
+	ForkPolicy *string `pulumi:"forkPolicy"`
+	// If this should have issues turned on or not.
+	HasIssues *bool `pulumi:"hasIssues"`
+	// If this should have wiki turned on or not.
+	HasWiki *bool `pulumi:"hasWiki"`
+	// If this should be private or not. Defaults to `true`. Note that if
+	// the parent repo has `noPublicForks` as its fork policy, the resource may
+	// fail to be created.
+	IsPrivate *bool `pulumi:"isPrivate"`
+	// What the language of this repository should be.
+	Language *string `pulumi:"language"`
+	// A set of links to a resource related to this object. See Link Below.
+	Link *ForkedRepositoryLink `pulumi:"link"`
+	// The name of the repository.
+	Name *string `pulumi:"name"`
+	// The owner of this repository. Can be you or any team you
+	// have write access to.
+	Owner string `pulumi:"owner"`
+	// The repository to fork from. See Parent below.
+	Parent map[string]string `pulumi:"parent"`
+	// Turn on to enable pipelines support.
+	PipelinesEnabled *bool `pulumi:"pipelinesEnabled"`
+	// If you want to have this repo associated with a
+	// project.
+	ProjectKey *string `pulumi:"projectKey"`
+	// The slug of the repository.
+	Slug *string `pulumi:"slug"`
+	// URL of website associated with this repository.
+	Website *string `pulumi:"website"`
 }
 
 // The set of arguments for constructing a ForkedRepository resource.
 type ForkedRepositoryArgs struct {
-	Description      pulumi.StringPtrInput
-	ForkPolicy       pulumi.StringPtrInput
-	HasIssues        pulumi.BoolPtrInput
-	HasWiki          pulumi.BoolPtrInput
-	IsPrivate        pulumi.BoolPtrInput
-	Language         pulumi.StringPtrInput
-	Link             ForkedRepositoryLinkPtrInput
-	Name             pulumi.StringPtrInput
-	Owner            pulumi.StringInput
-	Parent           pulumi.StringMapInput
+	// What the description of the repo is.
+	Description pulumi.StringPtrInput
+	// What the fork policy should be. Defaults to
+	// `allowForks`. Valid values are `allowForks`, `noPublicForks`, `noForks`.
+	ForkPolicy pulumi.StringPtrInput
+	// If this should have issues turned on or not.
+	HasIssues pulumi.BoolPtrInput
+	// If this should have wiki turned on or not.
+	HasWiki pulumi.BoolPtrInput
+	// If this should be private or not. Defaults to `true`. Note that if
+	// the parent repo has `noPublicForks` as its fork policy, the resource may
+	// fail to be created.
+	IsPrivate pulumi.BoolPtrInput
+	// What the language of this repository should be.
+	Language pulumi.StringPtrInput
+	// A set of links to a resource related to this object. See Link Below.
+	Link ForkedRepositoryLinkPtrInput
+	// The name of the repository.
+	Name pulumi.StringPtrInput
+	// The owner of this repository. Can be you or any team you
+	// have write access to.
+	Owner pulumi.StringInput
+	// The repository to fork from. See Parent below.
+	Parent pulumi.StringMapInput
+	// Turn on to enable pipelines support.
 	PipelinesEnabled pulumi.BoolPtrInput
-	ProjectKey       pulumi.StringPtrInput
-	Slug             pulumi.StringPtrInput
-	Website          pulumi.StringPtrInput
+	// If you want to have this repo associated with a
+	// project.
+	ProjectKey pulumi.StringPtrInput
+	// The slug of the repository.
+	Slug pulumi.StringPtrInput
+	// URL of website associated with this repository.
+	Website pulumi.StringPtrInput
 }
 
 func (ForkedRepositoryArgs) ElementType() reflect.Type {
@@ -173,12 +355,6 @@ func (i *ForkedRepository) ToForkedRepositoryOutput() ForkedRepositoryOutput {
 
 func (i *ForkedRepository) ToForkedRepositoryOutputWithContext(ctx context.Context) ForkedRepositoryOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(ForkedRepositoryOutput)
-}
-
-func (i *ForkedRepository) ToOutput(ctx context.Context) pulumix.Output[*ForkedRepository] {
-	return pulumix.Output[*ForkedRepository]{
-		OutputState: i.ToForkedRepositoryOutputWithContext(ctx).OutputState,
-	}
 }
 
 // ForkedRepositoryArrayInput is an input type that accepts ForkedRepositoryArray and ForkedRepositoryArrayOutput values.
@@ -206,12 +382,6 @@ func (i ForkedRepositoryArray) ToForkedRepositoryArrayOutputWithContext(ctx cont
 	return pulumi.ToOutputWithContext(ctx, i).(ForkedRepositoryArrayOutput)
 }
 
-func (i ForkedRepositoryArray) ToOutput(ctx context.Context) pulumix.Output[[]*ForkedRepository] {
-	return pulumix.Output[[]*ForkedRepository]{
-		OutputState: i.ToForkedRepositoryArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 // ForkedRepositoryMapInput is an input type that accepts ForkedRepositoryMap and ForkedRepositoryMapOutput values.
 // You can construct a concrete instance of `ForkedRepositoryMapInput` via:
 //
@@ -237,12 +407,6 @@ func (i ForkedRepositoryMap) ToForkedRepositoryMapOutputWithContext(ctx context.
 	return pulumi.ToOutputWithContext(ctx, i).(ForkedRepositoryMapOutput)
 }
 
-func (i ForkedRepositoryMap) ToOutput(ctx context.Context) pulumix.Output[map[string]*ForkedRepository] {
-	return pulumix.Output[map[string]*ForkedRepository]{
-		OutputState: i.ToForkedRepositoryMapOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ForkedRepositoryOutput struct{ *pulumi.OutputState }
 
 func (ForkedRepositoryOutput) ElementType() reflect.Type {
@@ -257,80 +421,97 @@ func (o ForkedRepositoryOutput) ToForkedRepositoryOutputWithContext(ctx context.
 	return o
 }
 
-func (o ForkedRepositoryOutput) ToOutput(ctx context.Context) pulumix.Output[*ForkedRepository] {
-	return pulumix.Output[*ForkedRepository]{
-		OutputState: o.OutputState,
-	}
-}
-
+// The HTTPS clone URL.
 func (o ForkedRepositoryOutput) CloneHttps() pulumi.StringOutput {
 	return o.ApplyT(func(v *ForkedRepository) pulumi.StringOutput { return v.CloneHttps }).(pulumi.StringOutput)
 }
 
+// The SSH clone URL.
 func (o ForkedRepositoryOutput) CloneSsh() pulumi.StringOutput {
 	return o.ApplyT(func(v *ForkedRepository) pulumi.StringOutput { return v.CloneSsh }).(pulumi.StringOutput)
 }
 
+// What the description of the repo is.
 func (o ForkedRepositoryOutput) Description() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *ForkedRepository) pulumi.StringPtrOutput { return v.Description }).(pulumi.StringPtrOutput)
 }
 
+// What the fork policy should be. Defaults to
+// `allowForks`. Valid values are `allowForks`, `noPublicForks`, `noForks`.
 func (o ForkedRepositoryOutput) ForkPolicy() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *ForkedRepository) pulumi.StringPtrOutput { return v.ForkPolicy }).(pulumi.StringPtrOutput)
 }
 
+// If this should have issues turned on or not.
 func (o ForkedRepositoryOutput) HasIssues() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *ForkedRepository) pulumi.BoolPtrOutput { return v.HasIssues }).(pulumi.BoolPtrOutput)
 }
 
+// If this should have wiki turned on or not.
 func (o ForkedRepositoryOutput) HasWiki() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *ForkedRepository) pulumi.BoolPtrOutput { return v.HasWiki }).(pulumi.BoolPtrOutput)
 }
 
+// If this should be private or not. Defaults to `true`. Note that if
+// the parent repo has `noPublicForks` as its fork policy, the resource may
+// fail to be created.
 func (o ForkedRepositoryOutput) IsPrivate() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *ForkedRepository) pulumi.BoolPtrOutput { return v.IsPrivate }).(pulumi.BoolPtrOutput)
 }
 
+// What the language of this repository should be.
 func (o ForkedRepositoryOutput) Language() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *ForkedRepository) pulumi.StringPtrOutput { return v.Language }).(pulumi.StringPtrOutput)
 }
 
+// A set of links to a resource related to this object. See Link Below.
 func (o ForkedRepositoryOutput) Link() ForkedRepositoryLinkOutput {
 	return o.ApplyT(func(v *ForkedRepository) ForkedRepositoryLinkOutput { return v.Link }).(ForkedRepositoryLinkOutput)
 }
 
+// The name of the repository.
 func (o ForkedRepositoryOutput) Name() pulumi.StringOutput {
 	return o.ApplyT(func(v *ForkedRepository) pulumi.StringOutput { return v.Name }).(pulumi.StringOutput)
 }
 
+// The owner of this repository. Can be you or any team you
+// have write access to.
 func (o ForkedRepositoryOutput) Owner() pulumi.StringOutput {
 	return o.ApplyT(func(v *ForkedRepository) pulumi.StringOutput { return v.Owner }).(pulumi.StringOutput)
 }
 
+// The repository to fork from. See Parent below.
 func (o ForkedRepositoryOutput) Parent() pulumi.StringMapOutput {
 	return o.ApplyT(func(v *ForkedRepository) pulumi.StringMapOutput { return v.Parent }).(pulumi.StringMapOutput)
 }
 
+// Turn on to enable pipelines support.
 func (o ForkedRepositoryOutput) PipelinesEnabled() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *ForkedRepository) pulumi.BoolPtrOutput { return v.PipelinesEnabled }).(pulumi.BoolPtrOutput)
 }
 
+// If you want to have this repo associated with a
+// project.
 func (o ForkedRepositoryOutput) ProjectKey() pulumi.StringOutput {
 	return o.ApplyT(func(v *ForkedRepository) pulumi.StringOutput { return v.ProjectKey }).(pulumi.StringOutput)
 }
 
+// The SCM of the resource. Either `hg` or `git`.
 func (o ForkedRepositoryOutput) Scm() pulumi.StringOutput {
 	return o.ApplyT(func(v *ForkedRepository) pulumi.StringOutput { return v.Scm }).(pulumi.StringOutput)
 }
 
+// The slug of the repository.
 func (o ForkedRepositoryOutput) Slug() pulumi.StringOutput {
 	return o.ApplyT(func(v *ForkedRepository) pulumi.StringOutput { return v.Slug }).(pulumi.StringOutput)
 }
 
+// The uuid of the repository resource.
 func (o ForkedRepositoryOutput) Uuid() pulumi.StringOutput {
 	return o.ApplyT(func(v *ForkedRepository) pulumi.StringOutput { return v.Uuid }).(pulumi.StringOutput)
 }
 
+// URL of website associated with this repository.
 func (o ForkedRepositoryOutput) Website() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *ForkedRepository) pulumi.StringPtrOutput { return v.Website }).(pulumi.StringPtrOutput)
 }
@@ -347,12 +528,6 @@ func (o ForkedRepositoryArrayOutput) ToForkedRepositoryArrayOutput() ForkedRepos
 
 func (o ForkedRepositoryArrayOutput) ToForkedRepositoryArrayOutputWithContext(ctx context.Context) ForkedRepositoryArrayOutput {
 	return o
-}
-
-func (o ForkedRepositoryArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]*ForkedRepository] {
-	return pulumix.Output[[]*ForkedRepository]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ForkedRepositoryArrayOutput) Index(i pulumi.IntInput) ForkedRepositoryOutput {
@@ -373,12 +548,6 @@ func (o ForkedRepositoryMapOutput) ToForkedRepositoryMapOutput() ForkedRepositor
 
 func (o ForkedRepositoryMapOutput) ToForkedRepositoryMapOutputWithContext(ctx context.Context) ForkedRepositoryMapOutput {
 	return o
-}
-
-func (o ForkedRepositoryMapOutput) ToOutput(ctx context.Context) pulumix.Output[map[string]*ForkedRepository] {
-	return pulumix.Output[map[string]*ForkedRepository]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ForkedRepositoryMapOutput) MapIndex(k pulumi.StringInput) ForkedRepositoryOutput {

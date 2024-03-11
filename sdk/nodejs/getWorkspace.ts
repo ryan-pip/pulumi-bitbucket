@@ -4,6 +4,22 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "./utilities";
 
+/**
+ * Provides a way to fetch data on a workspace.
+ *
+ * OAuth2 Scopes: `none`
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as bitbucket from "@pulumi/bitbucket";
+ *
+ * const example = bitbucket.getWorkspace({
+ *     workspace: "gob",
+ * });
+ * ```
+ */
 export function getWorkspace(args: GetWorkspaceArgs, opts?: pulumi.InvokeOptions): Promise<GetWorkspaceResult> {
 
     opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
@@ -16,6 +32,9 @@ export function getWorkspace(args: GetWorkspaceArgs, opts?: pulumi.InvokeOptions
  * A collection of arguments for invoking getWorkspace.
  */
 export interface GetWorkspaceArgs {
+    /**
+     * This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces
+     */
     workspace: string;
 }
 
@@ -27,11 +46,36 @@ export interface GetWorkspaceResult {
      * The provider-assigned unique ID for this managed resource.
      */
     readonly id: string;
+    /**
+     * Indicates whether the workspace is publicly accessible, or whether it is private to the members and consequently only visible to members.
+     */
     readonly isPrivate: boolean;
+    /**
+     * The name of the workspace.
+     */
     readonly name: string;
+    /**
+     * The short label that identifies this workspace.
+     */
     readonly slug: string;
     readonly workspace: string;
 }
+/**
+ * Provides a way to fetch data on a workspace.
+ *
+ * OAuth2 Scopes: `none`
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as bitbucket from "@pulumi/bitbucket";
+ *
+ * const example = bitbucket.getWorkspace({
+ *     workspace: "gob",
+ * });
+ * ```
+ */
 export function getWorkspaceOutput(args: GetWorkspaceOutputArgs, opts?: pulumi.InvokeOptions): pulumi.Output<GetWorkspaceResult> {
     return pulumi.output(args).apply((a: any) => getWorkspace(a, opts))
 }
@@ -40,5 +84,8 @@ export function getWorkspaceOutput(args: GetWorkspaceOutputArgs, opts?: pulumi.I
  * A collection of arguments for invoking getWorkspace.
  */
 export interface GetWorkspaceOutputArgs {
+    /**
+     * This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces
+     */
     workspace: pulumi.Input<string>;
 }

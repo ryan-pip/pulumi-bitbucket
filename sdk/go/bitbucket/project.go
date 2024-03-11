@@ -9,21 +9,68 @@ import (
 
 	"errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket/internal"
 )
 
+// This resource allows you to manage your projects in your bitbucket team.
+//
+// OAuth2 Scopes: `project` and `project:admin`
+//
+// ## Example Usage
+//
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := bitbucket.NewProject(ctx, "devops", &bitbucket.ProjectArgs{
+//				Key:   pulumi.String("DEVOPS"),
+//				Owner: pulumi.String("my-team"),
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
+//
+// ## Import
+//
+// Repositories can be imported using their `owner/key` ID, e.g.
+//
+// ```sh
+//
+//	$ pulumi import bitbucket:index/project:Project my_project my-account/project_key
+//
+// ```
 type Project struct {
 	pulumi.CustomResourceState
 
-	Description             pulumi.StringPtrOutput `pulumi:"description"`
-	HasPubliclyVisibleRepos pulumi.BoolOutput      `pulumi:"hasPubliclyVisibleRepos"`
-	IsPrivate               pulumi.BoolPtrOutput   `pulumi:"isPrivate"`
-	Key                     pulumi.StringOutput    `pulumi:"key"`
-	Link                    ProjectLinkOutput      `pulumi:"link"`
-	Name                    pulumi.StringOutput    `pulumi:"name"`
-	Owner                   pulumi.StringOutput    `pulumi:"owner"`
-	Uuid                    pulumi.StringOutput    `pulumi:"uuid"`
+	// The description of the project
+	Description pulumi.StringPtrOutput `pulumi:"description"`
+	// Indicates whether the project contains publicly visible repositories. Note that private projects cannot contain public repositories.
+	HasPubliclyVisibleRepos pulumi.BoolOutput `pulumi:"hasPubliclyVisibleRepos"`
+	// If you want to keep the project private - defaults to `true`
+	IsPrivate pulumi.BoolPtrOutput `pulumi:"isPrivate"`
+	// The key used for this project
+	Key pulumi.StringOutput `pulumi:"key"`
+	// A set of links to a resource related to this object. See Link Below.
+	Link ProjectLinkOutput `pulumi:"link"`
+	// The name of the project
+	Name pulumi.StringOutput `pulumi:"name"`
+	// The owner of this project. Can be you or any team you have write access to.
+	Owner pulumi.StringOutput `pulumi:"owner"`
+	// The project's immutable id.
+	Uuid pulumi.StringOutput `pulumi:"uuid"`
 }
 
 // NewProject registers a new resource with the given unique name, arguments, and options.
@@ -62,25 +109,41 @@ func GetProject(ctx *pulumi.Context,
 
 // Input properties used for looking up and filtering Project resources.
 type projectState struct {
-	Description             *string      `pulumi:"description"`
-	HasPubliclyVisibleRepos *bool        `pulumi:"hasPubliclyVisibleRepos"`
-	IsPrivate               *bool        `pulumi:"isPrivate"`
-	Key                     *string      `pulumi:"key"`
-	Link                    *ProjectLink `pulumi:"link"`
-	Name                    *string      `pulumi:"name"`
-	Owner                   *string      `pulumi:"owner"`
-	Uuid                    *string      `pulumi:"uuid"`
+	// The description of the project
+	Description *string `pulumi:"description"`
+	// Indicates whether the project contains publicly visible repositories. Note that private projects cannot contain public repositories.
+	HasPubliclyVisibleRepos *bool `pulumi:"hasPubliclyVisibleRepos"`
+	// If you want to keep the project private - defaults to `true`
+	IsPrivate *bool `pulumi:"isPrivate"`
+	// The key used for this project
+	Key *string `pulumi:"key"`
+	// A set of links to a resource related to this object. See Link Below.
+	Link *ProjectLink `pulumi:"link"`
+	// The name of the project
+	Name *string `pulumi:"name"`
+	// The owner of this project. Can be you or any team you have write access to.
+	Owner *string `pulumi:"owner"`
+	// The project's immutable id.
+	Uuid *string `pulumi:"uuid"`
 }
 
 type ProjectState struct {
-	Description             pulumi.StringPtrInput
+	// The description of the project
+	Description pulumi.StringPtrInput
+	// Indicates whether the project contains publicly visible repositories. Note that private projects cannot contain public repositories.
 	HasPubliclyVisibleRepos pulumi.BoolPtrInput
-	IsPrivate               pulumi.BoolPtrInput
-	Key                     pulumi.StringPtrInput
-	Link                    ProjectLinkPtrInput
-	Name                    pulumi.StringPtrInput
-	Owner                   pulumi.StringPtrInput
-	Uuid                    pulumi.StringPtrInput
+	// If you want to keep the project private - defaults to `true`
+	IsPrivate pulumi.BoolPtrInput
+	// The key used for this project
+	Key pulumi.StringPtrInput
+	// A set of links to a resource related to this object. See Link Below.
+	Link ProjectLinkPtrInput
+	// The name of the project
+	Name pulumi.StringPtrInput
+	// The owner of this project. Can be you or any team you have write access to.
+	Owner pulumi.StringPtrInput
+	// The project's immutable id.
+	Uuid pulumi.StringPtrInput
 }
 
 func (ProjectState) ElementType() reflect.Type {
@@ -88,22 +151,34 @@ func (ProjectState) ElementType() reflect.Type {
 }
 
 type projectArgs struct {
-	Description *string      `pulumi:"description"`
-	IsPrivate   *bool        `pulumi:"isPrivate"`
-	Key         string       `pulumi:"key"`
-	Link        *ProjectLink `pulumi:"link"`
-	Name        *string      `pulumi:"name"`
-	Owner       string       `pulumi:"owner"`
+	// The description of the project
+	Description *string `pulumi:"description"`
+	// If you want to keep the project private - defaults to `true`
+	IsPrivate *bool `pulumi:"isPrivate"`
+	// The key used for this project
+	Key string `pulumi:"key"`
+	// A set of links to a resource related to this object. See Link Below.
+	Link *ProjectLink `pulumi:"link"`
+	// The name of the project
+	Name *string `pulumi:"name"`
+	// The owner of this project. Can be you or any team you have write access to.
+	Owner string `pulumi:"owner"`
 }
 
 // The set of arguments for constructing a Project resource.
 type ProjectArgs struct {
+	// The description of the project
 	Description pulumi.StringPtrInput
-	IsPrivate   pulumi.BoolPtrInput
-	Key         pulumi.StringInput
-	Link        ProjectLinkPtrInput
-	Name        pulumi.StringPtrInput
-	Owner       pulumi.StringInput
+	// If you want to keep the project private - defaults to `true`
+	IsPrivate pulumi.BoolPtrInput
+	// The key used for this project
+	Key pulumi.StringInput
+	// A set of links to a resource related to this object. See Link Below.
+	Link ProjectLinkPtrInput
+	// The name of the project
+	Name pulumi.StringPtrInput
+	// The owner of this project. Can be you or any team you have write access to.
+	Owner pulumi.StringInput
 }
 
 func (ProjectArgs) ElementType() reflect.Type {
@@ -127,12 +202,6 @@ func (i *Project) ToProjectOutput() ProjectOutput {
 
 func (i *Project) ToProjectOutputWithContext(ctx context.Context) ProjectOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(ProjectOutput)
-}
-
-func (i *Project) ToOutput(ctx context.Context) pulumix.Output[*Project] {
-	return pulumix.Output[*Project]{
-		OutputState: i.ToProjectOutputWithContext(ctx).OutputState,
-	}
 }
 
 // ProjectArrayInput is an input type that accepts ProjectArray and ProjectArrayOutput values.
@@ -160,12 +229,6 @@ func (i ProjectArray) ToProjectArrayOutputWithContext(ctx context.Context) Proje
 	return pulumi.ToOutputWithContext(ctx, i).(ProjectArrayOutput)
 }
 
-func (i ProjectArray) ToOutput(ctx context.Context) pulumix.Output[[]*Project] {
-	return pulumix.Output[[]*Project]{
-		OutputState: i.ToProjectArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 // ProjectMapInput is an input type that accepts ProjectMap and ProjectMapOutput values.
 // You can construct a concrete instance of `ProjectMapInput` via:
 //
@@ -191,12 +254,6 @@ func (i ProjectMap) ToProjectMapOutputWithContext(ctx context.Context) ProjectMa
 	return pulumi.ToOutputWithContext(ctx, i).(ProjectMapOutput)
 }
 
-func (i ProjectMap) ToOutput(ctx context.Context) pulumix.Output[map[string]*Project] {
-	return pulumix.Output[map[string]*Project]{
-		OutputState: i.ToProjectMapOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ProjectOutput struct{ *pulumi.OutputState }
 
 func (ProjectOutput) ElementType() reflect.Type {
@@ -211,40 +268,42 @@ func (o ProjectOutput) ToProjectOutputWithContext(ctx context.Context) ProjectOu
 	return o
 }
 
-func (o ProjectOutput) ToOutput(ctx context.Context) pulumix.Output[*Project] {
-	return pulumix.Output[*Project]{
-		OutputState: o.OutputState,
-	}
-}
-
+// The description of the project
 func (o ProjectOutput) Description() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Project) pulumi.StringPtrOutput { return v.Description }).(pulumi.StringPtrOutput)
 }
 
+// Indicates whether the project contains publicly visible repositories. Note that private projects cannot contain public repositories.
 func (o ProjectOutput) HasPubliclyVisibleRepos() pulumi.BoolOutput {
 	return o.ApplyT(func(v *Project) pulumi.BoolOutput { return v.HasPubliclyVisibleRepos }).(pulumi.BoolOutput)
 }
 
+// If you want to keep the project private - defaults to `true`
 func (o ProjectOutput) IsPrivate() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *Project) pulumi.BoolPtrOutput { return v.IsPrivate }).(pulumi.BoolPtrOutput)
 }
 
+// The key used for this project
 func (o ProjectOutput) Key() pulumi.StringOutput {
 	return o.ApplyT(func(v *Project) pulumi.StringOutput { return v.Key }).(pulumi.StringOutput)
 }
 
+// A set of links to a resource related to this object. See Link Below.
 func (o ProjectOutput) Link() ProjectLinkOutput {
 	return o.ApplyT(func(v *Project) ProjectLinkOutput { return v.Link }).(ProjectLinkOutput)
 }
 
+// The name of the project
 func (o ProjectOutput) Name() pulumi.StringOutput {
 	return o.ApplyT(func(v *Project) pulumi.StringOutput { return v.Name }).(pulumi.StringOutput)
 }
 
+// The owner of this project. Can be you or any team you have write access to.
 func (o ProjectOutput) Owner() pulumi.StringOutput {
 	return o.ApplyT(func(v *Project) pulumi.StringOutput { return v.Owner }).(pulumi.StringOutput)
 }
 
+// The project's immutable id.
 func (o ProjectOutput) Uuid() pulumi.StringOutput {
 	return o.ApplyT(func(v *Project) pulumi.StringOutput { return v.Uuid }).(pulumi.StringOutput)
 }
@@ -261,12 +320,6 @@ func (o ProjectArrayOutput) ToProjectArrayOutput() ProjectArrayOutput {
 
 func (o ProjectArrayOutput) ToProjectArrayOutputWithContext(ctx context.Context) ProjectArrayOutput {
 	return o
-}
-
-func (o ProjectArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]*Project] {
-	return pulumix.Output[[]*Project]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ProjectArrayOutput) Index(i pulumi.IntInput) ProjectOutput {
@@ -287,12 +340,6 @@ func (o ProjectMapOutput) ToProjectMapOutput() ProjectMapOutput {
 
 func (o ProjectMapOutput) ToProjectMapOutputWithContext(ctx context.Context) ProjectMapOutput {
 	return o
-}
-
-func (o ProjectMapOutput) ToOutput(ctx context.Context) pulumix.Output[map[string]*Project] {
-	return pulumix.Output[map[string]*Project]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ProjectMapOutput) MapIndex(k pulumi.StringInput) ProjectOutput {

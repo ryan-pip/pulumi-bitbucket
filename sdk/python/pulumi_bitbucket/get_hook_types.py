@@ -36,6 +36,9 @@ class GetHookTypesResult:
     @property
     @pulumi.getter(name="hookTypes")
     def hook_types(self) -> Sequence['outputs.GetHookTypesHookTypeResult']:
+        """
+        A Set of Hook Event Types. See Hook Types below.
+        """
         return pulumi.get(self, "hook_types")
 
     @property
@@ -66,7 +69,21 @@ class AwaitableGetHookTypesResult(GetHookTypesResult):
 def get_hook_types(subject_type: Optional[str] = None,
                    opts: Optional[pulumi.InvokeOptions] = None) -> AwaitableGetHookTypesResult:
     """
-    Use this data source to access information about an existing resource.
+    Provides a way to fetch data of hook types.
+
+    OAuth2 Scopes: `none`
+
+    ## Example Usage
+
+    ```python
+    import pulumi
+    import pulumi_bitbucket as bitbucket
+
+    example = bitbucket.get_hook_types(subject_type="workspace")
+    ```
+
+
+    :param str subject_type: A resource or subject type. Valid values are `workspace`, `user`, `repository`, `team`.
     """
     __args__ = dict()
     __args__['subjectType'] = subject_type
@@ -83,6 +100,20 @@ def get_hook_types(subject_type: Optional[str] = None,
 def get_hook_types_output(subject_type: Optional[pulumi.Input[str]] = None,
                           opts: Optional[pulumi.InvokeOptions] = None) -> pulumi.Output[GetHookTypesResult]:
     """
-    Use this data source to access information about an existing resource.
+    Provides a way to fetch data of hook types.
+
+    OAuth2 Scopes: `none`
+
+    ## Example Usage
+
+    ```python
+    import pulumi
+    import pulumi_bitbucket as bitbucket
+
+    example = bitbucket.get_hook_types(subject_type="workspace")
+    ```
+
+
+    :param str subject_type: A resource or subject type. Valid values are `workspace`, `user`, `repository`, `team`.
     """
     ...

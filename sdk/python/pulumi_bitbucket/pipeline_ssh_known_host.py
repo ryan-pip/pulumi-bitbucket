@@ -22,6 +22,10 @@ class PipelineSshKnownHostArgs:
                  hostname: Optional[pulumi.Input[str]] = None):
         """
         The set of arguments for constructing a PipelineSshKnownHost resource.
+        :param pulumi.Input['PipelineSshKnownHostPublicKeyArgs'] public_key: The Public key config for the known host.
+        :param pulumi.Input[str] repository: The Repository to create config for the known host in.
+        :param pulumi.Input[str] workspace: The Workspace where the repository resides.
+        :param pulumi.Input[str] hostname: The hostname of the known host.
         """
         pulumi.set(__self__, "public_key", public_key)
         pulumi.set(__self__, "repository", repository)
@@ -32,6 +36,9 @@ class PipelineSshKnownHostArgs:
     @property
     @pulumi.getter(name="publicKey")
     def public_key(self) -> pulumi.Input['PipelineSshKnownHostPublicKeyArgs']:
+        """
+        The Public key config for the known host.
+        """
         return pulumi.get(self, "public_key")
 
     @public_key.setter
@@ -41,6 +48,9 @@ class PipelineSshKnownHostArgs:
     @property
     @pulumi.getter
     def repository(self) -> pulumi.Input[str]:
+        """
+        The Repository to create config for the known host in.
+        """
         return pulumi.get(self, "repository")
 
     @repository.setter
@@ -50,6 +60,9 @@ class PipelineSshKnownHostArgs:
     @property
     @pulumi.getter
     def workspace(self) -> pulumi.Input[str]:
+        """
+        The Workspace where the repository resides.
+        """
         return pulumi.get(self, "workspace")
 
     @workspace.setter
@@ -59,6 +72,9 @@ class PipelineSshKnownHostArgs:
     @property
     @pulumi.getter
     def hostname(self) -> Optional[pulumi.Input[str]]:
+        """
+        The hostname of the known host.
+        """
         return pulumi.get(self, "hostname")
 
     @hostname.setter
@@ -76,6 +92,13 @@ class _PipelineSshKnownHostState:
                  workspace: Optional[pulumi.Input[str]] = None):
         """
         Input properties used for looking up and filtering PipelineSshKnownHost resources.
+        :param pulumi.Input[str] hostname: The hostname of the known host.
+        :param pulumi.Input['PipelineSshKnownHostPublicKeyArgs'] public_key: The Public key config for the known host.
+        :param pulumi.Input[str] repository: The Repository to create config for the known host in.
+        :param pulumi.Input[str] uuid: The UUID identifying the known host.
+               * `public_key.0.md5_fingerprint` - The MD5 fingerprint of the public key.
+               * `public_key.0.sha256_fingerprint` - The SHA-256 fingerprint of the public key.
+        :param pulumi.Input[str] workspace: The Workspace where the repository resides.
         """
         if hostname is not None:
             pulumi.set(__self__, "hostname", hostname)
@@ -91,6 +114,9 @@ class _PipelineSshKnownHostState:
     @property
     @pulumi.getter
     def hostname(self) -> Optional[pulumi.Input[str]]:
+        """
+        The hostname of the known host.
+        """
         return pulumi.get(self, "hostname")
 
     @hostname.setter
@@ -100,6 +126,9 @@ class _PipelineSshKnownHostState:
     @property
     @pulumi.getter(name="publicKey")
     def public_key(self) -> Optional[pulumi.Input['PipelineSshKnownHostPublicKeyArgs']]:
+        """
+        The Public key config for the known host.
+        """
         return pulumi.get(self, "public_key")
 
     @public_key.setter
@@ -109,6 +138,9 @@ class _PipelineSshKnownHostState:
     @property
     @pulumi.getter
     def repository(self) -> Optional[pulumi.Input[str]]:
+        """
+        The Repository to create config for the known host in.
+        """
         return pulumi.get(self, "repository")
 
     @repository.setter
@@ -118,6 +150,11 @@ class _PipelineSshKnownHostState:
     @property
     @pulumi.getter
     def uuid(self) -> Optional[pulumi.Input[str]]:
+        """
+        The UUID identifying the known host.
+        * `public_key.0.md5_fingerprint` - The MD5 fingerprint of the public key.
+        * `public_key.0.sha256_fingerprint` - The SHA-256 fingerprint of the public key.
+        """
         return pulumi.get(self, "uuid")
 
     @uuid.setter
@@ -127,6 +164,9 @@ class _PipelineSshKnownHostState:
     @property
     @pulumi.getter
     def workspace(self) -> Optional[pulumi.Input[str]]:
+        """
+        The Workspace where the repository resides.
+        """
         return pulumi.get(self, "workspace")
 
     @workspace.setter
@@ -145,9 +185,42 @@ class PipelineSshKnownHost(pulumi.CustomResource):
                  workspace: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         """
-        Create a PipelineSshKnownHost resource with the given unique name, props, and options.
+        Provides a Bitbucket Pipeline Ssh Known Host resource.
+
+        This allows you to manage your Pipeline Ssh Known Hosts for a repository.
+
+        OAuth2 Scopes: `none`
+
+        ## Example Usage
+
+        ```python
+        import pulumi
+        import pulumi_bitbucket as bitbucket
+
+        test = bitbucket.PipelineSshKnownHost("test",
+            workspace="example",
+            repository=bitbucket_repository["test"]["name"],
+            hostname="[example.com]:22",
+            public_key=bitbucket.PipelineSshKnownHostPublicKeyArgs(
+                key_type="ssh-ed25519",
+                key="AAAAC3NzaC1lZDI1NTE5AAAAIKqP3Cr632C2dNhhgKVcon4ldUSAeKiku2yP9O9/bDtY",
+            ))
+        ```
+
+        ## Import
+
+        Pipeline Ssh Known Hosts can be imported using their `workspace/repo-slug/uuid` ID, e.g.
+
+        ```sh
+         $ pulumi import bitbucket:index/pipelineSshKnownHost:PipelineSshKnownHost key workspace/repo-slug/uuid
+        ```
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[str] hostname: The hostname of the known host.
+        :param pulumi.Input[pulumi.InputType['PipelineSshKnownHostPublicKeyArgs']] public_key: The Public key config for the known host.
+        :param pulumi.Input[str] repository: The Repository to create config for the known host in.
+        :param pulumi.Input[str] workspace: The Workspace where the repository resides.
         """
         ...
     @overload
@@ -156,7 +229,36 @@ class PipelineSshKnownHost(pulumi.CustomResource):
                  args: PipelineSshKnownHostArgs,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
-        Create a PipelineSshKnownHost resource with the given unique name, props, and options.
+        Provides a Bitbucket Pipeline Ssh Known Host resource.
+
+        This allows you to manage your Pipeline Ssh Known Hosts for a repository.
+
+        OAuth2 Scopes: `none`
+
+        ## Example Usage
+
+        ```python
+        import pulumi
+        import pulumi_bitbucket as bitbucket
+
+        test = bitbucket.PipelineSshKnownHost("test",
+            workspace="example",
+            repository=bitbucket_repository["test"]["name"],
+            hostname="[example.com]:22",
+            public_key=bitbucket.PipelineSshKnownHostPublicKeyArgs(
+                key_type="ssh-ed25519",
+                key="AAAAC3NzaC1lZDI1NTE5AAAAIKqP3Cr632C2dNhhgKVcon4ldUSAeKiku2yP9O9/bDtY",
+            ))
+        ```
+
+        ## Import
+
+        Pipeline Ssh Known Hosts can be imported using their `workspace/repo-slug/uuid` ID, e.g.
+
+        ```sh
+         $ pulumi import bitbucket:index/pipelineSshKnownHost:PipelineSshKnownHost key workspace/repo-slug/uuid
+        ```
+
         :param str resource_name: The name of the resource.
         :param PipelineSshKnownHostArgs args: The arguments to use to populate this resource's properties.
         :param pulumi.ResourceOptions opts: Options for the resource.
@@ -218,6 +320,13 @@ class PipelineSshKnownHost(pulumi.CustomResource):
         :param str resource_name: The unique name of the resulting resource.
         :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[str] hostname: The hostname of the known host.
+        :param pulumi.Input[pulumi.InputType['PipelineSshKnownHostPublicKeyArgs']] public_key: The Public key config for the known host.
+        :param pulumi.Input[str] repository: The Repository to create config for the known host in.
+        :param pulumi.Input[str] uuid: The UUID identifying the known host.
+               * `public_key.0.md5_fingerprint` - The MD5 fingerprint of the public key.
+               * `public_key.0.sha256_fingerprint` - The SHA-256 fingerprint of the public key.
+        :param pulumi.Input[str] workspace: The Workspace where the repository resides.
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
 
@@ -233,25 +342,42 @@ class PipelineSshKnownHost(pulumi.CustomResource):
     @property
     @pulumi.getter
     def hostname(self) -> pulumi.Output[Optional[str]]:
+        """
+        The hostname of the known host.
+        """
         return pulumi.get(self, "hostname")
 
     @property
     @pulumi.getter(name="publicKey")
     def public_key(self) -> pulumi.Output['outputs.PipelineSshKnownHostPublicKey']:
+        """
+        The Public key config for the known host.
+        """
         return pulumi.get(self, "public_key")
 
     @property
     @pulumi.getter
     def repository(self) -> pulumi.Output[str]:
+        """
+        The Repository to create config for the known host in.
+        """
         return pulumi.get(self, "repository")
 
     @property
     @pulumi.getter
     def uuid(self) -> pulumi.Output[str]:
+        """
+        The UUID identifying the known host.
+        * `public_key.0.md5_fingerprint` - The MD5 fingerprint of the public key.
+        * `public_key.0.sha256_fingerprint` - The SHA-256 fingerprint of the public key.
+        """
         return pulumi.get(self, "uuid")
 
     @property
     @pulumi.getter
     def workspace(self) -> pulumi.Output[str]:
+        """
+        The Workspace where the repository resides.
+        """
         return pulumi.get(self, "workspace")
 

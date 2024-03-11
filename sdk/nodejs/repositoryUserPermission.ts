@@ -4,6 +4,35 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "./utilities";
 
+/**
+ * Provides a Bitbucket Repository User Permission Resource.
+ *
+ * This allows you set explicit user permission for a repository.
+ *
+ * OAuth2 Scopes: `repository:admin`
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as bitbucket from "@pulumi/bitbucket";
+ *
+ * const example = new bitbucket.RepositoryUserPermission("example", {
+ *     workspace: "example",
+ *     repoSlug: bitbucket_repository.example.name,
+ *     userId: "user-id",
+ *     permission: "read",
+ * });
+ * ```
+ *
+ * ## Import
+ *
+ * Repository User Permissions can be imported using their `workspace:repo-slug:user-id` ID, e.g.
+ *
+ * ```sh
+ *  $ pulumi import bitbucket:index/repositoryUserPermission:RepositoryUserPermission example workspace:repo-slug:user-id
+ * ```
+ */
 export class RepositoryUserPermission extends pulumi.CustomResource {
     /**
      * Get an existing RepositoryUserPermission resource's state with the given name, ID, and optional extra
@@ -32,9 +61,21 @@ export class RepositoryUserPermission extends pulumi.CustomResource {
         return obj['__pulumiType'] === RepositoryUserPermission.__pulumiType;
     }
 
+    /**
+     * Permissions can be one of `read`, `write`, `none`, and `admin`.
+     */
     public readonly permission!: pulumi.Output<string>;
+    /**
+     * The repository slug.
+     */
     public readonly repoSlug!: pulumi.Output<string>;
+    /**
+     * The UUID of the user.
+     */
     public readonly userId!: pulumi.Output<string>;
+    /**
+     * The workspace id.
+     */
     public readonly workspace!: pulumi.Output<string>;
 
     /**
@@ -82,9 +123,21 @@ export class RepositoryUserPermission extends pulumi.CustomResource {
  * Input properties used for looking up and filtering RepositoryUserPermission resources.
  */
 export interface RepositoryUserPermissionState {
+    /**
+     * Permissions can be one of `read`, `write`, `none`, and `admin`.
+     */
     permission?: pulumi.Input<string>;
+    /**
+     * The repository slug.
+     */
     repoSlug?: pulumi.Input<string>;
+    /**
+     * The UUID of the user.
+     */
     userId?: pulumi.Input<string>;
+    /**
+     * The workspace id.
+     */
     workspace?: pulumi.Input<string>;
 }
 
@@ -92,8 +145,20 @@ export interface RepositoryUserPermissionState {
  * The set of arguments for constructing a RepositoryUserPermission resource.
  */
 export interface RepositoryUserPermissionArgs {
+    /**
+     * Permissions can be one of `read`, `write`, `none`, and `admin`.
+     */
     permission: pulumi.Input<string>;
+    /**
+     * The repository slug.
+     */
     repoSlug: pulumi.Input<string>;
+    /**
+     * The UUID of the user.
+     */
     userId: pulumi.Input<string>;
+    /**
+     * The workspace id.
+     */
     workspace: pulumi.Input<string>;
 }

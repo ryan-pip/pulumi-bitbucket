@@ -4,6 +4,37 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "./utilities";
 
+/**
+ * Provides a Bitbucket Repository Group Permission Resource.
+ *
+ * This allows you set explicit group permission for a repository.
+ *
+ * OAuth2 Scopes: `repository:admin`
+ *
+ * Note: can only be used when authenticating with Bitbucket Cloud using an _app password_. Authenticating via an OAuth flow gives a 403 error due to a [restriction in the Bitbucket Cloud API](https://developer.atlassian.com/cloud/bitbucket/rest/api-group-repositories/#api-repositories-workspace-repo-slug-permissions-config-groups-group-slug-put).
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as bitbucket from "@pulumi/bitbucket";
+ *
+ * const example = new bitbucket.RepositoryGroupPermission("example", {
+ *     workspace: "example",
+ *     repoSlug: bitbucket_repository.example.name,
+ *     groupSlug: bitbucket_group.example.slug,
+ *     permission: "read",
+ * });
+ * ```
+ *
+ * ## Import
+ *
+ * Repository Group Permissions can be imported using their `workspace:repo-slug:group-slug` ID, e.g.
+ *
+ * ```sh
+ *  $ pulumi import bitbucket:index/repositoryGroupPermission:RepositoryGroupPermission example workspace:repo-slug:group-slug
+ * ```
+ */
 export class RepositoryGroupPermission extends pulumi.CustomResource {
     /**
      * Get an existing RepositoryGroupPermission resource's state with the given name, ID, and optional extra
@@ -32,9 +63,21 @@ export class RepositoryGroupPermission extends pulumi.CustomResource {
         return obj['__pulumiType'] === RepositoryGroupPermission.__pulumiType;
     }
 
+    /**
+     * Slug of the requested group.
+     */
     public readonly groupSlug!: pulumi.Output<string>;
+    /**
+     * Permissions can be one of `read`, `write`, and `admin`.
+     */
     public readonly permission!: pulumi.Output<string>;
+    /**
+     * The repository slug.
+     */
     public readonly repoSlug!: pulumi.Output<string>;
+    /**
+     * The workspace id.
+     */
     public readonly workspace!: pulumi.Output<string>;
 
     /**
@@ -82,9 +125,21 @@ export class RepositoryGroupPermission extends pulumi.CustomResource {
  * Input properties used for looking up and filtering RepositoryGroupPermission resources.
  */
 export interface RepositoryGroupPermissionState {
+    /**
+     * Slug of the requested group.
+     */
     groupSlug?: pulumi.Input<string>;
+    /**
+     * Permissions can be one of `read`, `write`, and `admin`.
+     */
     permission?: pulumi.Input<string>;
+    /**
+     * The repository slug.
+     */
     repoSlug?: pulumi.Input<string>;
+    /**
+     * The workspace id.
+     */
     workspace?: pulumi.Input<string>;
 }
 
@@ -92,8 +147,20 @@ export interface RepositoryGroupPermissionState {
  * The set of arguments for constructing a RepositoryGroupPermission resource.
  */
 export interface RepositoryGroupPermissionArgs {
+    /**
+     * Slug of the requested group.
+     */
     groupSlug: pulumi.Input<string>;
+    /**
+     * Permissions can be one of `read`, `write`, and `admin`.
+     */
     permission: pulumi.Input<string>;
+    /**
+     * The repository slug.
+     */
     repoSlug: pulumi.Input<string>;
+    /**
+     * The workspace id.
+     */
     workspace: pulumi.Input<string>;
 }

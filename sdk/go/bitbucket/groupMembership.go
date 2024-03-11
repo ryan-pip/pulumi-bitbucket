@@ -9,16 +9,75 @@ import (
 
 	"errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket/internal"
 )
 
+// Provides a Bitbucket group membership resource.
+//
+// This allows you to manage your group membership.
+//
+// ## Example Usage
+//
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			testWorkspace, err := bitbucket.GetWorkspace(ctx, &bitbucket.GetWorkspaceArgs{
+//				Workspace: "example",
+//			}, nil)
+//			if err != nil {
+//				return err
+//			}
+//			testGroup, err := bitbucket.NewGroup(ctx, "testGroup", &bitbucket.GroupArgs{
+//				Workspace: *pulumi.String(testWorkspace.Id),
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			testCurrentUser, err := bitbucket.GetCurrentUser(ctx, nil, nil)
+//			if err != nil {
+//				return err
+//			}
+//			_, err = bitbucket.NewGroupMembership(ctx, "testGroupMembership", &bitbucket.GroupMembershipArgs{
+//				Workspace: testGroup.Workspace,
+//				GroupSlug: testGroup.Slug,
+//				Uuid:      *pulumi.String(testCurrentUser.Id),
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
+//
+// ## Import
+//
+// Group Members can be imported using their `workspace/group-slug/member-uuid` ID, e.g.
+//
+// ```sh
+//
+//	$ pulumi import bitbucket:index/groupMembership:GroupMembership group my-workspace/group-slug/member-uuid
+//
+// ```
 type GroupMembership struct {
 	pulumi.CustomResourceState
 
+	// The slug of the group.
 	GroupSlug pulumi.StringOutput `pulumi:"groupSlug"`
 	Slug      pulumi.StringOutput `pulumi:"slug"`
-	Uuid      pulumi.StringOutput `pulumi:"uuid"`
+	// The member UUID to add to the group.
+	Uuid pulumi.StringOutput `pulumi:"uuid"`
+	// The workspace of this repository.
 	Workspace pulumi.StringOutput `pulumi:"workspace"`
 }
 
@@ -61,16 +120,22 @@ func GetGroupMembership(ctx *pulumi.Context,
 
 // Input properties used for looking up and filtering GroupMembership resources.
 type groupMembershipState struct {
+	// The slug of the group.
 	GroupSlug *string `pulumi:"groupSlug"`
 	Slug      *string `pulumi:"slug"`
-	Uuid      *string `pulumi:"uuid"`
+	// The member UUID to add to the group.
+	Uuid *string `pulumi:"uuid"`
+	// The workspace of this repository.
 	Workspace *string `pulumi:"workspace"`
 }
 
 type GroupMembershipState struct {
+	// The slug of the group.
 	GroupSlug pulumi.StringPtrInput
 	Slug      pulumi.StringPtrInput
-	Uuid      pulumi.StringPtrInput
+	// The member UUID to add to the group.
+	Uuid pulumi.StringPtrInput
+	// The workspace of this repository.
 	Workspace pulumi.StringPtrInput
 }
 
@@ -79,15 +144,21 @@ func (GroupMembershipState) ElementType() reflect.Type {
 }
 
 type groupMembershipArgs struct {
+	// The slug of the group.
 	GroupSlug string `pulumi:"groupSlug"`
-	Uuid      string `pulumi:"uuid"`
+	// The member UUID to add to the group.
+	Uuid string `pulumi:"uuid"`
+	// The workspace of this repository.
 	Workspace string `pulumi:"workspace"`
 }
 
 // The set of arguments for constructing a GroupMembership resource.
 type GroupMembershipArgs struct {
+	// The slug of the group.
 	GroupSlug pulumi.StringInput
-	Uuid      pulumi.StringInput
+	// The member UUID to add to the group.
+	Uuid pulumi.StringInput
+	// The workspace of this repository.
 	Workspace pulumi.StringInput
 }
 
@@ -112,12 +183,6 @@ func (i *GroupMembership) ToGroupMembershipOutput() GroupMembershipOutput {
 
 func (i *GroupMembership) ToGroupMembershipOutputWithContext(ctx context.Context) GroupMembershipOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(GroupMembershipOutput)
-}
-
-func (i *GroupMembership) ToOutput(ctx context.Context) pulumix.Output[*GroupMembership] {
-	return pulumix.Output[*GroupMembership]{
-		OutputState: i.ToGroupMembershipOutputWithContext(ctx).OutputState,
-	}
 }
 
 // GroupMembershipArrayInput is an input type that accepts GroupMembershipArray and GroupMembershipArrayOutput values.
@@ -145,12 +210,6 @@ func (i GroupMembershipArray) ToGroupMembershipArrayOutputWithContext(ctx contex
 	return pulumi.ToOutputWithContext(ctx, i).(GroupMembershipArrayOutput)
 }
 
-func (i GroupMembershipArray) ToOutput(ctx context.Context) pulumix.Output[[]*GroupMembership] {
-	return pulumix.Output[[]*GroupMembership]{
-		OutputState: i.ToGroupMembershipArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 // GroupMembershipMapInput is an input type that accepts GroupMembershipMap and GroupMembershipMapOutput values.
 // You can construct a concrete instance of `GroupMembershipMapInput` via:
 //
@@ -176,12 +235,6 @@ func (i GroupMembershipMap) ToGroupMembershipMapOutputWithContext(ctx context.Co
 	return pulumi.ToOutputWithContext(ctx, i).(GroupMembershipMapOutput)
 }
 
-func (i GroupMembershipMap) ToOutput(ctx context.Context) pulumix.Output[map[string]*GroupMembership] {
-	return pulumix.Output[map[string]*GroupMembership]{
-		OutputState: i.ToGroupMembershipMapOutputWithContext(ctx).OutputState,
-	}
-}
-
 type GroupMembershipOutput struct{ *pulumi.OutputState }
 
 func (GroupMembershipOutput) ElementType() reflect.Type {
@@ -196,12 +249,7 @@ func (o GroupMembershipOutput) ToGroupMembershipOutputWithContext(ctx context.Co
 	return o
 }
 
-func (o GroupMembershipOutput) ToOutput(ctx context.Context) pulumix.Output[*GroupMembership] {
-	return pulumix.Output[*GroupMembership]{
-		OutputState: o.OutputState,
-	}
-}
-
+// The slug of the group.
 func (o GroupMembershipOutput) GroupSlug() pulumi.StringOutput {
 	return o.ApplyT(func(v *GroupMembership) pulumi.StringOutput { return v.GroupSlug }).(pulumi.StringOutput)
 }
@@ -210,10 +258,12 @@ func (o GroupMembershipOutput) Slug() pulumi.StringOutput {
 	return o.ApplyT(func(v *GroupMembership) pulumi.StringOutput { return v.Slug }).(pulumi.StringOutput)
 }
 
+// The member UUID to add to the group.
 func (o GroupMembershipOutput) Uuid() pulumi.StringOutput {
 	return o.ApplyT(func(v *GroupMembership) pulumi.StringOutput { return v.Uuid }).(pulumi.StringOutput)
 }
 
+// The workspace of this repository.
 func (o GroupMembershipOutput) Workspace() pulumi.StringOutput {
 	return o.ApplyT(func(v *GroupMembership) pulumi.StringOutput { return v.Workspace }).(pulumi.StringOutput)
 }
@@ -230,12 +280,6 @@ func (o GroupMembershipArrayOutput) ToGroupMembershipArrayOutput() GroupMembersh
 
 func (o GroupMembershipArrayOutput) ToGroupMembershipArrayOutputWithContext(ctx context.Context) GroupMembershipArrayOutput {
 	return o
-}
-
-func (o GroupMembershipArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]*GroupMembership] {
-	return pulumix.Output[[]*GroupMembership]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o GroupMembershipArrayOutput) Index(i pulumi.IntInput) GroupMembershipOutput {
@@ -256,12 +300,6 @@ func (o GroupMembershipMapOutput) ToGroupMembershipMapOutput() GroupMembershipMa
 
 func (o GroupMembershipMapOutput) ToGroupMembershipMapOutputWithContext(ctx context.Context) GroupMembershipMapOutput {
 	return o
-}
-
-func (o GroupMembershipMapOutput) ToOutput(ctx context.Context) pulumix.Output[map[string]*GroupMembership] {
-	return pulumix.Output[map[string]*GroupMembership]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o GroupMembershipMapOutput) MapIndex(k pulumi.StringInput) GroupMembershipOutput {

@@ -4,6 +4,35 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "./utilities";
 
+/**
+ * Provides support for setting up default reviewers for your repository. You must however have the UUID of the user available. Since Bitbucket has removed usernames from its APIs the best case is to use the UUID via the data provider.
+ *
+ * OAuth2 Scopes: `pullrequest` and `repository:admin`
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as bitbucket from "@pulumi/bitbucket";
+ *
+ * const reviewer = bitbucket.getUser({
+ *     uuid: "{account UUID}",
+ * });
+ * const infrastructure = new bitbucket.DefaultReviewers("infrastructure", {
+ *     owner: "myteam",
+ *     repository: "terraform-code",
+ *     reviewers: [reviewer.then(reviewer => reviewer.uuid)],
+ * });
+ * ```
+ *
+ * ## Import
+ *
+ * Default Reviewers can be imported using the owner and repo separated by a (`/`) and the string `reviewers` and the end, e.g.,
+ *
+ * ```sh
+ *  $ pulumi import bitbucket:index/defaultReviewers:DefaultReviewers example myteam/terraform-code/reviewers
+ * ```
+ */
 export class DefaultReviewers extends pulumi.CustomResource {
     /**
      * Get an existing DefaultReviewers resource's state with the given name, ID, and optional extra
@@ -32,8 +61,18 @@ export class DefaultReviewers extends pulumi.CustomResource {
         return obj['__pulumiType'] === DefaultReviewers.__pulumiType;
     }
 
+    /**
+     * The owner of this repository. Can be you or any team you
+     * have write access to.
+     */
     public readonly owner!: pulumi.Output<string>;
+    /**
+     * The name of the repository.
+     */
     public readonly repository!: pulumi.Output<string>;
+    /**
+     * A list of reviewers to use.
+     */
     public readonly reviewers!: pulumi.Output<string[]>;
 
     /**
@@ -76,8 +115,18 @@ export class DefaultReviewers extends pulumi.CustomResource {
  * Input properties used for looking up and filtering DefaultReviewers resources.
  */
 export interface DefaultReviewersState {
+    /**
+     * The owner of this repository. Can be you or any team you
+     * have write access to.
+     */
     owner?: pulumi.Input<string>;
+    /**
+     * The name of the repository.
+     */
     repository?: pulumi.Input<string>;
+    /**
+     * A list of reviewers to use.
+     */
     reviewers?: pulumi.Input<pulumi.Input<string>[]>;
 }
 
@@ -85,7 +134,17 @@ export interface DefaultReviewersState {
  * The set of arguments for constructing a DefaultReviewers resource.
  */
 export interface DefaultReviewersArgs {
+    /**
+     * The owner of this repository. Can be you or any team you
+     * have write access to.
+     */
     owner: pulumi.Input<string>;
+    /**
+     * The name of the repository.
+     */
     repository: pulumi.Input<string>;
+    /**
+     * A list of reviewers to use.
+     */
     reviewers: pulumi.Input<pulumi.Input<string>[]>;
 }

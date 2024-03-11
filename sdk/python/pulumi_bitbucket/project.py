@@ -24,6 +24,12 @@ class ProjectArgs:
                  name: Optional[pulumi.Input[str]] = None):
         """
         The set of arguments for constructing a Project resource.
+        :param pulumi.Input[str] key: The key used for this project
+        :param pulumi.Input[str] owner: The owner of this project. Can be you or any team you have write access to.
+        :param pulumi.Input[str] description: The description of the project
+        :param pulumi.Input[bool] is_private: If you want to keep the project private - defaults to `true`
+        :param pulumi.Input['ProjectLinkArgs'] link: A set of links to a resource related to this object. See Link Below.
+        :param pulumi.Input[str] name: The name of the project
         """
         pulumi.set(__self__, "key", key)
         pulumi.set(__self__, "owner", owner)
@@ -39,6 +45,9 @@ class ProjectArgs:
     @property
     @pulumi.getter
     def key(self) -> pulumi.Input[str]:
+        """
+        The key used for this project
+        """
         return pulumi.get(self, "key")
 
     @key.setter
@@ -48,6 +57,9 @@ class ProjectArgs:
     @property
     @pulumi.getter
     def owner(self) -> pulumi.Input[str]:
+        """
+        The owner of this project. Can be you or any team you have write access to.
+        """
         return pulumi.get(self, "owner")
 
     @owner.setter
@@ -57,6 +69,9 @@ class ProjectArgs:
     @property
     @pulumi.getter
     def description(self) -> Optional[pulumi.Input[str]]:
+        """
+        The description of the project
+        """
         return pulumi.get(self, "description")
 
     @description.setter
@@ -66,6 +81,9 @@ class ProjectArgs:
     @property
     @pulumi.getter(name="isPrivate")
     def is_private(self) -> Optional[pulumi.Input[bool]]:
+        """
+        If you want to keep the project private - defaults to `true`
+        """
         return pulumi.get(self, "is_private")
 
     @is_private.setter
@@ -75,6 +93,9 @@ class ProjectArgs:
     @property
     @pulumi.getter
     def link(self) -> Optional[pulumi.Input['ProjectLinkArgs']]:
+        """
+        A set of links to a resource related to this object. See Link Below.
+        """
         return pulumi.get(self, "link")
 
     @link.setter
@@ -84,6 +105,9 @@ class ProjectArgs:
     @property
     @pulumi.getter
     def name(self) -> Optional[pulumi.Input[str]]:
+        """
+        The name of the project
+        """
         return pulumi.get(self, "name")
 
     @name.setter
@@ -104,6 +128,14 @@ class _ProjectState:
                  uuid: Optional[pulumi.Input[str]] = None):
         """
         Input properties used for looking up and filtering Project resources.
+        :param pulumi.Input[str] description: The description of the project
+        :param pulumi.Input[bool] has_publicly_visible_repos: Indicates whether the project contains publicly visible repositories. Note that private projects cannot contain public repositories.
+        :param pulumi.Input[bool] is_private: If you want to keep the project private - defaults to `true`
+        :param pulumi.Input[str] key: The key used for this project
+        :param pulumi.Input['ProjectLinkArgs'] link: A set of links to a resource related to this object. See Link Below.
+        :param pulumi.Input[str] name: The name of the project
+        :param pulumi.Input[str] owner: The owner of this project. Can be you or any team you have write access to.
+        :param pulumi.Input[str] uuid: The project's immutable id.
         """
         if description is not None:
             pulumi.set(__self__, "description", description)
@@ -125,6 +157,9 @@ class _ProjectState:
     @property
     @pulumi.getter
     def description(self) -> Optional[pulumi.Input[str]]:
+        """
+        The description of the project
+        """
         return pulumi.get(self, "description")
 
     @description.setter
@@ -134,6 +169,9 @@ class _ProjectState:
     @property
     @pulumi.getter(name="hasPubliclyVisibleRepos")
     def has_publicly_visible_repos(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Indicates whether the project contains publicly visible repositories. Note that private projects cannot contain public repositories.
+        """
         return pulumi.get(self, "has_publicly_visible_repos")
 
     @has_publicly_visible_repos.setter
@@ -143,6 +181,9 @@ class _ProjectState:
     @property
     @pulumi.getter(name="isPrivate")
     def is_private(self) -> Optional[pulumi.Input[bool]]:
+        """
+        If you want to keep the project private - defaults to `true`
+        """
         return pulumi.get(self, "is_private")
 
     @is_private.setter
@@ -152,6 +193,9 @@ class _ProjectState:
     @property
     @pulumi.getter
     def key(self) -> Optional[pulumi.Input[str]]:
+        """
+        The key used for this project
+        """
         return pulumi.get(self, "key")
 
     @key.setter
@@ -161,6 +205,9 @@ class _ProjectState:
     @property
     @pulumi.getter
     def link(self) -> Optional[pulumi.Input['ProjectLinkArgs']]:
+        """
+        A set of links to a resource related to this object. See Link Below.
+        """
         return pulumi.get(self, "link")
 
     @link.setter
@@ -170,6 +217,9 @@ class _ProjectState:
     @property
     @pulumi.getter
     def name(self) -> Optional[pulumi.Input[str]]:
+        """
+        The name of the project
+        """
         return pulumi.get(self, "name")
 
     @name.setter
@@ -179,6 +229,9 @@ class _ProjectState:
     @property
     @pulumi.getter
     def owner(self) -> Optional[pulumi.Input[str]]:
+        """
+        The owner of this project. Can be you or any team you have write access to.
+        """
         return pulumi.get(self, "owner")
 
     @owner.setter
@@ -188,6 +241,9 @@ class _ProjectState:
     @property
     @pulumi.getter
     def uuid(self) -> Optional[pulumi.Input[str]]:
+        """
+        The project's immutable id.
+        """
         return pulumi.get(self, "uuid")
 
     @uuid.setter
@@ -208,9 +264,37 @@ class Project(pulumi.CustomResource):
                  owner: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         """
-        Create a Project resource with the given unique name, props, and options.
+        This resource allows you to manage your projects in your bitbucket team.
+
+        OAuth2 Scopes: `project` and `project:admin`
+
+        ## Example Usage
+
+        ```python
+        import pulumi
+        import pulumi_bitbucket as bitbucket
+
+        devops = bitbucket.Project("devops",
+            key="DEVOPS",
+            owner="my-team")
+        ```
+
+        ## Import
+
+        Repositories can be imported using their `owner/key` ID, e.g.
+
+        ```sh
+         $ pulumi import bitbucket:index/project:Project my_project my-account/project_key
+        ```
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[str] description: The description of the project
+        :param pulumi.Input[bool] is_private: If you want to keep the project private - defaults to `true`
+        :param pulumi.Input[str] key: The key used for this project
+        :param pulumi.Input[pulumi.InputType['ProjectLinkArgs']] link: A set of links to a resource related to this object. See Link Below.
+        :param pulumi.Input[str] name: The name of the project
+        :param pulumi.Input[str] owner: The owner of this project. Can be you or any team you have write access to.
         """
         ...
     @overload
@@ -219,7 +303,29 @@ class Project(pulumi.CustomResource):
                  args: ProjectArgs,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
-        Create a Project resource with the given unique name, props, and options.
+        This resource allows you to manage your projects in your bitbucket team.
+
+        OAuth2 Scopes: `project` and `project:admin`
+
+        ## Example Usage
+
+        ```python
+        import pulumi
+        import pulumi_bitbucket as bitbucket
+
+        devops = bitbucket.Project("devops",
+            key="DEVOPS",
+            owner="my-team")
+        ```
+
+        ## Import
+
+        Repositories can be imported using their `owner/key` ID, e.g.
+
+        ```sh
+         $ pulumi import bitbucket:index/project:Project my_project my-account/project_key
+        ```
+
         :param str resource_name: The name of the resource.
         :param ProjectArgs args: The arguments to use to populate this resource's properties.
         :param pulumi.ResourceOptions opts: Options for the resource.
@@ -287,6 +393,14 @@ class Project(pulumi.CustomResource):
         :param str resource_name: The unique name of the resulting resource.
         :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[str] description: The description of the project
+        :param pulumi.Input[bool] has_publicly_visible_repos: Indicates whether the project contains publicly visible repositories. Note that private projects cannot contain public repositories.
+        :param pulumi.Input[bool] is_private: If you want to keep the project private - defaults to `true`
+        :param pulumi.Input[str] key: The key used for this project
+        :param pulumi.Input[pulumi.InputType['ProjectLinkArgs']] link: A set of links to a resource related to this object. See Link Below.
+        :param pulumi.Input[str] name: The name of the project
+        :param pulumi.Input[str] owner: The owner of this project. Can be you or any team you have write access to.
+        :param pulumi.Input[str] uuid: The project's immutable id.
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
 
@@ -305,40 +419,64 @@ class Project(pulumi.CustomResource):
     @property
     @pulumi.getter
     def description(self) -> pulumi.Output[Optional[str]]:
+        """
+        The description of the project
+        """
         return pulumi.get(self, "description")
 
     @property
     @pulumi.getter(name="hasPubliclyVisibleRepos")
     def has_publicly_visible_repos(self) -> pulumi.Output[bool]:
+        """
+        Indicates whether the project contains publicly visible repositories. Note that private projects cannot contain public repositories.
+        """
         return pulumi.get(self, "has_publicly_visible_repos")
 
     @property
     @pulumi.getter(name="isPrivate")
     def is_private(self) -> pulumi.Output[Optional[bool]]:
+        """
+        If you want to keep the project private - defaults to `true`
+        """
         return pulumi.get(self, "is_private")
 
     @property
     @pulumi.getter
     def key(self) -> pulumi.Output[str]:
+        """
+        The key used for this project
+        """
         return pulumi.get(self, "key")
 
     @property
     @pulumi.getter
     def link(self) -> pulumi.Output['outputs.ProjectLink']:
+        """
+        A set of links to a resource related to this object. See Link Below.
+        """
         return pulumi.get(self, "link")
 
     @property
     @pulumi.getter
     def name(self) -> pulumi.Output[str]:
+        """
+        The name of the project
+        """
         return pulumi.get(self, "name")
 
     @property
     @pulumi.getter
     def owner(self) -> pulumi.Output[str]:
+        """
+        The owner of this project. Can be you or any team you have write access to.
+        """
         return pulumi.get(self, "owner")
 
     @property
     @pulumi.getter
     def uuid(self) -> pulumi.Output[str]:
+        """
+        The project's immutable id.
+        """
         return pulumi.get(self, "uuid")
 

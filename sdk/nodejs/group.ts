@@ -4,6 +4,35 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "./utilities";
 
+/**
+ * Provides a Bitbucket group resource.
+ *
+ * This allows you to manage your groups.
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as bitbucket from "@pulumi/bitbucket";
+ *
+ * const testWorkspace = bitbucket.getWorkspace({
+ *     workspace: "example",
+ * });
+ * const testGroup = new bitbucket.Group("testGroup", {
+ *     workspace: testWorkspace.then(testWorkspace => testWorkspace.id),
+ *     autoAdd: true,
+ *     permission: "read",
+ * });
+ * ```
+ *
+ * ## Import
+ *
+ * Groups can be imported using their `workspace/group-slug` ID, e.g.
+ *
+ * ```sh
+ *  $ pulumi import bitbucket:index/group:Group group my-workspace/group-slug
+ * ```
+ */
 export class Group extends pulumi.CustomResource {
     /**
      * Get an existing Group resource's state with the given name, ID, and optional extra
@@ -32,11 +61,29 @@ export class Group extends pulumi.CustomResource {
         return obj['__pulumiType'] === Group.__pulumiType;
     }
 
+    /**
+     * Whether to automatically add users the group
+     */
     public readonly autoAdd!: pulumi.Output<boolean | undefined>;
+    /**
+     * Whether to disable email forwarding for group.
+     */
     public readonly emailForwardingDisabled!: pulumi.Output<boolean | undefined>;
+    /**
+     * The name of the group.
+     */
     public readonly name!: pulumi.Output<string>;
+    /**
+     * One of `read`, `write`, and `admin`.
+     */
     public readonly permission!: pulumi.Output<string | undefined>;
+    /**
+     * The groups slug.
+     */
     public /*out*/ readonly slug!: pulumi.Output<string>;
+    /**
+     * The workspace of this repository.
+     */
     public readonly workspace!: pulumi.Output<string>;
 
     /**
@@ -79,11 +126,29 @@ export class Group extends pulumi.CustomResource {
  * Input properties used for looking up and filtering Group resources.
  */
 export interface GroupState {
+    /**
+     * Whether to automatically add users the group
+     */
     autoAdd?: pulumi.Input<boolean>;
+    /**
+     * Whether to disable email forwarding for group.
+     */
     emailForwardingDisabled?: pulumi.Input<boolean>;
+    /**
+     * The name of the group.
+     */
     name?: pulumi.Input<string>;
+    /**
+     * One of `read`, `write`, and `admin`.
+     */
     permission?: pulumi.Input<string>;
+    /**
+     * The groups slug.
+     */
     slug?: pulumi.Input<string>;
+    /**
+     * The workspace of this repository.
+     */
     workspace?: pulumi.Input<string>;
 }
 
@@ -91,9 +156,24 @@ export interface GroupState {
  * The set of arguments for constructing a Group resource.
  */
 export interface GroupArgs {
+    /**
+     * Whether to automatically add users the group
+     */
     autoAdd?: pulumi.Input<boolean>;
+    /**
+     * Whether to disable email forwarding for group.
+     */
     emailForwardingDisabled?: pulumi.Input<boolean>;
+    /**
+     * The name of the group.
+     */
     name?: pulumi.Input<string>;
+    /**
+     * One of `read`, `write`, and `admin`.
+     */
     permission?: pulumi.Input<string>;
+    /**
+     * The workspace of this repository.
+     */
     workspace: pulumi.Input<string>;
 }

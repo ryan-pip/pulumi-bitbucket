@@ -29,9 +29,11 @@ __all__ = [
     'RepositoryLink',
     'RepositoryLinkAvatar',
     'GetCurrentUserEmailResult',
+    'GetGroupMembersGroupMemberResult',
     'GetGroupsGroupResult',
     'GetHookTypesHookTypeResult',
     'GetIpRangesRangeResult',
+    'GetWorkspaceMembersWorkspaceMemberResult',
 ]
 
 @pulumi.output_type
@@ -39,12 +41,20 @@ class BranchRestrictionGroup(dict):
     def __init__(__self__, *,
                  owner: str,
                  slug: str):
+        """
+        :param str owner: The owner of this repository. Can be you or any team you
+               have write access to.
+        """
         pulumi.set(__self__, "owner", owner)
         pulumi.set(__self__, "slug", slug)
 
     @property
     @pulumi.getter
     def owner(self) -> str:
+        """
+        The owner of this repository. Can be you or any team you
+        have write access to.
+        """
         return pulumi.get(self, "owner")
 
     @property
@@ -59,6 +69,11 @@ class BranchingModelBranchType(dict):
                  kind: str,
                  enabled: Optional[bool] = None,
                  prefix: Optional[str] = None):
+        """
+        :param str kind: The kind of the branch type. Valid values are `feature`, `bugfix`, `release`, `hotfix`.
+        :param bool enabled: Whether the branch type is enabled or not. A disabled branch type may contain an invalid `prefix`.
+        :param str prefix: The prefix for this branch type. A branch with this prefix will be classified as per kind. The prefix of an enabled branch type must be a valid branch prefix. Additionally, it cannot be blank, empty or null. The prefix for a disabled branch type can be empty or invalid.
+        """
         pulumi.set(__self__, "kind", kind)
         if enabled is not None:
             pulumi.set(__self__, "enabled", enabled)
@@ -68,16 +83,25 @@ class BranchingModelBranchType(dict):
     @property
     @pulumi.getter
     def kind(self) -> str:
+        """
+        The kind of the branch type. Valid values are `feature`, `bugfix`, `release`, `hotfix`.
+        """
         return pulumi.get(self, "kind")
 
     @property
     @pulumi.getter
     def enabled(self) -> Optional[bool]:
+        """
+        Whether the branch type is enabled or not. A disabled branch type may contain an invalid `prefix`.
+        """
         return pulumi.get(self, "enabled")
 
     @property
     @pulumi.getter
     def prefix(self) -> Optional[str]:
+        """
+        The prefix for this branch type. A branch with this prefix will be classified as per kind. The prefix of an enabled branch type must be a valid branch prefix. Additionally, it cannot be blank, empty or null. The prefix for a disabled branch type can be empty or invalid.
+        """
         return pulumi.get(self, "prefix")
 
 
@@ -109,6 +133,11 @@ class BranchingModelDevelopment(dict):
                  is_valid: Optional[bool] = None,
                  name: Optional[str] = None,
                  use_mainbranch: Optional[bool] = None):
+        """
+        :param bool branch_does_not_exist: Optional and only returned for a repository's branching model. Indicates if the indicated branch exists on the repository (`false`) or not (`true`). This is useful for determining a fallback to the mainbranch when a repository is inheriting its project's branching model.
+        :param str name: The configured branch. It must be null when `use_mainbranch` is true. Otherwise it must be a non-empty value. It is possible for the configured branch to not exist (e.g. it was deleted after the settings are set).
+        :param bool use_mainbranch: Indicates if the setting points at an explicit branch (`false`) or tracks the main branch (`true`). When `true` the name must be null or not provided. When `false` the name must contain a non-empty branch name.
+        """
         if branch_does_not_exist is not None:
             pulumi.set(__self__, "branch_does_not_exist", branch_does_not_exist)
         if is_valid is not None:
@@ -121,6 +150,9 @@ class BranchingModelDevelopment(dict):
     @property
     @pulumi.getter(name="branchDoesNotExist")
     def branch_does_not_exist(self) -> Optional[bool]:
+        """
+        Optional and only returned for a repository's branching model. Indicates if the indicated branch exists on the repository (`false`) or not (`true`). This is useful for determining a fallback to the mainbranch when a repository is inheriting its project's branching model.
+        """
         return pulumi.get(self, "branch_does_not_exist")
 
     @property
@@ -131,11 +163,17 @@ class BranchingModelDevelopment(dict):
     @property
     @pulumi.getter
     def name(self) -> Optional[str]:
+        """
+        The configured branch. It must be null when `use_mainbranch` is true. Otherwise it must be a non-empty value. It is possible for the configured branch to not exist (e.g. it was deleted after the settings are set).
+        """
         return pulumi.get(self, "name")
 
     @property
     @pulumi.getter(name="useMainbranch")
     def use_mainbranch(self) -> Optional[bool]:
+        """
+        Indicates if the setting points at an explicit branch (`false`) or tracks the main branch (`true`). When `true` the name must be null or not provided. When `false` the name must contain a non-empty branch name.
+        """
         return pulumi.get(self, "use_mainbranch")
 
 
@@ -168,6 +206,12 @@ class BranchingModelProduction(dict):
                  is_valid: Optional[bool] = None,
                  name: Optional[str] = None,
                  use_mainbranch: Optional[bool] = None):
+        """
+        :param bool branch_does_not_exist: Optional and only returned for a repository's branching model. Indicates if the indicated branch exists on the repository (`false`) or not (`true`). This is useful for determining a fallback to the mainbranch when a repository is inheriting its project's branching model.
+        :param bool enabled: Indicates if branch is enabled or not.
+        :param str name: The configured branch. It must be null when `use_mainbranch` is true. Otherwise it must be a non-empty value. It is possible for the configured branch to not exist (e.g. it was deleted after the settings are set).
+        :param bool use_mainbranch: Indicates if the setting points at an explicit branch (`false`) or tracks the main branch (`true`). When `true` the name must be null or not provided. When `false` the name must contain a non-empty branch name.
+        """
         if branch_does_not_exist is not None:
             pulumi.set(__self__, "branch_does_not_exist", branch_does_not_exist)
         if enabled is not None:
@@ -182,11 +226,17 @@ class BranchingModelProduction(dict):
     @property
     @pulumi.getter(name="branchDoesNotExist")
     def branch_does_not_exist(self) -> Optional[bool]:
+        """
+        Optional and only returned for a repository's branching model. Indicates if the indicated branch exists on the repository (`false`) or not (`true`). This is useful for determining a fallback to the mainbranch when a repository is inheriting its project's branching model.
+        """
         return pulumi.get(self, "branch_does_not_exist")
 
     @property
     @pulumi.getter
     def enabled(self) -> Optional[bool]:
+        """
+        Indicates if branch is enabled or not.
+        """
         return pulumi.get(self, "enabled")
 
     @property
@@ -197,11 +247,17 @@ class BranchingModelProduction(dict):
     @property
     @pulumi.getter
     def name(self) -> Optional[str]:
+        """
+        The configured branch. It must be null when `use_mainbranch` is true. Otherwise it must be a non-empty value. It is possible for the configured branch to not exist (e.g. it was deleted after the settings are set).
+        """
         return pulumi.get(self, "name")
 
     @property
     @pulumi.getter(name="useMainbranch")
     def use_mainbranch(self) -> Optional[bool]:
+        """
+        Indicates if the setting points at an explicit branch (`false`) or tracks the main branch (`true`). When `true` the name must be null or not provided. When `false` the name must contain a non-empty branch name.
+        """
         return pulumi.get(self, "use_mainbranch")
 
 
@@ -226,12 +282,18 @@ class DeploymentRestrictions(dict):
 
     def __init__(__self__, *,
                  admin_only: Optional[bool] = None):
+        """
+        :param bool admin_only: Only Admins can deploy this deployment stage.
+        """
         if admin_only is not None:
             pulumi.set(__self__, "admin_only", admin_only)
 
     @property
     @pulumi.getter(name="adminOnly")
     def admin_only(self) -> Optional[bool]:
+        """
+        Only Admins can deploy this deployment stage.
+        """
         return pulumi.get(self, "admin_only")
 
 
@@ -239,12 +301,18 @@ class DeploymentRestrictions(dict):
 class ForkedRepositoryLink(dict):
     def __init__(__self__, *,
                  avatar: Optional['outputs.ForkedRepositoryLinkAvatar'] = None):
+        """
+        :param 'ForkedRepositoryLinkAvatarArgs' avatar: An avatar link to a resource related to this object. See Avatar Below.
+        """
         if avatar is not None:
             pulumi.set(__self__, "avatar", avatar)
 
     @property
     @pulumi.getter
     def avatar(self) -> Optional['outputs.ForkedRepositoryLinkAvatar']:
+        """
+        An avatar link to a resource related to this object. See Avatar Below.
+        """
         return pulumi.get(self, "avatar")
 
 
@@ -252,12 +320,18 @@ class ForkedRepositoryLink(dict):
 class ForkedRepositoryLinkAvatar(dict):
     def __init__(__self__, *,
                  href: Optional[str] = None):
+        """
+        :param str href: href of the avatar.
+        """
         if href is not None:
             pulumi.set(__self__, "href", href)
 
     @property
     @pulumi.getter
     def href(self) -> Optional[str]:
+        """
+        href of the avatar.
+        """
         return pulumi.get(self, "href")
 
 
@@ -286,6 +360,11 @@ class PipelineScheduleTarget(dict):
                  ref_name: str,
                  ref_type: str,
                  selector: 'outputs.PipelineScheduleTargetSelector'):
+        """
+        :param str ref_name: The name of the reference.
+        :param str ref_type: The type of reference. Valid values are `branch` and `tag`.
+        :param 'PipelineScheduleTargetSelectorArgs' selector: Selector spec. See Selector below.
+        """
         pulumi.set(__self__, "ref_name", ref_name)
         pulumi.set(__self__, "ref_type", ref_type)
         pulumi.set(__self__, "selector", selector)
@@ -293,16 +372,25 @@ class PipelineScheduleTarget(dict):
     @property
     @pulumi.getter(name="refName")
     def ref_name(self) -> str:
+        """
+        The name of the reference.
+        """
         return pulumi.get(self, "ref_name")
 
     @property
     @pulumi.getter(name="refType")
     def ref_type(self) -> str:
+        """
+        The type of reference. Valid values are `branch` and `tag`.
+        """
         return pulumi.get(self, "ref_type")
 
     @property
     @pulumi.getter
     def selector(self) -> 'outputs.PipelineScheduleTargetSelector':
+        """
+        Selector spec. See Selector below.
+        """
         return pulumi.get(self, "selector")
 
 
@@ -311,6 +399,10 @@ class PipelineScheduleTargetSelector(dict):
     def __init__(__self__, *,
                  pattern: str,
                  type: Optional[str] = None):
+        """
+        :param str pattern: The name of the matching pipeline definition.
+        :param str type: Selector type. Default value is `branches`.
+        """
         pulumi.set(__self__, "pattern", pattern)
         if type is not None:
             pulumi.set(__self__, "type", type)
@@ -318,11 +410,17 @@ class PipelineScheduleTargetSelector(dict):
     @property
     @pulumi.getter
     def pattern(self) -> str:
+        """
+        The name of the matching pipeline definition.
+        """
         return pulumi.get(self, "pattern")
 
     @property
     @pulumi.getter
     def type(self) -> Optional[str]:
+        """
+        Selector type. Default value is `branches`.
+        """
         return pulumi.get(self, "type")
 
 
@@ -354,6 +452,10 @@ class PipelineSshKnownHostPublicKey(dict):
                  key_type: str,
                  md5_fingerprint: Optional[str] = None,
                  sha256_fingerprint: Optional[str] = None):
+        """
+        :param str key: The plain public key.
+        :param str key_type: The type of the public key. Valid values are `ssh-ed25519`, `ecdsa-sha2-nistp256`, `ssh-rsa`, and `ssh-dss`.
+        """
         pulumi.set(__self__, "key", key)
         pulumi.set(__self__, "key_type", key_type)
         if md5_fingerprint is not None:
@@ -364,11 +466,17 @@ class PipelineSshKnownHostPublicKey(dict):
     @property
     @pulumi.getter
     def key(self) -> str:
+        """
+        The plain public key.
+        """
         return pulumi.get(self, "key")
 
     @property
     @pulumi.getter(name="keyType")
     def key_type(self) -> str:
+        """
+        The type of the public key. Valid values are `ssh-ed25519`, `ecdsa-sha2-nistp256`, `ssh-rsa`, and `ssh-dss`.
+        """
         return pulumi.get(self, "key_type")
 
     @property
@@ -388,6 +496,11 @@ class ProjectBranchingModelBranchType(dict):
                  kind: str,
                  enabled: Optional[bool] = None,
                  prefix: Optional[str] = None):
+        """
+        :param str kind: The kind of the branch type. Valid values are `feature`, `bugfix`, `release`, `hotfix`.
+        :param bool enabled: Whether the branch type is enabled or not. A disabled branch type may contain an invalid `prefix`.
+        :param str prefix: The prefix for this branch type. A branch with this prefix will be classified as per kind. The prefix of an enabled branch type must be a valid branch prefix. Additionally, it cannot be blank, empty or null. The prefix for a disabled branch type can be empty or invalid.
+        """
         pulumi.set(__self__, "kind", kind)
         if enabled is not None:
             pulumi.set(__self__, "enabled", enabled)
@@ -397,16 +510,25 @@ class ProjectBranchingModelBranchType(dict):
     @property
     @pulumi.getter
     def kind(self) -> str:
+        """
+        The kind of the branch type. Valid values are `feature`, `bugfix`, `release`, `hotfix`.
+        """
         return pulumi.get(self, "kind")
 
     @property
     @pulumi.getter
     def enabled(self) -> Optional[bool]:
+        """
+        Whether the branch type is enabled or not. A disabled branch type may contain an invalid `prefix`.
+        """
         return pulumi.get(self, "enabled")
 
     @property
     @pulumi.getter
     def prefix(self) -> Optional[str]:
+        """
+        The prefix for this branch type. A branch with this prefix will be classified as per kind. The prefix of an enabled branch type must be a valid branch prefix. Additionally, it cannot be blank, empty or null. The prefix for a disabled branch type can be empty or invalid.
+        """
         return pulumi.get(self, "prefix")
 
 
@@ -438,6 +560,11 @@ class ProjectBranchingModelDevelopment(dict):
                  is_valid: Optional[bool] = None,
                  name: Optional[str] = None,
                  use_mainbranch: Optional[bool] = None):
+        """
+        :param bool branch_does_not_exist: Optional and only returned for a project's branching model. Indicates if the indicated branch exists on the project (`false`) or not (`true`). This is useful for determining a fallback to the mainbranch when a project is inheriting its project's branching model.
+        :param str name: The configured branch. It must be null when `use_mainbranch` is true. Otherwise it must be a non-empty value. It is possible for the configured branch to not exist (e.g. it was deleted after the settings are set).
+        :param bool use_mainbranch: Indicates if the setting points at an explicit branch (`false`) or tracks the main branch (`true`). When `true` the name must be null or not provided. When `false` the name must contain a non-empty branch name.
+        """
         if branch_does_not_exist is not None:
             pulumi.set(__self__, "branch_does_not_exist", branch_does_not_exist)
         if is_valid is not None:
@@ -450,6 +577,9 @@ class ProjectBranchingModelDevelopment(dict):
     @property
     @pulumi.getter(name="branchDoesNotExist")
     def branch_does_not_exist(self) -> Optional[bool]:
+        """
+        Optional and only returned for a project's branching model. Indicates if the indicated branch exists on the project (`false`) or not (`true`). This is useful for determining a fallback to the mainbranch when a project is inheriting its project's branching model.
+        """
         return pulumi.get(self, "branch_does_not_exist")
 
     @property
@@ -460,11 +590,17 @@ class ProjectBranchingModelDevelopment(dict):
     @property
     @pulumi.getter
     def name(self) -> Optional[str]:
+        """
+        The configured branch. It must be null when `use_mainbranch` is true. Otherwise it must be a non-empty value. It is possible for the configured branch to not exist (e.g. it was deleted after the settings are set).
+        """
         return pulumi.get(self, "name")
 
     @property
     @pulumi.getter(name="useMainbranch")
     def use_mainbranch(self) -> Optional[bool]:
+        """
+        Indicates if the setting points at an explicit branch (`false`) or tracks the main branch (`true`). When `true` the name must be null or not provided. When `false` the name must contain a non-empty branch name.
+        """
         return pulumi.get(self, "use_mainbranch")
 
 
@@ -497,6 +633,12 @@ class ProjectBranchingModelProduction(dict):
                  is_valid: Optional[bool] = None,
                  name: Optional[str] = None,
                  use_mainbranch: Optional[bool] = None):
+        """
+        :param bool branch_does_not_exist: Optional and only returned for a project's branching model. Indicates if the indicated branch exists on the project (`false`) or not (`true`). This is useful for determining a fallback to the mainbranch when a project is inheriting its project's branching model.
+        :param bool enabled: Indicates if branch is enabled or not.
+        :param str name: The configured branch. It must be null when `use_mainbranch` is true. Otherwise it must be a non-empty value. It is possible for the configured branch to not exist (e.g. it was deleted after the settings are set).
+        :param bool use_mainbranch: Indicates if the setting points at an explicit branch (`false`) or tracks the main branch (`true`). When `true` the name must be null or not provided. When `false` the name must contain a non-empty branch name.
+        """
         if branch_does_not_exist is not None:
             pulumi.set(__self__, "branch_does_not_exist", branch_does_not_exist)
         if enabled is not None:
@@ -511,11 +653,17 @@ class ProjectBranchingModelProduction(dict):
     @property
     @pulumi.getter(name="branchDoesNotExist")
     def branch_does_not_exist(self) -> Optional[bool]:
+        """
+        Optional and only returned for a project's branching model. Indicates if the indicated branch exists on the project (`false`) or not (`true`). This is useful for determining a fallback to the mainbranch when a project is inheriting its project's branching model.
+        """
         return pulumi.get(self, "branch_does_not_exist")
 
     @property
     @pulumi.getter
     def enabled(self) -> Optional[bool]:
+        """
+        Indicates if branch is enabled or not.
+        """
         return pulumi.get(self, "enabled")
 
     @property
@@ -526,11 +674,17 @@ class ProjectBranchingModelProduction(dict):
     @property
     @pulumi.getter
     def name(self) -> Optional[str]:
+        """
+        The configured branch. It must be null when `use_mainbranch` is true. Otherwise it must be a non-empty value. It is possible for the configured branch to not exist (e.g. it was deleted after the settings are set).
+        """
         return pulumi.get(self, "name")
 
     @property
     @pulumi.getter(name="useMainbranch")
     def use_mainbranch(self) -> Optional[bool]:
+        """
+        Indicates if the setting points at an explicit branch (`false`) or tracks the main branch (`true`). When `true` the name must be null or not provided. When `false` the name must contain a non-empty branch name.
+        """
         return pulumi.get(self, "use_mainbranch")
 
 
@@ -538,12 +692,18 @@ class ProjectBranchingModelProduction(dict):
 class ProjectLink(dict):
     def __init__(__self__, *,
                  avatar: Optional['outputs.ProjectLinkAvatar'] = None):
+        """
+        :param 'ProjectLinkAvatarArgs' avatar: An avatar link to a resource related to this object. See Avatar Below.
+        """
         if avatar is not None:
             pulumi.set(__self__, "avatar", avatar)
 
     @property
     @pulumi.getter
     def avatar(self) -> Optional['outputs.ProjectLinkAvatar']:
+        """
+        An avatar link to a resource related to this object. See Avatar Below.
+        """
         return pulumi.get(self, "avatar")
 
 
@@ -551,12 +711,18 @@ class ProjectLink(dict):
 class ProjectLinkAvatar(dict):
     def __init__(__self__, *,
                  href: Optional[str] = None):
+        """
+        :param str href: href of the avatar.
+        """
         if href is not None:
             pulumi.set(__self__, "href", href)
 
     @property
     @pulumi.getter
     def href(self) -> Optional[str]:
+        """
+        href of the avatar.
+        """
         return pulumi.get(self, "href")
 
 
@@ -564,12 +730,18 @@ class ProjectLinkAvatar(dict):
 class RepositoryLink(dict):
     def __init__(__self__, *,
                  avatar: Optional['outputs.RepositoryLinkAvatar'] = None):
+        """
+        :param 'RepositoryLinkAvatarArgs' avatar: An avatar link to a resource related to this object. See Avatar Below.
+        """
         if avatar is not None:
             pulumi.set(__self__, "avatar", avatar)
 
     @property
     @pulumi.getter
     def avatar(self) -> Optional['outputs.RepositoryLinkAvatar']:
+        """
+        An avatar link to a resource related to this object. See Avatar Below.
+        """
         return pulumi.get(self, "avatar")
 
 
@@ -577,12 +749,18 @@ class RepositoryLink(dict):
 class RepositoryLinkAvatar(dict):
     def __init__(__self__, *,
                  href: Optional[str] = None):
+        """
+        :param str href: href of the avatar.
+        """
         if href is not None:
             pulumi.set(__self__, "href", href)
 
     @property
     @pulumi.getter
     def href(self) -> Optional[str]:
+        """
+        href of the avatar.
+        """
         return pulumi.get(self, "href")
 
 
@@ -592,6 +770,11 @@ class GetCurrentUserEmailResult(dict):
                  email: str,
                  is_confirmed: bool,
                  is_primary: bool):
+        """
+        :param str email: The email address.
+        :param bool is_confirmed: Whether the email is confirmed.
+        :param bool is_primary: Whether is primary email for the user.
+        """
         pulumi.set(__self__, "email", email)
         pulumi.set(__self__, "is_confirmed", is_confirmed)
         pulumi.set(__self__, "is_primary", is_primary)
@@ -599,17 +782,66 @@ class GetCurrentUserEmailResult(dict):
     @property
     @pulumi.getter
     def email(self) -> str:
+        """
+        The email address.
+        """
         return pulumi.get(self, "email")
 
     @property
     @pulumi.getter(name="isConfirmed")
     def is_confirmed(self) -> bool:
+        """
+        Whether the email is confirmed.
+        """
         return pulumi.get(self, "is_confirmed")
 
     @property
     @pulumi.getter(name="isPrimary")
     def is_primary(self) -> bool:
+        """
+        Whether is primary email for the user.
+        """
         return pulumi.get(self, "is_primary")
+
+
+@pulumi.output_type
+class GetGroupMembersGroupMemberResult(dict):
+    def __init__(__self__, *,
+                 display_name: str,
+                 username: str,
+                 uuid: str):
+        """
+        :param str display_name: The User display name.
+        :param str username: The Username.
+        :param str uuid: User UUID.
+        """
+        pulumi.set(__self__, "display_name", display_name)
+        pulumi.set(__self__, "username", username)
+        pulumi.set(__self__, "uuid", uuid)
+
+    @property
+    @pulumi.getter(name="displayName")
+    def display_name(self) -> str:
+        """
+        The User display name.
+        """
+        return pulumi.get(self, "display_name")
+
+    @property
+    @pulumi.getter
+    def username(self) -> str:
+        """
+        The Username.
+        """
+        return pulumi.get(self, "username")
+
+    @property
+    @pulumi.getter
+    def uuid(self) -> str:
+        """
+        User UUID.
+        """
+        return pulumi.get(self, "uuid")
 
 
 @pulumi.output_type
@@ -620,6 +852,13 @@ class GetGroupsGroupResult(dict):
                  name: str,
                  permission: str,
                  slug: str):
+        """
+        :param bool auto_add: Whether to automatically add users the groups
+        :param bool email_forwarding_disabled: Whether to disable email forwarding for group.
+        :param str name: The name of the groups.
+        :param str permission: One of `read`, `write`, and `admin`.
+        :param str slug: The groups's slug.
+        """
         pulumi.set(__self__, "auto_add", auto_add)
         pulumi.set(__self__, "email_forwarding_disabled", email_forwarding_disabled)
         pulumi.set(__self__, "name", name)
@@ -629,26 +868,41 @@ class GetGroupsGroupResult(dict):
     @property
     @pulumi.getter(name="autoAdd")
     def auto_add(self) -> bool:
+        """
+        Whether to automatically add users the groups
+        """
         return pulumi.get(self, "auto_add")
 
     @property
     @pulumi.getter(name="emailForwardingDisabled")
     def email_forwarding_disabled(self) -> bool:
+        """
+        Whether to disable email forwarding for group.
+        """
         return pulumi.get(self, "email_forwarding_disabled")
 
     @property
     @pulumi.getter
     def name(self) -> str:
+        """
+        The name of the groups.
+        """
         return pulumi.get(self, "name")
 
     @property
     @pulumi.getter
     def permission(self) -> str:
+        """
+        One of `read`, `write`, and `admin`.
+        """
         return pulumi.get(self, "permission")
 
     @property
     @pulumi.getter
     def slug(self) -> str:
+        """
+        The groups's slug.
+        """
         return pulumi.get(self, "slug")
 
 
@@ -659,6 +913,12 @@ class GetHookTypesHookTypeResult(dict):
                  description: str,
                  event: str,
                  label: str):
+        """
+        :param str category: The category this event belongs to.
+        :param str description: More detailed description of the webhook event type.
+        :param str event: The event identifier.
+        :param str label: Summary of the webhook event type.
+        """
         pulumi.set(__self__, "category", category)
         pulumi.set(__self__, "description", description)
         pulumi.set(__self__, "event", event)
@@ -667,21 +927,33 @@ class GetHookTypesHookTypeResult(dict):
     @property
     @pulumi.getter
     def category(self) -> str:
+        """
+        The category this event belongs to.
+        """
         return pulumi.get(self, "category")
 
     @property
     @pulumi.getter
     def description(self) -> str:
+        """
+        More detailed description of the webhook event type.
+        """
         return pulumi.get(self, "description")
 
     @property
     @pulumi.getter
     def event(self) -> str:
+        """
+        The event identifier.
+        """
         return pulumi.get(self, "event")
 
     @property
     @pulumi.getter
     def label(self) -> str:
+        """
+        Summary of the webhook event type.
+        """
         return pulumi.get(self, "label")
 
 
@@ -693,49 +965,130 @@ class GetIpRangesRangeResult(dict):
                  mask: str,
                  mask_len: int,
                  network: str,
+                 perimeter: str,
                  products: Sequence[str],
                  regions: Sequence[str]):
+        """
+        :param str cidr: The CIDR of the range.
+        :param Sequence[str] directions: A Set of directions (Ingress/Egress) the range is associated with.
+        :param str mask: More mask of the range.
+        :param int mask_len: The make length of the range.
+        :param str network: The network of the range.
+        :param str perimeter: The allowed perimeter of the range.
+        :param Sequence[str] products: A Set of Atlasian products (Bitbucket, Jira, etc) the range is associated with.
+        :param Sequence[str] regions: A Set of regions the range is associated with.
+        """
         pulumi.set(__self__, "cidr", cidr)
         pulumi.set(__self__, "directions", directions)
         pulumi.set(__self__, "mask", mask)
         pulumi.set(__self__, "mask_len", mask_len)
         pulumi.set(__self__, "network", network)
+        pulumi.set(__self__, "perimeter", perimeter)
         pulumi.set(__self__, "products", products)
         pulumi.set(__self__, "regions", regions)
 
     @property
     @pulumi.getter
     def cidr(self) -> str:
+        """
+        The CIDR of the range.
+        """
         return pulumi.get(self, "cidr")
 
     @property
     @pulumi.getter
     def directions(self) -> Sequence[str]:
+        """
+        A Set of directions (Ingress/Egress) the range is associated with.
+        """
         return pulumi.get(self, "directions")
 
     @property
     @pulumi.getter
     def mask(self) -> str:
+        """
+        More mask of the range.
+        """
         return pulumi.get(self, "mask")
 
     @property
     @pulumi.getter(name="maskLen")
     def mask_len(self) -> int:
+        """
+        The make length of the range.
+        """
         return pulumi.get(self, "mask_len")
 
     @property
     @pulumi.getter
     def network(self) -> str:
+        """
+        The network of the range.
+        """
         return pulumi.get(self, "network")
 
     @property
     @pulumi.getter
+    def perimeter(self) -> str:
+        """
+        The allowed perimeter of the range.
+        """
+        return pulumi.get(self, "perimeter")
+
+    @property
+    @pulumi.getter
     def products(self) -> Sequence[str]:
+        """
+        A Set of Atlasian products (Bitbucket, Jira, etc) the range is associated with.
+        """
         return pulumi.get(self, "products")
 
     @property
     @pulumi.getter
     def regions(self) -> Sequence[str]:
+        """
+        A Set of regions the range is associated with.
+        """
         return pulumi.get(self, "regions")
+
+
+@pulumi.output_type
+class GetWorkspaceMembersWorkspaceMemberResult(dict):
+    def __init__(__self__, *,
+                 display_name: str,
+                 username: str,
+                 uuid: str):
+        """
+        :param str display_name: The User display name.
+        :param str username: The Username.
+        :param str uuid: User UUID.
+        """
+        pulumi.set(__self__, "display_name", display_name)
+        pulumi.set(__self__, "username", username)
+        pulumi.set(__self__, "uuid", uuid)
+
+    @property
+    @pulumi.getter(name="displayName")
+    def display_name(self) -> str:
+        """
+        The User display name.
+        """
+        return pulumi.get(self, "display_name")
+
+    @property
+    @pulumi.getter
+    def username(self) -> str:
+        """
+        The Username.
+        """
+        return pulumi.get(self, "username")
+
+    @property
+    @pulumi.getter
+    def uuid(self) -> str:
+        """
+        User UUID.
+        """
+        return pulumi.get(self, "uuid")
 
 

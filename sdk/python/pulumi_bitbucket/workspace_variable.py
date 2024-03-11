@@ -20,6 +20,10 @@ class WorkspaceVariableArgs:
                  secured: Optional[pulumi.Input[bool]] = None):
         """
         The set of arguments for constructing a WorkspaceVariable resource.
+        :param pulumi.Input[str] key: The unique name of the variable.
+        :param pulumi.Input[str] value: The value of the variable.
+        :param pulumi.Input[str] workspace: The workspace ID you want to assign this variable to.
+        :param pulumi.Input[bool] secured: If true, this variable will be treated as secured. The value will never be exposed in the logs or the REST API.
         """
         pulumi.set(__self__, "key", key)
         pulumi.set(__self__, "value", value)
@@ -30,6 +34,9 @@ class WorkspaceVariableArgs:
     @property
     @pulumi.getter
     def key(self) -> pulumi.Input[str]:
+        """
+        The unique name of the variable.
+        """
         return pulumi.get(self, "key")
 
     @key.setter
@@ -39,6 +46,9 @@ class WorkspaceVariableArgs:
     @property
     @pulumi.getter
     def value(self) -> pulumi.Input[str]:
+        """
+        The value of the variable.
+        """
         return pulumi.get(self, "value")
 
     @value.setter
@@ -48,6 +58,9 @@ class WorkspaceVariableArgs:
     @property
     @pulumi.getter
     def workspace(self) -> pulumi.Input[str]:
+        """
+        The workspace ID you want to assign this variable to.
+        """
         return pulumi.get(self, "workspace")
 
     @workspace.setter
@@ -57,6 +70,9 @@ class WorkspaceVariableArgs:
     @property
     @pulumi.getter
     def secured(self) -> Optional[pulumi.Input[bool]]:
+        """
+        If true, this variable will be treated as secured. The value will never be exposed in the logs or the REST API.
+        """
         return pulumi.get(self, "secured")
 
     @secured.setter
@@ -74,6 +90,11 @@ class _WorkspaceVariableState:
                  workspace: Optional[pulumi.Input[str]] = None):
         """
         Input properties used for looking up and filtering WorkspaceVariable resources.
+        :param pulumi.Input[str] key: The unique name of the variable.
+        :param pulumi.Input[bool] secured: If true, this variable will be treated as secured. The value will never be exposed in the logs or the REST API.
+        :param pulumi.Input[str] uuid: (Computed) The UUID identifying the variable.
+        :param pulumi.Input[str] value: The value of the variable.
+        :param pulumi.Input[str] workspace: The workspace ID you want to assign this variable to.
         """
         if key is not None:
             pulumi.set(__self__, "key", key)
@@ -89,6 +110,9 @@ class _WorkspaceVariableState:
     @property
     @pulumi.getter
     def key(self) -> Optional[pulumi.Input[str]]:
+        """
+        The unique name of the variable.
+        """
         return pulumi.get(self, "key")
 
     @key.setter
@@ -98,6 +122,9 @@ class _WorkspaceVariableState:
     @property
     @pulumi.getter
     def secured(self) -> Optional[pulumi.Input[bool]]:
+        """
+        If true, this variable will be treated as secured. The value will never be exposed in the logs or the REST API.
+        """
         return pulumi.get(self, "secured")
 
     @secured.setter
@@ -107,6 +134,9 @@ class _WorkspaceVariableState:
     @property
     @pulumi.getter
     def uuid(self) -> Optional[pulumi.Input[str]]:
+        """
+        (Computed) The UUID identifying the variable.
+        """
         return pulumi.get(self, "uuid")
 
     @uuid.setter
@@ -116,6 +146,9 @@ class _WorkspaceVariableState:
     @property
     @pulumi.getter
     def value(self) -> Optional[pulumi.Input[str]]:
+        """
+        The value of the variable.
+        """
         return pulumi.get(self, "value")
 
     @value.setter
@@ -125,6 +158,9 @@ class _WorkspaceVariableState:
     @property
     @pulumi.getter
     def workspace(self) -> Optional[pulumi.Input[str]]:
+        """
+        The workspace ID you want to assign this variable to.
+        """
         return pulumi.get(self, "workspace")
 
     @workspace.setter
@@ -143,9 +179,37 @@ class WorkspaceVariable(pulumi.CustomResource):
                  workspace: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         """
-        Create a WorkspaceVariable resource with the given unique name, props, and options.
+        This resource allows you to configure workspace variables.
+
+        OAuth2 Scopes: `none`
+
+        ## Example Usage
+
+        ```python
+        import pulumi
+        import pulumi_bitbucket as bitbucket
+
+        country = bitbucket.WorkspaceVariable("country",
+            workspace=bitbucket_workspace["test"]["id"],
+            key="COUNTRY",
+            value="Kenya",
+            secured=False)
+        ```
+
+        ## Import
+
+        Workspace Variables can be imported using their `workspace-id/uuid` ID, e.g.
+
+        ```sh
+         $ pulumi import bitbucket:index/workspaceVariable:WorkspaceVariable example workspace-id/uuid
+        ```
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[str] key: The unique name of the variable.
+        :param pulumi.Input[bool] secured: If true, this variable will be treated as secured. The value will never be exposed in the logs or the REST API.
+        :param pulumi.Input[str] value: The value of the variable.
+        :param pulumi.Input[str] workspace: The workspace ID you want to assign this variable to.
         """
         ...
     @overload
@@ -154,7 +218,31 @@ class WorkspaceVariable(pulumi.CustomResource):
                  args: WorkspaceVariableArgs,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
-        Create a WorkspaceVariable resource with the given unique name, props, and options.
+        This resource allows you to configure workspace variables.
+
+        OAuth2 Scopes: `none`
+
+        ## Example Usage
+
+        ```python
+        import pulumi
+        import pulumi_bitbucket as bitbucket
+
+        country = bitbucket.WorkspaceVariable("country",
+            workspace=bitbucket_workspace["test"]["id"],
+            key="COUNTRY",
+            value="Kenya",
+            secured=False)
+        ```
+
+        ## Import
+
+        Workspace Variables can be imported using their `workspace-id/uuid` ID, e.g.
+
+        ```sh
+         $ pulumi import bitbucket:index/workspaceVariable:WorkspaceVariable example workspace-id/uuid
+        ```
+
         :param str resource_name: The name of the resource.
         :param WorkspaceVariableArgs args: The arguments to use to populate this resource's properties.
         :param pulumi.ResourceOptions opts: Options for the resource.
@@ -218,6 +306,11 @@ class WorkspaceVariable(pulumi.CustomResource):
         :param str resource_name: The unique name of the resulting resource.
         :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[str] key: The unique name of the variable.
+        :param pulumi.Input[bool] secured: If true, this variable will be treated as secured. The value will never be exposed in the logs or the REST API.
+        :param pulumi.Input[str] uuid: (Computed) The UUID identifying the variable.
+        :param pulumi.Input[str] value: The value of the variable.
+        :param pulumi.Input[str] workspace: The workspace ID you want to assign this variable to.
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
 
@@ -233,25 +326,40 @@ class WorkspaceVariable(pulumi.CustomResource):
     @property
     @pulumi.getter
     def key(self) -> pulumi.Output[str]:
+        """
+        The unique name of the variable.
+        """
         return pulumi.get(self, "key")
 
     @property
     @pulumi.getter
     def secured(self) -> pulumi.Output[Optional[bool]]:
+        """
+        If true, this variable will be treated as secured. The value will never be exposed in the logs or the REST API.
+        """
         return pulumi.get(self, "secured")
 
     @property
     @pulumi.getter
     def uuid(self) -> pulumi.Output[str]:
+        """
+        (Computed) The UUID identifying the variable.
+        """
         return pulumi.get(self, "uuid")
 
     @property
     @pulumi.getter
     def value(self) -> pulumi.Output[str]:
+        """
+        The value of the variable.
+        """
         return pulumi.get(self, "value")
 
     @property
     @pulumi.getter
     def workspace(self) -> pulumi.Output[str]:
+        """
+        The workspace ID you want to assign this variable to.
+        """
         return pulumi.get(self, "workspace")
 

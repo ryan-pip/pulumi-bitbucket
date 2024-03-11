@@ -23,6 +23,12 @@ class BranchingModelArgs:
                  production: Optional[pulumi.Input['BranchingModelProductionArgs']] = None):
         """
         The set of arguments for constructing a BranchingModel resource.
+        :param pulumi.Input['BranchingModelDevelopmentArgs'] development: The development branch can be configured to a specific branch or to track the main branch. When set to a specific branch it must currently exist. Only the passed properties will be updated. The properties not passed will be left unchanged. A request without a development property will leave the development branch unchanged. See Development below.
+        :param pulumi.Input[str] owner: The owner of this repository. Can be you or any team you
+               have write access to.
+        :param pulumi.Input[str] repository: The name of the repository.
+        :param pulumi.Input[Sequence[pulumi.Input['BranchingModelBranchTypeArgs']]] branch_types: A set of branch type to define `feature`, `bugfix`, `release`, `hotfix` prefixes. See Branch Type below.
+        :param pulumi.Input['BranchingModelProductionArgs'] production: The production branch can be a specific branch, the main branch or disabled. When set to a specific branch it must currently exist. The enabled property can be used to enable (true) or disable (false) it. Only the passed properties will be updated. The properties not passed will be left unchanged. A request without a production property will leave the production branch unchanged. See Production below.
         """
         pulumi.set(__self__, "development", development)
         pulumi.set(__self__, "owner", owner)
@@ -35,6 +41,9 @@ class BranchingModelArgs:
     @property
     @pulumi.getter
     def development(self) -> pulumi.Input['BranchingModelDevelopmentArgs']:
+        """
+        The development branch can be configured to a specific branch or to track the main branch. When set to a specific branch it must currently exist. Only the passed properties will be updated. The properties not passed will be left unchanged. A request without a development property will leave the development branch unchanged. See Development below.
+        """
         return pulumi.get(self, "development")
 
     @development.setter
@@ -44,6 +53,10 @@ class BranchingModelArgs:
     @property
     @pulumi.getter
     def owner(self) -> pulumi.Input[str]:
+        """
+        The owner of this repository. Can be you or any team you
+        have write access to.
+        """
         return pulumi.get(self, "owner")
 
     @owner.setter
@@ -53,6 +66,9 @@ class BranchingModelArgs:
     @property
     @pulumi.getter
     def repository(self) -> pulumi.Input[str]:
+        """
+        The name of the repository.
+        """
         return pulumi.get(self, "repository")
 
     @repository.setter
@@ -62,6 +78,9 @@ class BranchingModelArgs:
     @property
     @pulumi.getter(name="branchTypes")
     def branch_types(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['BranchingModelBranchTypeArgs']]]]:
+        """
+        A set of branch type to define `feature`, `bugfix`, `release`, `hotfix` prefixes. See Branch Type below.
+        """
         return pulumi.get(self, "branch_types")
 
     @branch_types.setter
@@ -71,6 +90,9 @@ class BranchingModelArgs:
     @property
     @pulumi.getter
     def production(self) -> Optional[pulumi.Input['BranchingModelProductionArgs']]:
+        """
+        The production branch can be a specific branch, the main branch or disabled. When set to a specific branch it must currently exist. The enabled property can be used to enable (true) or disable (false) it. Only the passed properties will be updated. The properties not passed will be left unchanged. A request without a production property will leave the production branch unchanged. See Production below.
+        """
         return pulumi.get(self, "production")
 
     @production.setter
@@ -88,6 +110,12 @@ class _BranchingModelState:
                  repository: Optional[pulumi.Input[str]] = None):
         """
         Input properties used for looking up and filtering BranchingModel resources.
+        :param pulumi.Input[Sequence[pulumi.Input['BranchingModelBranchTypeArgs']]] branch_types: A set of branch type to define `feature`, `bugfix`, `release`, `hotfix` prefixes. See Branch Type below.
+        :param pulumi.Input['BranchingModelDevelopmentArgs'] development: The development branch can be configured to a specific branch or to track the main branch. When set to a specific branch it must currently exist. Only the passed properties will be updated. The properties not passed will be left unchanged. A request without a development property will leave the development branch unchanged. See Development below.
+        :param pulumi.Input[str] owner: The owner of this repository. Can be you or any team you
+               have write access to.
+        :param pulumi.Input['BranchingModelProductionArgs'] production: The production branch can be a specific branch, the main branch or disabled. When set to a specific branch it must currently exist. The enabled property can be used to enable (true) or disable (false) it. Only the passed properties will be updated. The properties not passed will be left unchanged. A request without a production property will leave the production branch unchanged. See Production below.
+        :param pulumi.Input[str] repository: The name of the repository.
         """
         if branch_types is not None:
             pulumi.set(__self__, "branch_types", branch_types)
@@ -103,6 +131,9 @@ class _BranchingModelState:
     @property
     @pulumi.getter(name="branchTypes")
     def branch_types(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['BranchingModelBranchTypeArgs']]]]:
+        """
+        A set of branch type to define `feature`, `bugfix`, `release`, `hotfix` prefixes. See Branch Type below.
+        """
         return pulumi.get(self, "branch_types")
 
     @branch_types.setter
@@ -112,6 +143,9 @@ class _BranchingModelState:
     @property
     @pulumi.getter
     def development(self) -> Optional[pulumi.Input['BranchingModelDevelopmentArgs']]:
+        """
+        The development branch can be configured to a specific branch or to track the main branch. When set to a specific branch it must currently exist. Only the passed properties will be updated. The properties not passed will be left unchanged. A request without a development property will leave the development branch unchanged. See Development below.
+        """
         return pulumi.get(self, "development")
 
     @development.setter
@@ -121,6 +155,10 @@ class _BranchingModelState:
     @property
     @pulumi.getter
     def owner(self) -> Optional[pulumi.Input[str]]:
+        """
+        The owner of this repository. Can be you or any team you
+        have write access to.
+        """
         return pulumi.get(self, "owner")
 
     @owner.setter
@@ -130,6 +168,9 @@ class _BranchingModelState:
     @property
     @pulumi.getter
     def production(self) -> Optional[pulumi.Input['BranchingModelProductionArgs']]:
+        """
+        The production branch can be a specific branch, the main branch or disabled. When set to a specific branch it must currently exist. The enabled property can be used to enable (true) or disable (false) it. Only the passed properties will be updated. The properties not passed will be left unchanged. A request without a production property will leave the production branch unchanged. See Production below.
+        """
         return pulumi.get(self, "production")
 
     @production.setter
@@ -139,6 +180,9 @@ class _BranchingModelState:
     @property
     @pulumi.getter
     def repository(self) -> Optional[pulumi.Input[str]]:
+        """
+        The name of the repository.
+        """
         return pulumi.get(self, "repository")
 
     @repository.setter
@@ -158,9 +202,66 @@ class BranchingModel(pulumi.CustomResource):
                  repository: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         """
-        Create a BranchingModel resource with the given unique name, props, and options.
+        Provides a Bitbucket branching model resource.
+
+        This allows you for setting up branching models for your repository.
+
+        OAuth2 Scopes: `repository:admin`
+
+        ## Example Usage
+
+        ```python
+        import pulumi
+        import pulumi_bitbucket as bitbucket
+
+        # Manage your repositories branching models
+        test_repository = bitbucket.Repository("testRepository", owner="example")
+        test_branching_model = bitbucket.BranchingModel("testBranchingModel",
+            owner="example",
+            repository=test_repository.name,
+            development=bitbucket.BranchingModelDevelopmentArgs(
+                use_mainbranch=True,
+            ),
+            branch_types=[
+                bitbucket.BranchingModelBranchTypeArgs(
+                    enabled=True,
+                    kind="feature",
+                    prefix="test/",
+                ),
+                bitbucket.BranchingModelBranchTypeArgs(
+                    enabled=True,
+                    kind="hotfix",
+                    prefix="hotfix/",
+                ),
+                bitbucket.BranchingModelBranchTypeArgs(
+                    enabled=True,
+                    kind="release",
+                    prefix="release/",
+                ),
+                bitbucket.BranchingModelBranchTypeArgs(
+                    enabled=True,
+                    kind="bugfix",
+                    prefix="bugfix/",
+                ),
+            ])
+        ```
+
+        ## Import
+
+        Branching Models can be imported using the owner and repo separated by a (`/`), e.g.,
+
+        ```sh
+         $ pulumi import bitbucket:index/branchingModel:BranchingModel example owner/repo
+        ```
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['BranchingModelBranchTypeArgs']]]] branch_types: A set of branch type to define `feature`, `bugfix`, `release`, `hotfix` prefixes. See Branch Type below.
+        :param pulumi.Input[pulumi.InputType['BranchingModelDevelopmentArgs']] development: The development branch can be configured to a specific branch or to track the main branch. When set to a specific branch it must currently exist. Only the passed properties will be updated. The properties not passed will be left unchanged. A request without a development property will leave the development branch unchanged. See Development below.
+        :param pulumi.Input[str] owner: The owner of this repository. Can be you or any team you
+               have write access to.
+        :param pulumi.Input[pulumi.InputType['BranchingModelProductionArgs']] production: The production branch can be a specific branch, the main branch or disabled. When set to a specific branch it must currently exist. The enabled property can be used to enable (true) or disable (false) it. Only the passed properties will be updated. The properties not passed will be left unchanged. A request without a production property will leave the production branch unchanged. See Production below.
+        :param pulumi.Input[str] repository: The name of the repository.
         """
         ...
     @overload
@@ -169,7 +270,58 @@ class BranchingModel(pulumi.CustomResource):
                  args: BranchingModelArgs,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
-        Create a BranchingModel resource with the given unique name, props, and options.
+        Provides a Bitbucket branching model resource.
+
+        This allows you for setting up branching models for your repository.
+
+        OAuth2 Scopes: `repository:admin`
+
+        ## Example Usage
+
+        ```python
+        import pulumi
+        import pulumi_bitbucket as bitbucket
+
+        # Manage your repositories branching models
+        test_repository = bitbucket.Repository("testRepository", owner="example")
+        test_branching_model = bitbucket.BranchingModel("testBranchingModel",
+            owner="example",
+            repository=test_repository.name,
+            development=bitbucket.BranchingModelDevelopmentArgs(
+                use_mainbranch=True,
+            ),
+            branch_types=[
+                bitbucket.BranchingModelBranchTypeArgs(
+                    enabled=True,
+                    kind="feature",
+                    prefix="test/",
+                ),
+                bitbucket.BranchingModelBranchTypeArgs(
+                    enabled=True,
+                    kind="hotfix",
+                    prefix="hotfix/",
+                ),
+                bitbucket.BranchingModelBranchTypeArgs(
+                    enabled=True,
+                    kind="release",
+                    prefix="release/",
+                ),
+                bitbucket.BranchingModelBranchTypeArgs(
+                    enabled=True,
+                    kind="bugfix",
+                    prefix="bugfix/",
+                ),
+            ])
+        ```
+
+        ## Import
+
+        Branching Models can be imported using the owner and repo separated by a (`/`), e.g.,
+
+        ```sh
+         $ pulumi import bitbucket:index/branchingModel:BranchingModel example owner/repo
+        ```
+
         :param str resource_name: The name of the resource.
         :param BranchingModelArgs args: The arguments to use to populate this resource's properties.
         :param pulumi.ResourceOptions opts: Options for the resource.
@@ -232,6 +384,12 @@ class BranchingModel(pulumi.CustomResource):
         :param str resource_name: The unique name of the resulting resource.
         :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['BranchingModelBranchTypeArgs']]]] branch_types: A set of branch type to define `feature`, `bugfix`, `release`, `hotfix` prefixes. See Branch Type below.
+        :param pulumi.Input[pulumi.InputType['BranchingModelDevelopmentArgs']] development: The development branch can be configured to a specific branch or to track the main branch. When set to a specific branch it must currently exist. Only the passed properties will be updated. The properties not passed will be left unchanged. A request without a development property will leave the development branch unchanged. See Development below.
+        :param pulumi.Input[str] owner: The owner of this repository. Can be you or any team you
+               have write access to.
+        :param pulumi.Input[pulumi.InputType['BranchingModelProductionArgs']] production: The production branch can be a specific branch, the main branch or disabled. When set to a specific branch it must currently exist. The enabled property can be used to enable (true) or disable (false) it. Only the passed properties will be updated. The properties not passed will be left unchanged. A request without a production property will leave the production branch unchanged. See Production below.
+        :param pulumi.Input[str] repository: The name of the repository.
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
 
@@ -247,25 +405,41 @@ class BranchingModel(pulumi.CustomResource):
     @property
     @pulumi.getter(name="branchTypes")
     def branch_types(self) -> pulumi.Output[Sequence['outputs.BranchingModelBranchType']]:
+        """
+        A set of branch type to define `feature`, `bugfix`, `release`, `hotfix` prefixes. See Branch Type below.
+        """
         return pulumi.get(self, "branch_types")
 
     @property
     @pulumi.getter
     def development(self) -> pulumi.Output['outputs.BranchingModelDevelopment']:
+        """
+        The development branch can be configured to a specific branch or to track the main branch. When set to a specific branch it must currently exist. Only the passed properties will be updated. The properties not passed will be left unchanged. A request without a development property will leave the development branch unchanged. See Development below.
+        """
         return pulumi.get(self, "development")
 
     @property
     @pulumi.getter
     def owner(self) -> pulumi.Output[str]:
+        """
+        The owner of this repository. Can be you or any team you
+        have write access to.
+        """
         return pulumi.get(self, "owner")
 
     @property
     @pulumi.getter
     def production(self) -> pulumi.Output[Optional['outputs.BranchingModelProduction']]:
+        """
+        The production branch can be a specific branch, the main branch or disabled. When set to a specific branch it must currently exist. The enabled property can be used to enable (true) or disable (false) it. Only the passed properties will be updated. The properties not passed will be left unchanged. A request without a production property will leave the production branch unchanged. See Production below.
+        """
         return pulumi.get(self, "production")
 
     @property
     @pulumi.getter
     def repository(self) -> pulumi.Output[str]:
+        """
+        The name of the repository.
+        """
         return pulumi.get(self, "repository")
 

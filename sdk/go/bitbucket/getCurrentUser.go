@@ -4,10 +4,40 @@
 package bitbucket
 
 import (
+	"context"
+	"reflect"
+
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket/internal"
 )
 
+// Provides a way to fetch data of the current user.
+//
+// OAuth2 Scopes: `account`
+//
+// ## Example Usage
+//
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := bitbucket.GetCurrentUser(ctx, nil, nil)
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
 func GetCurrentUser(ctx *pulumi.Context, opts ...pulumi.InvokeOption) (*GetCurrentUserResult, error) {
 	opts = internal.PkgInvokeDefaultOpts(opts)
 	var rv GetCurrentUserResult
@@ -20,10 +50,69 @@ func GetCurrentUser(ctx *pulumi.Context, opts ...pulumi.InvokeOption) (*GetCurre
 
 // A collection of values returned by getCurrentUser.
 type GetCurrentUserResult struct {
-	DisplayName string                `pulumi:"displayName"`
-	Emails      []GetCurrentUserEmail `pulumi:"emails"`
+	// the display name that the user wants to use for GDPR
+	DisplayName string `pulumi:"displayName"`
+	// The email address.
+	Emails []GetCurrentUserEmail `pulumi:"emails"`
 	// The provider-assigned unique ID for this managed resource.
-	Id       string `pulumi:"id"`
+	Id string `pulumi:"id"`
+	// The Username.
 	Username string `pulumi:"username"`
-	Uuid     string `pulumi:"uuid"`
+	// the uuid that bitbucket users to connect a user to various objects
+	Uuid string `pulumi:"uuid"`
+}
+
+func GetCurrentUserOutput(ctx *pulumi.Context, opts ...pulumi.InvokeOption) GetCurrentUserResultOutput {
+	return pulumi.ToOutput(0).ApplyT(func(int) (GetCurrentUserResult, error) {
+		r, err := GetCurrentUser(ctx, opts...)
+		var s GetCurrentUserResult
+		if r != nil {
+			s = *r
+		}
+		return s, err
+	}).(GetCurrentUserResultOutput)
+}
+
+// A collection of values returned by getCurrentUser.
+type GetCurrentUserResultOutput struct{ *pulumi.OutputState }
+
+func (GetCurrentUserResultOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*GetCurrentUserResult)(nil)).Elem()
+}
+
+func (o GetCurrentUserResultOutput) ToGetCurrentUserResultOutput() GetCurrentUserResultOutput {
+	return o
+}
+
+func (o GetCurrentUserResultOutput) ToGetCurrentUserResultOutputWithContext(ctx context.Context) GetCurrentUserResultOutput {
+	return o
+}
+
+// the display name that the user wants to use for GDPR
+func (o GetCurrentUserResultOutput) DisplayName() pulumi.StringOutput {
+	return o.ApplyT(func(v GetCurrentUserResult) string { return v.DisplayName }).(pulumi.StringOutput)
+}
+
+// The email address.
+func (o GetCurrentUserResultOutput) Emails() GetCurrentUserEmailArrayOutput {
+	return o.ApplyT(func(v GetCurrentUserResult) []GetCurrentUserEmail { return v.Emails }).(GetCurrentUserEmailArrayOutput)
+}
+
+// The provider-assigned unique ID for this managed resource.
+func (o GetCurrentUserResultOutput) Id() pulumi.StringOutput {
+	return o.ApplyT(func(v GetCurrentUserResult) string { return v.Id }).(pulumi.StringOutput)
+}
+
+// The Username.
+func (o GetCurrentUserResultOutput) Username() pulumi.StringOutput {
+	return o.ApplyT(func(v GetCurrentUserResult) string { return v.Username }).(pulumi.StringOutput)
+}
+
+// the uuid that bitbucket users to connect a user to various objects
+func (o GetCurrentUserResultOutput) Uuid() pulumi.StringOutput {
+	return o.ApplyT(func(v GetCurrentUserResult) string { return v.Uuid }).(pulumi.StringOutput)
+}
+
+func init() {
+	pulumi.RegisterOutputType(GetCurrentUserResultOutput{})
 }

@@ -14,6 +14,7 @@ __all__ = [
     'GetIpRangesResult',
     'AwaitableGetIpRangesResult',
     'get_ip_ranges',
+    'get_ip_ranges_output',
 ]
 
 @pulumi.output_type
@@ -40,6 +41,9 @@ class GetIpRangesResult:
     @property
     @pulumi.getter
     def ranges(self) -> Sequence['outputs.GetIpRangesRangeResult']:
+        """
+        A Set of IP Ranges. See Ranges below.
+        """
         return pulumi.get(self, "ranges")
 
 
@@ -55,7 +59,18 @@ class AwaitableGetIpRangesResult(GetIpRangesResult):
 
 def get_ip_ranges(opts: Optional[pulumi.InvokeOptions] = None) -> AwaitableGetIpRangesResult:
     """
-    Use this data source to access information about an existing resource.
+    Provides a way to fetch IP Ranges for whitelisting.
+
+    OAuth2 Scopes: `none`
+
+    ## Example Usage
+
+    ```python
+    import pulumi
+    import pulumi_bitbucket as bitbucket
+
+    example = bitbucket.get_ip_ranges()
+    ```
     """
     __args__ = dict()
     opts = pulumi.InvokeOptions.merge(_utilities.get_invoke_opts_defaults(), opts)
@@ -64,3 +79,22 @@ def get_ip_ranges(opts: Optional[pulumi.InvokeOptions] = None) -> AwaitableGetIp
     return AwaitableGetIpRangesResult(
         id=pulumi.get(__ret__, 'id'),
         ranges=pulumi.get(__ret__, 'ranges'))
+
+
+@_utilities.lift_output_func(get_ip_ranges)
+def get_ip_ranges_output(opts: Optional[pulumi.InvokeOptions] = None) -> pulumi.Output[GetIpRangesResult]:
+    """
+    Provides a way to fetch IP Ranges for whitelisting.
+
+    OAuth2 Scopes: `none`
+
+    ## Example Usage
+
+    ```python
+    import pulumi
+    import pulumi_bitbucket as bitbucket
+
+    example = bitbucket.get_ip_ranges()
+    ```
+    """
+    ...

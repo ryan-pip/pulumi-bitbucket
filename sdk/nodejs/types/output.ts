@@ -6,126 +6,323 @@ import * as inputs from "../types/input";
 import * as outputs from "../types/output";
 
 export interface BranchRestrictionGroup {
+    /**
+     * The owner of this repository. Can be you or any team you
+     * have write access to.
+     */
     owner: string;
     slug: string;
 }
 
 export interface BranchingModelBranchType {
+    /**
+     * Whether the branch type is enabled or not. A disabled branch type may contain an invalid `prefix`.
+     */
     enabled: boolean;
+    /**
+     * The kind of the branch type. Valid values are `feature`, `bugfix`, `release`, `hotfix`.
+     */
     kind: string;
+    /**
+     * The prefix for this branch type. A branch with this prefix will be classified as per kind. The prefix of an enabled branch type must be a valid branch prefix. Additionally, it cannot be blank, empty or null. The prefix for a disabled branch type can be empty or invalid.
+     */
     prefix?: string;
 }
 
 export interface BranchingModelDevelopment {
+    /**
+     * Optional and only returned for a repository's branching model. Indicates if the indicated branch exists on the repository (`false`) or not (`true`). This is useful for determining a fallback to the mainbranch when a repository is inheriting its project's branching model.
+     */
     branchDoesNotExist?: boolean;
     isValid: boolean;
+    /**
+     * The configured branch. It must be null when `useMainbranch` is true. Otherwise it must be a non-empty value. It is possible for the configured branch to not exist (e.g. it was deleted after the settings are set).
+     */
     name?: string;
+    /**
+     * Indicates if the setting points at an explicit branch (`false`) or tracks the main branch (`true`). When `true` the name must be null or not provided. When `false` the name must contain a non-empty branch name.
+     */
     useMainbranch?: boolean;
 }
 
 export interface BranchingModelProduction {
+    /**
+     * Optional and only returned for a repository's branching model. Indicates if the indicated branch exists on the repository (`false`) or not (`true`). This is useful for determining a fallback to the mainbranch when a repository is inheriting its project's branching model.
+     */
     branchDoesNotExist?: boolean;
+    /**
+     * Indicates if branch is enabled or not.
+     */
     enabled?: boolean;
     isValid: boolean;
+    /**
+     * The configured branch. It must be null when `useMainbranch` is true. Otherwise it must be a non-empty value. It is possible for the configured branch to not exist (e.g. it was deleted after the settings are set).
+     */
     name?: string;
+    /**
+     * Indicates if the setting points at an explicit branch (`false`) or tracks the main branch (`true`). When `true` the name must be null or not provided. When `false` the name must contain a non-empty branch name.
+     */
     useMainbranch?: boolean;
 }
 
 export interface DeploymentRestrictions {
+    /**
+     * Only Admins can deploy this deployment stage.
+     */
     adminOnly?: boolean;
 }
 
 export interface ForkedRepositoryLink {
+    /**
+     * An avatar link to a resource related to this object. See Avatar Below.
+     */
     avatar?: outputs.ForkedRepositoryLinkAvatar;
 }
 
 export interface ForkedRepositoryLinkAvatar {
+    /**
+     * href of the avatar.
+     */
     href?: string;
 }
 
 export interface GetCurrentUserEmail {
+    /**
+     * The email address.
+     */
     email: string;
+    /**
+     * Whether the email is confirmed.
+     */
     isConfirmed: boolean;
+    /**
+     * Whether is primary email for the user.
+     */
     isPrimary: boolean;
 }
 
+export interface GetGroupMembersGroupMember {
+    /**
+     * The User display name.
+     */
+    displayName: string;
+    /**
+     * The Username.
+     */
+    username: string;
+    /**
+     * User UUID.
+     */
+    uuid: string;
+}
+
 export interface GetGroupsGroup {
+    /**
+     * Whether to automatically add users the groups
+     */
     autoAdd: boolean;
+    /**
+     * Whether to disable email forwarding for group.
+     */
     emailForwardingDisabled: boolean;
+    /**
+     * The name of the groups.
+     */
     name: string;
+    /**
+     * One of `read`, `write`, and `admin`.
+     */
     permission: string;
+    /**
+     * The groups's slug.
+     */
     slug: string;
 }
 
 export interface GetHookTypesHookType {
+    /**
+     * The category this event belongs to.
+     */
     category: string;
+    /**
+     * More detailed description of the webhook event type.
+     */
     description: string;
+    /**
+     * The event identifier.
+     */
     event: string;
+    /**
+     * Summary of the webhook event type.
+     */
     label: string;
 }
 
 export interface GetIpRangesRange {
+    /**
+     * The CIDR of the range.
+     */
     cidr: string;
+    /**
+     * A Set of directions (Ingress/Egress) the range is associated with.
+     */
     directions: string[];
+    /**
+     * More mask of the range.
+     */
     mask: string;
+    /**
+     * The make length of the range.
+     */
     maskLen: number;
+    /**
+     * The network of the range.
+     */
     network: string;
+    /**
+     * The allowed perimeter of the range.
+     */
+    perimeter: string;
+    /**
+     * A Set of Atlasian products (Bitbucket, Jira, etc) the range is associated with.
+     */
     products: string[];
+    /**
+     * A Set of regions the range is associated with.
+     */
     regions: string[];
 }
 
+export interface GetWorkspaceMembersWorkspaceMember {
+    /**
+     * The User display name.
+     */
+    displayName: string;
+    /**
+     * The Username.
+     */
+    username: string;
+    /**
+     * User UUID.
+     */
+    uuid: string;
+}
+
 export interface PipelineScheduleTarget {
+    /**
+     * The name of the reference.
+     */
     refName: string;
+    /**
+     * The type of reference. Valid values are `branch` and `tag`.
+     */
     refType: string;
+    /**
+     * Selector spec. See Selector below.
+     */
     selector: outputs.PipelineScheduleTargetSelector;
 }
 
 export interface PipelineScheduleTargetSelector {
+    /**
+     * The name of the matching pipeline definition.
+     */
     pattern: string;
+    /**
+     * Selector type. Default value is `branches`.
+     */
     type?: string;
 }
 
 export interface PipelineSshKnownHostPublicKey {
+    /**
+     * The plain public key.
+     */
     key: string;
+    /**
+     * The type of the public key. Valid values are `ssh-ed25519`, `ecdsa-sha2-nistp256`, `ssh-rsa`, and `ssh-dss`.
+     */
     keyType: string;
     md5Fingerprint: string;
     sha256Fingerprint: string;
 }
 
 export interface ProjectBranchingModelBranchType {
+    /**
+     * Whether the branch type is enabled or not. A disabled branch type may contain an invalid `prefix`.
+     */
     enabled: boolean;
+    /**
+     * The kind of the branch type. Valid values are `feature`, `bugfix`, `release`, `hotfix`.
+     */
     kind: string;
+    /**
+     * The prefix for this branch type. A branch with this prefix will be classified as per kind. The prefix of an enabled branch type must be a valid branch prefix. Additionally, it cannot be blank, empty or null. The prefix for a disabled branch type can be empty or invalid.
+     */
     prefix?: string;
 }
 
 export interface ProjectBranchingModelDevelopment {
+    /**
+     * Optional and only returned for a project's branching model. Indicates if the indicated branch exists on the project (`false`) or not (`true`). This is useful for determining a fallback to the mainbranch when a project is inheriting its project's branching model.
+     */
     branchDoesNotExist?: boolean;
     isValid: boolean;
+    /**
+     * The configured branch. It must be null when `useMainbranch` is true. Otherwise it must be a non-empty value. It is possible for the configured branch to not exist (e.g. it was deleted after the settings are set).
+     */
     name?: string;
+    /**
+     * Indicates if the setting points at an explicit branch (`false`) or tracks the main branch (`true`). When `true` the name must be null or not provided. When `false` the name must contain a non-empty branch name.
+     */
     useMainbranch?: boolean;
 }
 
 export interface ProjectBranchingModelProduction {
+    /**
+     * Optional and only returned for a project's branching model. Indicates if the indicated branch exists on the project (`false`) or not (`true`). This is useful for determining a fallback to the mainbranch when a project is inheriting its project's branching model.
+     */
     branchDoesNotExist?: boolean;
+    /**
+     * Indicates if branch is enabled or not.
+     */
     enabled?: boolean;
     isValid: boolean;
+    /**
+     * The configured branch. It must be null when `useMainbranch` is true. Otherwise it must be a non-empty value. It is possible for the configured branch to not exist (e.g. it was deleted after the settings are set).
+     */
     name?: string;
+    /**
+     * Indicates if the setting points at an explicit branch (`false`) or tracks the main branch (`true`). When `true` the name must be null or not provided. When `false` the name must contain a non-empty branch name.
+     */
     useMainbranch?: boolean;
 }
 
 export interface ProjectLink {
+    /**
+     * An avatar link to a resource related to this object. See Avatar Below.
+     */
     avatar?: outputs.ProjectLinkAvatar;
 }
 
 export interface ProjectLinkAvatar {
+    /**
+     * href of the avatar.
+     */
     href?: string;
 }
 
 export interface RepositoryLink {
+    /**
+     * An avatar link to a resource related to this object. See Avatar Below.
+     */
     avatar?: outputs.RepositoryLinkAvatar;
 }
 
 export interface RepositoryLinkAvatar {
+    /**
+     * href of the avatar.
+     */
     href?: string;
 }
 

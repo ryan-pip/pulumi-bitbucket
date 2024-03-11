@@ -4,6 +4,37 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "./utilities";
 
+/**
+ * Provides a Bitbucket group membership resource.
+ *
+ * This allows you to manage your group membership.
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as bitbucket from "@pulumi/bitbucket";
+ *
+ * const testWorkspace = bitbucket.getWorkspace({
+ *     workspace: "example",
+ * });
+ * const testGroup = new bitbucket.Group("testGroup", {workspace: testWorkspace.then(testWorkspace => testWorkspace.id)});
+ * const testCurrentUser = bitbucket.getCurrentUser({});
+ * const testGroupMembership = new bitbucket.GroupMembership("testGroupMembership", {
+ *     workspace: testGroup.workspace,
+ *     groupSlug: testGroup.slug,
+ *     uuid: testCurrentUser.then(testCurrentUser => testCurrentUser.id),
+ * });
+ * ```
+ *
+ * ## Import
+ *
+ * Group Members can be imported using their `workspace/group-slug/member-uuid` ID, e.g.
+ *
+ * ```sh
+ *  $ pulumi import bitbucket:index/groupMembership:GroupMembership group my-workspace/group-slug/member-uuid
+ * ```
+ */
 export class GroupMembership extends pulumi.CustomResource {
     /**
      * Get an existing GroupMembership resource's state with the given name, ID, and optional extra
@@ -32,9 +63,18 @@ export class GroupMembership extends pulumi.CustomResource {
         return obj['__pulumiType'] === GroupMembership.__pulumiType;
     }
 
+    /**
+     * The slug of the group.
+     */
     public readonly groupSlug!: pulumi.Output<string>;
     public /*out*/ readonly slug!: pulumi.Output<string>;
+    /**
+     * The member UUID to add to the group.
+     */
     public readonly uuid!: pulumi.Output<string>;
+    /**
+     * The workspace of this repository.
+     */
     public readonly workspace!: pulumi.Output<string>;
 
     /**
@@ -79,9 +119,18 @@ export class GroupMembership extends pulumi.CustomResource {
  * Input properties used for looking up and filtering GroupMembership resources.
  */
 export interface GroupMembershipState {
+    /**
+     * The slug of the group.
+     */
     groupSlug?: pulumi.Input<string>;
     slug?: pulumi.Input<string>;
+    /**
+     * The member UUID to add to the group.
+     */
     uuid?: pulumi.Input<string>;
+    /**
+     * The workspace of this repository.
+     */
     workspace?: pulumi.Input<string>;
 }
 
@@ -89,7 +138,16 @@ export interface GroupMembershipState {
  * The set of arguments for constructing a GroupMembership resource.
  */
 export interface GroupMembershipArgs {
+    /**
+     * The slug of the group.
+     */
     groupSlug: pulumi.Input<string>;
+    /**
+     * The member UUID to add to the group.
+     */
     uuid: pulumi.Input<string>;
+    /**
+     * The workspace of this repository.
+     */
     workspace: pulumi.Input<string>;
 }

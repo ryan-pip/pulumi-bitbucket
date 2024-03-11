@@ -6,6 +6,35 @@ import * as inputs from "./types/input";
 import * as outputs from "./types/output";
 import * as utilities from "./utilities";
 
+/**
+ * This resource allows you to setup pipelines deployment environments.
+ *
+ * OAuth2 Scopes: `none`
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as bitbucket from "@pulumi/bitbucket";
+ *
+ * const monorepo = new bitbucket.Repository("monorepo", {
+ *     owner: "gob",
+ *     pipelinesEnabled: true,
+ * });
+ * const test = new bitbucket.Deployment("test", {
+ *     repository: monorepo.id,
+ *     stage: "Test",
+ * });
+ * ```
+ *
+ * ## Import
+ *
+ * Deployments can be imported using their `repository/uuid` ID, e.g.
+ *
+ * ```sh
+ *  $ pulumi import bitbucket:index/deployment:Deployment example repository/uuid
+ * ```
+ */
 export class Deployment extends pulumi.CustomResource {
     /**
      * Get an existing Deployment resource's state with the given name, ID, and optional extra
@@ -34,10 +63,25 @@ export class Deployment extends pulumi.CustomResource {
         return obj['__pulumiType'] === Deployment.__pulumiType;
     }
 
+    /**
+     * The name of the deployment environment
+     */
     public readonly name!: pulumi.Output<string>;
+    /**
+     * The repository ID to which you want to assign this deployment environment to
+     */
     public readonly repository!: pulumi.Output<string>;
+    /**
+     * Deployment restrictions. See Restrictions below.
+     */
     public readonly restrictions!: pulumi.Output<outputs.DeploymentRestrictions>;
+    /**
+     * The stage (Test, Staging, Production)
+     */
     public readonly stage!: pulumi.Output<string>;
+    /**
+     * (Computed) The UUID identifying the deployment.
+     */
     public /*out*/ readonly uuid!: pulumi.Output<string>;
 
     /**
@@ -81,10 +125,25 @@ export class Deployment extends pulumi.CustomResource {
  * Input properties used for looking up and filtering Deployment resources.
  */
 export interface DeploymentState {
+    /**
+     * The name of the deployment environment
+     */
     name?: pulumi.Input<string>;
+    /**
+     * The repository ID to which you want to assign this deployment environment to
+     */
     repository?: pulumi.Input<string>;
+    /**
+     * Deployment restrictions. See Restrictions below.
+     */
     restrictions?: pulumi.Input<inputs.DeploymentRestrictions>;
+    /**
+     * The stage (Test, Staging, Production)
+     */
     stage?: pulumi.Input<string>;
+    /**
+     * (Computed) The UUID identifying the deployment.
+     */
     uuid?: pulumi.Input<string>;
 }
 
@@ -92,8 +151,20 @@ export interface DeploymentState {
  * The set of arguments for constructing a Deployment resource.
  */
 export interface DeploymentArgs {
+    /**
+     * The name of the deployment environment
+     */
     name?: pulumi.Input<string>;
+    /**
+     * The repository ID to which you want to assign this deployment environment to
+     */
     repository: pulumi.Input<string>;
+    /**
+     * Deployment restrictions. See Restrictions below.
+     */
     restrictions?: pulumi.Input<inputs.DeploymentRestrictions>;
+    /**
+     * The stage (Test, Staging, Production)
+     */
     stage: pulumi.Input<string>;
 }

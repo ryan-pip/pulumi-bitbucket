@@ -4,10 +4,40 @@
 package bitbucket
 
 import (
+	"context"
+	"reflect"
+
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket/internal"
 )
 
+// Provides a way to fetch IP Ranges for whitelisting.
+//
+// OAuth2 Scopes: `none`
+//
+// ## Example Usage
+//
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := bitbucket.GetIpRanges(ctx, nil, nil)
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
 func GetIpRanges(ctx *pulumi.Context, opts ...pulumi.InvokeOption) (*GetIpRangesResult, error) {
 	opts = internal.PkgInvokeDefaultOpts(opts)
 	var rv GetIpRangesResult
@@ -21,6 +51,47 @@ func GetIpRanges(ctx *pulumi.Context, opts ...pulumi.InvokeOption) (*GetIpRanges
 // A collection of values returned by getIpRanges.
 type GetIpRangesResult struct {
 	// The provider-assigned unique ID for this managed resource.
-	Id     string             `pulumi:"id"`
+	Id string `pulumi:"id"`
+	// A Set of IP Ranges. See Ranges below.
 	Ranges []GetIpRangesRange `pulumi:"ranges"`
+}
+
+func GetIpRangesOutput(ctx *pulumi.Context, opts ...pulumi.InvokeOption) GetIpRangesResultOutput {
+	return pulumi.ToOutput(0).ApplyT(func(int) (GetIpRangesResult, error) {
+		r, err := GetIpRanges(ctx, opts...)
+		var s GetIpRangesResult
+		if r != nil {
+			s = *r
+		}
+		return s, err
+	}).(GetIpRangesResultOutput)
+}
+
+// A collection of values returned by getIpRanges.
+type GetIpRangesResultOutput struct{ *pulumi.OutputState }
+
+func (GetIpRangesResultOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*GetIpRangesResult)(nil)).Elem()
+}
+
+func (o GetIpRangesResultOutput) ToGetIpRangesResultOutput() GetIpRangesResultOutput {
+	return o
+}
+
+func (o GetIpRangesResultOutput) ToGetIpRangesResultOutputWithContext(ctx context.Context) GetIpRangesResultOutput {
+	return o
+}
+
+// The provider-assigned unique ID for this managed resource.
+func (o GetIpRangesResultOutput) Id() pulumi.StringOutput {
+	return o.ApplyT(func(v GetIpRangesResult) string { return v.Id }).(pulumi.StringOutput)
+}
+
+// A Set of IP Ranges. See Ranges below.
+func (o GetIpRangesResultOutput) Ranges() GetIpRangesRangeArrayOutput {
+	return o.ApplyT(func(v GetIpRangesResult) []GetIpRangesRange { return v.Ranges }).(GetIpRangesRangeArrayOutput)
+}
+
+func init() {
+	pulumi.RegisterOutputType(GetIpRangesResultOutput{})
 }

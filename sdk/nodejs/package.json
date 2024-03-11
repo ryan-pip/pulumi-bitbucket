@@ -1,7 +1,7 @@
 {
     "name": "@pulumi/bitbucket",
     "version": "${VERSION}",
-    "description": "A Pulumi package for creating and managing bitbucket cloud resources.",
+    "description": "A Pulumi package for creating and managing bitbucket cloud resources.. Based on terraform-provider-bitbucket: version v2.40.0",
     "keywords": [
         "pulumi",
         "bitbucket",

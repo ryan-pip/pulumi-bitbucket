@@ -2,8 +2,26 @@
 // *** Do not edit by hand unless you're certain you know what you are doing! ***
 
 import * as pulumi from "@pulumi/pulumi";
+import * as inputs from "./types/input";
+import * as outputs from "./types/output";
 import * as utilities from "./utilities";
 
+/**
+ * Provides a way to fetch data on a the members of a workspace.
+ *
+ * OAuth2 Scopes: `account`
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as bitbucket from "@pulumi/bitbucket";
+ *
+ * const example = bitbucket.getWorkspaceMembers({
+ *     workspace: "gob",
+ * });
+ * ```
+ */
 export function getWorkspaceMembers(args: GetWorkspaceMembersArgs, opts?: pulumi.InvokeOptions): Promise<GetWorkspaceMembersResult> {
 
     opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
@@ -16,6 +34,9 @@ export function getWorkspaceMembers(args: GetWorkspaceMembersArgs, opts?: pulumi
  * A collection of arguments for invoking getWorkspaceMembers.
  */
 export interface GetWorkspaceMembersArgs {
+    /**
+     * This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces.
+     */
     workspace: string;
 }
 
@@ -27,9 +48,34 @@ export interface GetWorkspaceMembersResult {
      * The provider-assigned unique ID for this managed resource.
      */
     readonly id: string;
+    /**
+     * A set of string containing the member UUIDs.
+     *
+     * @deprecated use workspace_members instead
+     */
     readonly members: string[];
     readonly workspace: string;
+    /**
+     * A set of workspace member objects. See Workspace Members below.
+     */
+    readonly workspaceMembers: outputs.GetWorkspaceMembersWorkspaceMember[];
 }
+/**
+ * Provides a way to fetch data on a the members of a workspace.
+ *
+ * OAuth2 Scopes: `account`
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as bitbucket from "@pulumi/bitbucket";
+ *
+ * const example = bitbucket.getWorkspaceMembers({
+ *     workspace: "gob",
+ * });
+ * ```
+ */
 export function getWorkspaceMembersOutput(args: GetWorkspaceMembersOutputArgs, opts?: pulumi.InvokeOptions): pulumi.Output<GetWorkspaceMembersResult> {
     return pulumi.output(args).apply((a: any) => getWorkspaceMembers(a, opts))
 }
@@ -38,5 +84,8 @@ export function getWorkspaceMembersOutput(args: GetWorkspaceMembersOutputArgs, o
  * A collection of arguments for invoking getWorkspaceMembers.
  */
 export interface GetWorkspaceMembersOutputArgs {
+    /**
+     * This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces.
+     */
     workspace: pulumi.Input<string>;
 }

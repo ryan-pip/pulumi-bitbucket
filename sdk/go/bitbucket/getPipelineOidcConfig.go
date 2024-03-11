@@ -8,10 +8,38 @@ import (
 	"reflect"
 
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket/internal"
 )
 
+// Provides a way to fetch data on a pipeline OIDC Config.
+//
+// OAuth2 Scopes: `none`
+//
+// ## Example Usage
+//
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := bitbucket.GetPipelineOidcConfig(ctx, &bitbucket.GetPipelineOidcConfigArgs{
+//				Workspace: "example",
+//			}, nil)
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
 func GetPipelineOidcConfig(ctx *pulumi.Context, args *GetPipelineOidcConfigArgs, opts ...pulumi.InvokeOption) (*GetPipelineOidcConfigResult, error) {
 	opts = internal.PkgInvokeDefaultOpts(opts)
 	var rv GetPipelineOidcConfigResult
@@ -24,13 +52,15 @@ func GetPipelineOidcConfig(ctx *pulumi.Context, args *GetPipelineOidcConfigArgs,
 
 // A collection of arguments for invoking getPipelineOidcConfig.
 type GetPipelineOidcConfigArgs struct {
+	// The workspace to fetch pipeline oidc config.
 	Workspace string `pulumi:"workspace"`
 }
 
 // A collection of values returned by getPipelineOidcConfig.
 type GetPipelineOidcConfigResult struct {
 	// The provider-assigned unique ID for this managed resource.
-	Id         string `pulumi:"id"`
+	Id string `pulumi:"id"`
+	// The Json representing the OIDC config.
 	OidcConfig string `pulumi:"oidcConfig"`
 	Workspace  string `pulumi:"workspace"`
 }
@@ -50,6 +80,7 @@ func GetPipelineOidcConfigOutput(ctx *pulumi.Context, args GetPipelineOidcConfig
 
 // A collection of arguments for invoking getPipelineOidcConfig.
 type GetPipelineOidcConfigOutputArgs struct {
+	// The workspace to fetch pipeline oidc config.
 	Workspace pulumi.StringInput `pulumi:"workspace"`
 }
 
@@ -72,17 +103,12 @@ func (o GetPipelineOidcConfigResultOutput) ToGetPipelineOidcConfigResultOutputWi
 	return o
 }
 
-func (o GetPipelineOidcConfigResultOutput) ToOutput(ctx context.Context) pulumix.Output[GetPipelineOidcConfigResult] {
-	return pulumix.Output[GetPipelineOidcConfigResult]{
-		OutputState: o.OutputState,
-	}
-}
-
 // The provider-assigned unique ID for this managed resource.
 func (o GetPipelineOidcConfigResultOutput) Id() pulumi.StringOutput {
 	return o.ApplyT(func(v GetPipelineOidcConfigResult) string { return v.Id }).(pulumi.StringOutput)
 }
 
+// The Json representing the OIDC config.
 func (o GetPipelineOidcConfigResultOutput) OidcConfig() pulumi.StringOutput {
 	return o.ApplyT(func(v GetPipelineOidcConfigResult) string { return v.OidcConfig }).(pulumi.StringOutput)
 }

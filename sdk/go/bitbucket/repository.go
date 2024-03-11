@@ -9,32 +9,124 @@ import (
 
 	"errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket/internal"
 )
 
+// Provides a Bitbucket repository resource.
+//
+// This resource allows you manage your repositories such as scm type, if it is
+// private, how to fork the repository and other options.
+//
+// OAuth2 Scopes: `repository`, `repository:admin`, and `repository:delete`
+//
+// ## Example Usage
+//
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := bitbucket.NewRepository(ctx, "infrastructure", &bitbucket.RepositoryArgs{
+//				Owner: pulumi.String("myteam"),
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
+//
+// If you want to create a repository with a CamelCase name, you should provide
+// a separate slug
+//
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := bitbucket.NewRepository(ctx, "infrastructure", &bitbucket.RepositoryArgs{
+//				Owner: pulumi.String("myteam"),
+//				Slug:  pulumi.String("terraform-code"),
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
+//
+// ## Import
+//
+// Repositories can be imported using their `owner/name` ID, e.g.
+//
+// ```sh
+//
+//	$ pulumi import bitbucket:index/repository:Repository my-repo my-account/my-repo
+//
+// ```
 type Repository struct {
 	pulumi.CustomResourceState
 
-	CloneHttps                  pulumi.StringOutput    `pulumi:"cloneHttps"`
-	CloneSsh                    pulumi.StringOutput    `pulumi:"cloneSsh"`
-	Description                 pulumi.StringPtrOutput `pulumi:"description"`
-	ForkPolicy                  pulumi.StringPtrOutput `pulumi:"forkPolicy"`
-	HasIssues                   pulumi.BoolPtrOutput   `pulumi:"hasIssues"`
-	HasWiki                     pulumi.BoolPtrOutput   `pulumi:"hasWiki"`
-	InheritBranchingModel       pulumi.BoolOutput      `pulumi:"inheritBranchingModel"`
-	InheritDefaultMergeStrategy pulumi.BoolOutput      `pulumi:"inheritDefaultMergeStrategy"`
-	IsPrivate                   pulumi.BoolPtrOutput   `pulumi:"isPrivate"`
-	Language                    pulumi.StringPtrOutput `pulumi:"language"`
-	Link                        RepositoryLinkOutput   `pulumi:"link"`
-	Name                        pulumi.StringOutput    `pulumi:"name"`
-	Owner                       pulumi.StringOutput    `pulumi:"owner"`
-	PipelinesEnabled            pulumi.BoolPtrOutput   `pulumi:"pipelinesEnabled"`
-	ProjectKey                  pulumi.StringOutput    `pulumi:"projectKey"`
-	Scm                         pulumi.StringPtrOutput `pulumi:"scm"`
-	Slug                        pulumi.StringOutput    `pulumi:"slug"`
-	Uuid                        pulumi.StringOutput    `pulumi:"uuid"`
-	Website                     pulumi.StringPtrOutput `pulumi:"website"`
+	// The HTTPS clone URL.
+	CloneHttps pulumi.StringOutput `pulumi:"cloneHttps"`
+	// The SSH clone URL.
+	CloneSsh pulumi.StringOutput `pulumi:"cloneSsh"`
+	// What the description of the repo is.
+	Description pulumi.StringPtrOutput `pulumi:"description"`
+	// What the fork policy should be. Defaults to
+	// `allowForks`. Valid values are `allowForks`, `noPublicForks`, `noForks`.
+	ForkPolicy pulumi.StringPtrOutput `pulumi:"forkPolicy"`
+	// If this should have issues turned on or not.
+	HasIssues pulumi.BoolPtrOutput `pulumi:"hasIssues"`
+	// If this should have wiki turned on or not.
+	HasWiki pulumi.BoolPtrOutput `pulumi:"hasWiki"`
+	// Whether to inherit branching model from project.
+	InheritBranchingModel pulumi.BoolOutput `pulumi:"inheritBranchingModel"`
+	// Whether to inherit default merge strategy from project.
+	InheritDefaultMergeStrategy pulumi.BoolOutput `pulumi:"inheritDefaultMergeStrategy"`
+	// If this should be private or not. Defaults to `true`.
+	IsPrivate pulumi.BoolPtrOutput `pulumi:"isPrivate"`
+	// What the language of this repository should be.
+	Language pulumi.StringPtrOutput `pulumi:"language"`
+	// A set of links to a resource related to this object. See Link Below.
+	Link RepositoryLinkOutput `pulumi:"link"`
+	// The name of the repository.
+	Name pulumi.StringOutput `pulumi:"name"`
+	// The owner of this repository. Can be you or any team you
+	// have write access to.
+	Owner pulumi.StringOutput `pulumi:"owner"`
+	// Turn on to enable pipelines support.
+	PipelinesEnabled pulumi.BoolPtrOutput `pulumi:"pipelinesEnabled"`
+	// If you want to have this repo associated with a
+	// project.
+	ProjectKey pulumi.StringOutput `pulumi:"projectKey"`
+	// What SCM you want to use. Valid options are `hg` or `git`.
+	// Defaults to `git`.
+	Scm pulumi.StringPtrOutput `pulumi:"scm"`
+	// The slug of the repository.
+	Slug pulumi.StringOutput `pulumi:"slug"`
+	// the uuid of the repository resource.
+	Uuid pulumi.StringOutput `pulumi:"uuid"`
+	// URL of website associated with this repository.
+	Website pulumi.StringPtrOutput `pulumi:"website"`
 }
 
 // NewRepository registers a new resource with the given unique name, arguments, and options.
@@ -70,47 +162,93 @@ func GetRepository(ctx *pulumi.Context,
 
 // Input properties used for looking up and filtering Repository resources.
 type repositoryState struct {
-	CloneHttps                  *string         `pulumi:"cloneHttps"`
-	CloneSsh                    *string         `pulumi:"cloneSsh"`
-	Description                 *string         `pulumi:"description"`
-	ForkPolicy                  *string         `pulumi:"forkPolicy"`
-	HasIssues                   *bool           `pulumi:"hasIssues"`
-	HasWiki                     *bool           `pulumi:"hasWiki"`
-	InheritBranchingModel       *bool           `pulumi:"inheritBranchingModel"`
-	InheritDefaultMergeStrategy *bool           `pulumi:"inheritDefaultMergeStrategy"`
-	IsPrivate                   *bool           `pulumi:"isPrivate"`
-	Language                    *string         `pulumi:"language"`
-	Link                        *RepositoryLink `pulumi:"link"`
-	Name                        *string         `pulumi:"name"`
-	Owner                       *string         `pulumi:"owner"`
-	PipelinesEnabled            *bool           `pulumi:"pipelinesEnabled"`
-	ProjectKey                  *string         `pulumi:"projectKey"`
-	Scm                         *string         `pulumi:"scm"`
-	Slug                        *string         `pulumi:"slug"`
-	Uuid                        *string         `pulumi:"uuid"`
-	Website                     *string         `pulumi:"website"`
+	// The HTTPS clone URL.
+	CloneHttps *string `pulumi:"cloneHttps"`
+	// The SSH clone URL.
+	CloneSsh *string `pulumi:"cloneSsh"`
+	// What the description of the repo is.
+	Description *string `pulumi:"description"`
+	// What the fork policy should be. Defaults to
+	// `allowForks`. Valid values are `allowForks`, `noPublicForks`, `noForks`.
+	ForkPolicy *string `pulumi:"forkPolicy"`
+	// If this should have issues turned on or not.
+	HasIssues *bool `pulumi:"hasIssues"`
+	// If this should have wiki turned on or not.
+	HasWiki *bool `pulumi:"hasWiki"`
+	// Whether to inherit branching model from project.
+	InheritBranchingModel *bool `pulumi:"inheritBranchingModel"`
+	// Whether to inherit default merge strategy from project.
+	InheritDefaultMergeStrategy *bool `pulumi:"inheritDefaultMergeStrategy"`
+	// If this should be private or not. Defaults to `true`.
+	IsPrivate *bool `pulumi:"isPrivate"`
+	// What the language of this repository should be.
+	Language *string `pulumi:"language"`
+	// A set of links to a resource related to this object. See Link Below.
+	Link *RepositoryLink `pulumi:"link"`
+	// The name of the repository.
+	Name *string `pulumi:"name"`
+	// The owner of this repository. Can be you or any team you
+	// have write access to.
+	Owner *string `pulumi:"owner"`
+	// Turn on to enable pipelines support.
+	PipelinesEnabled *bool `pulumi:"pipelinesEnabled"`
+	// If you want to have this repo associated with a
+	// project.
+	ProjectKey *string `pulumi:"projectKey"`
+	// What SCM you want to use. Valid options are `hg` or `git`.
+	// Defaults to `git`.
+	Scm *string `pulumi:"scm"`
+	// The slug of the repository.
+	Slug *string `pulumi:"slug"`
+	// the uuid of the repository resource.
+	Uuid *string `pulumi:"uuid"`
+	// URL of website associated with this repository.
+	Website *string `pulumi:"website"`
 }
 
 type RepositoryState struct {
-	CloneHttps                  pulumi.StringPtrInput
-	CloneSsh                    pulumi.StringPtrInput
-	Description                 pulumi.StringPtrInput
-	ForkPolicy                  pulumi.StringPtrInput
-	HasIssues                   pulumi.BoolPtrInput
-	HasWiki                     pulumi.BoolPtrInput
-	InheritBranchingModel       pulumi.BoolPtrInput
+	// The HTTPS clone URL.
+	CloneHttps pulumi.StringPtrInput
+	// The SSH clone URL.
+	CloneSsh pulumi.StringPtrInput
+	// What the description of the repo is.
+	Description pulumi.StringPtrInput
+	// What the fork policy should be. Defaults to
+	// `allowForks`. Valid values are `allowForks`, `noPublicForks`, `noForks`.
+	ForkPolicy pulumi.StringPtrInput
+	// If this should have issues turned on or not.
+	HasIssues pulumi.BoolPtrInput
+	// If this should have wiki turned on or not.
+	HasWiki pulumi.BoolPtrInput
+	// Whether to inherit branching model from project.
+	InheritBranchingModel pulumi.BoolPtrInput
+	// Whether to inherit default merge strategy from project.
 	InheritDefaultMergeStrategy pulumi.BoolPtrInput
-	IsPrivate                   pulumi.BoolPtrInput
-	Language                    pulumi.StringPtrInput
-	Link                        RepositoryLinkPtrInput
-	Name                        pulumi.StringPtrInput
-	Owner                       pulumi.StringPtrInput
-	PipelinesEnabled            pulumi.BoolPtrInput
-	ProjectKey                  pulumi.StringPtrInput
-	Scm                         pulumi.StringPtrInput
-	Slug                        pulumi.StringPtrInput
-	Uuid                        pulumi.StringPtrInput
-	Website                     pulumi.StringPtrInput
+	// If this should be private or not. Defaults to `true`.
+	IsPrivate pulumi.BoolPtrInput
+	// What the language of this repository should be.
+	Language pulumi.StringPtrInput
+	// A set of links to a resource related to this object. See Link Below.
+	Link RepositoryLinkPtrInput
+	// The name of the repository.
+	Name pulumi.StringPtrInput
+	// The owner of this repository. Can be you or any team you
+	// have write access to.
+	Owner pulumi.StringPtrInput
+	// Turn on to enable pipelines support.
+	PipelinesEnabled pulumi.BoolPtrInput
+	// If you want to have this repo associated with a
+	// project.
+	ProjectKey pulumi.StringPtrInput
+	// What SCM you want to use. Valid options are `hg` or `git`.
+	// Defaults to `git`.
+	Scm pulumi.StringPtrInput
+	// The slug of the repository.
+	Slug pulumi.StringPtrInput
+	// the uuid of the repository resource.
+	Uuid pulumi.StringPtrInput
+	// URL of website associated with this repository.
+	Website pulumi.StringPtrInput
 }
 
 func (RepositoryState) ElementType() reflect.Type {
@@ -118,42 +256,82 @@ func (RepositoryState) ElementType() reflect.Type {
 }
 
 type repositoryArgs struct {
-	Description                 *string         `pulumi:"description"`
-	ForkPolicy                  *string         `pulumi:"forkPolicy"`
-	HasIssues                   *bool           `pulumi:"hasIssues"`
-	HasWiki                     *bool           `pulumi:"hasWiki"`
-	InheritBranchingModel       *bool           `pulumi:"inheritBranchingModel"`
-	InheritDefaultMergeStrategy *bool           `pulumi:"inheritDefaultMergeStrategy"`
-	IsPrivate                   *bool           `pulumi:"isPrivate"`
-	Language                    *string         `pulumi:"language"`
-	Link                        *RepositoryLink `pulumi:"link"`
-	Name                        *string         `pulumi:"name"`
-	Owner                       string          `pulumi:"owner"`
-	PipelinesEnabled            *bool           `pulumi:"pipelinesEnabled"`
-	ProjectKey                  *string         `pulumi:"projectKey"`
-	Scm                         *string         `pulumi:"scm"`
-	Slug                        *string         `pulumi:"slug"`
-	Website                     *string         `pulumi:"website"`
+	// What the description of the repo is.
+	Description *string `pulumi:"description"`
+	// What the fork policy should be. Defaults to
+	// `allowForks`. Valid values are `allowForks`, `noPublicForks`, `noForks`.
+	ForkPolicy *string `pulumi:"forkPolicy"`
+	// If this should have issues turned on or not.
+	HasIssues *bool `pulumi:"hasIssues"`
+	// If this should have wiki turned on or not.
+	HasWiki *bool `pulumi:"hasWiki"`
+	// Whether to inherit branching model from project.
+	InheritBranchingModel *bool `pulumi:"inheritBranchingModel"`
+	// Whether to inherit default merge strategy from project.
+	InheritDefaultMergeStrategy *bool `pulumi:"inheritDefaultMergeStrategy"`
+	// If this should be private or not. Defaults to `true`.
+	IsPrivate *bool `pulumi:"isPrivate"`
+	// What the language of this repository should be.
+	Language *string `pulumi:"language"`
+	// A set of links to a resource related to this object. See Link Below.
+	Link *RepositoryLink `pulumi:"link"`
+	// The name of the repository.
+	Name *string `pulumi:"name"`
+	// The owner of this repository. Can be you or any team you
+	// have write access to.
+	Owner string `pulumi:"owner"`
+	// Turn on to enable pipelines support.
+	PipelinesEnabled *bool `pulumi:"pipelinesEnabled"`
+	// If you want to have this repo associated with a
+	// project.
+	ProjectKey *string `pulumi:"projectKey"`
+	// What SCM you want to use. Valid options are `hg` or `git`.
+	// Defaults to `git`.
+	Scm *string `pulumi:"scm"`
+	// The slug of the repository.
+	Slug *string `pulumi:"slug"`
+	// URL of website associated with this repository.
+	Website *string `pulumi:"website"`
 }
 
 // The set of arguments for constructing a Repository resource.
 type RepositoryArgs struct {
-	Description                 pulumi.StringPtrInput
-	ForkPolicy                  pulumi.StringPtrInput
-	HasIssues                   pulumi.BoolPtrInput
-	HasWiki                     pulumi.BoolPtrInput
-	InheritBranchingModel       pulumi.BoolPtrInput
+	// What the description of the repo is.
+	Description pulumi.StringPtrInput
+	// What the fork policy should be. Defaults to
+	// `allowForks`. Valid values are `allowForks`, `noPublicForks`, `noForks`.
+	ForkPolicy pulumi.StringPtrInput
+	// If this should have issues turned on or not.
+	HasIssues pulumi.BoolPtrInput
+	// If this should have wiki turned on or not.
+	HasWiki pulumi.BoolPtrInput
+	// Whether to inherit branching model from project.
+	InheritBranchingModel pulumi.BoolPtrInput
+	// Whether to inherit default merge strategy from project.
 	InheritDefaultMergeStrategy pulumi.BoolPtrInput
-	IsPrivate                   pulumi.BoolPtrInput
-	Language                    pulumi.StringPtrInput
-	Link                        RepositoryLinkPtrInput
-	Name                        pulumi.StringPtrInput
-	Owner                       pulumi.StringInput
-	PipelinesEnabled            pulumi.BoolPtrInput
-	ProjectKey                  pulumi.StringPtrInput
-	Scm                         pulumi.StringPtrInput
-	Slug                        pulumi.StringPtrInput
-	Website                     pulumi.StringPtrInput
+	// If this should be private or not. Defaults to `true`.
+	IsPrivate pulumi.BoolPtrInput
+	// What the language of this repository should be.
+	Language pulumi.StringPtrInput
+	// A set of links to a resource related to this object. See Link Below.
+	Link RepositoryLinkPtrInput
+	// The name of the repository.
+	Name pulumi.StringPtrInput
+	// The owner of this repository. Can be you or any team you
+	// have write access to.
+	Owner pulumi.StringInput
+	// Turn on to enable pipelines support.
+	PipelinesEnabled pulumi.BoolPtrInput
+	// If you want to have this repo associated with a
+	// project.
+	ProjectKey pulumi.StringPtrInput
+	// What SCM you want to use. Valid options are `hg` or `git`.
+	// Defaults to `git`.
+	Scm pulumi.StringPtrInput
+	// The slug of the repository.
+	Slug pulumi.StringPtrInput
+	// URL of website associated with this repository.
+	Website pulumi.StringPtrInput
 }
 
 func (RepositoryArgs) ElementType() reflect.Type {
@@ -177,12 +355,6 @@ func (i *Repository) ToRepositoryOutput() RepositoryOutput {
 
 func (i *Repository) ToRepositoryOutputWithContext(ctx context.Context) RepositoryOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(RepositoryOutput)
-}
-
-func (i *Repository) ToOutput(ctx context.Context) pulumix.Output[*Repository] {
-	return pulumix.Output[*Repository]{
-		OutputState: i.ToRepositoryOutputWithContext(ctx).OutputState,
-	}
 }
 
 // RepositoryArrayInput is an input type that accepts RepositoryArray and RepositoryArrayOutput values.
@@ -210,12 +382,6 @@ func (i RepositoryArray) ToRepositoryArrayOutputWithContext(ctx context.Context)
 	return pulumi.ToOutputWithContext(ctx, i).(RepositoryArrayOutput)
 }
 
-func (i RepositoryArray) ToOutput(ctx context.Context) pulumix.Output[[]*Repository] {
-	return pulumix.Output[[]*Repository]{
-		OutputState: i.ToRepositoryArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 // RepositoryMapInput is an input type that accepts RepositoryMap and RepositoryMapOutput values.
 // You can construct a concrete instance of `RepositoryMapInput` via:
 //
@@ -241,12 +407,6 @@ func (i RepositoryMap) ToRepositoryMapOutputWithContext(ctx context.Context) Rep
 	return pulumi.ToOutputWithContext(ctx, i).(RepositoryMapOutput)
 }
 
-func (i RepositoryMap) ToOutput(ctx context.Context) pulumix.Output[map[string]*Repository] {
-	return pulumix.Output[map[string]*Repository]{
-		OutputState: i.ToRepositoryMapOutputWithContext(ctx).OutputState,
-	}
-}
-
 type RepositoryOutput struct{ *pulumi.OutputState }
 
 func (RepositoryOutput) ElementType() reflect.Type {
@@ -261,84 +421,101 @@ func (o RepositoryOutput) ToRepositoryOutputWithContext(ctx context.Context) Rep
 	return o
 }
 
-func (o RepositoryOutput) ToOutput(ctx context.Context) pulumix.Output[*Repository] {
-	return pulumix.Output[*Repository]{
-		OutputState: o.OutputState,
-	}
-}
-
+// The HTTPS clone URL.
 func (o RepositoryOutput) CloneHttps() pulumi.StringOutput {
 	return o.ApplyT(func(v *Repository) pulumi.StringOutput { return v.CloneHttps }).(pulumi.StringOutput)
 }
 
+// The SSH clone URL.
 func (o RepositoryOutput) CloneSsh() pulumi.StringOutput {
 	return o.ApplyT(func(v *Repository) pulumi.StringOutput { return v.CloneSsh }).(pulumi.StringOutput)
 }
 
+// What the description of the repo is.
 func (o RepositoryOutput) Description() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Repository) pulumi.StringPtrOutput { return v.Description }).(pulumi.StringPtrOutput)
 }
 
+// What the fork policy should be. Defaults to
+// `allowForks`. Valid values are `allowForks`, `noPublicForks`, `noForks`.
 func (o RepositoryOutput) ForkPolicy() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Repository) pulumi.StringPtrOutput { return v.ForkPolicy }).(pulumi.StringPtrOutput)
 }
 
+// If this should have issues turned on or not.
 func (o RepositoryOutput) HasIssues() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *Repository) pulumi.BoolPtrOutput { return v.HasIssues }).(pulumi.BoolPtrOutput)
 }
 
+// If this should have wiki turned on or not.
 func (o RepositoryOutput) HasWiki() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *Repository) pulumi.BoolPtrOutput { return v.HasWiki }).(pulumi.BoolPtrOutput)
 }
 
+// Whether to inherit branching model from project.
 func (o RepositoryOutput) InheritBranchingModel() pulumi.BoolOutput {
 	return o.ApplyT(func(v *Repository) pulumi.BoolOutput { return v.InheritBranchingModel }).(pulumi.BoolOutput)
 }
 
+// Whether to inherit default merge strategy from project.
 func (o RepositoryOutput) InheritDefaultMergeStrategy() pulumi.BoolOutput {
 	return o.ApplyT(func(v *Repository) pulumi.BoolOutput { return v.InheritDefaultMergeStrategy }).(pulumi.BoolOutput)
 }
 
+// If this should be private or not. Defaults to `true`.
 func (o RepositoryOutput) IsPrivate() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *Repository) pulumi.BoolPtrOutput { return v.IsPrivate }).(pulumi.BoolPtrOutput)
 }
 
+// What the language of this repository should be.
 func (o RepositoryOutput) Language() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Repository) pulumi.StringPtrOutput { return v.Language }).(pulumi.StringPtrOutput)
 }
 
+// A set of links to a resource related to this object. See Link Below.
 func (o RepositoryOutput) Link() RepositoryLinkOutput {
 	return o.ApplyT(func(v *Repository) RepositoryLinkOutput { return v.Link }).(RepositoryLinkOutput)
 }
 
+// The name of the repository.
 func (o RepositoryOutput) Name() pulumi.StringOutput {
 	return o.ApplyT(func(v *Repository) pulumi.StringOutput { return v.Name }).(pulumi.StringOutput)
 }
 
+// The owner of this repository. Can be you or any team you
+// have write access to.
 func (o RepositoryOutput) Owner() pulumi.StringOutput {
 	return o.ApplyT(func(v *Repository) pulumi.StringOutput { return v.Owner }).(pulumi.StringOutput)
 }
 
+// Turn on to enable pipelines support.
 func (o RepositoryOutput) PipelinesEnabled() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *Repository) pulumi.BoolPtrOutput { return v.PipelinesEnabled }).(pulumi.BoolPtrOutput)
 }
 
+// If you want to have this repo associated with a
+// project.
 func (o RepositoryOutput) ProjectKey() pulumi.StringOutput {
 	return o.ApplyT(func(v *Repository) pulumi.StringOutput { return v.ProjectKey }).(pulumi.StringOutput)
 }
 
+// What SCM you want to use. Valid options are `hg` or `git`.
+// Defaults to `git`.
 func (o RepositoryOutput) Scm() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Repository) pulumi.StringPtrOutput { return v.Scm }).(pulumi.StringPtrOutput)
 }
 
+// The slug of the repository.
 func (o RepositoryOutput) Slug() pulumi.StringOutput {
 	return o.ApplyT(func(v *Repository) pulumi.StringOutput { return v.Slug }).(pulumi.StringOutput)
 }
 
+// the uuid of the repository resource.
 func (o RepositoryOutput) Uuid() pulumi.StringOutput {
 	return o.ApplyT(func(v *Repository) pulumi.StringOutput { return v.Uuid }).(pulumi.StringOutput)
 }
 
+// URL of website associated with this repository.
 func (o RepositoryOutput) Website() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Repository) pulumi.StringPtrOutput { return v.Website }).(pulumi.StringPtrOutput)
 }
@@ -355,12 +532,6 @@ func (o RepositoryArrayOutput) ToRepositoryArrayOutput() RepositoryArrayOutput {
 
 func (o RepositoryArrayOutput) ToRepositoryArrayOutputWithContext(ctx context.Context) RepositoryArrayOutput {
 	return o
-}
-
-func (o RepositoryArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]*Repository] {
-	return pulumix.Output[[]*Repository]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o RepositoryArrayOutput) Index(i pulumi.IntInput) RepositoryOutput {
@@ -381,12 +552,6 @@ func (o RepositoryMapOutput) ToRepositoryMapOutput() RepositoryMapOutput {
 
 func (o RepositoryMapOutput) ToRepositoryMapOutputWithContext(ctx context.Context) RepositoryMapOutput {
 	return o
-}
-
-func (o RepositoryMapOutput) ToOutput(ctx context.Context) pulumix.Output[map[string]*Repository] {
-	return pulumix.Output[map[string]*Repository]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o RepositoryMapOutput) MapIndex(k pulumi.StringInput) RepositoryOutput {

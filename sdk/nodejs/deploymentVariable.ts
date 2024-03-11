@@ -4,6 +4,41 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "./utilities";
 
+/**
+ * This resource allows you to configure deployment variables.
+ *
+ * OAuth2 Scopes: `none`
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as bitbucket from "@pulumi/bitbucket";
+ *
+ * const monorepo = new bitbucket.Repository("monorepo", {
+ *     owner: "gob",
+ *     pipelinesEnabled: true,
+ * });
+ * const test = new bitbucket.Deployment("test", {
+ *     repository: monorepo.id,
+ *     stage: "Test",
+ * });
+ * const country = new bitbucket.DeploymentVariable("country", {
+ *     deployment: test.id,
+ *     key: "COUNTRY",
+ *     value: "Kenya",
+ *     secured: false,
+ * });
+ * ```
+ *
+ * ## Import
+ *
+ * Deployment Variables can be imported using their `deployment-id/uuid` ID, e.g.
+ *
+ * ```sh
+ *  $ pulumi import bitbucket:index/deploymentVariable:DeploymentVariable example deployment-id/uuid
+ * ```
+ */
 export class DeploymentVariable extends pulumi.CustomResource {
     /**
      * Get an existing DeploymentVariable resource's state with the given name, ID, and optional extra
@@ -32,10 +67,25 @@ export class DeploymentVariable extends pulumi.CustomResource {
         return obj['__pulumiType'] === DeploymentVariable.__pulumiType;
     }
 
+    /**
+     * The deployment ID you want to assign this variable to.
+     */
     public readonly deployment!: pulumi.Output<string>;
+    /**
+     * The unique name of the variable.
+     */
     public readonly key!: pulumi.Output<string>;
+    /**
+     * If true, this variable will be treated as secured. The value will never be exposed in the logs or the REST API.
+     */
     public readonly secured!: pulumi.Output<boolean | undefined>;
+    /**
+     * (Computed) The UUID identifying the variable.
+     */
     public /*out*/ readonly uuid!: pulumi.Output<string>;
+    /**
+     * The value of the variable.
+     */
     public readonly value!: pulumi.Output<string>;
 
     /**
@@ -84,10 +134,25 @@ export class DeploymentVariable extends pulumi.CustomResource {
  * Input properties used for looking up and filtering DeploymentVariable resources.
  */
 export interface DeploymentVariableState {
+    /**
+     * The deployment ID you want to assign this variable to.
+     */
     deployment?: pulumi.Input<string>;
+    /**
+     * The unique name of the variable.
+     */
     key?: pulumi.Input<string>;
+    /**
+     * If true, this variable will be treated as secured. The value will never be exposed in the logs or the REST API.
+     */
     secured?: pulumi.Input<boolean>;
+    /**
+     * (Computed) The UUID identifying the variable.
+     */
     uuid?: pulumi.Input<string>;
+    /**
+     * The value of the variable.
+     */
     value?: pulumi.Input<string>;
 }
 
@@ -95,8 +160,20 @@ export interface DeploymentVariableState {
  * The set of arguments for constructing a DeploymentVariable resource.
  */
 export interface DeploymentVariableArgs {
+    /**
+     * The deployment ID you want to assign this variable to.
+     */
     deployment: pulumi.Input<string>;
+    /**
+     * The unique name of the variable.
+     */
     key: pulumi.Input<string>;
+    /**
+     * If true, this variable will be treated as secured. The value will never be exposed in the logs or the REST API.
+     */
     secured?: pulumi.Input<boolean>;
+    /**
+     * The value of the variable.
+     */
     value: pulumi.Input<string>;
 }

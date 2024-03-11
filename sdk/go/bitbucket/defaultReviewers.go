@@ -9,16 +9,68 @@ import (
 
 	"errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket/internal"
 )
 
+// Provides support for setting up default reviewers for your repository. You must however have the UUID of the user available. Since Bitbucket has removed usernames from its APIs the best case is to use the UUID via the data provider.
+//
+// OAuth2 Scopes: `pullrequest` and `repository:admin`
+//
+// ## Example Usage
+//
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			reviewer, err := bitbucket.GetUser(ctx, &bitbucket.GetUserArgs{
+//				Uuid: pulumi.StringRef("{account UUID}"),
+//			}, nil)
+//			if err != nil {
+//				return err
+//			}
+//			_, err = bitbucket.NewDefaultReviewers(ctx, "infrastructure", &bitbucket.DefaultReviewersArgs{
+//				Owner:      pulumi.String("myteam"),
+//				Repository: pulumi.String("terraform-code"),
+//				Reviewers: pulumi.StringArray{
+//					*pulumi.String(reviewer.Uuid),
+//				},
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
+//
+// ## Import
+//
+// Default Reviewers can be imported using the owner and repo separated by a (`/`) and the string `reviewers` and the end, e.g.,
+//
+// ```sh
+//
+//	$ pulumi import bitbucket:index/defaultReviewers:DefaultReviewers example myteam/terraform-code/reviewers
+//
+// ```
 type DefaultReviewers struct {
 	pulumi.CustomResourceState
 
-	Owner      pulumi.StringOutput      `pulumi:"owner"`
-	Repository pulumi.StringOutput      `pulumi:"repository"`
-	Reviewers  pulumi.StringArrayOutput `pulumi:"reviewers"`
+	// The owner of this repository. Can be you or any team you
+	// have write access to.
+	Owner pulumi.StringOutput `pulumi:"owner"`
+	// The name of the repository.
+	Repository pulumi.StringOutput `pulumi:"repository"`
+	// A list of reviewers to use.
+	Reviewers pulumi.StringArrayOutput `pulumi:"reviewers"`
 }
 
 // NewDefaultReviewers registers a new resource with the given unique name, arguments, and options.
@@ -60,15 +112,23 @@ func GetDefaultReviewers(ctx *pulumi.Context,
 
 // Input properties used for looking up and filtering DefaultReviewers resources.
 type defaultReviewersState struct {
-	Owner      *string  `pulumi:"owner"`
-	Repository *string  `pulumi:"repository"`
-	Reviewers  []string `pulumi:"reviewers"`
+	// The owner of this repository. Can be you or any team you
+	// have write access to.
+	Owner *string `pulumi:"owner"`
+	// The name of the repository.
+	Repository *string `pulumi:"repository"`
+	// A list of reviewers to use.
+	Reviewers []string `pulumi:"reviewers"`
 }
 
 type DefaultReviewersState struct {
-	Owner      pulumi.StringPtrInput
+	// The owner of this repository. Can be you or any team you
+	// have write access to.
+	Owner pulumi.StringPtrInput
+	// The name of the repository.
 	Repository pulumi.StringPtrInput
-	Reviewers  pulumi.StringArrayInput
+	// A list of reviewers to use.
+	Reviewers pulumi.StringArrayInput
 }
 
 func (DefaultReviewersState) ElementType() reflect.Type {
@@ -76,16 +136,24 @@ func (DefaultReviewersState) ElementType() reflect.Type {
 }
 
 type defaultReviewersArgs struct {
-	Owner      string   `pulumi:"owner"`
-	Repository string   `pulumi:"repository"`
-	Reviewers  []string `pulumi:"reviewers"`
+	// The owner of this repository. Can be you or any team you
+	// have write access to.
+	Owner string `pulumi:"owner"`
+	// The name of the repository.
+	Repository string `pulumi:"repository"`
+	// A list of reviewers to use.
+	Reviewers []string `pulumi:"reviewers"`
 }
 
 // The set of arguments for constructing a DefaultReviewers resource.
 type DefaultReviewersArgs struct {
-	Owner      pulumi.StringInput
+	// The owner of this repository. Can be you or any team you
+	// have write access to.
+	Owner pulumi.StringInput
+	// The name of the repository.
 	Repository pulumi.StringInput
-	Reviewers  pulumi.StringArrayInput
+	// A list of reviewers to use.
+	Reviewers pulumi.StringArrayInput
 }
 
 func (DefaultReviewersArgs) ElementType() reflect.Type {
@@ -109,12 +177,6 @@ func (i *DefaultReviewers) ToDefaultReviewersOutput() DefaultReviewersOutput {
 
 func (i *DefaultReviewers) ToDefaultReviewersOutputWithContext(ctx context.Context) DefaultReviewersOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(DefaultReviewersOutput)
-}
-
-func (i *DefaultReviewers) ToOutput(ctx context.Context) pulumix.Output[*DefaultReviewers] {
-	return pulumix.Output[*DefaultReviewers]{
-		OutputState: i.ToDefaultReviewersOutputWithContext(ctx).OutputState,
-	}
 }
 
 // DefaultReviewersArrayInput is an input type that accepts DefaultReviewersArray and DefaultReviewersArrayOutput values.
@@ -142,12 +204,6 @@ func (i DefaultReviewersArray) ToDefaultReviewersArrayOutputWithContext(ctx cont
 	return pulumi.ToOutputWithContext(ctx, i).(DefaultReviewersArrayOutput)
 }
 
-func (i DefaultReviewersArray) ToOutput(ctx context.Context) pulumix.Output[[]*DefaultReviewers] {
-	return pulumix.Output[[]*DefaultReviewers]{
-		OutputState: i.ToDefaultReviewersArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 // DefaultReviewersMapInput is an input type that accepts DefaultReviewersMap and DefaultReviewersMapOutput values.
 // You can construct a concrete instance of `DefaultReviewersMapInput` via:
 //
@@ -173,12 +229,6 @@ func (i DefaultReviewersMap) ToDefaultReviewersMapOutputWithContext(ctx context.
 	return pulumi.ToOutputWithContext(ctx, i).(DefaultReviewersMapOutput)
 }
 
-func (i DefaultReviewersMap) ToOutput(ctx context.Context) pulumix.Output[map[string]*DefaultReviewers] {
-	return pulumix.Output[map[string]*DefaultReviewers]{
-		OutputState: i.ToDefaultReviewersMapOutputWithContext(ctx).OutputState,
-	}
-}
-
 type DefaultReviewersOutput struct{ *pulumi.OutputState }
 
 func (DefaultReviewersOutput) ElementType() reflect.Type {
@@ -193,20 +243,18 @@ func (o DefaultReviewersOutput) ToDefaultReviewersOutputWithContext(ctx context.
 	return o
 }
 
-func (o DefaultReviewersOutput) ToOutput(ctx context.Context) pulumix.Output[*DefaultReviewers] {
-	return pulumix.Output[*DefaultReviewers]{
-		OutputState: o.OutputState,
-	}
-}
-
+// The owner of this repository. Can be you or any team you
+// have write access to.
 func (o DefaultReviewersOutput) Owner() pulumi.StringOutput {
 	return o.ApplyT(func(v *DefaultReviewers) pulumi.StringOutput { return v.Owner }).(pulumi.StringOutput)
 }
 
+// The name of the repository.
 func (o DefaultReviewersOutput) Repository() pulumi.StringOutput {
 	return o.ApplyT(func(v *DefaultReviewers) pulumi.StringOutput { return v.Repository }).(pulumi.StringOutput)
 }
 
+// A list of reviewers to use.
 func (o DefaultReviewersOutput) Reviewers() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v *DefaultReviewers) pulumi.StringArrayOutput { return v.Reviewers }).(pulumi.StringArrayOutput)
 }
@@ -223,12 +271,6 @@ func (o DefaultReviewersArrayOutput) ToDefaultReviewersArrayOutput() DefaultRevi
 
 func (o DefaultReviewersArrayOutput) ToDefaultReviewersArrayOutputWithContext(ctx context.Context) DefaultReviewersArrayOutput {
 	return o
-}
-
-func (o DefaultReviewersArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]*DefaultReviewers] {
-	return pulumix.Output[[]*DefaultReviewers]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o DefaultReviewersArrayOutput) Index(i pulumi.IntInput) DefaultReviewersOutput {
@@ -249,12 +291,6 @@ func (o DefaultReviewersMapOutput) ToDefaultReviewersMapOutput() DefaultReviewer
 
 func (o DefaultReviewersMapOutput) ToDefaultReviewersMapOutputWithContext(ctx context.Context) DefaultReviewersMapOutput {
 	return o
-}
-
-func (o DefaultReviewersMapOutput) ToOutput(ctx context.Context) pulumix.Output[map[string]*DefaultReviewers] {
-	return pulumix.Output[map[string]*DefaultReviewers]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o DefaultReviewersMapOutput) MapIndex(k pulumi.StringInput) DefaultReviewersOutput {

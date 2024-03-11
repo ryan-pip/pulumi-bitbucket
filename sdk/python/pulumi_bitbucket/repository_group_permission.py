@@ -20,6 +20,10 @@ class RepositoryGroupPermissionArgs:
                  workspace: pulumi.Input[str]):
         """
         The set of arguments for constructing a RepositoryGroupPermission resource.
+        :param pulumi.Input[str] group_slug: Slug of the requested group.
+        :param pulumi.Input[str] permission: Permissions can be one of `read`, `write`, and `admin`.
+        :param pulumi.Input[str] repo_slug: The repository slug.
+        :param pulumi.Input[str] workspace: The workspace id.
         """
         pulumi.set(__self__, "group_slug", group_slug)
         pulumi.set(__self__, "permission", permission)
@@ -29,6 +33,9 @@ class RepositoryGroupPermissionArgs:
     @property
     @pulumi.getter(name="groupSlug")
     def group_slug(self) -> pulumi.Input[str]:
+        """
+        Slug of the requested group.
+        """
         return pulumi.get(self, "group_slug")
 
     @group_slug.setter
@@ -38,6 +45,9 @@ class RepositoryGroupPermissionArgs:
     @property
     @pulumi.getter
     def permission(self) -> pulumi.Input[str]:
+        """
+        Permissions can be one of `read`, `write`, and `admin`.
+        """
         return pulumi.get(self, "permission")
 
     @permission.setter
@@ -47,6 +57,9 @@ class RepositoryGroupPermissionArgs:
     @property
     @pulumi.getter(name="repoSlug")
     def repo_slug(self) -> pulumi.Input[str]:
+        """
+        The repository slug.
+        """
         return pulumi.get(self, "repo_slug")
 
     @repo_slug.setter
@@ -56,6 +69,9 @@ class RepositoryGroupPermissionArgs:
     @property
     @pulumi.getter
     def workspace(self) -> pulumi.Input[str]:
+        """
+        The workspace id.
+        """
         return pulumi.get(self, "workspace")
 
     @workspace.setter
@@ -72,6 +88,10 @@ class _RepositoryGroupPermissionState:
                  workspace: Optional[pulumi.Input[str]] = None):
         """
         Input properties used for looking up and filtering RepositoryGroupPermission resources.
+        :param pulumi.Input[str] group_slug: Slug of the requested group.
+        :param pulumi.Input[str] permission: Permissions can be one of `read`, `write`, and `admin`.
+        :param pulumi.Input[str] repo_slug: The repository slug.
+        :param pulumi.Input[str] workspace: The workspace id.
         """
         if group_slug is not None:
             pulumi.set(__self__, "group_slug", group_slug)
@@ -85,6 +105,9 @@ class _RepositoryGroupPermissionState:
     @property
     @pulumi.getter(name="groupSlug")
     def group_slug(self) -> Optional[pulumi.Input[str]]:
+        """
+        Slug of the requested group.
+        """
         return pulumi.get(self, "group_slug")
 
     @group_slug.setter
@@ -94,6 +117,9 @@ class _RepositoryGroupPermissionState:
     @property
     @pulumi.getter
     def permission(self) -> Optional[pulumi.Input[str]]:
+        """
+        Permissions can be one of `read`, `write`, and `admin`.
+        """
         return pulumi.get(self, "permission")
 
     @permission.setter
@@ -103,6 +129,9 @@ class _RepositoryGroupPermissionState:
     @property
     @pulumi.getter(name="repoSlug")
     def repo_slug(self) -> Optional[pulumi.Input[str]]:
+        """
+        The repository slug.
+        """
         return pulumi.get(self, "repo_slug")
 
     @repo_slug.setter
@@ -112,6 +141,9 @@ class _RepositoryGroupPermissionState:
     @property
     @pulumi.getter
     def workspace(self) -> Optional[pulumi.Input[str]]:
+        """
+        The workspace id.
+        """
         return pulumi.get(self, "workspace")
 
     @workspace.setter
@@ -130,9 +162,41 @@ class RepositoryGroupPermission(pulumi.CustomResource):
                  workspace: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         """
-        Create a RepositoryGroupPermission resource with the given unique name, props, and options.
+        Provides a Bitbucket Repository Group Permission Resource.
+
+        This allows you set explicit group permission for a repository.
+
+        OAuth2 Scopes: `repository:admin`
+
+        Note: can only be used when authenticating with Bitbucket Cloud using an _app password_. Authenticating via an OAuth flow gives a 403 error due to a [restriction in the Bitbucket Cloud API](https://developer.atlassian.com/cloud/bitbucket/rest/api-group-repositories/#api-repositories-workspace-repo-slug-permissions-config-groups-group-slug-put).
+
+        ## Example Usage
+
+        ```python
+        import pulumi
+        import pulumi_bitbucket as bitbucket
+
+        example = bitbucket.RepositoryGroupPermission("example",
+            workspace="example",
+            repo_slug=bitbucket_repository["example"]["name"],
+            group_slug=bitbucket_group["example"]["slug"],
+            permission="read")
+        ```
+
+        ## Import
+
+        Repository Group Permissions can be imported using their `workspace:repo-slug:group-slug` ID, e.g.
+
+        ```sh
+         $ pulumi import bitbucket:index/repositoryGroupPermission:RepositoryGroupPermission example workspace:repo-slug:group-slug
+        ```
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[str] group_slug: Slug of the requested group.
+        :param pulumi.Input[str] permission: Permissions can be one of `read`, `write`, and `admin`.
+        :param pulumi.Input[str] repo_slug: The repository slug.
+        :param pulumi.Input[str] workspace: The workspace id.
         """
         ...
     @overload
@@ -141,7 +205,35 @@ class RepositoryGroupPermission(pulumi.CustomResource):
                  args: RepositoryGroupPermissionArgs,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
-        Create a RepositoryGroupPermission resource with the given unique name, props, and options.
+        Provides a Bitbucket Repository Group Permission Resource.
+
+        This allows you set explicit group permission for a repository.
+
+        OAuth2 Scopes: `repository:admin`
+
+        Note: can only be used when authenticating with Bitbucket Cloud using an _app password_. Authenticating via an OAuth flow gives a 403 error due to a [restriction in the Bitbucket Cloud API](https://developer.atlassian.com/cloud/bitbucket/rest/api-group-repositories/#api-repositories-workspace-repo-slug-permissions-config-groups-group-slug-put).
+
+        ## Example Usage
+
+        ```python
+        import pulumi
+        import pulumi_bitbucket as bitbucket
+
+        example = bitbucket.RepositoryGroupPermission("example",
+            workspace="example",
+            repo_slug=bitbucket_repository["example"]["name"],
+            group_slug=bitbucket_group["example"]["slug"],
+            permission="read")
+        ```
+
+        ## Import
+
+        Repository Group Permissions can be imported using their `workspace:repo-slug:group-slug` ID, e.g.
+
+        ```sh
+         $ pulumi import bitbucket:index/repositoryGroupPermission:RepositoryGroupPermission example workspace:repo-slug:group-slug
+        ```
+
         :param str resource_name: The name of the resource.
         :param RepositoryGroupPermissionArgs args: The arguments to use to populate this resource's properties.
         :param pulumi.ResourceOptions opts: Options for the resource.
@@ -203,6 +295,10 @@ class RepositoryGroupPermission(pulumi.CustomResource):
         :param str resource_name: The unique name of the resulting resource.
         :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[str] group_slug: Slug of the requested group.
+        :param pulumi.Input[str] permission: Permissions can be one of `read`, `write`, and `admin`.
+        :param pulumi.Input[str] repo_slug: The repository slug.
+        :param pulumi.Input[str] workspace: The workspace id.
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
 
@@ -217,20 +313,32 @@ class RepositoryGroupPermission(pulumi.CustomResource):
     @property
     @pulumi.getter(name="groupSlug")
     def group_slug(self) -> pulumi.Output[str]:
+        """
+        Slug of the requested group.
+        """
         return pulumi.get(self, "group_slug")
 
     @property
     @pulumi.getter
     def permission(self) -> pulumi.Output[str]:
+        """
+        Permissions can be one of `read`, `write`, and `admin`.
+        """
         return pulumi.get(self, "permission")
 
     @property
     @pulumi.getter(name="repoSlug")
     def repo_slug(self) -> pulumi.Output[str]:
+        """
+        The repository slug.
+        """
         return pulumi.get(self, "repo_slug")
 
     @property
     @pulumi.getter
     def workspace(self) -> pulumi.Output[str]:
+        """
+        The workspace id.
+        """
         return pulumi.get(self, "workspace")
 

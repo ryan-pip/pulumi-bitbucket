@@ -4,6 +4,35 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "./utilities";
 
+/**
+ * Provides support for setting up default reviewers for your project. You must however have the UUID of the user available. Since Bitbucket has removed usernames from its APIs the best case is to use the UUID via the data provider.
+ *
+ * OAuth2 Scopes: `project:admin`
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as bitbucket from "@pulumi/bitbucket";
+ *
+ * const reviewer = bitbucket.getUser({
+ *     uuid: "{account UUID}",
+ * });
+ * const infrastructure = new bitbucket.ProjectDefaultReviewers("infrastructure", {
+ *     workspace: "myteam",
+ *     project: "TERRAFORM",
+ *     reviewers: [reviewer.then(reviewer => reviewer.uuid)],
+ * });
+ * ```
+ *
+ * ## Import
+ *
+ * Project Default Reviewers can be imported using the workspace and project separated by a (`/`) and the end, e.g.,
+ *
+ * ```sh
+ *  $ pulumi import bitbucket:index/projectDefaultReviewers:ProjectDefaultReviewers example myteam/terraform-code
+ * ```
+ */
 export class ProjectDefaultReviewers extends pulumi.CustomResource {
     /**
      * Get an existing ProjectDefaultReviewers resource's state with the given name, ID, and optional extra
@@ -32,8 +61,18 @@ export class ProjectDefaultReviewers extends pulumi.CustomResource {
         return obj['__pulumiType'] === ProjectDefaultReviewers.__pulumiType;
     }
 
+    /**
+     * The key of the project.
+     */
     public readonly project!: pulumi.Output<string>;
+    /**
+     * A list of reviewers to use.
+     */
     public readonly reviewers!: pulumi.Output<string[]>;
+    /**
+     * The workspace of this project. Can be you or any team you
+     * have write access to.
+     */
     public readonly workspace!: pulumi.Output<string>;
 
     /**
@@ -76,8 +115,18 @@ export class ProjectDefaultReviewers extends pulumi.CustomResource {
  * Input properties used for looking up and filtering ProjectDefaultReviewers resources.
  */
 export interface ProjectDefaultReviewersState {
+    /**
+     * The key of the project.
+     */
     project?: pulumi.Input<string>;
+    /**
+     * A list of reviewers to use.
+     */
     reviewers?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * The workspace of this project. Can be you or any team you
+     * have write access to.
+     */
     workspace?: pulumi.Input<string>;
 }
 
@@ -85,7 +134,17 @@ export interface ProjectDefaultReviewersState {
  * The set of arguments for constructing a ProjectDefaultReviewers resource.
  */
 export interface ProjectDefaultReviewersArgs {
+    /**
+     * The key of the project.
+     */
     project: pulumi.Input<string>;
+    /**
+     * A list of reviewers to use.
+     */
     reviewers: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * The workspace of this project. Can be you or any team you
+     * have write access to.
+     */
     workspace: pulumi.Input<string>;
 }

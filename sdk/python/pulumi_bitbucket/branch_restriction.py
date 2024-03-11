@@ -27,6 +27,16 @@ class BranchRestrictionArgs:
                  value: Optional[pulumi.Input[int]] = None):
         """
         The set of arguments for constructing a BranchRestriction resource.
+        :param pulumi.Input[str] kind: The type of restriction that is being applied. Valid values can be found in [docs](https://developer.atlassian.com/cloud/bitbucket/rest/api-group-branch-restrictions/#api-group-branch-restrictions).
+        :param pulumi.Input[str] owner: The owner of this repository. Can be you or any team you
+               have write access to.
+        :param pulumi.Input[str] repository: The name of the repository.
+        :param pulumi.Input[str] branch_match_kind: Indicates how the restriction is matched against a branch. The default is `glob`. Valid values: `branching_model`, `glob`.
+        :param pulumi.Input[str] branch_type: Apply the restriction to branches of this type. Active when `branch_match_kind` is `branching_model`. The branch type will be calculated using the branching model configured for the repository. Valid values: `feature`, `bugfix`, `release`, `hotfix`, `development`, `production`.
+        :param pulumi.Input[Sequence[pulumi.Input['BranchRestrictionGroupArgs']]] groups: A list of groups to use.
+        :param pulumi.Input[str] pattern: Apply the restriction to branches that match this pattern. Active when `branch_match_kind` is `glob`. Will be empty when `branch_match_kind` is `branching_model`.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] users: A list of users to use.
+        :param pulumi.Input[int] value: A value applied to the restriction kind. Currently only applicable to `require_passing_builds_to_merge`, `require_default_reviewer_approvals_to_merge` and `require_approvals_to_merge`.
         """
         pulumi.set(__self__, "kind", kind)
         pulumi.set(__self__, "owner", owner)
@@ -47,6 +57,9 @@ class BranchRestrictionArgs:
     @property
     @pulumi.getter
     def kind(self) -> pulumi.Input[str]:
+        """
+        The type of restriction that is being applied. Valid values can be found in [docs](https://developer.atlassian.com/cloud/bitbucket/rest/api-group-branch-restrictions/#api-group-branch-restrictions).
+        """
         return pulumi.get(self, "kind")
 
     @kind.setter
@@ -56,6 +69,10 @@ class BranchRestrictionArgs:
     @property
     @pulumi.getter
     def owner(self) -> pulumi.Input[str]:
+        """
+        The owner of this repository. Can be you or any team you
+        have write access to.
+        """
         return pulumi.get(self, "owner")
 
     @owner.setter
@@ -65,6 +82,9 @@ class BranchRestrictionArgs:
     @property
     @pulumi.getter
     def repository(self) -> pulumi.Input[str]:
+        """
+        The name of the repository.
+        """
         return pulumi.get(self, "repository")
 
     @repository.setter
@@ -74,6 +94,9 @@ class BranchRestrictionArgs:
     @property
     @pulumi.getter(name="branchMatchKind")
     def branch_match_kind(self) -> Optional[pulumi.Input[str]]:
+        """
+        Indicates how the restriction is matched against a branch. The default is `glob`. Valid values: `branching_model`, `glob`.
+        """
         return pulumi.get(self, "branch_match_kind")
 
     @branch_match_kind.setter
@@ -83,6 +106,9 @@ class BranchRestrictionArgs:
     @property
     @pulumi.getter(name="branchType")
     def branch_type(self) -> Optional[pulumi.Input[str]]:
+        """
+        Apply the restriction to branches of this type. Active when `branch_match_kind` is `branching_model`. The branch type will be calculated using the branching model configured for the repository. Valid values: `feature`, `bugfix`, `release`, `hotfix`, `development`, `production`.
+        """
         return pulumi.get(self, "branch_type")
 
     @branch_type.setter
@@ -92,6 +118,9 @@ class BranchRestrictionArgs:
     @property
     @pulumi.getter
     def groups(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['BranchRestrictionGroupArgs']]]]:
+        """
+        A list of groups to use.
+        """
         return pulumi.get(self, "groups")
 
     @groups.setter
@@ -101,6 +130,9 @@ class BranchRestrictionArgs:
     @property
     @pulumi.getter
     def pattern(self) -> Optional[pulumi.Input[str]]:
+        """
+        Apply the restriction to branches that match this pattern. Active when `branch_match_kind` is `glob`. Will be empty when `branch_match_kind` is `branching_model`.
+        """
         return pulumi.get(self, "pattern")
 
     @pattern.setter
@@ -110,6 +142,9 @@ class BranchRestrictionArgs:
     @property
     @pulumi.getter
     def users(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+        """
+        A list of users to use.
+        """
         return pulumi.get(self, "users")
 
     @users.setter
@@ -119,6 +154,9 @@ class BranchRestrictionArgs:
     @property
     @pulumi.getter
     def value(self) -> Optional[pulumi.Input[int]]:
+        """
+        A value applied to the restriction kind. Currently only applicable to `require_passing_builds_to_merge`, `require_default_reviewer_approvals_to_merge` and `require_approvals_to_merge`.
+        """
         return pulumi.get(self, "value")
 
     @value.setter
@@ -140,6 +178,16 @@ class _BranchRestrictionState:
                  value: Optional[pulumi.Input[int]] = None):
         """
         Input properties used for looking up and filtering BranchRestriction resources.
+        :param pulumi.Input[str] branch_match_kind: Indicates how the restriction is matched against a branch. The default is `glob`. Valid values: `branching_model`, `glob`.
+        :param pulumi.Input[str] branch_type: Apply the restriction to branches of this type. Active when `branch_match_kind` is `branching_model`. The branch type will be calculated using the branching model configured for the repository. Valid values: `feature`, `bugfix`, `release`, `hotfix`, `development`, `production`.
+        :param pulumi.Input[Sequence[pulumi.Input['BranchRestrictionGroupArgs']]] groups: A list of groups to use.
+        :param pulumi.Input[str] kind: The type of restriction that is being applied. Valid values can be found in [docs](https://developer.atlassian.com/cloud/bitbucket/rest/api-group-branch-restrictions/#api-group-branch-restrictions).
+        :param pulumi.Input[str] owner: The owner of this repository. Can be you or any team you
+               have write access to.
+        :param pulumi.Input[str] pattern: Apply the restriction to branches that match this pattern. Active when `branch_match_kind` is `glob`. Will be empty when `branch_match_kind` is `branching_model`.
+        :param pulumi.Input[str] repository: The name of the repository.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] users: A list of users to use.
+        :param pulumi.Input[int] value: A value applied to the restriction kind. Currently only applicable to `require_passing_builds_to_merge`, `require_default_reviewer_approvals_to_merge` and `require_approvals_to_merge`.
         """
         if branch_match_kind is not None:
             pulumi.set(__self__, "branch_match_kind", branch_match_kind)
@@ -163,6 +211,9 @@ class _BranchRestrictionState:
     @property
     @pulumi.getter(name="branchMatchKind")
     def branch_match_kind(self) -> Optional[pulumi.Input[str]]:
+        """
+        Indicates how the restriction is matched against a branch. The default is `glob`. Valid values: `branching_model`, `glob`.
+        """
         return pulumi.get(self, "branch_match_kind")
 
     @branch_match_kind.setter
@@ -172,6 +223,9 @@ class _BranchRestrictionState:
     @property
     @pulumi.getter(name="branchType")
     def branch_type(self) -> Optional[pulumi.Input[str]]:
+        """
+        Apply the restriction to branches of this type. Active when `branch_match_kind` is `branching_model`. The branch type will be calculated using the branching model configured for the repository. Valid values: `feature`, `bugfix`, `release`, `hotfix`, `development`, `production`.
+        """
         return pulumi.get(self, "branch_type")
 
     @branch_type.setter
@@ -181,6 +235,9 @@ class _BranchRestrictionState:
     @property
     @pulumi.getter
     def groups(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['BranchRestrictionGroupArgs']]]]:
+        """
+        A list of groups to use.
+        """
         return pulumi.get(self, "groups")
 
     @groups.setter
@@ -190,6 +247,9 @@ class _BranchRestrictionState:
     @property
     @pulumi.getter
     def kind(self) -> Optional[pulumi.Input[str]]:
+        """
+        The type of restriction that is being applied. Valid values can be found in [docs](https://developer.atlassian.com/cloud/bitbucket/rest/api-group-branch-restrictions/#api-group-branch-restrictions).
+        """
         return pulumi.get(self, "kind")
 
     @kind.setter
@@ -199,6 +259,10 @@ class _BranchRestrictionState:
     @property
     @pulumi.getter
     def owner(self) -> Optional[pulumi.Input[str]]:
+        """
+        The owner of this repository. Can be you or any team you
+        have write access to.
+        """
         return pulumi.get(self, "owner")
 
     @owner.setter
@@ -208,6 +272,9 @@ class _BranchRestrictionState:
     @property
     @pulumi.getter
     def pattern(self) -> Optional[pulumi.Input[str]]:
+        """
+        Apply the restriction to branches that match this pattern. Active when `branch_match_kind` is `glob`. Will be empty when `branch_match_kind` is `branching_model`.
+        """
         return pulumi.get(self, "pattern")
 
     @pattern.setter
@@ -217,6 +284,9 @@ class _BranchRestrictionState:
     @property
     @pulumi.getter
     def repository(self) -> Optional[pulumi.Input[str]]:
+        """
+        The name of the repository.
+        """
         return pulumi.get(self, "repository")
 
     @repository.setter
@@ -226,6 +296,9 @@ class _BranchRestrictionState:
     @property
     @pulumi.getter
     def users(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+        """
+        A list of users to use.
+        """
         return pulumi.get(self, "users")
 
     @users.setter
@@ -235,6 +308,9 @@ class _BranchRestrictionState:
     @property
     @pulumi.getter
     def value(self) -> Optional[pulumi.Input[int]]:
+        """
+        A value applied to the restriction kind. Currently only applicable to `require_passing_builds_to_merge`, `require_default_reviewer_approvals_to_merge` and `require_approvals_to_merge`.
+        """
         return pulumi.get(self, "value")
 
     @value.setter
@@ -258,9 +334,49 @@ class BranchRestriction(pulumi.CustomResource):
                  value: Optional[pulumi.Input[int]] = None,
                  __props__=None):
         """
-        Create a BranchRestriction resource with the given unique name, props, and options.
+        Provides a Bitbucket branch restriction resource.
+
+        This allows you for setting up branch restrictions for your repository.
+
+        OAuth2 Scopes: `repository:admin`
+
+        ## Example Usage
+
+        ```python
+        import pulumi
+        import pulumi_bitbucket as bitbucket
+
+        master = bitbucket.BranchRestriction("master",
+            groups=[bitbucket.BranchRestrictionGroupArgs(
+                owner="my-owner",
+                slug="my-group",
+            )],
+            kind="push",
+            owner="myteam",
+            pattern="master",
+            repository="terraform-code")
+        ```
+
+        ## Import
+
+        Branch Restrictions can be imported using their `owner/repo-name/branch-restriction-id` ID, e.g.
+
+        ```sh
+         $ pulumi import bitbucket:index/branchRestriction:BranchRestriction example my-account/my-repo/branch-rest-id
+        ```
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[str] branch_match_kind: Indicates how the restriction is matched against a branch. The default is `glob`. Valid values: `branching_model`, `glob`.
+        :param pulumi.Input[str] branch_type: Apply the restriction to branches of this type. Active when `branch_match_kind` is `branching_model`. The branch type will be calculated using the branching model configured for the repository. Valid values: `feature`, `bugfix`, `release`, `hotfix`, `development`, `production`.
+        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['BranchRestrictionGroupArgs']]]] groups: A list of groups to use.
+        :param pulumi.Input[str] kind: The type of restriction that is being applied. Valid values can be found in [docs](https://developer.atlassian.com/cloud/bitbucket/rest/api-group-branch-restrictions/#api-group-branch-restrictions).
+        :param pulumi.Input[str] owner: The owner of this repository. Can be you or any team you
+               have write access to.
+        :param pulumi.Input[str] pattern: Apply the restriction to branches that match this pattern. Active when `branch_match_kind` is `glob`. Will be empty when `branch_match_kind` is `branching_model`.
+        :param pulumi.Input[str] repository: The name of the repository.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] users: A list of users to use.
+        :param pulumi.Input[int] value: A value applied to the restriction kind. Currently only applicable to `require_passing_builds_to_merge`, `require_default_reviewer_approvals_to_merge` and `require_approvals_to_merge`.
         """
         ...
     @overload
@@ -269,7 +385,37 @@ class BranchRestriction(pulumi.CustomResource):
                  args: BranchRestrictionArgs,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
-        Create a BranchRestriction resource with the given unique name, props, and options.
+        Provides a Bitbucket branch restriction resource.
+
+        This allows you for setting up branch restrictions for your repository.
+
+        OAuth2 Scopes: `repository:admin`
+
+        ## Example Usage
+
+        ```python
+        import pulumi
+        import pulumi_bitbucket as bitbucket
+
+        master = bitbucket.BranchRestriction("master",
+            groups=[bitbucket.BranchRestrictionGroupArgs(
+                owner="my-owner",
+                slug="my-group",
+            )],
+            kind="push",
+            owner="myteam",
+            pattern="master",
+            repository="terraform-code")
+        ```
+
+        ## Import
+
+        Branch Restrictions can be imported using their `owner/repo-name/branch-restriction-id` ID, e.g.
+
+        ```sh
+         $ pulumi import bitbucket:index/branchRestriction:BranchRestriction example my-account/my-repo/branch-rest-id
+        ```
+
         :param str resource_name: The name of the resource.
         :param BranchRestrictionArgs args: The arguments to use to populate this resource's properties.
         :param pulumi.ResourceOptions opts: Options for the resource.
@@ -344,6 +490,16 @@ class BranchRestriction(pulumi.CustomResource):
         :param str resource_name: The unique name of the resulting resource.
         :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[str] branch_match_kind: Indicates how the restriction is matched against a branch. The default is `glob`. Valid values: `branching_model`, `glob`.
+        :param pulumi.Input[str] branch_type: Apply the restriction to branches of this type. Active when `branch_match_kind` is `branching_model`. The branch type will be calculated using the branching model configured for the repository. Valid values: `feature`, `bugfix`, `release`, `hotfix`, `development`, `production`.
+        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['BranchRestrictionGroupArgs']]]] groups: A list of groups to use.
+        :param pulumi.Input[str] kind: The type of restriction that is being applied. Valid values can be found in [docs](https://developer.atlassian.com/cloud/bitbucket/rest/api-group-branch-restrictions/#api-group-branch-restrictions).
+        :param pulumi.Input[str] owner: The owner of this repository. Can be you or any team you
+               have write access to.
+        :param pulumi.Input[str] pattern: Apply the restriction to branches that match this pattern. Active when `branch_match_kind` is `glob`. Will be empty when `branch_match_kind` is `branching_model`.
+        :param pulumi.Input[str] repository: The name of the repository.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] users: A list of users to use.
+        :param pulumi.Input[int] value: A value applied to the restriction kind. Currently only applicable to `require_passing_builds_to_merge`, `require_default_reviewer_approvals_to_merge` and `require_approvals_to_merge`.
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
 
@@ -363,45 +519,73 @@ class BranchRestriction(pulumi.CustomResource):
     @property
     @pulumi.getter(name="branchMatchKind")
     def branch_match_kind(self) -> pulumi.Output[Optional[str]]:
+        """
+        Indicates how the restriction is matched against a branch. The default is `glob`. Valid values: `branching_model`, `glob`.
+        """
         return pulumi.get(self, "branch_match_kind")
 
     @property
     @pulumi.getter(name="branchType")
     def branch_type(self) -> pulumi.Output[Optional[str]]:
+        """
+        Apply the restriction to branches of this type. Active when `branch_match_kind` is `branching_model`. The branch type will be calculated using the branching model configured for the repository. Valid values: `feature`, `bugfix`, `release`, `hotfix`, `development`, `production`.
+        """
         return pulumi.get(self, "branch_type")
 
     @property
     @pulumi.getter
     def groups(self) -> pulumi.Output[Optional[Sequence['outputs.BranchRestrictionGroup']]]:
+        """
+        A list of groups to use.
+        """
         return pulumi.get(self, "groups")
 
     @property
     @pulumi.getter
     def kind(self) -> pulumi.Output[str]:
+        """
+        The type of restriction that is being applied. Valid values can be found in [docs](https://developer.atlassian.com/cloud/bitbucket/rest/api-group-branch-restrictions/#api-group-branch-restrictions).
+        """
         return pulumi.get(self, "kind")
 
     @property
     @pulumi.getter
     def owner(self) -> pulumi.Output[str]:
+        """
+        The owner of this repository. Can be you or any team you
+        have write access to.
+        """
         return pulumi.get(self, "owner")
 
     @property
     @pulumi.getter
     def pattern(self) -> pulumi.Output[Optional[str]]:
+        """
+        Apply the restriction to branches that match this pattern. Active when `branch_match_kind` is `glob`. Will be empty when `branch_match_kind` is `branching_model`.
+        """
         return pulumi.get(self, "pattern")
 
     @property
     @pulumi.getter
     def repository(self) -> pulumi.Output[str]:
+        """
+        The name of the repository.
+        """
         return pulumi.get(self, "repository")
 
     @property
     @pulumi.getter
     def users(self) -> pulumi.Output[Optional[Sequence[str]]]:
+        """
+        A list of users to use.
+        """
         return pulumi.get(self, "users")
 
     @property
     @pulumi.getter
     def value(self) -> pulumi.Output[Optional[int]]:
+        """
+        A value applied to the restriction kind. Currently only applicable to `require_passing_builds_to_merge`, `require_default_reviewer_approvals_to_merge` and `require_approvals_to_merge`.
+        """
         return pulumi.get(self, "value")
 

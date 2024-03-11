@@ -6,6 +6,44 @@ import * as inputs from "./types/input";
 import * as outputs from "./types/output";
 import * as utilities from "./utilities";
 
+/**
+ * Provides a Bitbucket repository resource.
+ *
+ * This resource allows you manage your repositories such as scm type, if it is
+ * private, how to fork the repository and other options.
+ *
+ * OAuth2 Scopes: `repository`, `repository:admin`, and `repository:delete`
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as bitbucket from "@pulumi/bitbucket";
+ *
+ * const infrastructure = new bitbucket.Repository("infrastructure", {owner: "myteam"});
+ * ```
+ *
+ * If you want to create a repository with a CamelCase name, you should provide
+ * a separate slug
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as bitbucket from "@pulumi/bitbucket";
+ *
+ * const infrastructure = new bitbucket.Repository("infrastructure", {
+ *     owner: "myteam",
+ *     slug: "terraform-code",
+ * });
+ * ```
+ *
+ * ## Import
+ *
+ * Repositories can be imported using their `owner/name` ID, e.g.
+ *
+ * ```sh
+ *  $ pulumi import bitbucket:index/repository:Repository my-repo my-account/my-repo
+ * ```
+ */
 export class Repository extends pulumi.CustomResource {
     /**
      * Get an existing Repository resource's state with the given name, ID, and optional extra
@@ -34,24 +72,85 @@ export class Repository extends pulumi.CustomResource {
         return obj['__pulumiType'] === Repository.__pulumiType;
     }
 
+    /**
+     * The HTTPS clone URL.
+     */
     public /*out*/ readonly cloneHttps!: pulumi.Output<string>;
+    /**
+     * The SSH clone URL.
+     */
     public /*out*/ readonly cloneSsh!: pulumi.Output<string>;
+    /**
+     * What the description of the repo is.
+     */
     public readonly description!: pulumi.Output<string | undefined>;
+    /**
+     * What the fork policy should be. Defaults to
+     * `allowForks`. Valid values are `allowForks`, `noPublicForks`, `noForks`.
+     */
     public readonly forkPolicy!: pulumi.Output<string | undefined>;
+    /**
+     * If this should have issues turned on or not.
+     */
     public readonly hasIssues!: pulumi.Output<boolean | undefined>;
+    /**
+     * If this should have wiki turned on or not.
+     */
     public readonly hasWiki!: pulumi.Output<boolean | undefined>;
+    /**
+     * Whether to inherit branching model from project.
+     */
     public readonly inheritBranchingModel!: pulumi.Output<boolean>;
+    /**
+     * Whether to inherit default merge strategy from project.
+     */
     public readonly inheritDefaultMergeStrategy!: pulumi.Output<boolean>;
+    /**
+     * If this should be private or not. Defaults to `true`.
+     */
     public readonly isPrivate!: pulumi.Output<boolean | undefined>;
+    /**
+     * What the language of this repository should be.
+     */
     public readonly language!: pulumi.Output<string | undefined>;
+    /**
+     * A set of links to a resource related to this object. See Link Below.
+     */
     public readonly link!: pulumi.Output<outputs.RepositoryLink>;
+    /**
+     * The name of the repository.
+     */
     public readonly name!: pulumi.Output<string>;
+    /**
+     * The owner of this repository. Can be you or any team you
+     * have write access to.
+     */
     public readonly owner!: pulumi.Output<string>;
+    /**
+     * Turn on to enable pipelines support.
+     */
     public readonly pipelinesEnabled!: pulumi.Output<boolean | undefined>;
+    /**
+     * If you want to have this repo associated with a
+     * project.
+     */
     public readonly projectKey!: pulumi.Output<string>;
+    /**
+     * What SCM you want to use. Valid options are `hg` or `git`.
+     * Defaults to `git`.
+     */
     public readonly scm!: pulumi.Output<string | undefined>;
+    /**
+     * The slug of the repository.
+     */
     public readonly slug!: pulumi.Output<string>;
+    /**
+     * the uuid of the repository resource.
+     */
     public /*out*/ readonly uuid!: pulumi.Output<string>;
+    /**
+     * URL of website associated with this repository.
+     */
     public readonly website!: pulumi.Output<string | undefined>;
 
     /**
@@ -120,24 +219,85 @@ export class Repository extends pulumi.CustomResource {
  * Input properties used for looking up and filtering Repository resources.
  */
 export interface RepositoryState {
+    /**
+     * The HTTPS clone URL.
+     */
     cloneHttps?: pulumi.Input<string>;
+    /**
+     * The SSH clone URL.
+     */
     cloneSsh?: pulumi.Input<string>;
+    /**
+     * What the description of the repo is.
+     */
     description?: pulumi.Input<string>;
+    /**
+     * What the fork policy should be. Defaults to
+     * `allowForks`. Valid values are `allowForks`, `noPublicForks`, `noForks`.
+     */
     forkPolicy?: pulumi.Input<string>;
+    /**
+     * If this should have issues turned on or not.
+     */
     hasIssues?: pulumi.Input<boolean>;
+    /**
+     * If this should have wiki turned on or not.
+     */
     hasWiki?: pulumi.Input<boolean>;
+    /**
+     * Whether to inherit branching model from project.
+     */
     inheritBranchingModel?: pulumi.Input<boolean>;
+    /**
+     * Whether to inherit default merge strategy from project.
+     */
     inheritDefaultMergeStrategy?: pulumi.Input<boolean>;
+    /**
+     * If this should be private or not. Defaults to `true`.
+     */
     isPrivate?: pulumi.Input<boolean>;
+    /**
+     * What the language of this repository should be.
+     */
     language?: pulumi.Input<string>;
+    /**
+     * A set of links to a resource related to this object. See Link Below.
+     */
     link?: pulumi.Input<inputs.RepositoryLink>;
+    /**
+     * The name of the repository.
+     */
     name?: pulumi.Input<string>;
+    /**
+     * The owner of this repository. Can be you or any team you
+     * have write access to.
+     */
     owner?: pulumi.Input<string>;
+    /**
+     * Turn on to enable pipelines support.
+     */
     pipelinesEnabled?: pulumi.Input<boolean>;
+    /**
+     * If you want to have this repo associated with a
+     * project.
+     */
     projectKey?: pulumi.Input<string>;
+    /**
+     * What SCM you want to use. Valid options are `hg` or `git`.
+     * Defaults to `git`.
+     */
     scm?: pulumi.Input<string>;
+    /**
+     * The slug of the repository.
+     */
     slug?: pulumi.Input<string>;
+    /**
+     * the uuid of the repository resource.
+     */
     uuid?: pulumi.Input<string>;
+    /**
+     * URL of website associated with this repository.
+     */
     website?: pulumi.Input<string>;
 }
 
@@ -145,20 +305,72 @@ export interface RepositoryState {
  * The set of arguments for constructing a Repository resource.
  */
 export interface RepositoryArgs {
+    /**
+     * What the description of the repo is.
+     */
     description?: pulumi.Input<string>;
+    /**
+     * What the fork policy should be. Defaults to
+     * `allowForks`. Valid values are `allowForks`, `noPublicForks`, `noForks`.
+     */
     forkPolicy?: pulumi.Input<string>;
+    /**
+     * If this should have issues turned on or not.
+     */
     hasIssues?: pulumi.Input<boolean>;
+    /**
+     * If this should have wiki turned on or not.
+     */
     hasWiki?: pulumi.Input<boolean>;
+    /**
+     * Whether to inherit branching model from project.
+     */
     inheritBranchingModel?: pulumi.Input<boolean>;
+    /**
+     * Whether to inherit default merge strategy from project.
+     */
     inheritDefaultMergeStrategy?: pulumi.Input<boolean>;
+    /**
+     * If this should be private or not. Defaults to `true`.
+     */
     isPrivate?: pulumi.Input<boolean>;
+    /**
+     * What the language of this repository should be.
+     */
     language?: pulumi.Input<string>;
+    /**
+     * A set of links to a resource related to this object. See Link Below.
+     */
     link?: pulumi.Input<inputs.RepositoryLink>;
+    /**
+     * The name of the repository.
+     */
     name?: pulumi.Input<string>;
+    /**
+     * The owner of this repository. Can be you or any team you
+     * have write access to.
+     */
     owner: pulumi.Input<string>;
+    /**
+     * Turn on to enable pipelines support.
+     */
     pipelinesEnabled?: pulumi.Input<boolean>;
+    /**
+     * If you want to have this repo associated with a
+     * project.
+     */
     projectKey?: pulumi.Input<string>;
+    /**
+     * What SCM you want to use. Valid options are `hg` or `git`.
+     * Defaults to `git`.
+     */
     scm?: pulumi.Input<string>;
+    /**
+     * The slug of the repository.
+     */
     slug?: pulumi.Input<string>;
+    /**
+     * URL of website associated with this repository.
+     */
     website?: pulumi.Input<string>;
 }

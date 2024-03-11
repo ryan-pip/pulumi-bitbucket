@@ -9,18 +9,71 @@ import (
 
 	"errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket/internal"
 )
 
+// Provides a Bitbucket Pipeline Ssh Known Host resource.
+//
+// This allows you to manage your Pipeline Ssh Known Hosts for a repository.
+//
+// OAuth2 Scopes: `none`
+//
+// ## Example Usage
+//
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := bitbucket.NewPipelineSshKnownHost(ctx, "test", &bitbucket.PipelineSshKnownHostArgs{
+//				Workspace:  pulumi.String("example"),
+//				Repository: pulumi.Any(bitbucket_repository.Test.Name),
+//				Hostname:   pulumi.String("[example.com]:22"),
+//				PublicKey: &bitbucket.PipelineSshKnownHostPublicKeyArgs{
+//					KeyType: pulumi.String("ssh-ed25519"),
+//					Key:     pulumi.String("AAAAC3NzaC1lZDI1NTE5AAAAIKqP3Cr632C2dNhhgKVcon4ldUSAeKiku2yP9O9/bDtY"),
+//				},
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
+//
+// ## Import
+//
+// Pipeline Ssh Known Hosts can be imported using their `workspace/repo-slug/uuid` ID, e.g.
+//
+// ```sh
+//
+//	$ pulumi import bitbucket:index/pipelineSshKnownHost:PipelineSshKnownHost key workspace/repo-slug/uuid
+//
+// ```
 type PipelineSshKnownHost struct {
 	pulumi.CustomResourceState
 
-	Hostname   pulumi.StringPtrOutput              `pulumi:"hostname"`
-	PublicKey  PipelineSshKnownHostPublicKeyOutput `pulumi:"publicKey"`
-	Repository pulumi.StringOutput                 `pulumi:"repository"`
-	Uuid       pulumi.StringOutput                 `pulumi:"uuid"`
-	Workspace  pulumi.StringOutput                 `pulumi:"workspace"`
+	// The hostname of the known host.
+	Hostname pulumi.StringPtrOutput `pulumi:"hostname"`
+	// The Public key config for the known host.
+	PublicKey PipelineSshKnownHostPublicKeyOutput `pulumi:"publicKey"`
+	// The Repository to create config for the known host in.
+	Repository pulumi.StringOutput `pulumi:"repository"`
+	// The UUID identifying the known host.
+	// * `public_key.0.md5_fingerprint` - The MD5 fingerprint of the public key.
+	// * `public_key.0.sha256_fingerprint` - The SHA-256 fingerprint of the public key.
+	Uuid pulumi.StringOutput `pulumi:"uuid"`
+	// The Workspace where the repository resides.
+	Workspace pulumi.StringOutput `pulumi:"workspace"`
 }
 
 // NewPipelineSshKnownHost registers a new resource with the given unique name, arguments, and options.
@@ -62,19 +115,33 @@ func GetPipelineSshKnownHost(ctx *pulumi.Context,
 
 // Input properties used for looking up and filtering PipelineSshKnownHost resources.
 type pipelineSshKnownHostState struct {
-	Hostname   *string                        `pulumi:"hostname"`
-	PublicKey  *PipelineSshKnownHostPublicKey `pulumi:"publicKey"`
-	Repository *string                        `pulumi:"repository"`
-	Uuid       *string                        `pulumi:"uuid"`
-	Workspace  *string                        `pulumi:"workspace"`
+	// The hostname of the known host.
+	Hostname *string `pulumi:"hostname"`
+	// The Public key config for the known host.
+	PublicKey *PipelineSshKnownHostPublicKey `pulumi:"publicKey"`
+	// The Repository to create config for the known host in.
+	Repository *string `pulumi:"repository"`
+	// The UUID identifying the known host.
+	// * `public_key.0.md5_fingerprint` - The MD5 fingerprint of the public key.
+	// * `public_key.0.sha256_fingerprint` - The SHA-256 fingerprint of the public key.
+	Uuid *string `pulumi:"uuid"`
+	// The Workspace where the repository resides.
+	Workspace *string `pulumi:"workspace"`
 }
 
 type PipelineSshKnownHostState struct {
-	Hostname   pulumi.StringPtrInput
-	PublicKey  PipelineSshKnownHostPublicKeyPtrInput
+	// The hostname of the known host.
+	Hostname pulumi.StringPtrInput
+	// The Public key config for the known host.
+	PublicKey PipelineSshKnownHostPublicKeyPtrInput
+	// The Repository to create config for the known host in.
 	Repository pulumi.StringPtrInput
-	Uuid       pulumi.StringPtrInput
-	Workspace  pulumi.StringPtrInput
+	// The UUID identifying the known host.
+	// * `public_key.0.md5_fingerprint` - The MD5 fingerprint of the public key.
+	// * `public_key.0.sha256_fingerprint` - The SHA-256 fingerprint of the public key.
+	Uuid pulumi.StringPtrInput
+	// The Workspace where the repository resides.
+	Workspace pulumi.StringPtrInput
 }
 
 func (PipelineSshKnownHostState) ElementType() reflect.Type {
@@ -82,18 +149,26 @@ func (PipelineSshKnownHostState) ElementType() reflect.Type {
 }
 
 type pipelineSshKnownHostArgs struct {
-	Hostname   *string                       `pulumi:"hostname"`
-	PublicKey  PipelineSshKnownHostPublicKey `pulumi:"publicKey"`
-	Repository string                        `pulumi:"repository"`
-	Workspace  string                        `pulumi:"workspace"`
+	// The hostname of the known host.
+	Hostname *string `pulumi:"hostname"`
+	// The Public key config for the known host.
+	PublicKey PipelineSshKnownHostPublicKey `pulumi:"publicKey"`
+	// The Repository to create config for the known host in.
+	Repository string `pulumi:"repository"`
+	// The Workspace where the repository resides.
+	Workspace string `pulumi:"workspace"`
 }
 
 // The set of arguments for constructing a PipelineSshKnownHost resource.
 type PipelineSshKnownHostArgs struct {
-	Hostname   pulumi.StringPtrInput
-	PublicKey  PipelineSshKnownHostPublicKeyInput
+	// The hostname of the known host.
+	Hostname pulumi.StringPtrInput
+	// The Public key config for the known host.
+	PublicKey PipelineSshKnownHostPublicKeyInput
+	// The Repository to create config for the known host in.
 	Repository pulumi.StringInput
-	Workspace  pulumi.StringInput
+	// The Workspace where the repository resides.
+	Workspace pulumi.StringInput
 }
 
 func (PipelineSshKnownHostArgs) ElementType() reflect.Type {
@@ -117,12 +192,6 @@ func (i *PipelineSshKnownHost) ToPipelineSshKnownHostOutput() PipelineSshKnownHo
 
 func (i *PipelineSshKnownHost) ToPipelineSshKnownHostOutputWithContext(ctx context.Context) PipelineSshKnownHostOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(PipelineSshKnownHostOutput)
-}
-
-func (i *PipelineSshKnownHost) ToOutput(ctx context.Context) pulumix.Output[*PipelineSshKnownHost] {
-	return pulumix.Output[*PipelineSshKnownHost]{
-		OutputState: i.ToPipelineSshKnownHostOutputWithContext(ctx).OutputState,
-	}
 }
 
 // PipelineSshKnownHostArrayInput is an input type that accepts PipelineSshKnownHostArray and PipelineSshKnownHostArrayOutput values.
@@ -150,12 +219,6 @@ func (i PipelineSshKnownHostArray) ToPipelineSshKnownHostArrayOutputWithContext(
 	return pulumi.ToOutputWithContext(ctx, i).(PipelineSshKnownHostArrayOutput)
 }
 
-func (i PipelineSshKnownHostArray) ToOutput(ctx context.Context) pulumix.Output[[]*PipelineSshKnownHost] {
-	return pulumix.Output[[]*PipelineSshKnownHost]{
-		OutputState: i.ToPipelineSshKnownHostArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 // PipelineSshKnownHostMapInput is an input type that accepts PipelineSshKnownHostMap and PipelineSshKnownHostMapOutput values.
 // You can construct a concrete instance of `PipelineSshKnownHostMapInput` via:
 //
@@ -181,12 +244,6 @@ func (i PipelineSshKnownHostMap) ToPipelineSshKnownHostMapOutputWithContext(ctx 
 	return pulumi.ToOutputWithContext(ctx, i).(PipelineSshKnownHostMapOutput)
 }
 
-func (i PipelineSshKnownHostMap) ToOutput(ctx context.Context) pulumix.Output[map[string]*PipelineSshKnownHost] {
-	return pulumix.Output[map[string]*PipelineSshKnownHost]{
-		OutputState: i.ToPipelineSshKnownHostMapOutputWithContext(ctx).OutputState,
-	}
-}
-
 type PipelineSshKnownHostOutput struct{ *pulumi.OutputState }
 
 func (PipelineSshKnownHostOutput) ElementType() reflect.Type {
@@ -201,28 +258,29 @@ func (o PipelineSshKnownHostOutput) ToPipelineSshKnownHostOutputWithContext(ctx 
 	return o
 }
 
-func (o PipelineSshKnownHostOutput) ToOutput(ctx context.Context) pulumix.Output[*PipelineSshKnownHost] {
-	return pulumix.Output[*PipelineSshKnownHost]{
-		OutputState: o.OutputState,
-	}
-}
-
+// The hostname of the known host.
 func (o PipelineSshKnownHostOutput) Hostname() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *PipelineSshKnownHost) pulumi.StringPtrOutput { return v.Hostname }).(pulumi.StringPtrOutput)
 }
 
+// The Public key config for the known host.
 func (o PipelineSshKnownHostOutput) PublicKey() PipelineSshKnownHostPublicKeyOutput {
 	return o.ApplyT(func(v *PipelineSshKnownHost) PipelineSshKnownHostPublicKeyOutput { return v.PublicKey }).(PipelineSshKnownHostPublicKeyOutput)
 }
 
+// The Repository to create config for the known host in.
 func (o PipelineSshKnownHostOutput) Repository() pulumi.StringOutput {
 	return o.ApplyT(func(v *PipelineSshKnownHost) pulumi.StringOutput { return v.Repository }).(pulumi.StringOutput)
 }
 
+// The UUID identifying the known host.
+// * `public_key.0.md5_fingerprint` - The MD5 fingerprint of the public key.
+// * `public_key.0.sha256_fingerprint` - The SHA-256 fingerprint of the public key.
 func (o PipelineSshKnownHostOutput) Uuid() pulumi.StringOutput {
 	return o.ApplyT(func(v *PipelineSshKnownHost) pulumi.StringOutput { return v.Uuid }).(pulumi.StringOutput)
 }
 
+// The Workspace where the repository resides.
 func (o PipelineSshKnownHostOutput) Workspace() pulumi.StringOutput {
 	return o.ApplyT(func(v *PipelineSshKnownHost) pulumi.StringOutput { return v.Workspace }).(pulumi.StringOutput)
 }
@@ -239,12 +297,6 @@ func (o PipelineSshKnownHostArrayOutput) ToPipelineSshKnownHostArrayOutput() Pip
 
 func (o PipelineSshKnownHostArrayOutput) ToPipelineSshKnownHostArrayOutputWithContext(ctx context.Context) PipelineSshKnownHostArrayOutput {
 	return o
-}
-
-func (o PipelineSshKnownHostArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]*PipelineSshKnownHost] {
-	return pulumix.Output[[]*PipelineSshKnownHost]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o PipelineSshKnownHostArrayOutput) Index(i pulumi.IntInput) PipelineSshKnownHostOutput {
@@ -265,12 +317,6 @@ func (o PipelineSshKnownHostMapOutput) ToPipelineSshKnownHostMapOutput() Pipelin
 
 func (o PipelineSshKnownHostMapOutput) ToPipelineSshKnownHostMapOutputWithContext(ctx context.Context) PipelineSshKnownHostMapOutput {
 	return o
-}
-
-func (o PipelineSshKnownHostMapOutput) ToOutput(ctx context.Context) pulumix.Output[map[string]*PipelineSshKnownHost] {
-	return pulumix.Output[map[string]*PipelineSshKnownHost]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o PipelineSshKnownHostMapOutput) MapIndex(k pulumi.StringInput) PipelineSshKnownHostOutput {

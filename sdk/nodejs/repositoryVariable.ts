@@ -4,6 +4,37 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "./utilities";
 
+/**
+ * This resource allows you to setup pipelines variables to manage your builds with. Once you have enabled pipelines on your repository you can then further setup variables here to use.
+ *
+ * OAuth2 Scopes: `none`
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as bitbucket from "@pulumi/bitbucket";
+ *
+ * const monorepo = new bitbucket.Repository("monorepo", {
+ *     owner: "gob",
+ *     pipelinesEnabled: true,
+ * });
+ * const debug = new bitbucket.RepositoryVariable("debug", {
+ *     key: "DEBUG",
+ *     value: "true",
+ *     repository: monorepo.id,
+ *     secured: false,
+ * });
+ * ```
+ *
+ * ## Import
+ *
+ * Repository Variables can be imported using their `workspace/repository/key/uuid` ID, e.g.
+ *
+ * ```sh
+ *  $ pulumi import bitbucket:index/repositoryVariable:RepositoryVariable example workspace/repository/key/uuid
+ * ```
+ */
 export class RepositoryVariable extends pulumi.CustomResource {
     /**
      * Get an existing RepositoryVariable resource's state with the given name, ID, and optional extra
@@ -32,11 +63,30 @@ export class RepositoryVariable extends pulumi.CustomResource {
         return obj['__pulumiType'] === RepositoryVariable.__pulumiType;
     }
 
+    /**
+     * The key of the key value pair
+     */
     public readonly key!: pulumi.Output<string>;
+    /**
+     * The repository ID you want to put this variable onto. (of form workspace-id/repository-id)
+     */
     public readonly repository!: pulumi.Output<string>;
+    /**
+     * If you want to make this viewable in the UI.
+     */
     public readonly secured!: pulumi.Output<boolean | undefined>;
+    /**
+     * (Computed) The UUID identifying the variable.
+     */
     public /*out*/ readonly uuid!: pulumi.Output<string>;
+    /**
+     * The value of the key. This will not be returned if `secured` is set to true from API and wont be drift detected by provider.
+     */
     public readonly value!: pulumi.Output<string>;
+    /**
+     * (Computed) The workspace the variable is created in.
+     */
+    public /*out*/ readonly workspace!: pulumi.Output<string>;
 
     /**
      * Create a RepositoryVariable resource with the given unique name, arguments, and options.
@@ -56,6 +106,7 @@ export class RepositoryVariable extends pulumi.CustomResource {
             resourceInputs["secured"] = state ? state.secured : undefined;
             resourceInputs["uuid"] = state ? state.uuid : undefined;
             resourceInputs["value"] = state ? state.value : undefined;
+            resourceInputs["workspace"] = state ? state.workspace : undefined;
         } else {
             const args = argsOrState as RepositoryVariableArgs | undefined;
             if ((!args || args.key === undefined) && !opts.urn) {
@@ -72,6 +123,7 @@ export class RepositoryVariable extends pulumi.CustomResource {
             resourceInputs["secured"] = args ? args.secured : undefined;
             resourceInputs["value"] = args?.value ? pulumi.secret(args.value) : undefined;
             resourceInputs["uuid"] = undefined /*out*/;
+            resourceInputs["workspace"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
         const secretOpts = { additionalSecretOutputs: ["value"] };
@@ -84,19 +136,50 @@ export class RepositoryVariable extends pulumi.CustomResource {
  * Input properties used for looking up and filtering RepositoryVariable resources.
  */
 export interface RepositoryVariableState {
+    /**
+     * The key of the key value pair
+     */
     key?: pulumi.Input<string>;
+    /**
+     * The repository ID you want to put this variable onto. (of form workspace-id/repository-id)
+     */
     repository?: pulumi.Input<string>;
+    /**
+     * If you want to make this viewable in the UI.
+     */
     secured?: pulumi.Input<boolean>;
+    /**
+     * (Computed) The UUID identifying the variable.
+     */
     uuid?: pulumi.Input<string>;
+    /**
+     * The value of the key. This will not be returned if `secured` is set to true from API and wont be drift detected by provider.
+     */
     value?: pulumi.Input<string>;
+    /**
+     * (Computed) The workspace the variable is created in.
+     */
+    workspace?: pulumi.Input<string>;
 }
 
 /**
  * The set of arguments for constructing a RepositoryVariable resource.
  */
 export interface RepositoryVariableArgs {
+    /**
+     * The key of the key value pair
+     */
     key: pulumi.Input<string>;
+    /**
+     * The repository ID you want to put this variable onto. (of form workspace-id/repository-id)
+     */
     repository: pulumi.Input<string>;
+    /**
+     * If you want to make this viewable in the UI.
+     */
     secured?: pulumi.Input<boolean>;
+    /**
+     * The value of the key. This will not be returned if `secured` is set to true from API and wont be drift detected by provider.
+     */
     value: pulumi.Input<string>;
 }

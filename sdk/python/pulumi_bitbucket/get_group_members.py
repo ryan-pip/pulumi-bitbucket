@@ -8,6 +8,7 @@ import pulumi
 import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
 from . import _utilities
+from . import outputs
 
 __all__ = [
     'GetGroupMembersResult',
@@ -21,7 +22,10 @@ class GetGroupMembersResult:
     """
     A collection of values returned by getGroupMembers.
     """
-    def __init__(__self__, id=None, members=None, slug=None, workspace=None):
+    def __init__(__self__, group_members=None, id=None, members=None, slug=None, workspace=None):
+        if group_members and not isinstance(group_members, list):
+            raise TypeError("Expected argument 'group_members' to be a list")
+        pulumi.set(__self__, "group_members", group_members)
         if id and not isinstance(id, str):
             raise TypeError("Expected argument 'id' to be a str")
         pulumi.set(__self__, "id", id)
@@ -36,6 +40,14 @@ class GetGroupMembersResult:
         pulumi.set(__self__, "workspace", workspace)
 
     @property
+    @pulumi.getter(name="groupMembers")
+    def group_members(self) -> Sequence['outputs.GetGroupMembersGroupMemberResult']:
+        """
+        A set of group member objects. See Group Member below.
+        """
+        return pulumi.get(self, "group_members")
+
+    @property
     @pulumi.getter
     def id(self) -> str:
         """
@@ -46,6 +58,12 @@ class GetGroupMembersResult:
     @property
     @pulumi.getter
     def members(self) -> Sequence[str]:
+        """
+        A list of group member uuid.
+        """
+        warnings.warn("""use group_members instead""", DeprecationWarning)
+        pulumi.log.warn("""members is deprecated: use group_members instead""")
+
         return pulumi.get(self, "members")
 
     @property
@@ -65,6 +83,7 @@ class AwaitableGetGroupMembersResult(GetGroupMembersResult):
         if False:
             yield self
         return GetGroupMembersResult(
+            group_members=self.group_members,
             id=self.id,
             members=self.members,
             slug=self.slug,
@@ -75,7 +94,21 @@ def get_group_members(slug: Optional[str] = None,
                       workspace: Optional[str] = None,
                       opts: Optional[pulumi.InvokeOptions] = None) -> AwaitableGetGroupMembersResult:
     """
-    Use this data source to access information about an existing resource.
+    Provides a way to fetch data of group members.
+
+    ## Example Usage
+
+    ```python
+    import pulumi
+    import pulumi_bitbucket as bitbucket
+
+    example = bitbucket.get_group_members(slug="example",
+        workspace="example")
+    ```
+
+
+    :param str slug: The group's slug.
+    :param str workspace: The UUID that bitbucket groups to connect a group to various objects
     """
     __args__ = dict()
     __args__['slug'] = slug
@@ -84,6 +117,7 @@ def get_group_members(slug: Optional[str] = None,
     __ret__ = pulumi.runtime.invoke('bitbucket:index/getGroupMembers:getGroupMembers', __args__, opts=opts, typ=GetGroupMembersResult).value
 
     return AwaitableGetGroupMembersResult(
+        group_members=pulumi.get(__ret__, 'group_members'),
         id=pulumi.get(__ret__, 'id'),
         members=pulumi.get(__ret__, 'members'),
         slug=pulumi.get(__ret__, 'slug'),
@@ -95,6 +129,20 @@ def get_group_members_output(slug: Optional[pulumi.Input[str]] = None,
                              workspace: Optional[pulumi.Input[str]] = None,
                              opts: Optional[pulumi.InvokeOptions] = None) -> pulumi.Output[GetGroupMembersResult]:
     """
-    Use this data source to access information about an existing resource.
+    Provides a way to fetch data of group members.
+
+    ## Example Usage
+
+    ```python
+    import pulumi
+    import pulumi_bitbucket as bitbucket
+
+    example = bitbucket.get_group_members(slug="example",
+        workspace="example")
+    ```
+
+
+    :param str slug: The group's slug.
+    :param str workspace: The UUID that bitbucket groups to connect a group to various objects
     """
     ...

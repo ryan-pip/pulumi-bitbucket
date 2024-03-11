@@ -9,17 +9,64 @@ import (
 
 	"errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket/internal"
 )
 
+// Provides a Bitbucket Repository User Permission Resource.
+//
+// This allows you set explicit user permission for a repository.
+//
+// OAuth2 Scopes: `repository:admin`
+//
+// ## Example Usage
+//
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := bitbucket.NewRepositoryUserPermission(ctx, "example", &bitbucket.RepositoryUserPermissionArgs{
+//				Workspace:  pulumi.String("example"),
+//				RepoSlug:   pulumi.Any(bitbucket_repository.Example.Name),
+//				UserId:     pulumi.String("user-id"),
+//				Permission: pulumi.String("read"),
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
+//
+// ## Import
+//
+// Repository User Permissions can be imported using their `workspace:repo-slug:user-id` ID, e.g.
+//
+// ```sh
+//
+//	$ pulumi import bitbucket:index/repositoryUserPermission:RepositoryUserPermission example workspace:repo-slug:user-id
+//
+// ```
 type RepositoryUserPermission struct {
 	pulumi.CustomResourceState
 
+	// Permissions can be one of `read`, `write`, `none`, and `admin`.
 	Permission pulumi.StringOutput `pulumi:"permission"`
-	RepoSlug   pulumi.StringOutput `pulumi:"repoSlug"`
-	UserId     pulumi.StringOutput `pulumi:"userId"`
-	Workspace  pulumi.StringOutput `pulumi:"workspace"`
+	// The repository slug.
+	RepoSlug pulumi.StringOutput `pulumi:"repoSlug"`
+	// The UUID of the user.
+	UserId pulumi.StringOutput `pulumi:"userId"`
+	// The workspace id.
+	Workspace pulumi.StringOutput `pulumi:"workspace"`
 }
 
 // NewRepositoryUserPermission registers a new resource with the given unique name, arguments, and options.
@@ -64,17 +111,25 @@ func GetRepositoryUserPermission(ctx *pulumi.Context,
 
 // Input properties used for looking up and filtering RepositoryUserPermission resources.
 type repositoryUserPermissionState struct {
+	// Permissions can be one of `read`, `write`, `none`, and `admin`.
 	Permission *string `pulumi:"permission"`
-	RepoSlug   *string `pulumi:"repoSlug"`
-	UserId     *string `pulumi:"userId"`
-	Workspace  *string `pulumi:"workspace"`
+	// The repository slug.
+	RepoSlug *string `pulumi:"repoSlug"`
+	// The UUID of the user.
+	UserId *string `pulumi:"userId"`
+	// The workspace id.
+	Workspace *string `pulumi:"workspace"`
 }
 
 type RepositoryUserPermissionState struct {
+	// Permissions can be one of `read`, `write`, `none`, and `admin`.
 	Permission pulumi.StringPtrInput
-	RepoSlug   pulumi.StringPtrInput
-	UserId     pulumi.StringPtrInput
-	Workspace  pulumi.StringPtrInput
+	// The repository slug.
+	RepoSlug pulumi.StringPtrInput
+	// The UUID of the user.
+	UserId pulumi.StringPtrInput
+	// The workspace id.
+	Workspace pulumi.StringPtrInput
 }
 
 func (RepositoryUserPermissionState) ElementType() reflect.Type {
@@ -82,18 +137,26 @@ func (RepositoryUserPermissionState) ElementType() reflect.Type {
 }
 
 type repositoryUserPermissionArgs struct {
+	// Permissions can be one of `read`, `write`, `none`, and `admin`.
 	Permission string `pulumi:"permission"`
-	RepoSlug   string `pulumi:"repoSlug"`
-	UserId     string `pulumi:"userId"`
-	Workspace  string `pulumi:"workspace"`
+	// The repository slug.
+	RepoSlug string `pulumi:"repoSlug"`
+	// The UUID of the user.
+	UserId string `pulumi:"userId"`
+	// The workspace id.
+	Workspace string `pulumi:"workspace"`
 }
 
 // The set of arguments for constructing a RepositoryUserPermission resource.
 type RepositoryUserPermissionArgs struct {
+	// Permissions can be one of `read`, `write`, `none`, and `admin`.
 	Permission pulumi.StringInput
-	RepoSlug   pulumi.StringInput
-	UserId     pulumi.StringInput
-	Workspace  pulumi.StringInput
+	// The repository slug.
+	RepoSlug pulumi.StringInput
+	// The UUID of the user.
+	UserId pulumi.StringInput
+	// The workspace id.
+	Workspace pulumi.StringInput
 }
 
 func (RepositoryUserPermissionArgs) ElementType() reflect.Type {
@@ -117,12 +180,6 @@ func (i *RepositoryUserPermission) ToRepositoryUserPermissionOutput() Repository
 
 func (i *RepositoryUserPermission) ToRepositoryUserPermissionOutputWithContext(ctx context.Context) RepositoryUserPermissionOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(RepositoryUserPermissionOutput)
-}
-
-func (i *RepositoryUserPermission) ToOutput(ctx context.Context) pulumix.Output[*RepositoryUserPermission] {
-	return pulumix.Output[*RepositoryUserPermission]{
-		OutputState: i.ToRepositoryUserPermissionOutputWithContext(ctx).OutputState,
-	}
 }
 
 // RepositoryUserPermissionArrayInput is an input type that accepts RepositoryUserPermissionArray and RepositoryUserPermissionArrayOutput values.
@@ -150,12 +207,6 @@ func (i RepositoryUserPermissionArray) ToRepositoryUserPermissionArrayOutputWith
 	return pulumi.ToOutputWithContext(ctx, i).(RepositoryUserPermissionArrayOutput)
 }
 
-func (i RepositoryUserPermissionArray) ToOutput(ctx context.Context) pulumix.Output[[]*RepositoryUserPermission] {
-	return pulumix.Output[[]*RepositoryUserPermission]{
-		OutputState: i.ToRepositoryUserPermissionArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 // RepositoryUserPermissionMapInput is an input type that accepts RepositoryUserPermissionMap and RepositoryUserPermissionMapOutput values.
 // You can construct a concrete instance of `RepositoryUserPermissionMapInput` via:
 //
@@ -181,12 +232,6 @@ func (i RepositoryUserPermissionMap) ToRepositoryUserPermissionMapOutputWithCont
 	return pulumi.ToOutputWithContext(ctx, i).(RepositoryUserPermissionMapOutput)
 }
 
-func (i RepositoryUserPermissionMap) ToOutput(ctx context.Context) pulumix.Output[map[string]*RepositoryUserPermission] {
-	return pulumix.Output[map[string]*RepositoryUserPermission]{
-		OutputState: i.ToRepositoryUserPermissionMapOutputWithContext(ctx).OutputState,
-	}
-}
-
 type RepositoryUserPermissionOutput struct{ *pulumi.OutputState }
 
 func (RepositoryUserPermissionOutput) ElementType() reflect.Type {
@@ -201,24 +246,22 @@ func (o RepositoryUserPermissionOutput) ToRepositoryUserPermissionOutputWithCont
 	return o
 }
 
-func (o RepositoryUserPermissionOutput) ToOutput(ctx context.Context) pulumix.Output[*RepositoryUserPermission] {
-	return pulumix.Output[*RepositoryUserPermission]{
-		OutputState: o.OutputState,
-	}
-}
-
+// Permissions can be one of `read`, `write`, `none`, and `admin`.
 func (o RepositoryUserPermissionOutput) Permission() pulumi.StringOutput {
 	return o.ApplyT(func(v *RepositoryUserPermission) pulumi.StringOutput { return v.Permission }).(pulumi.StringOutput)
 }
 
+// The repository slug.
 func (o RepositoryUserPermissionOutput) RepoSlug() pulumi.StringOutput {
 	return o.ApplyT(func(v *RepositoryUserPermission) pulumi.StringOutput { return v.RepoSlug }).(pulumi.StringOutput)
 }
 
+// The UUID of the user.
 func (o RepositoryUserPermissionOutput) UserId() pulumi.StringOutput {
 	return o.ApplyT(func(v *RepositoryUserPermission) pulumi.StringOutput { return v.UserId }).(pulumi.StringOutput)
 }
 
+// The workspace id.
 func (o RepositoryUserPermissionOutput) Workspace() pulumi.StringOutput {
 	return o.ApplyT(func(v *RepositoryUserPermission) pulumi.StringOutput { return v.Workspace }).(pulumi.StringOutput)
 }
@@ -235,12 +278,6 @@ func (o RepositoryUserPermissionArrayOutput) ToRepositoryUserPermissionArrayOutp
 
 func (o RepositoryUserPermissionArrayOutput) ToRepositoryUserPermissionArrayOutputWithContext(ctx context.Context) RepositoryUserPermissionArrayOutput {
 	return o
-}
-
-func (o RepositoryUserPermissionArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]*RepositoryUserPermission] {
-	return pulumix.Output[[]*RepositoryUserPermission]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o RepositoryUserPermissionArrayOutput) Index(i pulumi.IntInput) RepositoryUserPermissionOutput {
@@ -261,12 +298,6 @@ func (o RepositoryUserPermissionMapOutput) ToRepositoryUserPermissionMapOutput()
 
 func (o RepositoryUserPermissionMapOutput) ToRepositoryUserPermissionMapOutputWithContext(ctx context.Context) RepositoryUserPermissionMapOutput {
 	return o
-}
-
-func (o RepositoryUserPermissionMapOutput) ToOutput(ctx context.Context) pulumix.Output[map[string]*RepositoryUserPermission] {
-	return pulumix.Output[map[string]*RepositoryUserPermission]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o RepositoryUserPermissionMapOutput) MapIndex(k pulumi.StringInput) RepositoryUserPermissionOutput {

@@ -6,6 +6,38 @@ import * as inputs from "./types/input";
 import * as outputs from "./types/output";
 import * as utilities from "./utilities";
 
+/**
+ * Provides a Bitbucket Pipeline Ssh Known Host resource.
+ *
+ * This allows you to manage your Pipeline Ssh Known Hosts for a repository.
+ *
+ * OAuth2 Scopes: `none`
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as bitbucket from "@pulumi/bitbucket";
+ *
+ * const test = new bitbucket.PipelineSshKnownHost("test", {
+ *     workspace: "example",
+ *     repository: bitbucket_repository.test.name,
+ *     hostname: "[example.com]:22",
+ *     publicKey: {
+ *         keyType: "ssh-ed25519",
+ *         key: "AAAAC3NzaC1lZDI1NTE5AAAAIKqP3Cr632C2dNhhgKVcon4ldUSAeKiku2yP9O9/bDtY",
+ *     },
+ * });
+ * ```
+ *
+ * ## Import
+ *
+ * Pipeline Ssh Known Hosts can be imported using their `workspace/repo-slug/uuid` ID, e.g.
+ *
+ * ```sh
+ *  $ pulumi import bitbucket:index/pipelineSshKnownHost:PipelineSshKnownHost key workspace/repo-slug/uuid
+ * ```
+ */
 export class PipelineSshKnownHost extends pulumi.CustomResource {
     /**
      * Get an existing PipelineSshKnownHost resource's state with the given name, ID, and optional extra
@@ -34,10 +66,27 @@ export class PipelineSshKnownHost extends pulumi.CustomResource {
         return obj['__pulumiType'] === PipelineSshKnownHost.__pulumiType;
     }
 
+    /**
+     * The hostname of the known host.
+     */
     public readonly hostname!: pulumi.Output<string | undefined>;
+    /**
+     * The Public key config for the known host.
+     */
     public readonly publicKey!: pulumi.Output<outputs.PipelineSshKnownHostPublicKey>;
+    /**
+     * The Repository to create config for the known host in.
+     */
     public readonly repository!: pulumi.Output<string>;
+    /**
+     * The UUID identifying the known host.
+     * * `public_key.0.md5_fingerprint` - The MD5 fingerprint of the public key.
+     * * `public_key.0.sha256_fingerprint` - The SHA-256 fingerprint of the public key.
+     */
     public /*out*/ readonly uuid!: pulumi.Output<string>;
+    /**
+     * The Workspace where the repository resides.
+     */
     public readonly workspace!: pulumi.Output<string>;
 
     /**
@@ -84,10 +133,27 @@ export class PipelineSshKnownHost extends pulumi.CustomResource {
  * Input properties used for looking up and filtering PipelineSshKnownHost resources.
  */
 export interface PipelineSshKnownHostState {
+    /**
+     * The hostname of the known host.
+     */
     hostname?: pulumi.Input<string>;
+    /**
+     * The Public key config for the known host.
+     */
     publicKey?: pulumi.Input<inputs.PipelineSshKnownHostPublicKey>;
+    /**
+     * The Repository to create config for the known host in.
+     */
     repository?: pulumi.Input<string>;
+    /**
+     * The UUID identifying the known host.
+     * * `public_key.0.md5_fingerprint` - The MD5 fingerprint of the public key.
+     * * `public_key.0.sha256_fingerprint` - The SHA-256 fingerprint of the public key.
+     */
     uuid?: pulumi.Input<string>;
+    /**
+     * The Workspace where the repository resides.
+     */
     workspace?: pulumi.Input<string>;
 }
 
@@ -95,8 +161,20 @@ export interface PipelineSshKnownHostState {
  * The set of arguments for constructing a PipelineSshKnownHost resource.
  */
 export interface PipelineSshKnownHostArgs {
+    /**
+     * The hostname of the known host.
+     */
     hostname?: pulumi.Input<string>;
+    /**
+     * The Public key config for the known host.
+     */
     publicKey: pulumi.Input<inputs.PipelineSshKnownHostPublicKey>;
+    /**
+     * The Repository to create config for the known host in.
+     */
     repository: pulumi.Input<string>;
+    /**
+     * The Workspace where the repository resides.
+     */
     workspace: pulumi.Input<string>;
 }

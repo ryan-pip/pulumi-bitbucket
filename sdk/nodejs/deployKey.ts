@@ -4,6 +4,35 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "./utilities";
 
+/**
+ * Provides a Bitbucket Deploy Key resource.
+ *
+ * This allows you to manage your Deploy Keys for a repository.
+ *
+ * OAuth2 Scopes: `repository` and `repository:admin`
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as bitbucket from "@pulumi/bitbucket";
+ *
+ * const test = new bitbucket.DeployKey("test", {
+ *     key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKqP3Cr632C2dNhhgKVcon4ldUSAeKiku2yP9O9/bDtY",
+ *     label: "test-key",
+ *     repository: "example",
+ *     workspace: "example",
+ * });
+ * ```
+ *
+ * ## Import
+ *
+ * Deploy Keys can be imported using their `workspace/repo-slug/key-id` ID, e.g.
+ *
+ * ```sh
+ *  $ pulumi import bitbucket:index/deployKey:DeployKey key workspace/repo-slug/key-id
+ * ```
+ */
 export class DeployKey extends pulumi.CustomResource {
     /**
      * Get an existing DeployKey resource's state with the given name, ID, and optional extra
@@ -32,11 +61,29 @@ export class DeployKey extends pulumi.CustomResource {
         return obj['__pulumiType'] === DeployKey.__pulumiType;
     }
 
+    /**
+     * The comment parsed from the Deploy key (if present)
+     */
     public /*out*/ readonly comment!: pulumi.Output<string>;
+    /**
+     * The SSH public key value in OpenSSH format.
+     */
     public readonly key!: pulumi.Output<string | undefined>;
+    /**
+     * The Deploy key's ID.
+     */
     public /*out*/ readonly keyId!: pulumi.Output<string>;
+    /**
+     * The user-defined label for the Deploy key
+     */
     public readonly label!: pulumi.Output<string | undefined>;
+    /**
+     * The Repository to create deploy key in.
+     */
     public readonly repository!: pulumi.Output<string>;
+    /**
+     * The Workspace where the repository resides.
+     */
     public readonly workspace!: pulumi.Output<string>;
 
     /**
@@ -82,11 +129,29 @@ export class DeployKey extends pulumi.CustomResource {
  * Input properties used for looking up and filtering DeployKey resources.
  */
 export interface DeployKeyState {
+    /**
+     * The comment parsed from the Deploy key (if present)
+     */
     comment?: pulumi.Input<string>;
+    /**
+     * The SSH public key value in OpenSSH format.
+     */
     key?: pulumi.Input<string>;
+    /**
+     * The Deploy key's ID.
+     */
     keyId?: pulumi.Input<string>;
+    /**
+     * The user-defined label for the Deploy key
+     */
     label?: pulumi.Input<string>;
+    /**
+     * The Repository to create deploy key in.
+     */
     repository?: pulumi.Input<string>;
+    /**
+     * The Workspace where the repository resides.
+     */
     workspace?: pulumi.Input<string>;
 }
 
@@ -94,8 +159,20 @@ export interface DeployKeyState {
  * The set of arguments for constructing a DeployKey resource.
  */
 export interface DeployKeyArgs {
+    /**
+     * The SSH public key value in OpenSSH format.
+     */
     key?: pulumi.Input<string>;
+    /**
+     * The user-defined label for the Deploy key
+     */
     label?: pulumi.Input<string>;
+    /**
+     * The Repository to create deploy key in.
+     */
     repository: pulumi.Input<string>;
+    /**
+     * The Workspace where the repository resides.
+     */
     workspace: pulumi.Input<string>;
 }

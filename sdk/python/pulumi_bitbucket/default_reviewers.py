@@ -19,6 +19,10 @@ class DefaultReviewersArgs:
                  reviewers: pulumi.Input[Sequence[pulumi.Input[str]]]):
         """
         The set of arguments for constructing a DefaultReviewers resource.
+        :param pulumi.Input[str] owner: The owner of this repository. Can be you or any team you
+               have write access to.
+        :param pulumi.Input[str] repository: The name of the repository.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] reviewers: A list of reviewers to use.
         """
         pulumi.set(__self__, "owner", owner)
         pulumi.set(__self__, "repository", repository)
@@ -27,6 +31,10 @@ class DefaultReviewersArgs:
     @property
     @pulumi.getter
     def owner(self) -> pulumi.Input[str]:
+        """
+        The owner of this repository. Can be you or any team you
+        have write access to.
+        """
         return pulumi.get(self, "owner")
 
     @owner.setter
@@ -36,6 +44,9 @@ class DefaultReviewersArgs:
     @property
     @pulumi.getter
     def repository(self) -> pulumi.Input[str]:
+        """
+        The name of the repository.
+        """
         return pulumi.get(self, "repository")
 
     @repository.setter
@@ -45,6 +56,9 @@ class DefaultReviewersArgs:
     @property
     @pulumi.getter
     def reviewers(self) -> pulumi.Input[Sequence[pulumi.Input[str]]]:
+        """
+        A list of reviewers to use.
+        """
         return pulumi.get(self, "reviewers")
 
     @reviewers.setter
@@ -60,6 +74,10 @@ class _DefaultReviewersState:
                  reviewers: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None):
         """
         Input properties used for looking up and filtering DefaultReviewers resources.
+        :param pulumi.Input[str] owner: The owner of this repository. Can be you or any team you
+               have write access to.
+        :param pulumi.Input[str] repository: The name of the repository.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] reviewers: A list of reviewers to use.
         """
         if owner is not None:
             pulumi.set(__self__, "owner", owner)
@@ -71,6 +89,10 @@ class _DefaultReviewersState:
     @property
     @pulumi.getter
     def owner(self) -> Optional[pulumi.Input[str]]:
+        """
+        The owner of this repository. Can be you or any team you
+        have write access to.
+        """
         return pulumi.get(self, "owner")
 
     @owner.setter
@@ -80,6 +102,9 @@ class _DefaultReviewersState:
     @property
     @pulumi.getter
     def repository(self) -> Optional[pulumi.Input[str]]:
+        """
+        The name of the repository.
+        """
         return pulumi.get(self, "repository")
 
     @repository.setter
@@ -89,6 +114,9 @@ class _DefaultReviewersState:
     @property
     @pulumi.getter
     def reviewers(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+        """
+        A list of reviewers to use.
+        """
         return pulumi.get(self, "reviewers")
 
     @reviewers.setter
@@ -106,9 +134,37 @@ class DefaultReviewers(pulumi.CustomResource):
                  reviewers: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  __props__=None):
         """
-        Create a DefaultReviewers resource with the given unique name, props, and options.
+        Provides support for setting up default reviewers for your repository. You must however have the UUID of the user available. Since Bitbucket has removed usernames from its APIs the best case is to use the UUID via the data provider.
+
+        OAuth2 Scopes: `pullrequest` and `repository:admin`
+
+        ## Example Usage
+
+        ```python
+        import pulumi
+        import pulumi_bitbucket as bitbucket
+
+        reviewer = bitbucket.get_user(uuid="{account UUID}")
+        infrastructure = bitbucket.DefaultReviewers("infrastructure",
+            owner="myteam",
+            repository="terraform-code",
+            reviewers=[reviewer.uuid])
+        ```
+
+        ## Import
+
+        Default Reviewers can be imported using the owner and repo separated by a (`/`) and the string `reviewers` and the end, e.g.,
+
+        ```sh
+         $ pulumi import bitbucket:index/defaultReviewers:DefaultReviewers example myteam/terraform-code/reviewers
+        ```
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[str] owner: The owner of this repository. Can be you or any team you
+               have write access to.
+        :param pulumi.Input[str] repository: The name of the repository.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] reviewers: A list of reviewers to use.
         """
         ...
     @overload
@@ -117,7 +173,31 @@ class DefaultReviewers(pulumi.CustomResource):
                  args: DefaultReviewersArgs,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
-        Create a DefaultReviewers resource with the given unique name, props, and options.
+        Provides support for setting up default reviewers for your repository. You must however have the UUID of the user available. Since Bitbucket has removed usernames from its APIs the best case is to use the UUID via the data provider.
+
+        OAuth2 Scopes: `pullrequest` and `repository:admin`
+
+        ## Example Usage
+
+        ```python
+        import pulumi
+        import pulumi_bitbucket as bitbucket
+
+        reviewer = bitbucket.get_user(uuid="{account UUID}")
+        infrastructure = bitbucket.DefaultReviewers("infrastructure",
+            owner="myteam",
+            repository="terraform-code",
+            reviewers=[reviewer.uuid])
+        ```
+
+        ## Import
+
+        Default Reviewers can be imported using the owner and repo separated by a (`/`) and the string `reviewers` and the end, e.g.,
+
+        ```sh
+         $ pulumi import bitbucket:index/defaultReviewers:DefaultReviewers example myteam/terraform-code/reviewers
+        ```
+
         :param str resource_name: The name of the resource.
         :param DefaultReviewersArgs args: The arguments to use to populate this resource's properties.
         :param pulumi.ResourceOptions opts: Options for the resource.
@@ -174,6 +254,10 @@ class DefaultReviewers(pulumi.CustomResource):
         :param str resource_name: The unique name of the resulting resource.
         :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[str] owner: The owner of this repository. Can be you or any team you
+               have write access to.
+        :param pulumi.Input[str] repository: The name of the repository.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] reviewers: A list of reviewers to use.
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
 
@@ -187,15 +271,25 @@ class DefaultReviewers(pulumi.CustomResource):
     @property
     @pulumi.getter
     def owner(self) -> pulumi.Output[str]:
+        """
+        The owner of this repository. Can be you or any team you
+        have write access to.
+        """
         return pulumi.get(self, "owner")
 
     @property
     @pulumi.getter
     def repository(self) -> pulumi.Output[str]:
+        """
+        The name of the repository.
+        """
         return pulumi.get(self, "repository")
 
     @property
     @pulumi.getter
     def reviewers(self) -> pulumi.Output[Sequence[str]]:
+        """
+        A list of reviewers to use.
+        """
         return pulumi.get(self, "reviewers")
 

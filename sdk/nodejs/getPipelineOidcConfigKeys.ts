@@ -4,6 +4,22 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "./utilities";
 
+/**
+ * Provides a way to fetch data on a pipeline OIDC Config Keys.
+ *
+ * OAuth2 Scopes: `none`
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as bitbucket from "@pulumi/bitbucket";
+ *
+ * const example = bitbucket.getPipelineOidcConfigKeys({
+ *     workspace: "example",
+ * });
+ * ```
+ */
 export function getPipelineOidcConfigKeys(args: GetPipelineOidcConfigKeysArgs, opts?: pulumi.InvokeOptions): Promise<GetPipelineOidcConfigKeysResult> {
 
     opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
@@ -16,6 +32,9 @@ export function getPipelineOidcConfigKeys(args: GetPipelineOidcConfigKeysArgs, o
  * A collection of arguments for invoking getPipelineOidcConfigKeys.
  */
 export interface GetPipelineOidcConfigKeysArgs {
+    /**
+     * The workspace to fetch pipeline oidc config keys.
+     */
     workspace: string;
 }
 
@@ -30,6 +49,22 @@ export interface GetPipelineOidcConfigKeysResult {
     readonly keys: string;
     readonly workspace: string;
 }
+/**
+ * Provides a way to fetch data on a pipeline OIDC Config Keys.
+ *
+ * OAuth2 Scopes: `none`
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as bitbucket from "@pulumi/bitbucket";
+ *
+ * const example = bitbucket.getPipelineOidcConfigKeys({
+ *     workspace: "example",
+ * });
+ * ```
+ */
 export function getPipelineOidcConfigKeysOutput(args: GetPipelineOidcConfigKeysOutputArgs, opts?: pulumi.InvokeOptions): pulumi.Output<GetPipelineOidcConfigKeysResult> {
     return pulumi.output(args).apply((a: any) => getPipelineOidcConfigKeys(a, opts))
 }
@@ -38,5 +73,8 @@ export function getPipelineOidcConfigKeysOutput(args: GetPipelineOidcConfigKeysO
  * A collection of arguments for invoking getPipelineOidcConfigKeys.
  */
 export interface GetPipelineOidcConfigKeysOutputArgs {
+    /**
+     * The workspace to fetch pipeline oidc config keys.
+     */
     workspace: pulumi.Input<string>;
 }

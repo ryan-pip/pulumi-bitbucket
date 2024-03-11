@@ -8,6 +8,7 @@ import pulumi
 import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
 from . import _utilities
+from . import outputs
 
 __all__ = [
     'GetWorkspaceMembersResult',
@@ -21,7 +22,7 @@ class GetWorkspaceMembersResult:
     """
     A collection of values returned by getWorkspaceMembers.
     """
-    def __init__(__self__, id=None, members=None, workspace=None):
+    def __init__(__self__, id=None, members=None, workspace=None, workspace_members=None):
         if id and not isinstance(id, str):
             raise TypeError("Expected argument 'id' to be a str")
         pulumi.set(__self__, "id", id)
@@ -31,6 +32,9 @@ class GetWorkspaceMembersResult:
         if workspace and not isinstance(workspace, str):
             raise TypeError("Expected argument 'workspace' to be a str")
         pulumi.set(__self__, "workspace", workspace)
+        if workspace_members and not isinstance(workspace_members, list):
+            raise TypeError("Expected argument 'workspace_members' to be a list")
+        pulumi.set(__self__, "workspace_members", workspace_members)
 
     @property
     @pulumi.getter
@@ -43,12 +47,26 @@ class GetWorkspaceMembersResult:
     @property
     @pulumi.getter
     def members(self) -> Sequence[str]:
+        """
+        A set of string containing the member UUIDs.
+        """
+        warnings.warn("""use workspace_members instead""", DeprecationWarning)
+        pulumi.log.warn("""members is deprecated: use workspace_members instead""")
+
         return pulumi.get(self, "members")
 
     @property
     @pulumi.getter
     def workspace(self) -> str:
         return pulumi.get(self, "workspace")
+
+    @property
+    @pulumi.getter(name="workspaceMembers")
+    def workspace_members(self) -> Sequence['outputs.GetWorkspaceMembersWorkspaceMemberResult']:
+        """
+        A set of workspace member objects. See Workspace Members below.
+        """
+        return pulumi.get(self, "workspace_members")
 
 
 class AwaitableGetWorkspaceMembersResult(GetWorkspaceMembersResult):
@@ -59,13 +77,28 @@ class AwaitableGetWorkspaceMembersResult(GetWorkspaceMembersResult):
         return GetWorkspaceMembersResult(
             id=self.id,
             members=self.members,
-            workspace=self.workspace)
+            workspace=self.workspace,
+            workspace_members=self.workspace_members)
 
 
 def get_workspace_members(workspace: Optional[str] = None,
                           opts: Optional[pulumi.InvokeOptions] = None) -> AwaitableGetWorkspaceMembersResult:
     """
-    Use this data source to access information about an existing resource.
+    Provides a way to fetch data on a the members of a workspace.
+
+    OAuth2 Scopes: `account`
+
+    ## Example Usage
+
+    ```python
+    import pulumi
+    import pulumi_bitbucket as bitbucket
+
+    example = bitbucket.get_workspace_members(workspace="gob")
+    ```
+
+
+    :param str workspace: This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces.
     """
     __args__ = dict()
     __args__['workspace'] = workspace
@@ -75,13 +108,28 @@ def get_workspace_members(workspace: Optional[str] = None,
     return AwaitableGetWorkspaceMembersResult(
         id=pulumi.get(__ret__, 'id'),
         members=pulumi.get(__ret__, 'members'),
-        workspace=pulumi.get(__ret__, 'workspace'))
+        workspace=pulumi.get(__ret__, 'workspace'),
+        workspace_members=pulumi.get(__ret__, 'workspace_members'))
 
 
 @_utilities.lift_output_func(get_workspace_members)
 def get_workspace_members_output(workspace: Optional[pulumi.Input[str]] = None,
                                  opts: Optional[pulumi.InvokeOptions] = None) -> pulumi.Output[GetWorkspaceMembersResult]:
     """
-    Use this data source to access information about an existing resource.
+    Provides a way to fetch data on a the members of a workspace.
+
+    OAuth2 Scopes: `account`
+
+    ## Example Usage
+
+    ```python
+    import pulumi
+    import pulumi_bitbucket as bitbucket
+
+    example = bitbucket.get_workspace_members(workspace="gob")
+    ```
+
+
+    :param str workspace: This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces.
     """
     ...

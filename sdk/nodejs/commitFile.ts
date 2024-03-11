@@ -4,6 +4,30 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "./utilities";
 
+/**
+ * Commit a file.
+ *
+ * This resource allows you to create a commit within a Bitbucket repository.
+ *
+ * OAuth2 Scopes: `repository:write`
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as bitbucket from "@pulumi/bitbucket";
+ *
+ * const test = new bitbucket.CommitFile("test", {
+ *     branch: "main",
+ *     commitAuthor: "Test <test@test.local>",
+ *     commitMessage: "test",
+ *     content: "abc",
+ *     filename: "README.md",
+ *     repoSlug: "test",
+ *     workspace: "test",
+ * });
+ * ```
+ */
 export class CommitFile extends pulumi.CustomResource {
     /**
      * Get an existing CommitFile resource's state with the given name, ID, and optional extra
@@ -32,22 +56,37 @@ export class CommitFile extends pulumi.CustomResource {
         return obj['__pulumiType'] === CommitFile.__pulumiType;
     }
 
+    /**
+     * Git branch.
+     */
     public readonly branch!: pulumi.Output<string>;
     /**
-     * The SHA of the commit that modified the file
+     * Committer author to use.
      */
     public readonly commitAuthor!: pulumi.Output<string>;
     /**
-     * The SHA of the commit that modified the file
+     * The message of the commit.
      */
     public readonly commitMessage!: pulumi.Output<string>;
     /**
      * The SHA of the commit that modified the file
      */
     public /*out*/ readonly commitSha!: pulumi.Output<string>;
+    /**
+     * The file content.
+     */
     public readonly content!: pulumi.Output<string>;
+    /**
+     * The path of the file to manage.
+     */
     public readonly filename!: pulumi.Output<string>;
+    /**
+     * The repository slug.
+     */
     public readonly repoSlug!: pulumi.Output<string>;
+    /**
+     * The workspace id.
+     */
     public readonly workspace!: pulumi.Output<string>;
 
     /**
@@ -112,22 +151,37 @@ export class CommitFile extends pulumi.CustomResource {
  * Input properties used for looking up and filtering CommitFile resources.
  */
 export interface CommitFileState {
+    /**
+     * Git branch.
+     */
     branch?: pulumi.Input<string>;
     /**
-     * The SHA of the commit that modified the file
+     * Committer author to use.
      */
     commitAuthor?: pulumi.Input<string>;
     /**
-     * The SHA of the commit that modified the file
+     * The message of the commit.
      */
     commitMessage?: pulumi.Input<string>;
     /**
      * The SHA of the commit that modified the file
      */
     commitSha?: pulumi.Input<string>;
+    /**
+     * The file content.
+     */
     content?: pulumi.Input<string>;
+    /**
+     * The path of the file to manage.
+     */
     filename?: pulumi.Input<string>;
+    /**
+     * The repository slug.
+     */
     repoSlug?: pulumi.Input<string>;
+    /**
+     * The workspace id.
+     */
     workspace?: pulumi.Input<string>;
 }
 
@@ -135,17 +189,32 @@ export interface CommitFileState {
  * The set of arguments for constructing a CommitFile resource.
  */
 export interface CommitFileArgs {
+    /**
+     * Git branch.
+     */
     branch: pulumi.Input<string>;
     /**
-     * The SHA of the commit that modified the file
+     * Committer author to use.
      */
     commitAuthor: pulumi.Input<string>;
     /**
-     * The SHA of the commit that modified the file
+     * The message of the commit.
      */
     commitMessage: pulumi.Input<string>;
+    /**
+     * The file content.
+     */
     content: pulumi.Input<string>;
+    /**
+     * The path of the file to manage.
+     */
     filename: pulumi.Input<string>;
+    /**
+     * The repository slug.
+     */
     repoSlug: pulumi.Input<string>;
+    /**
+     * The workspace id.
+     */
     workspace: pulumi.Input<string>;
 }

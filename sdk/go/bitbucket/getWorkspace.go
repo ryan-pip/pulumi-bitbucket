@@ -8,10 +8,38 @@ import (
 	"reflect"
 
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket/internal"
 )
 
+// Provides a way to fetch data on a workspace.
+//
+// OAuth2 Scopes: `none`
+//
+// ## Example Usage
+//
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := bitbucket.GetWorkspace(ctx, &bitbucket.GetWorkspaceArgs{
+//				Workspace: "gob",
+//			}, nil)
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
 func GetWorkspace(ctx *pulumi.Context, args *GetWorkspaceArgs, opts ...pulumi.InvokeOption) (*GetWorkspaceResult, error) {
 	opts = internal.PkgInvokeDefaultOpts(opts)
 	var rv GetWorkspaceResult
@@ -24,15 +52,19 @@ func GetWorkspace(ctx *pulumi.Context, args *GetWorkspaceArgs, opts ...pulumi.In
 
 // A collection of arguments for invoking getWorkspace.
 type GetWorkspaceArgs struct {
+	// This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces
 	Workspace string `pulumi:"workspace"`
 }
 
 // A collection of values returned by getWorkspace.
 type GetWorkspaceResult struct {
 	// The provider-assigned unique ID for this managed resource.
-	Id        string `pulumi:"id"`
-	IsPrivate bool   `pulumi:"isPrivate"`
-	Name      string `pulumi:"name"`
+	Id string `pulumi:"id"`
+	// Indicates whether the workspace is publicly accessible, or whether it is private to the members and consequently only visible to members.
+	IsPrivate bool `pulumi:"isPrivate"`
+	// The name of the workspace.
+	Name string `pulumi:"name"`
+	// The short label that identifies this workspace.
 	Slug      string `pulumi:"slug"`
 	Workspace string `pulumi:"workspace"`
 }
@@ -52,6 +84,7 @@ func GetWorkspaceOutput(ctx *pulumi.Context, args GetWorkspaceOutputArgs, opts .
 
 // A collection of arguments for invoking getWorkspace.
 type GetWorkspaceOutputArgs struct {
+	// This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces
 	Workspace pulumi.StringInput `pulumi:"workspace"`
 }
 
@@ -74,25 +107,22 @@ func (o GetWorkspaceResultOutput) ToGetWorkspaceResultOutputWithContext(ctx cont
 	return o
 }
 
-func (o GetWorkspaceResultOutput) ToOutput(ctx context.Context) pulumix.Output[GetWorkspaceResult] {
-	return pulumix.Output[GetWorkspaceResult]{
-		OutputState: o.OutputState,
-	}
-}
-
 // The provider-assigned unique ID for this managed resource.
 func (o GetWorkspaceResultOutput) Id() pulumi.StringOutput {
 	return o.ApplyT(func(v GetWorkspaceResult) string { return v.Id }).(pulumi.StringOutput)
 }
 
+// Indicates whether the workspace is publicly accessible, or whether it is private to the members and consequently only visible to members.
 func (o GetWorkspaceResultOutput) IsPrivate() pulumi.BoolOutput {
 	return o.ApplyT(func(v GetWorkspaceResult) bool { return v.IsPrivate }).(pulumi.BoolOutput)
 }
 
+// The name of the workspace.
 func (o GetWorkspaceResultOutput) Name() pulumi.StringOutput {
 	return o.ApplyT(func(v GetWorkspaceResult) string { return v.Name }).(pulumi.StringOutput)
 }
 
+// The short label that identifies this workspace.
 func (o GetWorkspaceResultOutput) Slug() pulumi.StringOutput {
 	return o.ApplyT(func(v GetWorkspaceResult) string { return v.Slug }).(pulumi.StringOutput)
 }

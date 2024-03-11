@@ -9,17 +9,66 @@ import (
 
 	"errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket/internal"
 )
 
+// Provides a Bitbucket Repository Group Permission Resource.
+//
+// This allows you set explicit group permission for a repository.
+//
+// OAuth2 Scopes: `repository:admin`
+//
+// Note: can only be used when authenticating with Bitbucket Cloud using an _app password_. Authenticating via an OAuth flow gives a 403 error due to a [restriction in the Bitbucket Cloud API](https://developer.atlassian.com/cloud/bitbucket/rest/api-group-repositories/#api-repositories-workspace-repo-slug-permissions-config-groups-group-slug-put).
+//
+// ## Example Usage
+//
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := bitbucket.NewRepositoryGroupPermission(ctx, "example", &bitbucket.RepositoryGroupPermissionArgs{
+//				Workspace:  pulumi.String("example"),
+//				RepoSlug:   pulumi.Any(bitbucket_repository.Example.Name),
+//				GroupSlug:  pulumi.Any(bitbucket_group.Example.Slug),
+//				Permission: pulumi.String("read"),
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
+//
+// ## Import
+//
+// Repository Group Permissions can be imported using their `workspace:repo-slug:group-slug` ID, e.g.
+//
+// ```sh
+//
+//	$ pulumi import bitbucket:index/repositoryGroupPermission:RepositoryGroupPermission example workspace:repo-slug:group-slug
+//
+// ```
 type RepositoryGroupPermission struct {
 	pulumi.CustomResourceState
 
-	GroupSlug  pulumi.StringOutput `pulumi:"groupSlug"`
+	// Slug of the requested group.
+	GroupSlug pulumi.StringOutput `pulumi:"groupSlug"`
+	// Permissions can be one of `read`, `write`, and `admin`.
 	Permission pulumi.StringOutput `pulumi:"permission"`
-	RepoSlug   pulumi.StringOutput `pulumi:"repoSlug"`
-	Workspace  pulumi.StringOutput `pulumi:"workspace"`
+	// The repository slug.
+	RepoSlug pulumi.StringOutput `pulumi:"repoSlug"`
+	// The workspace id.
+	Workspace pulumi.StringOutput `pulumi:"workspace"`
 }
 
 // NewRepositoryGroupPermission registers a new resource with the given unique name, arguments, and options.
@@ -64,17 +113,25 @@ func GetRepositoryGroupPermission(ctx *pulumi.Context,
 
 // Input properties used for looking up and filtering RepositoryGroupPermission resources.
 type repositoryGroupPermissionState struct {
-	GroupSlug  *string `pulumi:"groupSlug"`
+	// Slug of the requested group.
+	GroupSlug *string `pulumi:"groupSlug"`
+	// Permissions can be one of `read`, `write`, and `admin`.
 	Permission *string `pulumi:"permission"`
-	RepoSlug   *string `pulumi:"repoSlug"`
-	Workspace  *string `pulumi:"workspace"`
+	// The repository slug.
+	RepoSlug *string `pulumi:"repoSlug"`
+	// The workspace id.
+	Workspace *string `pulumi:"workspace"`
 }
 
 type RepositoryGroupPermissionState struct {
-	GroupSlug  pulumi.StringPtrInput
+	// Slug of the requested group.
+	GroupSlug pulumi.StringPtrInput
+	// Permissions can be one of `read`, `write`, and `admin`.
 	Permission pulumi.StringPtrInput
-	RepoSlug   pulumi.StringPtrInput
-	Workspace  pulumi.StringPtrInput
+	// The repository slug.
+	RepoSlug pulumi.StringPtrInput
+	// The workspace id.
+	Workspace pulumi.StringPtrInput
 }
 
 func (RepositoryGroupPermissionState) ElementType() reflect.Type {
@@ -82,18 +139,26 @@ func (RepositoryGroupPermissionState) ElementType() reflect.Type {
 }
 
 type repositoryGroupPermissionArgs struct {
-	GroupSlug  string `pulumi:"groupSlug"`
+	// Slug of the requested group.
+	GroupSlug string `pulumi:"groupSlug"`
+	// Permissions can be one of `read`, `write`, and `admin`.
 	Permission string `pulumi:"permission"`
-	RepoSlug   string `pulumi:"repoSlug"`
-	Workspace  string `pulumi:"workspace"`
+	// The repository slug.
+	RepoSlug string `pulumi:"repoSlug"`
+	// The workspace id.
+	Workspace string `pulumi:"workspace"`
 }
 
 // The set of arguments for constructing a RepositoryGroupPermission resource.
 type RepositoryGroupPermissionArgs struct {
-	GroupSlug  pulumi.StringInput
+	// Slug of the requested group.
+	GroupSlug pulumi.StringInput
+	// Permissions can be one of `read`, `write`, and `admin`.
 	Permission pulumi.StringInput
-	RepoSlug   pulumi.StringInput
-	Workspace  pulumi.StringInput
+	// The repository slug.
+	RepoSlug pulumi.StringInput
+	// The workspace id.
+	Workspace pulumi.StringInput
 }
 
 func (RepositoryGroupPermissionArgs) ElementType() reflect.Type {
@@ -117,12 +182,6 @@ func (i *RepositoryGroupPermission) ToRepositoryGroupPermissionOutput() Reposito
 
 func (i *RepositoryGroupPermission) ToRepositoryGroupPermissionOutputWithContext(ctx context.Context) RepositoryGroupPermissionOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(RepositoryGroupPermissionOutput)
-}
-
-func (i *RepositoryGroupPermission) ToOutput(ctx context.Context) pulumix.Output[*RepositoryGroupPermission] {
-	return pulumix.Output[*RepositoryGroupPermission]{
-		OutputState: i.ToRepositoryGroupPermissionOutputWithContext(ctx).OutputState,
-	}
 }
 
 // RepositoryGroupPermissionArrayInput is an input type that accepts RepositoryGroupPermissionArray and RepositoryGroupPermissionArrayOutput values.
@@ -150,12 +209,6 @@ func (i RepositoryGroupPermissionArray) ToRepositoryGroupPermissionArrayOutputWi
 	return pulumi.ToOutputWithContext(ctx, i).(RepositoryGroupPermissionArrayOutput)
 }
 
-func (i RepositoryGroupPermissionArray) ToOutput(ctx context.Context) pulumix.Output[[]*RepositoryGroupPermission] {
-	return pulumix.Output[[]*RepositoryGroupPermission]{
-		OutputState: i.ToRepositoryGroupPermissionArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 // RepositoryGroupPermissionMapInput is an input type that accepts RepositoryGroupPermissionMap and RepositoryGroupPermissionMapOutput values.
 // You can construct a concrete instance of `RepositoryGroupPermissionMapInput` via:
 //
@@ -181,12 +234,6 @@ func (i RepositoryGroupPermissionMap) ToRepositoryGroupPermissionMapOutputWithCo
 	return pulumi.ToOutputWithContext(ctx, i).(RepositoryGroupPermissionMapOutput)
 }
 
-func (i RepositoryGroupPermissionMap) ToOutput(ctx context.Context) pulumix.Output[map[string]*RepositoryGroupPermission] {
-	return pulumix.Output[map[string]*RepositoryGroupPermission]{
-		OutputState: i.ToRepositoryGroupPermissionMapOutputWithContext(ctx).OutputState,
-	}
-}
-
 type RepositoryGroupPermissionOutput struct{ *pulumi.OutputState }
 
 func (RepositoryGroupPermissionOutput) ElementType() reflect.Type {
@@ -201,24 +248,22 @@ func (o RepositoryGroupPermissionOutput) ToRepositoryGroupPermissionOutputWithCo
 	return o
 }
 
-func (o RepositoryGroupPermissionOutput) ToOutput(ctx context.Context) pulumix.Output[*RepositoryGroupPermission] {
-	return pulumix.Output[*RepositoryGroupPermission]{
-		OutputState: o.OutputState,
-	}
-}
-
+// Slug of the requested group.
 func (o RepositoryGroupPermissionOutput) GroupSlug() pulumi.StringOutput {
 	return o.ApplyT(func(v *RepositoryGroupPermission) pulumi.StringOutput { return v.GroupSlug }).(pulumi.StringOutput)
 }
 
+// Permissions can be one of `read`, `write`, and `admin`.
 func (o RepositoryGroupPermissionOutput) Permission() pulumi.StringOutput {
 	return o.ApplyT(func(v *RepositoryGroupPermission) pulumi.StringOutput { return v.Permission }).(pulumi.StringOutput)
 }
 
+// The repository slug.
 func (o RepositoryGroupPermissionOutput) RepoSlug() pulumi.StringOutput {
 	return o.ApplyT(func(v *RepositoryGroupPermission) pulumi.StringOutput { return v.RepoSlug }).(pulumi.StringOutput)
 }
 
+// The workspace id.
 func (o RepositoryGroupPermissionOutput) Workspace() pulumi.StringOutput {
 	return o.ApplyT(func(v *RepositoryGroupPermission) pulumi.StringOutput { return v.Workspace }).(pulumi.StringOutput)
 }
@@ -235,12 +280,6 @@ func (o RepositoryGroupPermissionArrayOutput) ToRepositoryGroupPermissionArrayOu
 
 func (o RepositoryGroupPermissionArrayOutput) ToRepositoryGroupPermissionArrayOutputWithContext(ctx context.Context) RepositoryGroupPermissionArrayOutput {
 	return o
-}
-
-func (o RepositoryGroupPermissionArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]*RepositoryGroupPermission] {
-	return pulumix.Output[[]*RepositoryGroupPermission]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o RepositoryGroupPermissionArrayOutput) Index(i pulumi.IntInput) RepositoryGroupPermissionOutput {
@@ -261,12 +300,6 @@ func (o RepositoryGroupPermissionMapOutput) ToRepositoryGroupPermissionMapOutput
 
 func (o RepositoryGroupPermissionMapOutput) ToRepositoryGroupPermissionMapOutputWithContext(ctx context.Context) RepositoryGroupPermissionMapOutput {
 	return o
-}
-
-func (o RepositoryGroupPermissionMapOutput) ToOutput(ctx context.Context) pulumix.Output[map[string]*RepositoryGroupPermission] {
-	return pulumix.Output[map[string]*RepositoryGroupPermission]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o RepositoryGroupPermissionMapOutput) MapIndex(k pulumi.StringInput) RepositoryGroupPermissionOutput {

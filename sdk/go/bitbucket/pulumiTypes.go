@@ -8,13 +8,14 @@ import (
 	"reflect"
 
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket/internal"
 )
 
 var _ = internal.GetEnvOrDefault
 
 type BranchRestrictionGroup struct {
+	// The owner of this repository. Can be you or any team you
+	// have write access to.
 	Owner string `pulumi:"owner"`
 	Slug  string `pulumi:"slug"`
 }
@@ -31,6 +32,8 @@ type BranchRestrictionGroupInput interface {
 }
 
 type BranchRestrictionGroupArgs struct {
+	// The owner of this repository. Can be you or any team you
+	// have write access to.
 	Owner pulumi.StringInput `pulumi:"owner"`
 	Slug  pulumi.StringInput `pulumi:"slug"`
 }
@@ -45,12 +48,6 @@ func (i BranchRestrictionGroupArgs) ToBranchRestrictionGroupOutput() BranchRestr
 
 func (i BranchRestrictionGroupArgs) ToBranchRestrictionGroupOutputWithContext(ctx context.Context) BranchRestrictionGroupOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(BranchRestrictionGroupOutput)
-}
-
-func (i BranchRestrictionGroupArgs) ToOutput(ctx context.Context) pulumix.Output[BranchRestrictionGroup] {
-	return pulumix.Output[BranchRestrictionGroup]{
-		OutputState: i.ToBranchRestrictionGroupOutputWithContext(ctx).OutputState,
-	}
 }
 
 // BranchRestrictionGroupArrayInput is an input type that accepts BranchRestrictionGroupArray and BranchRestrictionGroupArrayOutput values.
@@ -78,12 +75,6 @@ func (i BranchRestrictionGroupArray) ToBranchRestrictionGroupArrayOutputWithCont
 	return pulumi.ToOutputWithContext(ctx, i).(BranchRestrictionGroupArrayOutput)
 }
 
-func (i BranchRestrictionGroupArray) ToOutput(ctx context.Context) pulumix.Output[[]BranchRestrictionGroup] {
-	return pulumix.Output[[]BranchRestrictionGroup]{
-		OutputState: i.ToBranchRestrictionGroupArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type BranchRestrictionGroupOutput struct{ *pulumi.OutputState }
 
 func (BranchRestrictionGroupOutput) ElementType() reflect.Type {
@@ -98,12 +89,8 @@ func (o BranchRestrictionGroupOutput) ToBranchRestrictionGroupOutputWithContext(
 	return o
 }
 
-func (o BranchRestrictionGroupOutput) ToOutput(ctx context.Context) pulumix.Output[BranchRestrictionGroup] {
-	return pulumix.Output[BranchRestrictionGroup]{
-		OutputState: o.OutputState,
-	}
-}
-
+// The owner of this repository. Can be you or any team you
+// have write access to.
 func (o BranchRestrictionGroupOutput) Owner() pulumi.StringOutput {
 	return o.ApplyT(func(v BranchRestrictionGroup) string { return v.Owner }).(pulumi.StringOutput)
 }
@@ -126,12 +113,6 @@ func (o BranchRestrictionGroupArrayOutput) ToBranchRestrictionGroupArrayOutputWi
 	return o
 }
 
-func (o BranchRestrictionGroupArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]BranchRestrictionGroup] {
-	return pulumix.Output[[]BranchRestrictionGroup]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o BranchRestrictionGroupArrayOutput) Index(i pulumi.IntInput) BranchRestrictionGroupOutput {
 	return pulumi.All(o, i).ApplyT(func(vs []interface{}) BranchRestrictionGroup {
 		return vs[0].([]BranchRestrictionGroup)[vs[1].(int)]
@@ -139,9 +120,12 @@ func (o BranchRestrictionGroupArrayOutput) Index(i pulumi.IntInput) BranchRestri
 }
 
 type BranchingModelBranchType struct {
-	Enabled *bool   `pulumi:"enabled"`
-	Kind    string  `pulumi:"kind"`
-	Prefix  *string `pulumi:"prefix"`
+	// Whether the branch type is enabled or not. A disabled branch type may contain an invalid `prefix`.
+	Enabled *bool `pulumi:"enabled"`
+	// The kind of the branch type. Valid values are `feature`, `bugfix`, `release`, `hotfix`.
+	Kind string `pulumi:"kind"`
+	// The prefix for this branch type. A branch with this prefix will be classified as per kind. The prefix of an enabled branch type must be a valid branch prefix. Additionally, it cannot be blank, empty or null. The prefix for a disabled branch type can be empty or invalid.
+	Prefix *string `pulumi:"prefix"`
 }
 
 // BranchingModelBranchTypeInput is an input type that accepts BranchingModelBranchTypeArgs and BranchingModelBranchTypeOutput values.
@@ -156,9 +140,12 @@ type BranchingModelBranchTypeInput interface {
 }
 
 type BranchingModelBranchTypeArgs struct {
-	Enabled pulumi.BoolPtrInput   `pulumi:"enabled"`
-	Kind    pulumi.StringInput    `pulumi:"kind"`
-	Prefix  pulumi.StringPtrInput `pulumi:"prefix"`
+	// Whether the branch type is enabled or not. A disabled branch type may contain an invalid `prefix`.
+	Enabled pulumi.BoolPtrInput `pulumi:"enabled"`
+	// The kind of the branch type. Valid values are `feature`, `bugfix`, `release`, `hotfix`.
+	Kind pulumi.StringInput `pulumi:"kind"`
+	// The prefix for this branch type. A branch with this prefix will be classified as per kind. The prefix of an enabled branch type must be a valid branch prefix. Additionally, it cannot be blank, empty or null. The prefix for a disabled branch type can be empty or invalid.
+	Prefix pulumi.StringPtrInput `pulumi:"prefix"`
 }
 
 func (BranchingModelBranchTypeArgs) ElementType() reflect.Type {
@@ -171,12 +158,6 @@ func (i BranchingModelBranchTypeArgs) ToBranchingModelBranchTypeOutput() Branchi
 
 func (i BranchingModelBranchTypeArgs) ToBranchingModelBranchTypeOutputWithContext(ctx context.Context) BranchingModelBranchTypeOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(BranchingModelBranchTypeOutput)
-}
-
-func (i BranchingModelBranchTypeArgs) ToOutput(ctx context.Context) pulumix.Output[BranchingModelBranchType] {
-	return pulumix.Output[BranchingModelBranchType]{
-		OutputState: i.ToBranchingModelBranchTypeOutputWithContext(ctx).OutputState,
-	}
 }
 
 // BranchingModelBranchTypeArrayInput is an input type that accepts BranchingModelBranchTypeArray and BranchingModelBranchTypeArrayOutput values.
@@ -204,12 +185,6 @@ func (i BranchingModelBranchTypeArray) ToBranchingModelBranchTypeArrayOutputWith
 	return pulumi.ToOutputWithContext(ctx, i).(BranchingModelBranchTypeArrayOutput)
 }
 
-func (i BranchingModelBranchTypeArray) ToOutput(ctx context.Context) pulumix.Output[[]BranchingModelBranchType] {
-	return pulumix.Output[[]BranchingModelBranchType]{
-		OutputState: i.ToBranchingModelBranchTypeArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type BranchingModelBranchTypeOutput struct{ *pulumi.OutputState }
 
 func (BranchingModelBranchTypeOutput) ElementType() reflect.Type {
@@ -224,20 +199,17 @@ func (o BranchingModelBranchTypeOutput) ToBranchingModelBranchTypeOutputWithCont
 	return o
 }
 
-func (o BranchingModelBranchTypeOutput) ToOutput(ctx context.Context) pulumix.Output[BranchingModelBranchType] {
-	return pulumix.Output[BranchingModelBranchType]{
-		OutputState: o.OutputState,
-	}
-}
-
+// Whether the branch type is enabled or not. A disabled branch type may contain an invalid `prefix`.
 func (o BranchingModelBranchTypeOutput) Enabled() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v BranchingModelBranchType) *bool { return v.Enabled }).(pulumi.BoolPtrOutput)
 }
 
+// The kind of the branch type. Valid values are `feature`, `bugfix`, `release`, `hotfix`.
 func (o BranchingModelBranchTypeOutput) Kind() pulumi.StringOutput {
 	return o.ApplyT(func(v BranchingModelBranchType) string { return v.Kind }).(pulumi.StringOutput)
 }
 
+// The prefix for this branch type. A branch with this prefix will be classified as per kind. The prefix of an enabled branch type must be a valid branch prefix. Additionally, it cannot be blank, empty or null. The prefix for a disabled branch type can be empty or invalid.
 func (o BranchingModelBranchTypeOutput) Prefix() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v BranchingModelBranchType) *string { return v.Prefix }).(pulumi.StringPtrOutput)
 }
@@ -256,12 +228,6 @@ func (o BranchingModelBranchTypeArrayOutput) ToBranchingModelBranchTypeArrayOutp
 	return o
 }
 
-func (o BranchingModelBranchTypeArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]BranchingModelBranchType] {
-	return pulumix.Output[[]BranchingModelBranchType]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o BranchingModelBranchTypeArrayOutput) Index(i pulumi.IntInput) BranchingModelBranchTypeOutput {
 	return pulumi.All(o, i).ApplyT(func(vs []interface{}) BranchingModelBranchType {
 		return vs[0].([]BranchingModelBranchType)[vs[1].(int)]
@@ -269,10 +235,13 @@ func (o BranchingModelBranchTypeArrayOutput) Index(i pulumi.IntInput) BranchingM
 }
 
 type BranchingModelDevelopment struct {
-	BranchDoesNotExist *bool   `pulumi:"branchDoesNotExist"`
-	IsValid            *bool   `pulumi:"isValid"`
-	Name               *string `pulumi:"name"`
-	UseMainbranch      *bool   `pulumi:"useMainbranch"`
+	// Optional and only returned for a repository's branching model. Indicates if the indicated branch exists on the repository (`false`) or not (`true`). This is useful for determining a fallback to the mainbranch when a repository is inheriting its project's branching model.
+	BranchDoesNotExist *bool `pulumi:"branchDoesNotExist"`
+	IsValid            *bool `pulumi:"isValid"`
+	// The configured branch. It must be null when `useMainbranch` is true. Otherwise it must be a non-empty value. It is possible for the configured branch to not exist (e.g. it was deleted after the settings are set).
+	Name *string `pulumi:"name"`
+	// Indicates if the setting points at an explicit branch (`false`) or tracks the main branch (`true`). When `true` the name must be null or not provided. When `false` the name must contain a non-empty branch name.
+	UseMainbranch *bool `pulumi:"useMainbranch"`
 }
 
 // BranchingModelDevelopmentInput is an input type that accepts BranchingModelDevelopmentArgs and BranchingModelDevelopmentOutput values.
@@ -287,10 +256,13 @@ type BranchingModelDevelopmentInput interface {
 }
 
 type BranchingModelDevelopmentArgs struct {
-	BranchDoesNotExist pulumi.BoolPtrInput   `pulumi:"branchDoesNotExist"`
-	IsValid            pulumi.BoolPtrInput   `pulumi:"isValid"`
-	Name               pulumi.StringPtrInput `pulumi:"name"`
-	UseMainbranch      pulumi.BoolPtrInput   `pulumi:"useMainbranch"`
+	// Optional and only returned for a repository's branching model. Indicates if the indicated branch exists on the repository (`false`) or not (`true`). This is useful for determining a fallback to the mainbranch when a repository is inheriting its project's branching model.
+	BranchDoesNotExist pulumi.BoolPtrInput `pulumi:"branchDoesNotExist"`
+	IsValid            pulumi.BoolPtrInput `pulumi:"isValid"`
+	// The configured branch. It must be null when `useMainbranch` is true. Otherwise it must be a non-empty value. It is possible for the configured branch to not exist (e.g. it was deleted after the settings are set).
+	Name pulumi.StringPtrInput `pulumi:"name"`
+	// Indicates if the setting points at an explicit branch (`false`) or tracks the main branch (`true`). When `true` the name must be null or not provided. When `false` the name must contain a non-empty branch name.
+	UseMainbranch pulumi.BoolPtrInput `pulumi:"useMainbranch"`
 }
 
 func (BranchingModelDevelopmentArgs) ElementType() reflect.Type {
@@ -303,12 +275,6 @@ func (i BranchingModelDevelopmentArgs) ToBranchingModelDevelopmentOutput() Branc
 
 func (i BranchingModelDevelopmentArgs) ToBranchingModelDevelopmentOutputWithContext(ctx context.Context) BranchingModelDevelopmentOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(BranchingModelDevelopmentOutput)
-}
-
-func (i BranchingModelDevelopmentArgs) ToOutput(ctx context.Context) pulumix.Output[BranchingModelDevelopment] {
-	return pulumix.Output[BranchingModelDevelopment]{
-		OutputState: i.ToBranchingModelDevelopmentOutputWithContext(ctx).OutputState,
-	}
 }
 
 func (i BranchingModelDevelopmentArgs) ToBranchingModelDevelopmentPtrOutput() BranchingModelDevelopmentPtrOutput {
@@ -352,12 +318,6 @@ func (i *branchingModelDevelopmentPtrType) ToBranchingModelDevelopmentPtrOutputW
 	return pulumi.ToOutputWithContext(ctx, i).(BranchingModelDevelopmentPtrOutput)
 }
 
-func (i *branchingModelDevelopmentPtrType) ToOutput(ctx context.Context) pulumix.Output[*BranchingModelDevelopment] {
-	return pulumix.Output[*BranchingModelDevelopment]{
-		OutputState: i.ToBranchingModelDevelopmentPtrOutputWithContext(ctx).OutputState,
-	}
-}
-
 type BranchingModelDevelopmentOutput struct{ *pulumi.OutputState }
 
 func (BranchingModelDevelopmentOutput) ElementType() reflect.Type {
@@ -382,12 +342,7 @@ func (o BranchingModelDevelopmentOutput) ToBranchingModelDevelopmentPtrOutputWit
 	}).(BranchingModelDevelopmentPtrOutput)
 }
 
-func (o BranchingModelDevelopmentOutput) ToOutput(ctx context.Context) pulumix.Output[BranchingModelDevelopment] {
-	return pulumix.Output[BranchingModelDevelopment]{
-		OutputState: o.OutputState,
-	}
-}
-
+// Optional and only returned for a repository's branching model. Indicates if the indicated branch exists on the repository (`false`) or not (`true`). This is useful for determining a fallback to the mainbranch when a repository is inheriting its project's branching model.
 func (o BranchingModelDevelopmentOutput) BranchDoesNotExist() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v BranchingModelDevelopment) *bool { return v.BranchDoesNotExist }).(pulumi.BoolPtrOutput)
 }
@@ -396,10 +351,12 @@ func (o BranchingModelDevelopmentOutput) IsValid() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v BranchingModelDevelopment) *bool { return v.IsValid }).(pulumi.BoolPtrOutput)
 }
 
+// The configured branch. It must be null when `useMainbranch` is true. Otherwise it must be a non-empty value. It is possible for the configured branch to not exist (e.g. it was deleted after the settings are set).
 func (o BranchingModelDevelopmentOutput) Name() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v BranchingModelDevelopment) *string { return v.Name }).(pulumi.StringPtrOutput)
 }
 
+// Indicates if the setting points at an explicit branch (`false`) or tracks the main branch (`true`). When `true` the name must be null or not provided. When `false` the name must contain a non-empty branch name.
 func (o BranchingModelDevelopmentOutput) UseMainbranch() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v BranchingModelDevelopment) *bool { return v.UseMainbranch }).(pulumi.BoolPtrOutput)
 }
@@ -418,12 +375,6 @@ func (o BranchingModelDevelopmentPtrOutput) ToBranchingModelDevelopmentPtrOutput
 	return o
 }
 
-func (o BranchingModelDevelopmentPtrOutput) ToOutput(ctx context.Context) pulumix.Output[*BranchingModelDevelopment] {
-	return pulumix.Output[*BranchingModelDevelopment]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o BranchingModelDevelopmentPtrOutput) Elem() BranchingModelDevelopmentOutput {
 	return o.ApplyT(func(v *BranchingModelDevelopment) BranchingModelDevelopment {
 		if v != nil {
@@ -434,6 +385,7 @@ func (o BranchingModelDevelopmentPtrOutput) Elem() BranchingModelDevelopmentOutp
 	}).(BranchingModelDevelopmentOutput)
 }
 
+// Optional and only returned for a repository's branching model. Indicates if the indicated branch exists on the repository (`false`) or not (`true`). This is useful for determining a fallback to the mainbranch when a repository is inheriting its project's branching model.
 func (o BranchingModelDevelopmentPtrOutput) BranchDoesNotExist() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *BranchingModelDevelopment) *bool {
 		if v == nil {
@@ -452,6 +404,7 @@ func (o BranchingModelDevelopmentPtrOutput) IsValid() pulumi.BoolPtrOutput {
 	}).(pulumi.BoolPtrOutput)
 }
 
+// The configured branch. It must be null when `useMainbranch` is true. Otherwise it must be a non-empty value. It is possible for the configured branch to not exist (e.g. it was deleted after the settings are set).
 func (o BranchingModelDevelopmentPtrOutput) Name() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *BranchingModelDevelopment) *string {
 		if v == nil {
@@ -461,6 +414,7 @@ func (o BranchingModelDevelopmentPtrOutput) Name() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
+// Indicates if the setting points at an explicit branch (`false`) or tracks the main branch (`true`). When `true` the name must be null or not provided. When `false` the name must contain a non-empty branch name.
 func (o BranchingModelDevelopmentPtrOutput) UseMainbranch() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *BranchingModelDevelopment) *bool {
 		if v == nil {
@@ -471,11 +425,15 @@ func (o BranchingModelDevelopmentPtrOutput) UseMainbranch() pulumi.BoolPtrOutput
 }
 
 type BranchingModelProduction struct {
-	BranchDoesNotExist *bool   `pulumi:"branchDoesNotExist"`
-	Enabled            *bool   `pulumi:"enabled"`
-	IsValid            *bool   `pulumi:"isValid"`
-	Name               *string `pulumi:"name"`
-	UseMainbranch      *bool   `pulumi:"useMainbranch"`
+	// Optional and only returned for a repository's branching model. Indicates if the indicated branch exists on the repository (`false`) or not (`true`). This is useful for determining a fallback to the mainbranch when a repository is inheriting its project's branching model.
+	BranchDoesNotExist *bool `pulumi:"branchDoesNotExist"`
+	// Indicates if branch is enabled or not.
+	Enabled *bool `pulumi:"enabled"`
+	IsValid *bool `pulumi:"isValid"`
+	// The configured branch. It must be null when `useMainbranch` is true. Otherwise it must be a non-empty value. It is possible for the configured branch to not exist (e.g. it was deleted after the settings are set).
+	Name *string `pulumi:"name"`
+	// Indicates if the setting points at an explicit branch (`false`) or tracks the main branch (`true`). When `true` the name must be null or not provided. When `false` the name must contain a non-empty branch name.
+	UseMainbranch *bool `pulumi:"useMainbranch"`
 }
 
 // BranchingModelProductionInput is an input type that accepts BranchingModelProductionArgs and BranchingModelProductionOutput values.
@@ -490,11 +448,15 @@ type BranchingModelProductionInput interface {
 }
 
 type BranchingModelProductionArgs struct {
-	BranchDoesNotExist pulumi.BoolPtrInput   `pulumi:"branchDoesNotExist"`
-	Enabled            pulumi.BoolPtrInput   `pulumi:"enabled"`
-	IsValid            pulumi.BoolPtrInput   `pulumi:"isValid"`
-	Name               pulumi.StringPtrInput `pulumi:"name"`
-	UseMainbranch      pulumi.BoolPtrInput   `pulumi:"useMainbranch"`
+	// Optional and only returned for a repository's branching model. Indicates if the indicated branch exists on the repository (`false`) or not (`true`). This is useful for determining a fallback to the mainbranch when a repository is inheriting its project's branching model.
+	BranchDoesNotExist pulumi.BoolPtrInput `pulumi:"branchDoesNotExist"`
+	// Indicates if branch is enabled or not.
+	Enabled pulumi.BoolPtrInput `pulumi:"enabled"`
+	IsValid pulumi.BoolPtrInput `pulumi:"isValid"`
+	// The configured branch. It must be null when `useMainbranch` is true. Otherwise it must be a non-empty value. It is possible for the configured branch to not exist (e.g. it was deleted after the settings are set).
+	Name pulumi.StringPtrInput `pulumi:"name"`
+	// Indicates if the setting points at an explicit branch (`false`) or tracks the main branch (`true`). When `true` the name must be null or not provided. When `false` the name must contain a non-empty branch name.
+	UseMainbranch pulumi.BoolPtrInput `pulumi:"useMainbranch"`
 }
 
 func (BranchingModelProductionArgs) ElementType() reflect.Type {
@@ -507,12 +469,6 @@ func (i BranchingModelProductionArgs) ToBranchingModelProductionOutput() Branchi
 
 func (i BranchingModelProductionArgs) ToBranchingModelProductionOutputWithContext(ctx context.Context) BranchingModelProductionOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(BranchingModelProductionOutput)
-}
-
-func (i BranchingModelProductionArgs) ToOutput(ctx context.Context) pulumix.Output[BranchingModelProduction] {
-	return pulumix.Output[BranchingModelProduction]{
-		OutputState: i.ToBranchingModelProductionOutputWithContext(ctx).OutputState,
-	}
 }
 
 func (i BranchingModelProductionArgs) ToBranchingModelProductionPtrOutput() BranchingModelProductionPtrOutput {
@@ -556,12 +512,6 @@ func (i *branchingModelProductionPtrType) ToBranchingModelProductionPtrOutputWit
 	return pulumi.ToOutputWithContext(ctx, i).(BranchingModelProductionPtrOutput)
 }
 
-func (i *branchingModelProductionPtrType) ToOutput(ctx context.Context) pulumix.Output[*BranchingModelProduction] {
-	return pulumix.Output[*BranchingModelProduction]{
-		OutputState: i.ToBranchingModelProductionPtrOutputWithContext(ctx).OutputState,
-	}
-}
-
 type BranchingModelProductionOutput struct{ *pulumi.OutputState }
 
 func (BranchingModelProductionOutput) ElementType() reflect.Type {
@@ -586,16 +536,12 @@ func (o BranchingModelProductionOutput) ToBranchingModelProductionPtrOutputWithC
 	}).(BranchingModelProductionPtrOutput)
 }
 
-func (o BranchingModelProductionOutput) ToOutput(ctx context.Context) pulumix.Output[BranchingModelProduction] {
-	return pulumix.Output[BranchingModelProduction]{
-		OutputState: o.OutputState,
-	}
-}
-
+// Optional and only returned for a repository's branching model. Indicates if the indicated branch exists on the repository (`false`) or not (`true`). This is useful for determining a fallback to the mainbranch when a repository is inheriting its project's branching model.
 func (o BranchingModelProductionOutput) BranchDoesNotExist() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v BranchingModelProduction) *bool { return v.BranchDoesNotExist }).(pulumi.BoolPtrOutput)
 }
 
+// Indicates if branch is enabled or not.
 func (o BranchingModelProductionOutput) Enabled() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v BranchingModelProduction) *bool { return v.Enabled }).(pulumi.BoolPtrOutput)
 }
@@ -604,10 +550,12 @@ func (o BranchingModelProductionOutput) IsValid() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v BranchingModelProduction) *bool { return v.IsValid }).(pulumi.BoolPtrOutput)
 }
 
+// The configured branch. It must be null when `useMainbranch` is true. Otherwise it must be a non-empty value. It is possible for the configured branch to not exist (e.g. it was deleted after the settings are set).
 func (o BranchingModelProductionOutput) Name() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v BranchingModelProduction) *string { return v.Name }).(pulumi.StringPtrOutput)
 }
 
+// Indicates if the setting points at an explicit branch (`false`) or tracks the main branch (`true`). When `true` the name must be null or not provided. When `false` the name must contain a non-empty branch name.
 func (o BranchingModelProductionOutput) UseMainbranch() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v BranchingModelProduction) *bool { return v.UseMainbranch }).(pulumi.BoolPtrOutput)
 }
@@ -626,12 +574,6 @@ func (o BranchingModelProductionPtrOutput) ToBranchingModelProductionPtrOutputWi
 	return o
 }
 
-func (o BranchingModelProductionPtrOutput) ToOutput(ctx context.Context) pulumix.Output[*BranchingModelProduction] {
-	return pulumix.Output[*BranchingModelProduction]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o BranchingModelProductionPtrOutput) Elem() BranchingModelProductionOutput {
 	return o.ApplyT(func(v *BranchingModelProduction) BranchingModelProduction {
 		if v != nil {
@@ -642,6 +584,7 @@ func (o BranchingModelProductionPtrOutput) Elem() BranchingModelProductionOutput
 	}).(BranchingModelProductionOutput)
 }
 
+// Optional and only returned for a repository's branching model. Indicates if the indicated branch exists on the repository (`false`) or not (`true`). This is useful for determining a fallback to the mainbranch when a repository is inheriting its project's branching model.
 func (o BranchingModelProductionPtrOutput) BranchDoesNotExist() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *BranchingModelProduction) *bool {
 		if v == nil {
@@ -651,6 +594,7 @@ func (o BranchingModelProductionPtrOutput) BranchDoesNotExist() pulumi.BoolPtrOu
 	}).(pulumi.BoolPtrOutput)
 }
 
+// Indicates if branch is enabled or not.
 func (o BranchingModelProductionPtrOutput) Enabled() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *BranchingModelProduction) *bool {
 		if v == nil {
@@ -669,6 +613,7 @@ func (o BranchingModelProductionPtrOutput) IsValid() pulumi.BoolPtrOutput {
 	}).(pulumi.BoolPtrOutput)
 }
 
+// The configured branch. It must be null when `useMainbranch` is true. Otherwise it must be a non-empty value. It is possible for the configured branch to not exist (e.g. it was deleted after the settings are set).
 func (o BranchingModelProductionPtrOutput) Name() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *BranchingModelProduction) *string {
 		if v == nil {
@@ -678,6 +623,7 @@ func (o BranchingModelProductionPtrOutput) Name() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
+// Indicates if the setting points at an explicit branch (`false`) or tracks the main branch (`true`). When `true` the name must be null or not provided. When `false` the name must contain a non-empty branch name.
 func (o BranchingModelProductionPtrOutput) UseMainbranch() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *BranchingModelProduction) *bool {
 		if v == nil {
@@ -688,6 +634,7 @@ func (o BranchingModelProductionPtrOutput) UseMainbranch() pulumi.BoolPtrOutput 
 }
 
 type DeploymentRestrictions struct {
+	// Only Admins can deploy this deployment stage.
 	AdminOnly *bool `pulumi:"adminOnly"`
 }
 
@@ -703,6 +650,7 @@ type DeploymentRestrictionsInput interface {
 }
 
 type DeploymentRestrictionsArgs struct {
+	// Only Admins can deploy this deployment stage.
 	AdminOnly pulumi.BoolPtrInput `pulumi:"adminOnly"`
 }
 
@@ -716,12 +664,6 @@ func (i DeploymentRestrictionsArgs) ToDeploymentRestrictionsOutput() DeploymentR
 
 func (i DeploymentRestrictionsArgs) ToDeploymentRestrictionsOutputWithContext(ctx context.Context) DeploymentRestrictionsOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(DeploymentRestrictionsOutput)
-}
-
-func (i DeploymentRestrictionsArgs) ToOutput(ctx context.Context) pulumix.Output[DeploymentRestrictions] {
-	return pulumix.Output[DeploymentRestrictions]{
-		OutputState: i.ToDeploymentRestrictionsOutputWithContext(ctx).OutputState,
-	}
 }
 
 func (i DeploymentRestrictionsArgs) ToDeploymentRestrictionsPtrOutput() DeploymentRestrictionsPtrOutput {
@@ -765,12 +707,6 @@ func (i *deploymentRestrictionsPtrType) ToDeploymentRestrictionsPtrOutputWithCon
 	return pulumi.ToOutputWithContext(ctx, i).(DeploymentRestrictionsPtrOutput)
 }
 
-func (i *deploymentRestrictionsPtrType) ToOutput(ctx context.Context) pulumix.Output[*DeploymentRestrictions] {
-	return pulumix.Output[*DeploymentRestrictions]{
-		OutputState: i.ToDeploymentRestrictionsPtrOutputWithContext(ctx).OutputState,
-	}
-}
-
 type DeploymentRestrictionsOutput struct{ *pulumi.OutputState }
 
 func (DeploymentRestrictionsOutput) ElementType() reflect.Type {
@@ -795,12 +731,7 @@ func (o DeploymentRestrictionsOutput) ToDeploymentRestrictionsPtrOutputWithConte
 	}).(DeploymentRestrictionsPtrOutput)
 }
 
-func (o DeploymentRestrictionsOutput) ToOutput(ctx context.Context) pulumix.Output[DeploymentRestrictions] {
-	return pulumix.Output[DeploymentRestrictions]{
-		OutputState: o.OutputState,
-	}
-}
-
+// Only Admins can deploy this deployment stage.
 func (o DeploymentRestrictionsOutput) AdminOnly() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v DeploymentRestrictions) *bool { return v.AdminOnly }).(pulumi.BoolPtrOutput)
 }
@@ -819,12 +750,6 @@ func (o DeploymentRestrictionsPtrOutput) ToDeploymentRestrictionsPtrOutputWithCo
 	return o
 }
 
-func (o DeploymentRestrictionsPtrOutput) ToOutput(ctx context.Context) pulumix.Output[*DeploymentRestrictions] {
-	return pulumix.Output[*DeploymentRestrictions]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o DeploymentRestrictionsPtrOutput) Elem() DeploymentRestrictionsOutput {
 	return o.ApplyT(func(v *DeploymentRestrictions) DeploymentRestrictions {
 		if v != nil {
@@ -835,6 +760,7 @@ func (o DeploymentRestrictionsPtrOutput) Elem() DeploymentRestrictionsOutput {
 	}).(DeploymentRestrictionsOutput)
 }
 
+// Only Admins can deploy this deployment stage.
 func (o DeploymentRestrictionsPtrOutput) AdminOnly() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *DeploymentRestrictions) *bool {
 		if v == nil {
@@ -845,6 +771,7 @@ func (o DeploymentRestrictionsPtrOutput) AdminOnly() pulumi.BoolPtrOutput {
 }
 
 type ForkedRepositoryLink struct {
+	// An avatar link to a resource related to this object. See Avatar Below.
 	Avatar *ForkedRepositoryLinkAvatar `pulumi:"avatar"`
 }
 
@@ -860,6 +787,7 @@ type ForkedRepositoryLinkInput interface {
 }
 
 type ForkedRepositoryLinkArgs struct {
+	// An avatar link to a resource related to this object. See Avatar Below.
 	Avatar ForkedRepositoryLinkAvatarPtrInput `pulumi:"avatar"`
 }
 
@@ -873,12 +801,6 @@ func (i ForkedRepositoryLinkArgs) ToForkedRepositoryLinkOutput() ForkedRepositor
 
 func (i ForkedRepositoryLinkArgs) ToForkedRepositoryLinkOutputWithContext(ctx context.Context) ForkedRepositoryLinkOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(ForkedRepositoryLinkOutput)
-}
-
-func (i ForkedRepositoryLinkArgs) ToOutput(ctx context.Context) pulumix.Output[ForkedRepositoryLink] {
-	return pulumix.Output[ForkedRepositoryLink]{
-		OutputState: i.ToForkedRepositoryLinkOutputWithContext(ctx).OutputState,
-	}
 }
 
 func (i ForkedRepositoryLinkArgs) ToForkedRepositoryLinkPtrOutput() ForkedRepositoryLinkPtrOutput {
@@ -922,12 +844,6 @@ func (i *forkedRepositoryLinkPtrType) ToForkedRepositoryLinkPtrOutputWithContext
 	return pulumi.ToOutputWithContext(ctx, i).(ForkedRepositoryLinkPtrOutput)
 }
 
-func (i *forkedRepositoryLinkPtrType) ToOutput(ctx context.Context) pulumix.Output[*ForkedRepositoryLink] {
-	return pulumix.Output[*ForkedRepositoryLink]{
-		OutputState: i.ToForkedRepositoryLinkPtrOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ForkedRepositoryLinkOutput struct{ *pulumi.OutputState }
 
 func (ForkedRepositoryLinkOutput) ElementType() reflect.Type {
@@ -952,12 +868,7 @@ func (o ForkedRepositoryLinkOutput) ToForkedRepositoryLinkPtrOutputWithContext(c
 	}).(ForkedRepositoryLinkPtrOutput)
 }
 
-func (o ForkedRepositoryLinkOutput) ToOutput(ctx context.Context) pulumix.Output[ForkedRepositoryLink] {
-	return pulumix.Output[ForkedRepositoryLink]{
-		OutputState: o.OutputState,
-	}
-}
-
+// An avatar link to a resource related to this object. See Avatar Below.
 func (o ForkedRepositoryLinkOutput) Avatar() ForkedRepositoryLinkAvatarPtrOutput {
 	return o.ApplyT(func(v ForkedRepositoryLink) *ForkedRepositoryLinkAvatar { return v.Avatar }).(ForkedRepositoryLinkAvatarPtrOutput)
 }
@@ -976,12 +887,6 @@ func (o ForkedRepositoryLinkPtrOutput) ToForkedRepositoryLinkPtrOutputWithContex
 	return o
 }
 
-func (o ForkedRepositoryLinkPtrOutput) ToOutput(ctx context.Context) pulumix.Output[*ForkedRepositoryLink] {
-	return pulumix.Output[*ForkedRepositoryLink]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o ForkedRepositoryLinkPtrOutput) Elem() ForkedRepositoryLinkOutput {
 	return o.ApplyT(func(v *ForkedRepositoryLink) ForkedRepositoryLink {
 		if v != nil {
@@ -992,6 +897,7 @@ func (o ForkedRepositoryLinkPtrOutput) Elem() ForkedRepositoryLinkOutput {
 	}).(ForkedRepositoryLinkOutput)
 }
 
+// An avatar link to a resource related to this object. See Avatar Below.
 func (o ForkedRepositoryLinkPtrOutput) Avatar() ForkedRepositoryLinkAvatarPtrOutput {
 	return o.ApplyT(func(v *ForkedRepositoryLink) *ForkedRepositoryLinkAvatar {
 		if v == nil {
@@ -1002,6 +908,7 @@ func (o ForkedRepositoryLinkPtrOutput) Avatar() ForkedRepositoryLinkAvatarPtrOut
 }
 
 type ForkedRepositoryLinkAvatar struct {
+	// href of the avatar.
 	Href *string `pulumi:"href"`
 }
 
@@ -1017,6 +924,7 @@ type ForkedRepositoryLinkAvatarInput interface {
 }
 
 type ForkedRepositoryLinkAvatarArgs struct {
+	// href of the avatar.
 	Href pulumi.StringPtrInput `pulumi:"href"`
 }
 
@@ -1030,12 +938,6 @@ func (i ForkedRepositoryLinkAvatarArgs) ToForkedRepositoryLinkAvatarOutput() For
 
 func (i ForkedRepositoryLinkAvatarArgs) ToForkedRepositoryLinkAvatarOutputWithContext(ctx context.Context) ForkedRepositoryLinkAvatarOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(ForkedRepositoryLinkAvatarOutput)
-}
-
-func (i ForkedRepositoryLinkAvatarArgs) ToOutput(ctx context.Context) pulumix.Output[ForkedRepositoryLinkAvatar] {
-	return pulumix.Output[ForkedRepositoryLinkAvatar]{
-		OutputState: i.ToForkedRepositoryLinkAvatarOutputWithContext(ctx).OutputState,
-	}
 }
 
 func (i ForkedRepositoryLinkAvatarArgs) ToForkedRepositoryLinkAvatarPtrOutput() ForkedRepositoryLinkAvatarPtrOutput {
@@ -1079,12 +981,6 @@ func (i *forkedRepositoryLinkAvatarPtrType) ToForkedRepositoryLinkAvatarPtrOutpu
 	return pulumi.ToOutputWithContext(ctx, i).(ForkedRepositoryLinkAvatarPtrOutput)
 }
 
-func (i *forkedRepositoryLinkAvatarPtrType) ToOutput(ctx context.Context) pulumix.Output[*ForkedRepositoryLinkAvatar] {
-	return pulumix.Output[*ForkedRepositoryLinkAvatar]{
-		OutputState: i.ToForkedRepositoryLinkAvatarPtrOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ForkedRepositoryLinkAvatarOutput struct{ *pulumi.OutputState }
 
 func (ForkedRepositoryLinkAvatarOutput) ElementType() reflect.Type {
@@ -1109,12 +1005,7 @@ func (o ForkedRepositoryLinkAvatarOutput) ToForkedRepositoryLinkAvatarPtrOutputW
 	}).(ForkedRepositoryLinkAvatarPtrOutput)
 }
 
-func (o ForkedRepositoryLinkAvatarOutput) ToOutput(ctx context.Context) pulumix.Output[ForkedRepositoryLinkAvatar] {
-	return pulumix.Output[ForkedRepositoryLinkAvatar]{
-		OutputState: o.OutputState,
-	}
-}
-
+// href of the avatar.
 func (o ForkedRepositoryLinkAvatarOutput) Href() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ForkedRepositoryLinkAvatar) *string { return v.Href }).(pulumi.StringPtrOutput)
 }
@@ -1133,12 +1024,6 @@ func (o ForkedRepositoryLinkAvatarPtrOutput) ToForkedRepositoryLinkAvatarPtrOutp
 	return o
 }
 
-func (o ForkedRepositoryLinkAvatarPtrOutput) ToOutput(ctx context.Context) pulumix.Output[*ForkedRepositoryLinkAvatar] {
-	return pulumix.Output[*ForkedRepositoryLinkAvatar]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o ForkedRepositoryLinkAvatarPtrOutput) Elem() ForkedRepositoryLinkAvatarOutput {
 	return o.ApplyT(func(v *ForkedRepositoryLinkAvatar) ForkedRepositoryLinkAvatar {
 		if v != nil {
@@ -1149,6 +1034,7 @@ func (o ForkedRepositoryLinkAvatarPtrOutput) Elem() ForkedRepositoryLinkAvatarOu
 	}).(ForkedRepositoryLinkAvatarOutput)
 }
 
+// href of the avatar.
 func (o ForkedRepositoryLinkAvatarPtrOutput) Href() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *ForkedRepositoryLinkAvatar) *string {
 		if v == nil {
@@ -1159,8 +1045,11 @@ func (o ForkedRepositoryLinkAvatarPtrOutput) Href() pulumi.StringPtrOutput {
 }
 
 type PipelineScheduleTarget struct {
-	RefName  string                         `pulumi:"refName"`
-	RefType  string                         `pulumi:"refType"`
+	// The name of the reference.
+	RefName string `pulumi:"refName"`
+	// The type of reference. Valid values are `branch` and `tag`.
+	RefType string `pulumi:"refType"`
+	// Selector spec. See Selector below.
 	Selector PipelineScheduleTargetSelector `pulumi:"selector"`
 }
 
@@ -1176,8 +1065,11 @@ type PipelineScheduleTargetInput interface {
 }
 
 type PipelineScheduleTargetArgs struct {
-	RefName  pulumi.StringInput                  `pulumi:"refName"`
-	RefType  pulumi.StringInput                  `pulumi:"refType"`
+	// The name of the reference.
+	RefName pulumi.StringInput `pulumi:"refName"`
+	// The type of reference. Valid values are `branch` and `tag`.
+	RefType pulumi.StringInput `pulumi:"refType"`
+	// Selector spec. See Selector below.
 	Selector PipelineScheduleTargetSelectorInput `pulumi:"selector"`
 }
 
@@ -1191,12 +1083,6 @@ func (i PipelineScheduleTargetArgs) ToPipelineScheduleTargetOutput() PipelineSch
 
 func (i PipelineScheduleTargetArgs) ToPipelineScheduleTargetOutputWithContext(ctx context.Context) PipelineScheduleTargetOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(PipelineScheduleTargetOutput)
-}
-
-func (i PipelineScheduleTargetArgs) ToOutput(ctx context.Context) pulumix.Output[PipelineScheduleTarget] {
-	return pulumix.Output[PipelineScheduleTarget]{
-		OutputState: i.ToPipelineScheduleTargetOutputWithContext(ctx).OutputState,
-	}
 }
 
 func (i PipelineScheduleTargetArgs) ToPipelineScheduleTargetPtrOutput() PipelineScheduleTargetPtrOutput {
@@ -1240,12 +1126,6 @@ func (i *pipelineScheduleTargetPtrType) ToPipelineScheduleTargetPtrOutputWithCon
 	return pulumi.ToOutputWithContext(ctx, i).(PipelineScheduleTargetPtrOutput)
 }
 
-func (i *pipelineScheduleTargetPtrType) ToOutput(ctx context.Context) pulumix.Output[*PipelineScheduleTarget] {
-	return pulumix.Output[*PipelineScheduleTarget]{
-		OutputState: i.ToPipelineScheduleTargetPtrOutputWithContext(ctx).OutputState,
-	}
-}
-
 type PipelineScheduleTargetOutput struct{ *pulumi.OutputState }
 
 func (PipelineScheduleTargetOutput) ElementType() reflect.Type {
@@ -1270,20 +1150,17 @@ func (o PipelineScheduleTargetOutput) ToPipelineScheduleTargetPtrOutputWithConte
 	}).(PipelineScheduleTargetPtrOutput)
 }
 
-func (o PipelineScheduleTargetOutput) ToOutput(ctx context.Context) pulumix.Output[PipelineScheduleTarget] {
-	return pulumix.Output[PipelineScheduleTarget]{
-		OutputState: o.OutputState,
-	}
-}
-
+// The name of the reference.
 func (o PipelineScheduleTargetOutput) RefName() pulumi.StringOutput {
 	return o.ApplyT(func(v PipelineScheduleTarget) string { return v.RefName }).(pulumi.StringOutput)
 }
 
+// The type of reference. Valid values are `branch` and `tag`.
 func (o PipelineScheduleTargetOutput) RefType() pulumi.StringOutput {
 	return o.ApplyT(func(v PipelineScheduleTarget) string { return v.RefType }).(pulumi.StringOutput)
 }
 
+// Selector spec. See Selector below.
 func (o PipelineScheduleTargetOutput) Selector() PipelineScheduleTargetSelectorOutput {
 	return o.ApplyT(func(v PipelineScheduleTarget) PipelineScheduleTargetSelector { return v.Selector }).(PipelineScheduleTargetSelectorOutput)
 }
@@ -1302,12 +1179,6 @@ func (o PipelineScheduleTargetPtrOutput) ToPipelineScheduleTargetPtrOutputWithCo
 	return o
 }
 
-func (o PipelineScheduleTargetPtrOutput) ToOutput(ctx context.Context) pulumix.Output[*PipelineScheduleTarget] {
-	return pulumix.Output[*PipelineScheduleTarget]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o PipelineScheduleTargetPtrOutput) Elem() PipelineScheduleTargetOutput {
 	return o.ApplyT(func(v *PipelineScheduleTarget) PipelineScheduleTarget {
 		if v != nil {
@@ -1318,6 +1189,7 @@ func (o PipelineScheduleTargetPtrOutput) Elem() PipelineScheduleTargetOutput {
 	}).(PipelineScheduleTargetOutput)
 }
 
+// The name of the reference.
 func (o PipelineScheduleTargetPtrOutput) RefName() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *PipelineScheduleTarget) *string {
 		if v == nil {
@@ -1327,6 +1199,7 @@ func (o PipelineScheduleTargetPtrOutput) RefName() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
+// The type of reference. Valid values are `branch` and `tag`.
 func (o PipelineScheduleTargetPtrOutput) RefType() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *PipelineScheduleTarget) *string {
 		if v == nil {
@@ -1336,6 +1209,7 @@ func (o PipelineScheduleTargetPtrOutput) RefType() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
+// Selector spec. See Selector below.
 func (o PipelineScheduleTargetPtrOutput) Selector() PipelineScheduleTargetSelectorPtrOutput {
 	return o.ApplyT(func(v *PipelineScheduleTarget) *PipelineScheduleTargetSelector {
 		if v == nil {
@@ -1346,8 +1220,10 @@ func (o PipelineScheduleTargetPtrOutput) Selector() PipelineScheduleTargetSelect
 }
 
 type PipelineScheduleTargetSelector struct {
-	Pattern string  `pulumi:"pattern"`
-	Type    *string `pulumi:"type"`
+	// The name of the matching pipeline definition.
+	Pattern string `pulumi:"pattern"`
+	// Selector type. Default value is `branches`.
+	Type *string `pulumi:"type"`
 }
 
 // PipelineScheduleTargetSelectorInput is an input type that accepts PipelineScheduleTargetSelectorArgs and PipelineScheduleTargetSelectorOutput values.
@@ -1362,8 +1238,10 @@ type PipelineScheduleTargetSelectorInput interface {
 }
 
 type PipelineScheduleTargetSelectorArgs struct {
-	Pattern pulumi.StringInput    `pulumi:"pattern"`
-	Type    pulumi.StringPtrInput `pulumi:"type"`
+	// The name of the matching pipeline definition.
+	Pattern pulumi.StringInput `pulumi:"pattern"`
+	// Selector type. Default value is `branches`.
+	Type pulumi.StringPtrInput `pulumi:"type"`
 }
 
 func (PipelineScheduleTargetSelectorArgs) ElementType() reflect.Type {
@@ -1376,12 +1254,6 @@ func (i PipelineScheduleTargetSelectorArgs) ToPipelineScheduleTargetSelectorOutp
 
 func (i PipelineScheduleTargetSelectorArgs) ToPipelineScheduleTargetSelectorOutputWithContext(ctx context.Context) PipelineScheduleTargetSelectorOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(PipelineScheduleTargetSelectorOutput)
-}
-
-func (i PipelineScheduleTargetSelectorArgs) ToOutput(ctx context.Context) pulumix.Output[PipelineScheduleTargetSelector] {
-	return pulumix.Output[PipelineScheduleTargetSelector]{
-		OutputState: i.ToPipelineScheduleTargetSelectorOutputWithContext(ctx).OutputState,
-	}
 }
 
 func (i PipelineScheduleTargetSelectorArgs) ToPipelineScheduleTargetSelectorPtrOutput() PipelineScheduleTargetSelectorPtrOutput {
@@ -1425,12 +1297,6 @@ func (i *pipelineScheduleTargetSelectorPtrType) ToPipelineScheduleTargetSelector
 	return pulumi.ToOutputWithContext(ctx, i).(PipelineScheduleTargetSelectorPtrOutput)
 }
 
-func (i *pipelineScheduleTargetSelectorPtrType) ToOutput(ctx context.Context) pulumix.Output[*PipelineScheduleTargetSelector] {
-	return pulumix.Output[*PipelineScheduleTargetSelector]{
-		OutputState: i.ToPipelineScheduleTargetSelectorPtrOutputWithContext(ctx).OutputState,
-	}
-}
-
 type PipelineScheduleTargetSelectorOutput struct{ *pulumi.OutputState }
 
 func (PipelineScheduleTargetSelectorOutput) ElementType() reflect.Type {
@@ -1455,16 +1321,12 @@ func (o PipelineScheduleTargetSelectorOutput) ToPipelineScheduleTargetSelectorPt
 	}).(PipelineScheduleTargetSelectorPtrOutput)
 }
 
-func (o PipelineScheduleTargetSelectorOutput) ToOutput(ctx context.Context) pulumix.Output[PipelineScheduleTargetSelector] {
-	return pulumix.Output[PipelineScheduleTargetSelector]{
-		OutputState: o.OutputState,
-	}
-}
-
+// The name of the matching pipeline definition.
 func (o PipelineScheduleTargetSelectorOutput) Pattern() pulumi.StringOutput {
 	return o.ApplyT(func(v PipelineScheduleTargetSelector) string { return v.Pattern }).(pulumi.StringOutput)
 }
 
+// Selector type. Default value is `branches`.
 func (o PipelineScheduleTargetSelectorOutput) Type() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v PipelineScheduleTargetSelector) *string { return v.Type }).(pulumi.StringPtrOutput)
 }
@@ -1483,12 +1345,6 @@ func (o PipelineScheduleTargetSelectorPtrOutput) ToPipelineScheduleTargetSelecto
 	return o
 }
 
-func (o PipelineScheduleTargetSelectorPtrOutput) ToOutput(ctx context.Context) pulumix.Output[*PipelineScheduleTargetSelector] {
-	return pulumix.Output[*PipelineScheduleTargetSelector]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o PipelineScheduleTargetSelectorPtrOutput) Elem() PipelineScheduleTargetSelectorOutput {
 	return o.ApplyT(func(v *PipelineScheduleTargetSelector) PipelineScheduleTargetSelector {
 		if v != nil {
@@ -1499,6 +1355,7 @@ func (o PipelineScheduleTargetSelectorPtrOutput) Elem() PipelineScheduleTargetSe
 	}).(PipelineScheduleTargetSelectorOutput)
 }
 
+// The name of the matching pipeline definition.
 func (o PipelineScheduleTargetSelectorPtrOutput) Pattern() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *PipelineScheduleTargetSelector) *string {
 		if v == nil {
@@ -1508,6 +1365,7 @@ func (o PipelineScheduleTargetSelectorPtrOutput) Pattern() pulumi.StringPtrOutpu
 	}).(pulumi.StringPtrOutput)
 }
 
+// Selector type. Default value is `branches`.
 func (o PipelineScheduleTargetSelectorPtrOutput) Type() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *PipelineScheduleTargetSelector) *string {
 		if v == nil {
@@ -1518,7 +1376,9 @@ func (o PipelineScheduleTargetSelectorPtrOutput) Type() pulumi.StringPtrOutput {
 }
 
 type PipelineSshKnownHostPublicKey struct {
-	Key               string  `pulumi:"key"`
+	// The plain public key.
+	Key string `pulumi:"key"`
+	// The type of the public key. Valid values are `ssh-ed25519`, `ecdsa-sha2-nistp256`, `ssh-rsa`, and `ssh-dss`.
 	KeyType           string  `pulumi:"keyType"`
 	Md5Fingerprint    *string `pulumi:"md5Fingerprint"`
 	Sha256Fingerprint *string `pulumi:"sha256Fingerprint"`
@@ -1536,7 +1396,9 @@ type PipelineSshKnownHostPublicKeyInput interface {
 }
 
 type PipelineSshKnownHostPublicKeyArgs struct {
-	Key               pulumi.StringInput    `pulumi:"key"`
+	// The plain public key.
+	Key pulumi.StringInput `pulumi:"key"`
+	// The type of the public key. Valid values are `ssh-ed25519`, `ecdsa-sha2-nistp256`, `ssh-rsa`, and `ssh-dss`.
 	KeyType           pulumi.StringInput    `pulumi:"keyType"`
 	Md5Fingerprint    pulumi.StringPtrInput `pulumi:"md5Fingerprint"`
 	Sha256Fingerprint pulumi.StringPtrInput `pulumi:"sha256Fingerprint"`
@@ -1552,12 +1414,6 @@ func (i PipelineSshKnownHostPublicKeyArgs) ToPipelineSshKnownHostPublicKeyOutput
 
 func (i PipelineSshKnownHostPublicKeyArgs) ToPipelineSshKnownHostPublicKeyOutputWithContext(ctx context.Context) PipelineSshKnownHostPublicKeyOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(PipelineSshKnownHostPublicKeyOutput)
-}
-
-func (i PipelineSshKnownHostPublicKeyArgs) ToOutput(ctx context.Context) pulumix.Output[PipelineSshKnownHostPublicKey] {
-	return pulumix.Output[PipelineSshKnownHostPublicKey]{
-		OutputState: i.ToPipelineSshKnownHostPublicKeyOutputWithContext(ctx).OutputState,
-	}
 }
 
 func (i PipelineSshKnownHostPublicKeyArgs) ToPipelineSshKnownHostPublicKeyPtrOutput() PipelineSshKnownHostPublicKeyPtrOutput {
@@ -1601,12 +1457,6 @@ func (i *pipelineSshKnownHostPublicKeyPtrType) ToPipelineSshKnownHostPublicKeyPt
 	return pulumi.ToOutputWithContext(ctx, i).(PipelineSshKnownHostPublicKeyPtrOutput)
 }
 
-func (i *pipelineSshKnownHostPublicKeyPtrType) ToOutput(ctx context.Context) pulumix.Output[*PipelineSshKnownHostPublicKey] {
-	return pulumix.Output[*PipelineSshKnownHostPublicKey]{
-		OutputState: i.ToPipelineSshKnownHostPublicKeyPtrOutputWithContext(ctx).OutputState,
-	}
-}
-
 type PipelineSshKnownHostPublicKeyOutput struct{ *pulumi.OutputState }
 
 func (PipelineSshKnownHostPublicKeyOutput) ElementType() reflect.Type {
@@ -1631,16 +1481,12 @@ func (o PipelineSshKnownHostPublicKeyOutput) ToPipelineSshKnownHostPublicKeyPtrO
 	}).(PipelineSshKnownHostPublicKeyPtrOutput)
 }
 
-func (o PipelineSshKnownHostPublicKeyOutput) ToOutput(ctx context.Context) pulumix.Output[PipelineSshKnownHostPublicKey] {
-	return pulumix.Output[PipelineSshKnownHostPublicKey]{
-		OutputState: o.OutputState,
-	}
-}
-
+// The plain public key.
 func (o PipelineSshKnownHostPublicKeyOutput) Key() pulumi.StringOutput {
 	return o.ApplyT(func(v PipelineSshKnownHostPublicKey) string { return v.Key }).(pulumi.StringOutput)
 }
 
+// The type of the public key. Valid values are `ssh-ed25519`, `ecdsa-sha2-nistp256`, `ssh-rsa`, and `ssh-dss`.
 func (o PipelineSshKnownHostPublicKeyOutput) KeyType() pulumi.StringOutput {
 	return o.ApplyT(func(v PipelineSshKnownHostPublicKey) string { return v.KeyType }).(pulumi.StringOutput)
 }
@@ -1667,12 +1513,6 @@ func (o PipelineSshKnownHostPublicKeyPtrOutput) ToPipelineSshKnownHostPublicKeyP
 	return o
 }
 
-func (o PipelineSshKnownHostPublicKeyPtrOutput) ToOutput(ctx context.Context) pulumix.Output[*PipelineSshKnownHostPublicKey] {
-	return pulumix.Output[*PipelineSshKnownHostPublicKey]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o PipelineSshKnownHostPublicKeyPtrOutput) Elem() PipelineSshKnownHostPublicKeyOutput {
 	return o.ApplyT(func(v *PipelineSshKnownHostPublicKey) PipelineSshKnownHostPublicKey {
 		if v != nil {
@@ -1683,6 +1523,7 @@ func (o PipelineSshKnownHostPublicKeyPtrOutput) Elem() PipelineSshKnownHostPubli
 	}).(PipelineSshKnownHostPublicKeyOutput)
 }
 
+// The plain public key.
 func (o PipelineSshKnownHostPublicKeyPtrOutput) Key() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *PipelineSshKnownHostPublicKey) *string {
 		if v == nil {
@@ -1692,6 +1533,7 @@ func (o PipelineSshKnownHostPublicKeyPtrOutput) Key() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
+// The type of the public key. Valid values are `ssh-ed25519`, `ecdsa-sha2-nistp256`, `ssh-rsa`, and `ssh-dss`.
 func (o PipelineSshKnownHostPublicKeyPtrOutput) KeyType() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *PipelineSshKnownHostPublicKey) *string {
 		if v == nil {
@@ -1720,9 +1562,12 @@ func (o PipelineSshKnownHostPublicKeyPtrOutput) Sha256Fingerprint() pulumi.Strin
 }
 
 type ProjectBranchingModelBranchType struct {
-	Enabled *bool   `pulumi:"enabled"`
-	Kind    string  `pulumi:"kind"`
-	Prefix  *string `pulumi:"prefix"`
+	// Whether the branch type is enabled or not. A disabled branch type may contain an invalid `prefix`.
+	Enabled *bool `pulumi:"enabled"`
+	// The kind of the branch type. Valid values are `feature`, `bugfix`, `release`, `hotfix`.
+	Kind string `pulumi:"kind"`
+	// The prefix for this branch type. A branch with this prefix will be classified as per kind. The prefix of an enabled branch type must be a valid branch prefix. Additionally, it cannot be blank, empty or null. The prefix for a disabled branch type can be empty or invalid.
+	Prefix *string `pulumi:"prefix"`
 }
 
 // ProjectBranchingModelBranchTypeInput is an input type that accepts ProjectBranchingModelBranchTypeArgs and ProjectBranchingModelBranchTypeOutput values.
@@ -1737,9 +1582,12 @@ type ProjectBranchingModelBranchTypeInput interface {
 }
 
 type ProjectBranchingModelBranchTypeArgs struct {
-	Enabled pulumi.BoolPtrInput   `pulumi:"enabled"`
-	Kind    pulumi.StringInput    `pulumi:"kind"`
-	Prefix  pulumi.StringPtrInput `pulumi:"prefix"`
+	// Whether the branch type is enabled or not. A disabled branch type may contain an invalid `prefix`.
+	Enabled pulumi.BoolPtrInput `pulumi:"enabled"`
+	// The kind of the branch type. Valid values are `feature`, `bugfix`, `release`, `hotfix`.
+	Kind pulumi.StringInput `pulumi:"kind"`
+	// The prefix for this branch type. A branch with this prefix will be classified as per kind. The prefix of an enabled branch type must be a valid branch prefix. Additionally, it cannot be blank, empty or null. The prefix for a disabled branch type can be empty or invalid.
+	Prefix pulumi.StringPtrInput `pulumi:"prefix"`
 }
 
 func (ProjectBranchingModelBranchTypeArgs) ElementType() reflect.Type {
@@ -1752,12 +1600,6 @@ func (i ProjectBranchingModelBranchTypeArgs) ToProjectBranchingModelBranchTypeOu
 
 func (i ProjectBranchingModelBranchTypeArgs) ToProjectBranchingModelBranchTypeOutputWithContext(ctx context.Context) ProjectBranchingModelBranchTypeOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(ProjectBranchingModelBranchTypeOutput)
-}
-
-func (i ProjectBranchingModelBranchTypeArgs) ToOutput(ctx context.Context) pulumix.Output[ProjectBranchingModelBranchType] {
-	return pulumix.Output[ProjectBranchingModelBranchType]{
-		OutputState: i.ToProjectBranchingModelBranchTypeOutputWithContext(ctx).OutputState,
-	}
 }
 
 // ProjectBranchingModelBranchTypeArrayInput is an input type that accepts ProjectBranchingModelBranchTypeArray and ProjectBranchingModelBranchTypeArrayOutput values.
@@ -1785,12 +1627,6 @@ func (i ProjectBranchingModelBranchTypeArray) ToProjectBranchingModelBranchTypeA
 	return pulumi.ToOutputWithContext(ctx, i).(ProjectBranchingModelBranchTypeArrayOutput)
 }
 
-func (i ProjectBranchingModelBranchTypeArray) ToOutput(ctx context.Context) pulumix.Output[[]ProjectBranchingModelBranchType] {
-	return pulumix.Output[[]ProjectBranchingModelBranchType]{
-		OutputState: i.ToProjectBranchingModelBranchTypeArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ProjectBranchingModelBranchTypeOutput struct{ *pulumi.OutputState }
 
 func (ProjectBranchingModelBranchTypeOutput) ElementType() reflect.Type {
@@ -1805,20 +1641,17 @@ func (o ProjectBranchingModelBranchTypeOutput) ToProjectBranchingModelBranchType
 	return o
 }
 
-func (o ProjectBranchingModelBranchTypeOutput) ToOutput(ctx context.Context) pulumix.Output[ProjectBranchingModelBranchType] {
-	return pulumix.Output[ProjectBranchingModelBranchType]{
-		OutputState: o.OutputState,
-	}
-}
-
+// Whether the branch type is enabled or not. A disabled branch type may contain an invalid `prefix`.
 func (o ProjectBranchingModelBranchTypeOutput) Enabled() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v ProjectBranchingModelBranchType) *bool { return v.Enabled }).(pulumi.BoolPtrOutput)
 }
 
+// The kind of the branch type. Valid values are `feature`, `bugfix`, `release`, `hotfix`.
 func (o ProjectBranchingModelBranchTypeOutput) Kind() pulumi.StringOutput {
 	return o.ApplyT(func(v ProjectBranchingModelBranchType) string { return v.Kind }).(pulumi.StringOutput)
 }
 
+// The prefix for this branch type. A branch with this prefix will be classified as per kind. The prefix of an enabled branch type must be a valid branch prefix. Additionally, it cannot be blank, empty or null. The prefix for a disabled branch type can be empty or invalid.
 func (o ProjectBranchingModelBranchTypeOutput) Prefix() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ProjectBranchingModelBranchType) *string { return v.Prefix }).(pulumi.StringPtrOutput)
 }
@@ -1837,12 +1670,6 @@ func (o ProjectBranchingModelBranchTypeArrayOutput) ToProjectBranchingModelBranc
 	return o
 }
 
-func (o ProjectBranchingModelBranchTypeArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]ProjectBranchingModelBranchType] {
-	return pulumix.Output[[]ProjectBranchingModelBranchType]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o ProjectBranchingModelBranchTypeArrayOutput) Index(i pulumi.IntInput) ProjectBranchingModelBranchTypeOutput {
 	return pulumi.All(o, i).ApplyT(func(vs []interface{}) ProjectBranchingModelBranchType {
 		return vs[0].([]ProjectBranchingModelBranchType)[vs[1].(int)]
@@ -1850,10 +1677,13 @@ func (o ProjectBranchingModelBranchTypeArrayOutput) Index(i pulumi.IntInput) Pro
 }
 
 type ProjectBranchingModelDevelopment struct {
-	BranchDoesNotExist *bool   `pulumi:"branchDoesNotExist"`
-	IsValid            *bool   `pulumi:"isValid"`
-	Name               *string `pulumi:"name"`
-	UseMainbranch      *bool   `pulumi:"useMainbranch"`
+	// Optional and only returned for a project's branching model. Indicates if the indicated branch exists on the project (`false`) or not (`true`). This is useful for determining a fallback to the mainbranch when a project is inheriting its project's branching model.
+	BranchDoesNotExist *bool `pulumi:"branchDoesNotExist"`
+	IsValid            *bool `pulumi:"isValid"`
+	// The configured branch. It must be null when `useMainbranch` is true. Otherwise it must be a non-empty value. It is possible for the configured branch to not exist (e.g. it was deleted after the settings are set).
+	Name *string `pulumi:"name"`
+	// Indicates if the setting points at an explicit branch (`false`) or tracks the main branch (`true`). When `true` the name must be null or not provided. When `false` the name must contain a non-empty branch name.
+	UseMainbranch *bool `pulumi:"useMainbranch"`
 }
 
 // ProjectBranchingModelDevelopmentInput is an input type that accepts ProjectBranchingModelDevelopmentArgs and ProjectBranchingModelDevelopmentOutput values.
@@ -1868,10 +1698,13 @@ type ProjectBranchingModelDevelopmentInput interface {
 }
 
 type ProjectBranchingModelDevelopmentArgs struct {
-	BranchDoesNotExist pulumi.BoolPtrInput   `pulumi:"branchDoesNotExist"`
-	IsValid            pulumi.BoolPtrInput   `pulumi:"isValid"`
-	Name               pulumi.StringPtrInput `pulumi:"name"`
-	UseMainbranch      pulumi.BoolPtrInput   `pulumi:"useMainbranch"`
+	// Optional and only returned for a project's branching model. Indicates if the indicated branch exists on the project (`false`) or not (`true`). This is useful for determining a fallback to the mainbranch when a project is inheriting its project's branching model.
+	BranchDoesNotExist pulumi.BoolPtrInput `pulumi:"branchDoesNotExist"`
+	IsValid            pulumi.BoolPtrInput `pulumi:"isValid"`
+	// The configured branch. It must be null when `useMainbranch` is true. Otherwise it must be a non-empty value. It is possible for the configured branch to not exist (e.g. it was deleted after the settings are set).
+	Name pulumi.StringPtrInput `pulumi:"name"`
+	// Indicates if the setting points at an explicit branch (`false`) or tracks the main branch (`true`). When `true` the name must be null or not provided. When `false` the name must contain a non-empty branch name.
+	UseMainbranch pulumi.BoolPtrInput `pulumi:"useMainbranch"`
 }
 
 func (ProjectBranchingModelDevelopmentArgs) ElementType() reflect.Type {
@@ -1884,12 +1717,6 @@ func (i ProjectBranchingModelDevelopmentArgs) ToProjectBranchingModelDevelopment
 
 func (i ProjectBranchingModelDevelopmentArgs) ToProjectBranchingModelDevelopmentOutputWithContext(ctx context.Context) ProjectBranchingModelDevelopmentOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(ProjectBranchingModelDevelopmentOutput)
-}
-
-func (i ProjectBranchingModelDevelopmentArgs) ToOutput(ctx context.Context) pulumix.Output[ProjectBranchingModelDevelopment] {
-	return pulumix.Output[ProjectBranchingModelDevelopment]{
-		OutputState: i.ToProjectBranchingModelDevelopmentOutputWithContext(ctx).OutputState,
-	}
 }
 
 func (i ProjectBranchingModelDevelopmentArgs) ToProjectBranchingModelDevelopmentPtrOutput() ProjectBranchingModelDevelopmentPtrOutput {
@@ -1933,12 +1760,6 @@ func (i *projectBranchingModelDevelopmentPtrType) ToProjectBranchingModelDevelop
 	return pulumi.ToOutputWithContext(ctx, i).(ProjectBranchingModelDevelopmentPtrOutput)
 }
 
-func (i *projectBranchingModelDevelopmentPtrType) ToOutput(ctx context.Context) pulumix.Output[*ProjectBranchingModelDevelopment] {
-	return pulumix.Output[*ProjectBranchingModelDevelopment]{
-		OutputState: i.ToProjectBranchingModelDevelopmentPtrOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ProjectBranchingModelDevelopmentOutput struct{ *pulumi.OutputState }
 
 func (ProjectBranchingModelDevelopmentOutput) ElementType() reflect.Type {
@@ -1963,12 +1784,7 @@ func (o ProjectBranchingModelDevelopmentOutput) ToProjectBranchingModelDevelopme
 	}).(ProjectBranchingModelDevelopmentPtrOutput)
 }
 
-func (o ProjectBranchingModelDevelopmentOutput) ToOutput(ctx context.Context) pulumix.Output[ProjectBranchingModelDevelopment] {
-	return pulumix.Output[ProjectBranchingModelDevelopment]{
-		OutputState: o.OutputState,
-	}
-}
-
+// Optional and only returned for a project's branching model. Indicates if the indicated branch exists on the project (`false`) or not (`true`). This is useful for determining a fallback to the mainbranch when a project is inheriting its project's branching model.
 func (o ProjectBranchingModelDevelopmentOutput) BranchDoesNotExist() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v ProjectBranchingModelDevelopment) *bool { return v.BranchDoesNotExist }).(pulumi.BoolPtrOutput)
 }
@@ -1977,10 +1793,12 @@ func (o ProjectBranchingModelDevelopmentOutput) IsValid() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v ProjectBranchingModelDevelopment) *bool { return v.IsValid }).(pulumi.BoolPtrOutput)
 }
 
+// The configured branch. It must be null when `useMainbranch` is true. Otherwise it must be a non-empty value. It is possible for the configured branch to not exist (e.g. it was deleted after the settings are set).
 func (o ProjectBranchingModelDevelopmentOutput) Name() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ProjectBranchingModelDevelopment) *string { return v.Name }).(pulumi.StringPtrOutput)
 }
 
+// Indicates if the setting points at an explicit branch (`false`) or tracks the main branch (`true`). When `true` the name must be null or not provided. When `false` the name must contain a non-empty branch name.
 func (o ProjectBranchingModelDevelopmentOutput) UseMainbranch() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v ProjectBranchingModelDevelopment) *bool { return v.UseMainbranch }).(pulumi.BoolPtrOutput)
 }
@@ -1999,12 +1817,6 @@ func (o ProjectBranchingModelDevelopmentPtrOutput) ToProjectBranchingModelDevelo
 	return o
 }
 
-func (o ProjectBranchingModelDevelopmentPtrOutput) ToOutput(ctx context.Context) pulumix.Output[*ProjectBranchingModelDevelopment] {
-	return pulumix.Output[*ProjectBranchingModelDevelopment]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o ProjectBranchingModelDevelopmentPtrOutput) Elem() ProjectBranchingModelDevelopmentOutput {
 	return o.ApplyT(func(v *ProjectBranchingModelDevelopment) ProjectBranchingModelDevelopment {
 		if v != nil {
@@ -2015,6 +1827,7 @@ func (o ProjectBranchingModelDevelopmentPtrOutput) Elem() ProjectBranchingModelD
 	}).(ProjectBranchingModelDevelopmentOutput)
 }
 
+// Optional and only returned for a project's branching model. Indicates if the indicated branch exists on the project (`false`) or not (`true`). This is useful for determining a fallback to the mainbranch when a project is inheriting its project's branching model.
 func (o ProjectBranchingModelDevelopmentPtrOutput) BranchDoesNotExist() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *ProjectBranchingModelDevelopment) *bool {
 		if v == nil {
@@ -2033,6 +1846,7 @@ func (o ProjectBranchingModelDevelopmentPtrOutput) IsValid() pulumi.BoolPtrOutpu
 	}).(pulumi.BoolPtrOutput)
 }
 
+// The configured branch. It must be null when `useMainbranch` is true. Otherwise it must be a non-empty value. It is possible for the configured branch to not exist (e.g. it was deleted after the settings are set).
 func (o ProjectBranchingModelDevelopmentPtrOutput) Name() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *ProjectBranchingModelDevelopment) *string {
 		if v == nil {
@@ -2042,6 +1856,7 @@ func (o ProjectBranchingModelDevelopmentPtrOutput) Name() pulumi.StringPtrOutput
 	}).(pulumi.StringPtrOutput)
 }
 
+// Indicates if the setting points at an explicit branch (`false`) or tracks the main branch (`true`). When `true` the name must be null or not provided. When `false` the name must contain a non-empty branch name.
 func (o ProjectBranchingModelDevelopmentPtrOutput) UseMainbranch() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *ProjectBranchingModelDevelopment) *bool {
 		if v == nil {
@@ -2052,11 +1867,15 @@ func (o ProjectBranchingModelDevelopmentPtrOutput) UseMainbranch() pulumi.BoolPt
 }
 
 type ProjectBranchingModelProduction struct {
-	BranchDoesNotExist *bool   `pulumi:"branchDoesNotExist"`
-	Enabled            *bool   `pulumi:"enabled"`
-	IsValid            *bool   `pulumi:"isValid"`
-	Name               *string `pulumi:"name"`
-	UseMainbranch      *bool   `pulumi:"useMainbranch"`
+	// Optional and only returned for a project's branching model. Indicates if the indicated branch exists on the project (`false`) or not (`true`). This is useful for determining a fallback to the mainbranch when a project is inheriting its project's branching model.
+	BranchDoesNotExist *bool `pulumi:"branchDoesNotExist"`
+	// Indicates if branch is enabled or not.
+	Enabled *bool `pulumi:"enabled"`
+	IsValid *bool `pulumi:"isValid"`
+	// The configured branch. It must be null when `useMainbranch` is true. Otherwise it must be a non-empty value. It is possible for the configured branch to not exist (e.g. it was deleted after the settings are set).
+	Name *string `pulumi:"name"`
+	// Indicates if the setting points at an explicit branch (`false`) or tracks the main branch (`true`). When `true` the name must be null or not provided. When `false` the name must contain a non-empty branch name.
+	UseMainbranch *bool `pulumi:"useMainbranch"`
 }
 
 // ProjectBranchingModelProductionInput is an input type that accepts ProjectBranchingModelProductionArgs and ProjectBranchingModelProductionOutput values.
@@ -2071,11 +1890,15 @@ type ProjectBranchingModelProductionInput interface {
 }
 
 type ProjectBranchingModelProductionArgs struct {
-	BranchDoesNotExist pulumi.BoolPtrInput   `pulumi:"branchDoesNotExist"`
-	Enabled            pulumi.BoolPtrInput   `pulumi:"enabled"`
-	IsValid            pulumi.BoolPtrInput   `pulumi:"isValid"`
-	Name               pulumi.StringPtrInput `pulumi:"name"`
-	UseMainbranch      pulumi.BoolPtrInput   `pulumi:"useMainbranch"`
+	// Optional and only returned for a project's branching model. Indicates if the indicated branch exists on the project (`false`) or not (`true`). This is useful for determining a fallback to the mainbranch when a project is inheriting its project's branching model.
+	BranchDoesNotExist pulumi.BoolPtrInput `pulumi:"branchDoesNotExist"`
+	// Indicates if branch is enabled or not.
+	Enabled pulumi.BoolPtrInput `pulumi:"enabled"`
+	IsValid pulumi.BoolPtrInput `pulumi:"isValid"`
+	// The configured branch. It must be null when `useMainbranch` is true. Otherwise it must be a non-empty value. It is possible for the configured branch to not exist (e.g. it was deleted after the settings are set).
+	Name pulumi.StringPtrInput `pulumi:"name"`
+	// Indicates if the setting points at an explicit branch (`false`) or tracks the main branch (`true`). When `true` the name must be null or not provided. When `false` the name must contain a non-empty branch name.
+	UseMainbranch pulumi.BoolPtrInput `pulumi:"useMainbranch"`
 }
 
 func (ProjectBranchingModelProductionArgs) ElementType() reflect.Type {
@@ -2088,12 +1911,6 @@ func (i ProjectBranchingModelProductionArgs) ToProjectBranchingModelProductionOu
 
 func (i ProjectBranchingModelProductionArgs) ToProjectBranchingModelProductionOutputWithContext(ctx context.Context) ProjectBranchingModelProductionOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(ProjectBranchingModelProductionOutput)
-}
-
-func (i ProjectBranchingModelProductionArgs) ToOutput(ctx context.Context) pulumix.Output[ProjectBranchingModelProduction] {
-	return pulumix.Output[ProjectBranchingModelProduction]{
-		OutputState: i.ToProjectBranchingModelProductionOutputWithContext(ctx).OutputState,
-	}
 }
 
 func (i ProjectBranchingModelProductionArgs) ToProjectBranchingModelProductionPtrOutput() ProjectBranchingModelProductionPtrOutput {
@@ -2137,12 +1954,6 @@ func (i *projectBranchingModelProductionPtrType) ToProjectBranchingModelProducti
 	return pulumi.ToOutputWithContext(ctx, i).(ProjectBranchingModelProductionPtrOutput)
 }
 
-func (i *projectBranchingModelProductionPtrType) ToOutput(ctx context.Context) pulumix.Output[*ProjectBranchingModelProduction] {
-	return pulumix.Output[*ProjectBranchingModelProduction]{
-		OutputState: i.ToProjectBranchingModelProductionPtrOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ProjectBranchingModelProductionOutput struct{ *pulumi.OutputState }
 
 func (ProjectBranchingModelProductionOutput) ElementType() reflect.Type {
@@ -2167,16 +1978,12 @@ func (o ProjectBranchingModelProductionOutput) ToProjectBranchingModelProduction
 	}).(ProjectBranchingModelProductionPtrOutput)
 }
 
-func (o ProjectBranchingModelProductionOutput) ToOutput(ctx context.Context) pulumix.Output[ProjectBranchingModelProduction] {
-	return pulumix.Output[ProjectBranchingModelProduction]{
-		OutputState: o.OutputState,
-	}
-}
-
+// Optional and only returned for a project's branching model. Indicates if the indicated branch exists on the project (`false`) or not (`true`). This is useful for determining a fallback to the mainbranch when a project is inheriting its project's branching model.
 func (o ProjectBranchingModelProductionOutput) BranchDoesNotExist() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v ProjectBranchingModelProduction) *bool { return v.BranchDoesNotExist }).(pulumi.BoolPtrOutput)
 }
 
+// Indicates if branch is enabled or not.
 func (o ProjectBranchingModelProductionOutput) Enabled() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v ProjectBranchingModelProduction) *bool { return v.Enabled }).(pulumi.BoolPtrOutput)
 }
@@ -2185,10 +1992,12 @@ func (o ProjectBranchingModelProductionOutput) IsValid() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v ProjectBranchingModelProduction) *bool { return v.IsValid }).(pulumi.BoolPtrOutput)
 }
 
+// The configured branch. It must be null when `useMainbranch` is true. Otherwise it must be a non-empty value. It is possible for the configured branch to not exist (e.g. it was deleted after the settings are set).
 func (o ProjectBranchingModelProductionOutput) Name() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ProjectBranchingModelProduction) *string { return v.Name }).(pulumi.StringPtrOutput)
 }
 
+// Indicates if the setting points at an explicit branch (`false`) or tracks the main branch (`true`). When `true` the name must be null or not provided. When `false` the name must contain a non-empty branch name.
 func (o ProjectBranchingModelProductionOutput) UseMainbranch() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v ProjectBranchingModelProduction) *bool { return v.UseMainbranch }).(pulumi.BoolPtrOutput)
 }
@@ -2207,12 +2016,6 @@ func (o ProjectBranchingModelProductionPtrOutput) ToProjectBranchingModelProduct
 	return o
 }
 
-func (o ProjectBranchingModelProductionPtrOutput) ToOutput(ctx context.Context) pulumix.Output[*ProjectBranchingModelProduction] {
-	return pulumix.Output[*ProjectBranchingModelProduction]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o ProjectBranchingModelProductionPtrOutput) Elem() ProjectBranchingModelProductionOutput {
 	return o.ApplyT(func(v *ProjectBranchingModelProduction) ProjectBranchingModelProduction {
 		if v != nil {
@@ -2223,6 +2026,7 @@ func (o ProjectBranchingModelProductionPtrOutput) Elem() ProjectBranchingModelPr
 	}).(ProjectBranchingModelProductionOutput)
 }
 
+// Optional and only returned for a project's branching model. Indicates if the indicated branch exists on the project (`false`) or not (`true`). This is useful for determining a fallback to the mainbranch when a project is inheriting its project's branching model.
 func (o ProjectBranchingModelProductionPtrOutput) BranchDoesNotExist() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *ProjectBranchingModelProduction) *bool {
 		if v == nil {
@@ -2232,6 +2036,7 @@ func (o ProjectBranchingModelProductionPtrOutput) BranchDoesNotExist() pulumi.Bo
 	}).(pulumi.BoolPtrOutput)
 }
 
+// Indicates if branch is enabled or not.
 func (o ProjectBranchingModelProductionPtrOutput) Enabled() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *ProjectBranchingModelProduction) *bool {
 		if v == nil {
@@ -2250,6 +2055,7 @@ func (o ProjectBranchingModelProductionPtrOutput) IsValid() pulumi.BoolPtrOutput
 	}).(pulumi.BoolPtrOutput)
 }
 
+// The configured branch. It must be null when `useMainbranch` is true. Otherwise it must be a non-empty value. It is possible for the configured branch to not exist (e.g. it was deleted after the settings are set).
 func (o ProjectBranchingModelProductionPtrOutput) Name() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *ProjectBranchingModelProduction) *string {
 		if v == nil {
@@ -2259,6 +2065,7 @@ func (o ProjectBranchingModelProductionPtrOutput) Name() pulumi.StringPtrOutput 
 	}).(pulumi.StringPtrOutput)
 }
 
+// Indicates if the setting points at an explicit branch (`false`) or tracks the main branch (`true`). When `true` the name must be null or not provided. When `false` the name must contain a non-empty branch name.
 func (o ProjectBranchingModelProductionPtrOutput) UseMainbranch() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *ProjectBranchingModelProduction) *bool {
 		if v == nil {
@@ -2269,6 +2076,7 @@ func (o ProjectBranchingModelProductionPtrOutput) UseMainbranch() pulumi.BoolPtr
 }
 
 type ProjectLink struct {
+	// An avatar link to a resource related to this object. See Avatar Below.
 	Avatar *ProjectLinkAvatar `pulumi:"avatar"`
 }
 
@@ -2284,6 +2092,7 @@ type ProjectLinkInput interface {
 }
 
 type ProjectLinkArgs struct {
+	// An avatar link to a resource related to this object. See Avatar Below.
 	Avatar ProjectLinkAvatarPtrInput `pulumi:"avatar"`
 }
 
@@ -2297,12 +2106,6 @@ func (i ProjectLinkArgs) ToProjectLinkOutput() ProjectLinkOutput {
 
 func (i ProjectLinkArgs) ToProjectLinkOutputWithContext(ctx context.Context) ProjectLinkOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(ProjectLinkOutput)
-}
-
-func (i ProjectLinkArgs) ToOutput(ctx context.Context) pulumix.Output[ProjectLink] {
-	return pulumix.Output[ProjectLink]{
-		OutputState: i.ToProjectLinkOutputWithContext(ctx).OutputState,
-	}
 }
 
 func (i ProjectLinkArgs) ToProjectLinkPtrOutput() ProjectLinkPtrOutput {
@@ -2346,12 +2149,6 @@ func (i *projectLinkPtrType) ToProjectLinkPtrOutputWithContext(ctx context.Conte
 	return pulumi.ToOutputWithContext(ctx, i).(ProjectLinkPtrOutput)
 }
 
-func (i *projectLinkPtrType) ToOutput(ctx context.Context) pulumix.Output[*ProjectLink] {
-	return pulumix.Output[*ProjectLink]{
-		OutputState: i.ToProjectLinkPtrOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ProjectLinkOutput struct{ *pulumi.OutputState }
 
 func (ProjectLinkOutput) ElementType() reflect.Type {
@@ -2376,12 +2173,7 @@ func (o ProjectLinkOutput) ToProjectLinkPtrOutputWithContext(ctx context.Context
 	}).(ProjectLinkPtrOutput)
 }
 
-func (o ProjectLinkOutput) ToOutput(ctx context.Context) pulumix.Output[ProjectLink] {
-	return pulumix.Output[ProjectLink]{
-		OutputState: o.OutputState,
-	}
-}
-
+// An avatar link to a resource related to this object. See Avatar Below.
 func (o ProjectLinkOutput) Avatar() ProjectLinkAvatarPtrOutput {
 	return o.ApplyT(func(v ProjectLink) *ProjectLinkAvatar { return v.Avatar }).(ProjectLinkAvatarPtrOutput)
 }
@@ -2400,12 +2192,6 @@ func (o ProjectLinkPtrOutput) ToProjectLinkPtrOutputWithContext(ctx context.Cont
 	return o
 }
 
-func (o ProjectLinkPtrOutput) ToOutput(ctx context.Context) pulumix.Output[*ProjectLink] {
-	return pulumix.Output[*ProjectLink]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o ProjectLinkPtrOutput) Elem() ProjectLinkOutput {
 	return o.ApplyT(func(v *ProjectLink) ProjectLink {
 		if v != nil {
@@ -2416,6 +2202,7 @@ func (o ProjectLinkPtrOutput) Elem() ProjectLinkOutput {
 	}).(ProjectLinkOutput)
 }
 
+// An avatar link to a resource related to this object. See Avatar Below.
 func (o ProjectLinkPtrOutput) Avatar() ProjectLinkAvatarPtrOutput {
 	return o.ApplyT(func(v *ProjectLink) *ProjectLinkAvatar {
 		if v == nil {
@@ -2426,6 +2213,7 @@ func (o ProjectLinkPtrOutput) Avatar() ProjectLinkAvatarPtrOutput {
 }
 
 type ProjectLinkAvatar struct {
+	// href of the avatar.
 	Href *string `pulumi:"href"`
 }
 
@@ -2441,6 +2229,7 @@ type ProjectLinkAvatarInput interface {
 }
 
 type ProjectLinkAvatarArgs struct {
+	// href of the avatar.
 	Href pulumi.StringPtrInput `pulumi:"href"`
 }
 
@@ -2454,12 +2243,6 @@ func (i ProjectLinkAvatarArgs) ToProjectLinkAvatarOutput() ProjectLinkAvatarOutp
 
 func (i ProjectLinkAvatarArgs) ToProjectLinkAvatarOutputWithContext(ctx context.Context) ProjectLinkAvatarOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(ProjectLinkAvatarOutput)
-}
-
-func (i ProjectLinkAvatarArgs) ToOutput(ctx context.Context) pulumix.Output[ProjectLinkAvatar] {
-	return pulumix.Output[ProjectLinkAvatar]{
-		OutputState: i.ToProjectLinkAvatarOutputWithContext(ctx).OutputState,
-	}
 }
 
 func (i ProjectLinkAvatarArgs) ToProjectLinkAvatarPtrOutput() ProjectLinkAvatarPtrOutput {
@@ -2503,12 +2286,6 @@ func (i *projectLinkAvatarPtrType) ToProjectLinkAvatarPtrOutputWithContext(ctx c
 	return pulumi.ToOutputWithContext(ctx, i).(ProjectLinkAvatarPtrOutput)
 }
 
-func (i *projectLinkAvatarPtrType) ToOutput(ctx context.Context) pulumix.Output[*ProjectLinkAvatar] {
-	return pulumix.Output[*ProjectLinkAvatar]{
-		OutputState: i.ToProjectLinkAvatarPtrOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ProjectLinkAvatarOutput struct{ *pulumi.OutputState }
 
 func (ProjectLinkAvatarOutput) ElementType() reflect.Type {
@@ -2533,12 +2310,7 @@ func (o ProjectLinkAvatarOutput) ToProjectLinkAvatarPtrOutputWithContext(ctx con
 	}).(ProjectLinkAvatarPtrOutput)
 }
 
-func (o ProjectLinkAvatarOutput) ToOutput(ctx context.Context) pulumix.Output[ProjectLinkAvatar] {
-	return pulumix.Output[ProjectLinkAvatar]{
-		OutputState: o.OutputState,
-	}
-}
-
+// href of the avatar.
 func (o ProjectLinkAvatarOutput) Href() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ProjectLinkAvatar) *string { return v.Href }).(pulumi.StringPtrOutput)
 }
@@ -2557,12 +2329,6 @@ func (o ProjectLinkAvatarPtrOutput) ToProjectLinkAvatarPtrOutputWithContext(ctx 
 	return o
 }
 
-func (o ProjectLinkAvatarPtrOutput) ToOutput(ctx context.Context) pulumix.Output[*ProjectLinkAvatar] {
-	return pulumix.Output[*ProjectLinkAvatar]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o ProjectLinkAvatarPtrOutput) Elem() ProjectLinkAvatarOutput {
 	return o.ApplyT(func(v *ProjectLinkAvatar) ProjectLinkAvatar {
 		if v != nil {
@@ -2573,6 +2339,7 @@ func (o ProjectLinkAvatarPtrOutput) Elem() ProjectLinkAvatarOutput {
 	}).(ProjectLinkAvatarOutput)
 }
 
+// href of the avatar.
 func (o ProjectLinkAvatarPtrOutput) Href() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *ProjectLinkAvatar) *string {
 		if v == nil {
@@ -2583,6 +2350,7 @@ func (o ProjectLinkAvatarPtrOutput) Href() pulumi.StringPtrOutput {
 }
 
 type RepositoryLink struct {
+	// An avatar link to a resource related to this object. See Avatar Below.
 	Avatar *RepositoryLinkAvatar `pulumi:"avatar"`
 }
 
@@ -2598,6 +2366,7 @@ type RepositoryLinkInput interface {
 }
 
 type RepositoryLinkArgs struct {
+	// An avatar link to a resource related to this object. See Avatar Below.
 	Avatar RepositoryLinkAvatarPtrInput `pulumi:"avatar"`
 }
 
@@ -2611,12 +2380,6 @@ func (i RepositoryLinkArgs) ToRepositoryLinkOutput() RepositoryLinkOutput {
 
 func (i RepositoryLinkArgs) ToRepositoryLinkOutputWithContext(ctx context.Context) RepositoryLinkOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(RepositoryLinkOutput)
-}
-
-func (i RepositoryLinkArgs) ToOutput(ctx context.Context) pulumix.Output[RepositoryLink] {
-	return pulumix.Output[RepositoryLink]{
-		OutputState: i.ToRepositoryLinkOutputWithContext(ctx).OutputState,
-	}
 }
 
 func (i RepositoryLinkArgs) ToRepositoryLinkPtrOutput() RepositoryLinkPtrOutput {
@@ -2660,12 +2423,6 @@ func (i *repositoryLinkPtrType) ToRepositoryLinkPtrOutputWithContext(ctx context
 	return pulumi.ToOutputWithContext(ctx, i).(RepositoryLinkPtrOutput)
 }
 
-func (i *repositoryLinkPtrType) ToOutput(ctx context.Context) pulumix.Output[*RepositoryLink] {
-	return pulumix.Output[*RepositoryLink]{
-		OutputState: i.ToRepositoryLinkPtrOutputWithContext(ctx).OutputState,
-	}
-}
-
 type RepositoryLinkOutput struct{ *pulumi.OutputState }
 
 func (RepositoryLinkOutput) ElementType() reflect.Type {
@@ -2690,12 +2447,7 @@ func (o RepositoryLinkOutput) ToRepositoryLinkPtrOutputWithContext(ctx context.C
 	}).(RepositoryLinkPtrOutput)
 }
 
-func (o RepositoryLinkOutput) ToOutput(ctx context.Context) pulumix.Output[RepositoryLink] {
-	return pulumix.Output[RepositoryLink]{
-		OutputState: o.OutputState,
-	}
-}
-
+// An avatar link to a resource related to this object. See Avatar Below.
 func (o RepositoryLinkOutput) Avatar() RepositoryLinkAvatarPtrOutput {
 	return o.ApplyT(func(v RepositoryLink) *RepositoryLinkAvatar { return v.Avatar }).(RepositoryLinkAvatarPtrOutput)
 }
@@ -2714,12 +2466,6 @@ func (o RepositoryLinkPtrOutput) ToRepositoryLinkPtrOutputWithContext(ctx contex
 	return o
 }
 
-func (o RepositoryLinkPtrOutput) ToOutput(ctx context.Context) pulumix.Output[*RepositoryLink] {
-	return pulumix.Output[*RepositoryLink]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o RepositoryLinkPtrOutput) Elem() RepositoryLinkOutput {
 	return o.ApplyT(func(v *RepositoryLink) RepositoryLink {
 		if v != nil {
@@ -2730,6 +2476,7 @@ func (o RepositoryLinkPtrOutput) Elem() RepositoryLinkOutput {
 	}).(RepositoryLinkOutput)
 }
 
+// An avatar link to a resource related to this object. See Avatar Below.
 func (o RepositoryLinkPtrOutput) Avatar() RepositoryLinkAvatarPtrOutput {
 	return o.ApplyT(func(v *RepositoryLink) *RepositoryLinkAvatar {
 		if v == nil {
@@ -2740,6 +2487,7 @@ func (o RepositoryLinkPtrOutput) Avatar() RepositoryLinkAvatarPtrOutput {
 }
 
 type RepositoryLinkAvatar struct {
+	// href of the avatar.
 	Href *string `pulumi:"href"`
 }
 
@@ -2755,6 +2503,7 @@ type RepositoryLinkAvatarInput interface {
 }
 
 type RepositoryLinkAvatarArgs struct {
+	// href of the avatar.
 	Href pulumi.StringPtrInput `pulumi:"href"`
 }
 
@@ -2768,12 +2517,6 @@ func (i RepositoryLinkAvatarArgs) ToRepositoryLinkAvatarOutput() RepositoryLinkA
 
 func (i RepositoryLinkAvatarArgs) ToRepositoryLinkAvatarOutputWithContext(ctx context.Context) RepositoryLinkAvatarOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(RepositoryLinkAvatarOutput)
-}
-
-func (i RepositoryLinkAvatarArgs) ToOutput(ctx context.Context) pulumix.Output[RepositoryLinkAvatar] {
-	return pulumix.Output[RepositoryLinkAvatar]{
-		OutputState: i.ToRepositoryLinkAvatarOutputWithContext(ctx).OutputState,
-	}
 }
 
 func (i RepositoryLinkAvatarArgs) ToRepositoryLinkAvatarPtrOutput() RepositoryLinkAvatarPtrOutput {
@@ -2817,12 +2560,6 @@ func (i *repositoryLinkAvatarPtrType) ToRepositoryLinkAvatarPtrOutputWithContext
 	return pulumi.ToOutputWithContext(ctx, i).(RepositoryLinkAvatarPtrOutput)
 }
 
-func (i *repositoryLinkAvatarPtrType) ToOutput(ctx context.Context) pulumix.Output[*RepositoryLinkAvatar] {
-	return pulumix.Output[*RepositoryLinkAvatar]{
-		OutputState: i.ToRepositoryLinkAvatarPtrOutputWithContext(ctx).OutputState,
-	}
-}
-
 type RepositoryLinkAvatarOutput struct{ *pulumi.OutputState }
 
 func (RepositoryLinkAvatarOutput) ElementType() reflect.Type {
@@ -2847,12 +2584,7 @@ func (o RepositoryLinkAvatarOutput) ToRepositoryLinkAvatarPtrOutputWithContext(c
 	}).(RepositoryLinkAvatarPtrOutput)
 }
 
-func (o RepositoryLinkAvatarOutput) ToOutput(ctx context.Context) pulumix.Output[RepositoryLinkAvatar] {
-	return pulumix.Output[RepositoryLinkAvatar]{
-		OutputState: o.OutputState,
-	}
-}
-
+// href of the avatar.
 func (o RepositoryLinkAvatarOutput) Href() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v RepositoryLinkAvatar) *string { return v.Href }).(pulumi.StringPtrOutput)
 }
@@ -2871,12 +2603,6 @@ func (o RepositoryLinkAvatarPtrOutput) ToRepositoryLinkAvatarPtrOutputWithContex
 	return o
 }
 
-func (o RepositoryLinkAvatarPtrOutput) ToOutput(ctx context.Context) pulumix.Output[*RepositoryLinkAvatar] {
-	return pulumix.Output[*RepositoryLinkAvatar]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o RepositoryLinkAvatarPtrOutput) Elem() RepositoryLinkAvatarOutput {
 	return o.ApplyT(func(v *RepositoryLinkAvatar) RepositoryLinkAvatar {
 		if v != nil {
@@ -2887,6 +2613,7 @@ func (o RepositoryLinkAvatarPtrOutput) Elem() RepositoryLinkAvatarOutput {
 	}).(RepositoryLinkAvatarOutput)
 }
 
+// href of the avatar.
 func (o RepositoryLinkAvatarPtrOutput) Href() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *RepositoryLinkAvatar) *string {
 		if v == nil {
@@ -2897,9 +2624,12 @@ func (o RepositoryLinkAvatarPtrOutput) Href() pulumi.StringPtrOutput {
 }
 
 type GetCurrentUserEmail struct {
-	Email       string `pulumi:"email"`
-	IsConfirmed bool   `pulumi:"isConfirmed"`
-	IsPrimary   bool   `pulumi:"isPrimary"`
+	// The email address.
+	Email string `pulumi:"email"`
+	// Whether the email is confirmed.
+	IsConfirmed bool `pulumi:"isConfirmed"`
+	// Whether is primary email for the user.
+	IsPrimary bool `pulumi:"isPrimary"`
 }
 
 // GetCurrentUserEmailInput is an input type that accepts GetCurrentUserEmailArgs and GetCurrentUserEmailOutput values.
@@ -2914,9 +2644,12 @@ type GetCurrentUserEmailInput interface {
 }
 
 type GetCurrentUserEmailArgs struct {
-	Email       pulumi.StringInput `pulumi:"email"`
-	IsConfirmed pulumi.BoolInput   `pulumi:"isConfirmed"`
-	IsPrimary   pulumi.BoolInput   `pulumi:"isPrimary"`
+	// The email address.
+	Email pulumi.StringInput `pulumi:"email"`
+	// Whether the email is confirmed.
+	IsConfirmed pulumi.BoolInput `pulumi:"isConfirmed"`
+	// Whether is primary email for the user.
+	IsPrimary pulumi.BoolInput `pulumi:"isPrimary"`
 }
 
 func (GetCurrentUserEmailArgs) ElementType() reflect.Type {
@@ -2929,12 +2662,6 @@ func (i GetCurrentUserEmailArgs) ToGetCurrentUserEmailOutput() GetCurrentUserEma
 
 func (i GetCurrentUserEmailArgs) ToGetCurrentUserEmailOutputWithContext(ctx context.Context) GetCurrentUserEmailOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(GetCurrentUserEmailOutput)
-}
-
-func (i GetCurrentUserEmailArgs) ToOutput(ctx context.Context) pulumix.Output[GetCurrentUserEmail] {
-	return pulumix.Output[GetCurrentUserEmail]{
-		OutputState: i.ToGetCurrentUserEmailOutputWithContext(ctx).OutputState,
-	}
 }
 
 // GetCurrentUserEmailArrayInput is an input type that accepts GetCurrentUserEmailArray and GetCurrentUserEmailArrayOutput values.
@@ -2962,12 +2689,6 @@ func (i GetCurrentUserEmailArray) ToGetCurrentUserEmailArrayOutputWithContext(ct
 	return pulumi.ToOutputWithContext(ctx, i).(GetCurrentUserEmailArrayOutput)
 }
 
-func (i GetCurrentUserEmailArray) ToOutput(ctx context.Context) pulumix.Output[[]GetCurrentUserEmail] {
-	return pulumix.Output[[]GetCurrentUserEmail]{
-		OutputState: i.ToGetCurrentUserEmailArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type GetCurrentUserEmailOutput struct{ *pulumi.OutputState }
 
 func (GetCurrentUserEmailOutput) ElementType() reflect.Type {
@@ -2982,20 +2703,17 @@ func (o GetCurrentUserEmailOutput) ToGetCurrentUserEmailOutputWithContext(ctx co
 	return o
 }
 
-func (o GetCurrentUserEmailOutput) ToOutput(ctx context.Context) pulumix.Output[GetCurrentUserEmail] {
-	return pulumix.Output[GetCurrentUserEmail]{
-		OutputState: o.OutputState,
-	}
-}
-
+// The email address.
 func (o GetCurrentUserEmailOutput) Email() pulumi.StringOutput {
 	return o.ApplyT(func(v GetCurrentUserEmail) string { return v.Email }).(pulumi.StringOutput)
 }
 
+// Whether the email is confirmed.
 func (o GetCurrentUserEmailOutput) IsConfirmed() pulumi.BoolOutput {
 	return o.ApplyT(func(v GetCurrentUserEmail) bool { return v.IsConfirmed }).(pulumi.BoolOutput)
 }
 
+// Whether is primary email for the user.
 func (o GetCurrentUserEmailOutput) IsPrimary() pulumi.BoolOutput {
 	return o.ApplyT(func(v GetCurrentUserEmail) bool { return v.IsPrimary }).(pulumi.BoolOutput)
 }
@@ -3014,24 +2732,138 @@ func (o GetCurrentUserEmailArrayOutput) ToGetCurrentUserEmailArrayOutputWithCont
 	return o
 }
 
-func (o GetCurrentUserEmailArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]GetCurrentUserEmail] {
-	return pulumix.Output[[]GetCurrentUserEmail]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o GetCurrentUserEmailArrayOutput) Index(i pulumi.IntInput) GetCurrentUserEmailOutput {
 	return pulumi.All(o, i).ApplyT(func(vs []interface{}) GetCurrentUserEmail {
 		return vs[0].([]GetCurrentUserEmail)[vs[1].(int)]
 	}).(GetCurrentUserEmailOutput)
 }
 
+type GetGroupMembersGroupMember struct {
+	// The User display name.
+	DisplayName string `pulumi:"displayName"`
+	// The Username.
+	Username string `pulumi:"username"`
+	// User UUID.
+	Uuid string `pulumi:"uuid"`
+}
+
+// GetGroupMembersGroupMemberInput is an input type that accepts GetGroupMembersGroupMemberArgs and GetGroupMembersGroupMemberOutput values.
+// You can construct a concrete instance of `GetGroupMembersGroupMemberInput` via:
+//
+//	GetGroupMembersGroupMemberArgs{...}
+type GetGroupMembersGroupMemberInput interface {
+	pulumi.Input
+
+	ToGetGroupMembersGroupMemberOutput() GetGroupMembersGroupMemberOutput
+	ToGetGroupMembersGroupMemberOutputWithContext(context.Context) GetGroupMembersGroupMemberOutput
+}
+
+type GetGroupMembersGroupMemberArgs struct {
+	// The User display name.
+	DisplayName pulumi.StringInput `pulumi:"displayName"`
+	// The Username.
+	Username pulumi.StringInput `pulumi:"username"`
+	// User UUID.
+	Uuid pulumi.StringInput `pulumi:"uuid"`
+}
+
+func (GetGroupMembersGroupMemberArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*GetGroupMembersGroupMember)(nil)).Elem()
+}
+
+func (i GetGroupMembersGroupMemberArgs) ToGetGroupMembersGroupMemberOutput() GetGroupMembersGroupMemberOutput {
+	return i.ToGetGroupMembersGroupMemberOutputWithContext(context.Background())
+}
+
+func (i GetGroupMembersGroupMemberArgs) ToGetGroupMembersGroupMemberOutputWithContext(ctx context.Context) GetGroupMembersGroupMemberOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(GetGroupMembersGroupMemberOutput)
+}
+
+// GetGroupMembersGroupMemberArrayInput is an input type that accepts GetGroupMembersGroupMemberArray and GetGroupMembersGroupMemberArrayOutput values.
+// You can construct a concrete instance of `GetGroupMembersGroupMemberArrayInput` via:
+//
+//	GetGroupMembersGroupMemberArray{ GetGroupMembersGroupMemberArgs{...} }
+type GetGroupMembersGroupMemberArrayInput interface {
+	pulumi.Input
+
+	ToGetGroupMembersGroupMemberArrayOutput() GetGroupMembersGroupMemberArrayOutput
+	ToGetGroupMembersGroupMemberArrayOutputWithContext(context.Context) GetGroupMembersGroupMemberArrayOutput
+}
+
+type GetGroupMembersGroupMemberArray []GetGroupMembersGroupMemberInput
+
+func (GetGroupMembersGroupMemberArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]GetGroupMembersGroupMember)(nil)).Elem()
+}
+
+func (i GetGroupMembersGroupMemberArray) ToGetGroupMembersGroupMemberArrayOutput() GetGroupMembersGroupMemberArrayOutput {
+	return i.ToGetGroupMembersGroupMemberArrayOutputWithContext(context.Background())
+}
+
+func (i GetGroupMembersGroupMemberArray) ToGetGroupMembersGroupMemberArrayOutputWithContext(ctx context.Context) GetGroupMembersGroupMemberArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(GetGroupMembersGroupMemberArrayOutput)
+}
+
+type GetGroupMembersGroupMemberOutput struct{ *pulumi.OutputState }
+
+func (GetGroupMembersGroupMemberOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*GetGroupMembersGroupMember)(nil)).Elem()
+}
+
+func (o GetGroupMembersGroupMemberOutput) ToGetGroupMembersGroupMemberOutput() GetGroupMembersGroupMemberOutput {
+	return o
+}
+
+func (o GetGroupMembersGroupMemberOutput) ToGetGroupMembersGroupMemberOutputWithContext(ctx context.Context) GetGroupMembersGroupMemberOutput {
+	return o
+}
+
+// The User display name.
+func (o GetGroupMembersGroupMemberOutput) DisplayName() pulumi.StringOutput {
+	return o.ApplyT(func(v GetGroupMembersGroupMember) string { return v.DisplayName }).(pulumi.StringOutput)
+}
+
+// The Username.
+func (o GetGroupMembersGroupMemberOutput) Username() pulumi.StringOutput {
+	return o.ApplyT(func(v GetGroupMembersGroupMember) string { return v.Username }).(pulumi.StringOutput)
+}
+
+// User UUID.
+func (o GetGroupMembersGroupMemberOutput) Uuid() pulumi.StringOutput {
+	return o.ApplyT(func(v GetGroupMembersGroupMember) string { return v.Uuid }).(pulumi.StringOutput)
+}
+
+type GetGroupMembersGroupMemberArrayOutput struct{ *pulumi.OutputState }
+
+func (GetGroupMembersGroupMemberArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]GetGroupMembersGroupMember)(nil)).Elem()
+}
+
+func (o GetGroupMembersGroupMemberArrayOutput) ToGetGroupMembersGroupMemberArrayOutput() GetGroupMembersGroupMemberArrayOutput {
+	return o
+}
+
+func (o GetGroupMembersGroupMemberArrayOutput) ToGetGroupMembersGroupMemberArrayOutputWithContext(ctx context.Context) GetGroupMembersGroupMemberArrayOutput {
+	return o
+}
+
+func (o GetGroupMembersGroupMemberArrayOutput) Index(i pulumi.IntInput) GetGroupMembersGroupMemberOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) GetGroupMembersGroupMember {
+		return vs[0].([]GetGroupMembersGroupMember)[vs[1].(int)]
+	}).(GetGroupMembersGroupMemberOutput)
+}
+
 type GetGroupsGroup struct {
-	AutoAdd                 bool   `pulumi:"autoAdd"`
-	EmailForwardingDisabled bool   `pulumi:"emailForwardingDisabled"`
-	Name                    string `pulumi:"name"`
-	Permission              string `pulumi:"permission"`
-	Slug                    string `pulumi:"slug"`
+	// Whether to automatically add users the groups
+	AutoAdd bool `pulumi:"autoAdd"`
+	// Whether to disable email forwarding for group.
+	EmailForwardingDisabled bool `pulumi:"emailForwardingDisabled"`
+	// The name of the groups.
+	Name string `pulumi:"name"`
+	// One of `read`, `write`, and `admin`.
+	Permission string `pulumi:"permission"`
+	// The groups's slug.
+	Slug string `pulumi:"slug"`
 }
 
 // GetGroupsGroupInput is an input type that accepts GetGroupsGroupArgs and GetGroupsGroupOutput values.
@@ -3046,11 +2878,16 @@ type GetGroupsGroupInput interface {
 }
 
 type GetGroupsGroupArgs struct {
-	AutoAdd                 pulumi.BoolInput   `pulumi:"autoAdd"`
-	EmailForwardingDisabled pulumi.BoolInput   `pulumi:"emailForwardingDisabled"`
-	Name                    pulumi.StringInput `pulumi:"name"`
-	Permission              pulumi.StringInput `pulumi:"permission"`
-	Slug                    pulumi.StringInput `pulumi:"slug"`
+	// Whether to automatically add users the groups
+	AutoAdd pulumi.BoolInput `pulumi:"autoAdd"`
+	// Whether to disable email forwarding for group.
+	EmailForwardingDisabled pulumi.BoolInput `pulumi:"emailForwardingDisabled"`
+	// The name of the groups.
+	Name pulumi.StringInput `pulumi:"name"`
+	// One of `read`, `write`, and `admin`.
+	Permission pulumi.StringInput `pulumi:"permission"`
+	// The groups's slug.
+	Slug pulumi.StringInput `pulumi:"slug"`
 }
 
 func (GetGroupsGroupArgs) ElementType() reflect.Type {
@@ -3063,12 +2900,6 @@ func (i GetGroupsGroupArgs) ToGetGroupsGroupOutput() GetGroupsGroupOutput {
 
 func (i GetGroupsGroupArgs) ToGetGroupsGroupOutputWithContext(ctx context.Context) GetGroupsGroupOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(GetGroupsGroupOutput)
-}
-
-func (i GetGroupsGroupArgs) ToOutput(ctx context.Context) pulumix.Output[GetGroupsGroup] {
-	return pulumix.Output[GetGroupsGroup]{
-		OutputState: i.ToGetGroupsGroupOutputWithContext(ctx).OutputState,
-	}
 }
 
 // GetGroupsGroupArrayInput is an input type that accepts GetGroupsGroupArray and GetGroupsGroupArrayOutput values.
@@ -3096,12 +2927,6 @@ func (i GetGroupsGroupArray) ToGetGroupsGroupArrayOutputWithContext(ctx context.
 	return pulumi.ToOutputWithContext(ctx, i).(GetGroupsGroupArrayOutput)
 }
 
-func (i GetGroupsGroupArray) ToOutput(ctx context.Context) pulumix.Output[[]GetGroupsGroup] {
-	return pulumix.Output[[]GetGroupsGroup]{
-		OutputState: i.ToGetGroupsGroupArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type GetGroupsGroupOutput struct{ *pulumi.OutputState }
 
 func (GetGroupsGroupOutput) ElementType() reflect.Type {
@@ -3116,28 +2941,27 @@ func (o GetGroupsGroupOutput) ToGetGroupsGroupOutputWithContext(ctx context.Cont
 	return o
 }
 
-func (o GetGroupsGroupOutput) ToOutput(ctx context.Context) pulumix.Output[GetGroupsGroup] {
-	return pulumix.Output[GetGroupsGroup]{
-		OutputState: o.OutputState,
-	}
-}
-
+// Whether to automatically add users the groups
 func (o GetGroupsGroupOutput) AutoAdd() pulumi.BoolOutput {
 	return o.ApplyT(func(v GetGroupsGroup) bool { return v.AutoAdd }).(pulumi.BoolOutput)
 }
 
+// Whether to disable email forwarding for group.
 func (o GetGroupsGroupOutput) EmailForwardingDisabled() pulumi.BoolOutput {
 	return o.ApplyT(func(v GetGroupsGroup) bool { return v.EmailForwardingDisabled }).(pulumi.BoolOutput)
 }
 
+// The name of the groups.
 func (o GetGroupsGroupOutput) Name() pulumi.StringOutput {
 	return o.ApplyT(func(v GetGroupsGroup) string { return v.Name }).(pulumi.StringOutput)
 }
 
+// One of `read`, `write`, and `admin`.
 func (o GetGroupsGroupOutput) Permission() pulumi.StringOutput {
 	return o.ApplyT(func(v GetGroupsGroup) string { return v.Permission }).(pulumi.StringOutput)
 }
 
+// The groups's slug.
 func (o GetGroupsGroupOutput) Slug() pulumi.StringOutput {
 	return o.ApplyT(func(v GetGroupsGroup) string { return v.Slug }).(pulumi.StringOutput)
 }
@@ -3156,12 +2980,6 @@ func (o GetGroupsGroupArrayOutput) ToGetGroupsGroupArrayOutputWithContext(ctx co
 	return o
 }
 
-func (o GetGroupsGroupArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]GetGroupsGroup] {
-	return pulumix.Output[[]GetGroupsGroup]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o GetGroupsGroupArrayOutput) Index(i pulumi.IntInput) GetGroupsGroupOutput {
 	return pulumi.All(o, i).ApplyT(func(vs []interface{}) GetGroupsGroup {
 		return vs[0].([]GetGroupsGroup)[vs[1].(int)]
@@ -3169,10 +2987,14 @@ func (o GetGroupsGroupArrayOutput) Index(i pulumi.IntInput) GetGroupsGroupOutput
 }
 
 type GetHookTypesHookType struct {
-	Category    string `pulumi:"category"`
+	// The category this event belongs to.
+	Category string `pulumi:"category"`
+	// More detailed description of the webhook event type.
 	Description string `pulumi:"description"`
-	Event       string `pulumi:"event"`
-	Label       string `pulumi:"label"`
+	// The event identifier.
+	Event string `pulumi:"event"`
+	// Summary of the webhook event type.
+	Label string `pulumi:"label"`
 }
 
 // GetHookTypesHookTypeInput is an input type that accepts GetHookTypesHookTypeArgs and GetHookTypesHookTypeOutput values.
@@ -3187,10 +3009,14 @@ type GetHookTypesHookTypeInput interface {
 }
 
 type GetHookTypesHookTypeArgs struct {
-	Category    pulumi.StringInput `pulumi:"category"`
+	// The category this event belongs to.
+	Category pulumi.StringInput `pulumi:"category"`
+	// More detailed description of the webhook event type.
 	Description pulumi.StringInput `pulumi:"description"`
-	Event       pulumi.StringInput `pulumi:"event"`
-	Label       pulumi.StringInput `pulumi:"label"`
+	// The event identifier.
+	Event pulumi.StringInput `pulumi:"event"`
+	// Summary of the webhook event type.
+	Label pulumi.StringInput `pulumi:"label"`
 }
 
 func (GetHookTypesHookTypeArgs) ElementType() reflect.Type {
@@ -3203,12 +3029,6 @@ func (i GetHookTypesHookTypeArgs) ToGetHookTypesHookTypeOutput() GetHookTypesHoo
 
 func (i GetHookTypesHookTypeArgs) ToGetHookTypesHookTypeOutputWithContext(ctx context.Context) GetHookTypesHookTypeOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(GetHookTypesHookTypeOutput)
-}
-
-func (i GetHookTypesHookTypeArgs) ToOutput(ctx context.Context) pulumix.Output[GetHookTypesHookType] {
-	return pulumix.Output[GetHookTypesHookType]{
-		OutputState: i.ToGetHookTypesHookTypeOutputWithContext(ctx).OutputState,
-	}
 }
 
 // GetHookTypesHookTypeArrayInput is an input type that accepts GetHookTypesHookTypeArray and GetHookTypesHookTypeArrayOutput values.
@@ -3236,12 +3056,6 @@ func (i GetHookTypesHookTypeArray) ToGetHookTypesHookTypeArrayOutputWithContext(
 	return pulumi.ToOutputWithContext(ctx, i).(GetHookTypesHookTypeArrayOutput)
 }
 
-func (i GetHookTypesHookTypeArray) ToOutput(ctx context.Context) pulumix.Output[[]GetHookTypesHookType] {
-	return pulumix.Output[[]GetHookTypesHookType]{
-		OutputState: i.ToGetHookTypesHookTypeArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type GetHookTypesHookTypeOutput struct{ *pulumi.OutputState }
 
 func (GetHookTypesHookTypeOutput) ElementType() reflect.Type {
@@ -3256,24 +3070,22 @@ func (o GetHookTypesHookTypeOutput) ToGetHookTypesHookTypeOutputWithContext(ctx 
 	return o
 }
 
-func (o GetHookTypesHookTypeOutput) ToOutput(ctx context.Context) pulumix.Output[GetHookTypesHookType] {
-	return pulumix.Output[GetHookTypesHookType]{
-		OutputState: o.OutputState,
-	}
-}
-
+// The category this event belongs to.
 func (o GetHookTypesHookTypeOutput) Category() pulumi.StringOutput {
 	return o.ApplyT(func(v GetHookTypesHookType) string { return v.Category }).(pulumi.StringOutput)
 }
 
+// More detailed description of the webhook event type.
 func (o GetHookTypesHookTypeOutput) Description() pulumi.StringOutput {
 	return o.ApplyT(func(v GetHookTypesHookType) string { return v.Description }).(pulumi.StringOutput)
 }
 
+// The event identifier.
 func (o GetHookTypesHookTypeOutput) Event() pulumi.StringOutput {
 	return o.ApplyT(func(v GetHookTypesHookType) string { return v.Event }).(pulumi.StringOutput)
 }
 
+// Summary of the webhook event type.
 func (o GetHookTypesHookTypeOutput) Label() pulumi.StringOutput {
 	return o.ApplyT(func(v GetHookTypesHookType) string { return v.Label }).(pulumi.StringOutput)
 }
@@ -3292,12 +3104,6 @@ func (o GetHookTypesHookTypeArrayOutput) ToGetHookTypesHookTypeArrayOutputWithCo
 	return o
 }
 
-func (o GetHookTypesHookTypeArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]GetHookTypesHookType] {
-	return pulumix.Output[[]GetHookTypesHookType]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o GetHookTypesHookTypeArrayOutput) Index(i pulumi.IntInput) GetHookTypesHookTypeOutput {
 	return pulumi.All(o, i).ApplyT(func(vs []interface{}) GetHookTypesHookType {
 		return vs[0].([]GetHookTypesHookType)[vs[1].(int)]
@@ -3305,13 +3111,22 @@ func (o GetHookTypesHookTypeArrayOutput) Index(i pulumi.IntInput) GetHookTypesHo
 }
 
 type GetIpRangesRange struct {
-	Cidr       string   `pulumi:"cidr"`
+	// The CIDR of the range.
+	Cidr string `pulumi:"cidr"`
+	// A Set of directions (Ingress/Egress) the range is associated with.
 	Directions []string `pulumi:"directions"`
-	Mask       string   `pulumi:"mask"`
-	MaskLen    int      `pulumi:"maskLen"`
-	Network    string   `pulumi:"network"`
-	Products   []string `pulumi:"products"`
-	Regions    []string `pulumi:"regions"`
+	// More mask of the range.
+	Mask string `pulumi:"mask"`
+	// The make length of the range.
+	MaskLen int `pulumi:"maskLen"`
+	// The network of the range.
+	Network string `pulumi:"network"`
+	// The allowed perimeter of the range.
+	Perimeter string `pulumi:"perimeter"`
+	// A Set of Atlasian products (Bitbucket, Jira, etc) the range is associated with.
+	Products []string `pulumi:"products"`
+	// A Set of regions the range is associated with.
+	Regions []string `pulumi:"regions"`
 }
 
 // GetIpRangesRangeInput is an input type that accepts GetIpRangesRangeArgs and GetIpRangesRangeOutput values.
@@ -3326,13 +3141,22 @@ type GetIpRangesRangeInput interface {
 }
 
 type GetIpRangesRangeArgs struct {
-	Cidr       pulumi.StringInput      `pulumi:"cidr"`
+	// The CIDR of the range.
+	Cidr pulumi.StringInput `pulumi:"cidr"`
+	// A Set of directions (Ingress/Egress) the range is associated with.
 	Directions pulumi.StringArrayInput `pulumi:"directions"`
-	Mask       pulumi.StringInput      `pulumi:"mask"`
-	MaskLen    pulumi.IntInput         `pulumi:"maskLen"`
-	Network    pulumi.StringInput      `pulumi:"network"`
-	Products   pulumi.StringArrayInput `pulumi:"products"`
-	Regions    pulumi.StringArrayInput `pulumi:"regions"`
+	// More mask of the range.
+	Mask pulumi.StringInput `pulumi:"mask"`
+	// The make length of the range.
+	MaskLen pulumi.IntInput `pulumi:"maskLen"`
+	// The network of the range.
+	Network pulumi.StringInput `pulumi:"network"`
+	// The allowed perimeter of the range.
+	Perimeter pulumi.StringInput `pulumi:"perimeter"`
+	// A Set of Atlasian products (Bitbucket, Jira, etc) the range is associated with.
+	Products pulumi.StringArrayInput `pulumi:"products"`
+	// A Set of regions the range is associated with.
+	Regions pulumi.StringArrayInput `pulumi:"regions"`
 }
 
 func (GetIpRangesRangeArgs) ElementType() reflect.Type {
@@ -3345,12 +3169,6 @@ func (i GetIpRangesRangeArgs) ToGetIpRangesRangeOutput() GetIpRangesRangeOutput 
 
 func (i GetIpRangesRangeArgs) ToGetIpRangesRangeOutputWithContext(ctx context.Context) GetIpRangesRangeOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(GetIpRangesRangeOutput)
-}
-
-func (i GetIpRangesRangeArgs) ToOutput(ctx context.Context) pulumix.Output[GetIpRangesRange] {
-	return pulumix.Output[GetIpRangesRange]{
-		OutputState: i.ToGetIpRangesRangeOutputWithContext(ctx).OutputState,
-	}
 }
 
 // GetIpRangesRangeArrayInput is an input type that accepts GetIpRangesRangeArray and GetIpRangesRangeArrayOutput values.
@@ -3378,12 +3196,6 @@ func (i GetIpRangesRangeArray) ToGetIpRangesRangeArrayOutputWithContext(ctx cont
 	return pulumi.ToOutputWithContext(ctx, i).(GetIpRangesRangeArrayOutput)
 }
 
-func (i GetIpRangesRangeArray) ToOutput(ctx context.Context) pulumix.Output[[]GetIpRangesRange] {
-	return pulumix.Output[[]GetIpRangesRange]{
-		OutputState: i.ToGetIpRangesRangeArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type GetIpRangesRangeOutput struct{ *pulumi.OutputState }
 
 func (GetIpRangesRangeOutput) ElementType() reflect.Type {
@@ -3398,36 +3210,42 @@ func (o GetIpRangesRangeOutput) ToGetIpRangesRangeOutputWithContext(ctx context.
 	return o
 }
 
-func (o GetIpRangesRangeOutput) ToOutput(ctx context.Context) pulumix.Output[GetIpRangesRange] {
-	return pulumix.Output[GetIpRangesRange]{
-		OutputState: o.OutputState,
-	}
-}
-
+// The CIDR of the range.
 func (o GetIpRangesRangeOutput) Cidr() pulumi.StringOutput {
 	return o.ApplyT(func(v GetIpRangesRange) string { return v.Cidr }).(pulumi.StringOutput)
 }
 
+// A Set of directions (Ingress/Egress) the range is associated with.
 func (o GetIpRangesRangeOutput) Directions() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v GetIpRangesRange) []string { return v.Directions }).(pulumi.StringArrayOutput)
 }
 
+// More mask of the range.
 func (o GetIpRangesRangeOutput) Mask() pulumi.StringOutput {
 	return o.ApplyT(func(v GetIpRangesRange) string { return v.Mask }).(pulumi.StringOutput)
 }
 
+// The make length of the range.
 func (o GetIpRangesRangeOutput) MaskLen() pulumi.IntOutput {
 	return o.ApplyT(func(v GetIpRangesRange) int { return v.MaskLen }).(pulumi.IntOutput)
 }
 
+// The network of the range.
 func (o GetIpRangesRangeOutput) Network() pulumi.StringOutput {
 	return o.ApplyT(func(v GetIpRangesRange) string { return v.Network }).(pulumi.StringOutput)
 }
 
+// The allowed perimeter of the range.
+func (o GetIpRangesRangeOutput) Perimeter() pulumi.StringOutput {
+	return o.ApplyT(func(v GetIpRangesRange) string { return v.Perimeter }).(pulumi.StringOutput)
+}
+
+// A Set of Atlasian products (Bitbucket, Jira, etc) the range is associated with.
 func (o GetIpRangesRangeOutput) Products() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v GetIpRangesRange) []string { return v.Products }).(pulumi.StringArrayOutput)
 }
 
+// A Set of regions the range is associated with.
 func (o GetIpRangesRangeOutput) Regions() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v GetIpRangesRange) []string { return v.Regions }).(pulumi.StringArrayOutput)
 }
@@ -3446,16 +3264,125 @@ func (o GetIpRangesRangeArrayOutput) ToGetIpRangesRangeArrayOutputWithContext(ct
 	return o
 }
 
-func (o GetIpRangesRangeArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]GetIpRangesRange] {
-	return pulumix.Output[[]GetIpRangesRange]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o GetIpRangesRangeArrayOutput) Index(i pulumi.IntInput) GetIpRangesRangeOutput {
 	return pulumi.All(o, i).ApplyT(func(vs []interface{}) GetIpRangesRange {
 		return vs[0].([]GetIpRangesRange)[vs[1].(int)]
 	}).(GetIpRangesRangeOutput)
+}
+
+type GetWorkspaceMembersWorkspaceMember struct {
+	// The User display name.
+	DisplayName string `pulumi:"displayName"`
+	// The Username.
+	Username string `pulumi:"username"`
+	// User UUID.
+	Uuid string `pulumi:"uuid"`
+}
+
+// GetWorkspaceMembersWorkspaceMemberInput is an input type that accepts GetWorkspaceMembersWorkspaceMemberArgs and GetWorkspaceMembersWorkspaceMemberOutput values.
+// You can construct a concrete instance of `GetWorkspaceMembersWorkspaceMemberInput` via:
+//
+//	GetWorkspaceMembersWorkspaceMemberArgs{...}
+type GetWorkspaceMembersWorkspaceMemberInput interface {
+	pulumi.Input
+
+	ToGetWorkspaceMembersWorkspaceMemberOutput() GetWorkspaceMembersWorkspaceMemberOutput
+	ToGetWorkspaceMembersWorkspaceMemberOutputWithContext(context.Context) GetWorkspaceMembersWorkspaceMemberOutput
+}
+
+type GetWorkspaceMembersWorkspaceMemberArgs struct {
+	// The User display name.
+	DisplayName pulumi.StringInput `pulumi:"displayName"`
+	// The Username.
+	Username pulumi.StringInput `pulumi:"username"`
+	// User UUID.
+	Uuid pulumi.StringInput `pulumi:"uuid"`
+}
+
+func (GetWorkspaceMembersWorkspaceMemberArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*GetWorkspaceMembersWorkspaceMember)(nil)).Elem()
+}
+
+func (i GetWorkspaceMembersWorkspaceMemberArgs) ToGetWorkspaceMembersWorkspaceMemberOutput() GetWorkspaceMembersWorkspaceMemberOutput {
+	return i.ToGetWorkspaceMembersWorkspaceMemberOutputWithContext(context.Background())
+}
+
+func (i GetWorkspaceMembersWorkspaceMemberArgs) ToGetWorkspaceMembersWorkspaceMemberOutputWithContext(ctx context.Context) GetWorkspaceMembersWorkspaceMemberOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(GetWorkspaceMembersWorkspaceMemberOutput)
+}
+
+// GetWorkspaceMembersWorkspaceMemberArrayInput is an input type that accepts GetWorkspaceMembersWorkspaceMemberArray and GetWorkspaceMembersWorkspaceMemberArrayOutput values.
+// You can construct a concrete instance of `GetWorkspaceMembersWorkspaceMemberArrayInput` via:
+//
+//	GetWorkspaceMembersWorkspaceMemberArray{ GetWorkspaceMembersWorkspaceMemberArgs{...} }
+type GetWorkspaceMembersWorkspaceMemberArrayInput interface {
+	pulumi.Input
+
+	ToGetWorkspaceMembersWorkspaceMemberArrayOutput() GetWorkspaceMembersWorkspaceMemberArrayOutput
+	ToGetWorkspaceMembersWorkspaceMemberArrayOutputWithContext(context.Context) GetWorkspaceMembersWorkspaceMemberArrayOutput
+}
+
+type GetWorkspaceMembersWorkspaceMemberArray []GetWorkspaceMembersWorkspaceMemberInput
+
+func (GetWorkspaceMembersWorkspaceMemberArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]GetWorkspaceMembersWorkspaceMember)(nil)).Elem()
+}
+
+func (i GetWorkspaceMembersWorkspaceMemberArray) ToGetWorkspaceMembersWorkspaceMemberArrayOutput() GetWorkspaceMembersWorkspaceMemberArrayOutput {
+	return i.ToGetWorkspaceMembersWorkspaceMemberArrayOutputWithContext(context.Background())
+}
+
+func (i GetWorkspaceMembersWorkspaceMemberArray) ToGetWorkspaceMembersWorkspaceMemberArrayOutputWithContext(ctx context.Context) GetWorkspaceMembersWorkspaceMemberArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(GetWorkspaceMembersWorkspaceMemberArrayOutput)
+}
+
+type GetWorkspaceMembersWorkspaceMemberOutput struct{ *pulumi.OutputState }
+
+func (GetWorkspaceMembersWorkspaceMemberOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*GetWorkspaceMembersWorkspaceMember)(nil)).Elem()
+}
+
+func (o GetWorkspaceMembersWorkspaceMemberOutput) ToGetWorkspaceMembersWorkspaceMemberOutput() GetWorkspaceMembersWorkspaceMemberOutput {
+	return o
+}
+
+func (o GetWorkspaceMembersWorkspaceMemberOutput) ToGetWorkspaceMembersWorkspaceMemberOutputWithContext(ctx context.Context) GetWorkspaceMembersWorkspaceMemberOutput {
+	return o
+}
+
+// The User display name.
+func (o GetWorkspaceMembersWorkspaceMemberOutput) DisplayName() pulumi.StringOutput {
+	return o.ApplyT(func(v GetWorkspaceMembersWorkspaceMember) string { return v.DisplayName }).(pulumi.StringOutput)
+}
+
+// The Username.
+func (o GetWorkspaceMembersWorkspaceMemberOutput) Username() pulumi.StringOutput {
+	return o.ApplyT(func(v GetWorkspaceMembersWorkspaceMember) string { return v.Username }).(pulumi.StringOutput)
+}
+
+// User UUID.
+func (o GetWorkspaceMembersWorkspaceMemberOutput) Uuid() pulumi.StringOutput {
+	return o.ApplyT(func(v GetWorkspaceMembersWorkspaceMember) string { return v.Uuid }).(pulumi.StringOutput)
+}
+
+type GetWorkspaceMembersWorkspaceMemberArrayOutput struct{ *pulumi.OutputState }
+
+func (GetWorkspaceMembersWorkspaceMemberArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]GetWorkspaceMembersWorkspaceMember)(nil)).Elem()
+}
+
+func (o GetWorkspaceMembersWorkspaceMemberArrayOutput) ToGetWorkspaceMembersWorkspaceMemberArrayOutput() GetWorkspaceMembersWorkspaceMemberArrayOutput {
+	return o
+}
+
+func (o GetWorkspaceMembersWorkspaceMemberArrayOutput) ToGetWorkspaceMembersWorkspaceMemberArrayOutputWithContext(ctx context.Context) GetWorkspaceMembersWorkspaceMemberArrayOutput {
+	return o
+}
+
+func (o GetWorkspaceMembersWorkspaceMemberArrayOutput) Index(i pulumi.IntInput) GetWorkspaceMembersWorkspaceMemberOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) GetWorkspaceMembersWorkspaceMember {
+		return vs[0].([]GetWorkspaceMembersWorkspaceMember)[vs[1].(int)]
+	}).(GetWorkspaceMembersWorkspaceMemberOutput)
 }
 
 func init() {
@@ -3495,12 +3422,16 @@ func init() {
 	pulumi.RegisterInputType(reflect.TypeOf((*RepositoryLinkAvatarPtrInput)(nil)).Elem(), RepositoryLinkAvatarArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*GetCurrentUserEmailInput)(nil)).Elem(), GetCurrentUserEmailArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*GetCurrentUserEmailArrayInput)(nil)).Elem(), GetCurrentUserEmailArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*GetGroupMembersGroupMemberInput)(nil)).Elem(), GetGroupMembersGroupMemberArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*GetGroupMembersGroupMemberArrayInput)(nil)).Elem(), GetGroupMembersGroupMemberArray{})
 	pulumi.RegisterInputType(reflect.TypeOf((*GetGroupsGroupInput)(nil)).Elem(), GetGroupsGroupArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*GetGroupsGroupArrayInput)(nil)).Elem(), GetGroupsGroupArray{})
 	pulumi.RegisterInputType(reflect.TypeOf((*GetHookTypesHookTypeInput)(nil)).Elem(), GetHookTypesHookTypeArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*GetHookTypesHookTypeArrayInput)(nil)).Elem(), GetHookTypesHookTypeArray{})
 	pulumi.RegisterInputType(reflect.TypeOf((*GetIpRangesRangeInput)(nil)).Elem(), GetIpRangesRangeArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*GetIpRangesRangeArrayInput)(nil)).Elem(), GetIpRangesRangeArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*GetWorkspaceMembersWorkspaceMemberInput)(nil)).Elem(), GetWorkspaceMembersWorkspaceMemberArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*GetWorkspaceMembersWorkspaceMemberArrayInput)(nil)).Elem(), GetWorkspaceMembersWorkspaceMemberArray{})
 	pulumi.RegisterOutputType(BranchRestrictionGroupOutput{})
 	pulumi.RegisterOutputType(BranchRestrictionGroupArrayOutput{})
 	pulumi.RegisterOutputType(BranchingModelBranchTypeOutput{})
@@ -3537,10 +3468,14 @@ func init() {
 	pulumi.RegisterOutputType(RepositoryLinkAvatarPtrOutput{})
 	pulumi.RegisterOutputType(GetCurrentUserEmailOutput{})
 	pulumi.RegisterOutputType(GetCurrentUserEmailArrayOutput{})
+	pulumi.RegisterOutputType(GetGroupMembersGroupMemberOutput{})
+	pulumi.RegisterOutputType(GetGroupMembersGroupMemberArrayOutput{})
 	pulumi.RegisterOutputType(GetGroupsGroupOutput{})
 	pulumi.RegisterOutputType(GetGroupsGroupArrayOutput{})
 	pulumi.RegisterOutputType(GetHookTypesHookTypeOutput{})
 	pulumi.RegisterOutputType(GetHookTypesHookTypeArrayOutput{})
 	pulumi.RegisterOutputType(GetIpRangesRangeOutput{})
 	pulumi.RegisterOutputType(GetIpRangesRangeArrayOutput{})
+	pulumi.RegisterOutputType(GetWorkspaceMembersWorkspaceMemberOutput{})
+	pulumi.RegisterOutputType(GetWorkspaceMembersWorkspaceMemberArrayOutput{})
 }

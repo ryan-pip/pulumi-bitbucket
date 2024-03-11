@@ -9,18 +9,69 @@ import (
 
 	"errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket/internal"
 )
 
+// This resource allows you to setup pipelines deployment environments.
+//
+// OAuth2 Scopes: `none`
+//
+// ## Example Usage
+//
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			monorepo, err := bitbucket.NewRepository(ctx, "monorepo", &bitbucket.RepositoryArgs{
+//				Owner:            pulumi.String("gob"),
+//				PipelinesEnabled: pulumi.Bool(true),
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			_, err = bitbucket.NewDeployment(ctx, "test", &bitbucket.DeploymentArgs{
+//				Repository: monorepo.ID(),
+//				Stage:      pulumi.String("Test"),
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
+//
+// ## Import
+//
+// Deployments can be imported using their `repository/uuid` ID, e.g.
+//
+// ```sh
+//
+//	$ pulumi import bitbucket:index/deployment:Deployment example repository/uuid
+//
+// ```
 type Deployment struct {
 	pulumi.CustomResourceState
 
-	Name         pulumi.StringOutput          `pulumi:"name"`
-	Repository   pulumi.StringOutput          `pulumi:"repository"`
+	// The name of the deployment environment
+	Name pulumi.StringOutput `pulumi:"name"`
+	// The repository ID to which you want to assign this deployment environment to
+	Repository pulumi.StringOutput `pulumi:"repository"`
+	// Deployment restrictions. See Restrictions below.
 	Restrictions DeploymentRestrictionsOutput `pulumi:"restrictions"`
-	Stage        pulumi.StringOutput          `pulumi:"stage"`
-	Uuid         pulumi.StringOutput          `pulumi:"uuid"`
+	// The stage (Test, Staging, Production)
+	Stage pulumi.StringOutput `pulumi:"stage"`
+	// (Computed) The UUID identifying the deployment.
+	Uuid pulumi.StringOutput `pulumi:"uuid"`
 }
 
 // NewDeployment registers a new resource with the given unique name, arguments, and options.
@@ -59,19 +110,29 @@ func GetDeployment(ctx *pulumi.Context,
 
 // Input properties used for looking up and filtering Deployment resources.
 type deploymentState struct {
-	Name         *string                 `pulumi:"name"`
-	Repository   *string                 `pulumi:"repository"`
+	// The name of the deployment environment
+	Name *string `pulumi:"name"`
+	// The repository ID to which you want to assign this deployment environment to
+	Repository *string `pulumi:"repository"`
+	// Deployment restrictions. See Restrictions below.
 	Restrictions *DeploymentRestrictions `pulumi:"restrictions"`
-	Stage        *string                 `pulumi:"stage"`
-	Uuid         *string                 `pulumi:"uuid"`
+	// The stage (Test, Staging, Production)
+	Stage *string `pulumi:"stage"`
+	// (Computed) The UUID identifying the deployment.
+	Uuid *string `pulumi:"uuid"`
 }
 
 type DeploymentState struct {
-	Name         pulumi.StringPtrInput
-	Repository   pulumi.StringPtrInput
+	// The name of the deployment environment
+	Name pulumi.StringPtrInput
+	// The repository ID to which you want to assign this deployment environment to
+	Repository pulumi.StringPtrInput
+	// Deployment restrictions. See Restrictions below.
 	Restrictions DeploymentRestrictionsPtrInput
-	Stage        pulumi.StringPtrInput
-	Uuid         pulumi.StringPtrInput
+	// The stage (Test, Staging, Production)
+	Stage pulumi.StringPtrInput
+	// (Computed) The UUID identifying the deployment.
+	Uuid pulumi.StringPtrInput
 }
 
 func (DeploymentState) ElementType() reflect.Type {
@@ -79,18 +140,26 @@ func (DeploymentState) ElementType() reflect.Type {
 }
 
 type deploymentArgs struct {
-	Name         *string                 `pulumi:"name"`
-	Repository   string                  `pulumi:"repository"`
+	// The name of the deployment environment
+	Name *string `pulumi:"name"`
+	// The repository ID to which you want to assign this deployment environment to
+	Repository string `pulumi:"repository"`
+	// Deployment restrictions. See Restrictions below.
 	Restrictions *DeploymentRestrictions `pulumi:"restrictions"`
-	Stage        string                  `pulumi:"stage"`
+	// The stage (Test, Staging, Production)
+	Stage string `pulumi:"stage"`
 }
 
 // The set of arguments for constructing a Deployment resource.
 type DeploymentArgs struct {
-	Name         pulumi.StringPtrInput
-	Repository   pulumi.StringInput
+	// The name of the deployment environment
+	Name pulumi.StringPtrInput
+	// The repository ID to which you want to assign this deployment environment to
+	Repository pulumi.StringInput
+	// Deployment restrictions. See Restrictions below.
 	Restrictions DeploymentRestrictionsPtrInput
-	Stage        pulumi.StringInput
+	// The stage (Test, Staging, Production)
+	Stage pulumi.StringInput
 }
 
 func (DeploymentArgs) ElementType() reflect.Type {
@@ -114,12 +183,6 @@ func (i *Deployment) ToDeploymentOutput() DeploymentOutput {
 
 func (i *Deployment) ToDeploymentOutputWithContext(ctx context.Context) DeploymentOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(DeploymentOutput)
-}
-
-func (i *Deployment) ToOutput(ctx context.Context) pulumix.Output[*Deployment] {
-	return pulumix.Output[*Deployment]{
-		OutputState: i.ToDeploymentOutputWithContext(ctx).OutputState,
-	}
 }
 
 // DeploymentArrayInput is an input type that accepts DeploymentArray and DeploymentArrayOutput values.
@@ -147,12 +210,6 @@ func (i DeploymentArray) ToDeploymentArrayOutputWithContext(ctx context.Context)
 	return pulumi.ToOutputWithContext(ctx, i).(DeploymentArrayOutput)
 }
 
-func (i DeploymentArray) ToOutput(ctx context.Context) pulumix.Output[[]*Deployment] {
-	return pulumix.Output[[]*Deployment]{
-		OutputState: i.ToDeploymentArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 // DeploymentMapInput is an input type that accepts DeploymentMap and DeploymentMapOutput values.
 // You can construct a concrete instance of `DeploymentMapInput` via:
 //
@@ -178,12 +235,6 @@ func (i DeploymentMap) ToDeploymentMapOutputWithContext(ctx context.Context) Dep
 	return pulumi.ToOutputWithContext(ctx, i).(DeploymentMapOutput)
 }
 
-func (i DeploymentMap) ToOutput(ctx context.Context) pulumix.Output[map[string]*Deployment] {
-	return pulumix.Output[map[string]*Deployment]{
-		OutputState: i.ToDeploymentMapOutputWithContext(ctx).OutputState,
-	}
-}
-
 type DeploymentOutput struct{ *pulumi.OutputState }
 
 func (DeploymentOutput) ElementType() reflect.Type {
@@ -198,28 +249,27 @@ func (o DeploymentOutput) ToDeploymentOutputWithContext(ctx context.Context) Dep
 	return o
 }
 
-func (o DeploymentOutput) ToOutput(ctx context.Context) pulumix.Output[*Deployment] {
-	return pulumix.Output[*Deployment]{
-		OutputState: o.OutputState,
-	}
-}
-
+// The name of the deployment environment
 func (o DeploymentOutput) Name() pulumi.StringOutput {
 	return o.ApplyT(func(v *Deployment) pulumi.StringOutput { return v.Name }).(pulumi.StringOutput)
 }
 
+// The repository ID to which you want to assign this deployment environment to
 func (o DeploymentOutput) Repository() pulumi.StringOutput {
 	return o.ApplyT(func(v *Deployment) pulumi.StringOutput { return v.Repository }).(pulumi.StringOutput)
 }
 
+// Deployment restrictions. See Restrictions below.
 func (o DeploymentOutput) Restrictions() DeploymentRestrictionsOutput {
 	return o.ApplyT(func(v *Deployment) DeploymentRestrictionsOutput { return v.Restrictions }).(DeploymentRestrictionsOutput)
 }
 
+// The stage (Test, Staging, Production)
 func (o DeploymentOutput) Stage() pulumi.StringOutput {
 	return o.ApplyT(func(v *Deployment) pulumi.StringOutput { return v.Stage }).(pulumi.StringOutput)
 }
 
+// (Computed) The UUID identifying the deployment.
 func (o DeploymentOutput) Uuid() pulumi.StringOutput {
 	return o.ApplyT(func(v *Deployment) pulumi.StringOutput { return v.Uuid }).(pulumi.StringOutput)
 }
@@ -236,12 +286,6 @@ func (o DeploymentArrayOutput) ToDeploymentArrayOutput() DeploymentArrayOutput {
 
 func (o DeploymentArrayOutput) ToDeploymentArrayOutputWithContext(ctx context.Context) DeploymentArrayOutput {
 	return o
-}
-
-func (o DeploymentArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]*Deployment] {
-	return pulumix.Output[[]*Deployment]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o DeploymentArrayOutput) Index(i pulumi.IntInput) DeploymentOutput {
@@ -262,12 +306,6 @@ func (o DeploymentMapOutput) ToDeploymentMapOutput() DeploymentMapOutput {
 
 func (o DeploymentMapOutput) ToDeploymentMapOutputWithContext(ctx context.Context) DeploymentMapOutput {
 	return o
-}
-
-func (o DeploymentMapOutput) ToOutput(ctx context.Context) pulumix.Output[map[string]*Deployment] {
-	return pulumix.Output[map[string]*Deployment]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o DeploymentMapOutput) MapIndex(k pulumi.StringInput) DeploymentOutput {

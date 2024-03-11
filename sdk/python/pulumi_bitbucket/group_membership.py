@@ -19,6 +19,9 @@ class GroupMembershipArgs:
                  workspace: pulumi.Input[str]):
         """
         The set of arguments for constructing a GroupMembership resource.
+        :param pulumi.Input[str] group_slug: The slug of the group.
+        :param pulumi.Input[str] uuid: The member UUID to add to the group.
+        :param pulumi.Input[str] workspace: The workspace of this repository.
         """
         pulumi.set(__self__, "group_slug", group_slug)
         pulumi.set(__self__, "uuid", uuid)
@@ -27,6 +30,9 @@ class GroupMembershipArgs:
     @property
     @pulumi.getter(name="groupSlug")
     def group_slug(self) -> pulumi.Input[str]:
+        """
+        The slug of the group.
+        """
         return pulumi.get(self, "group_slug")
 
     @group_slug.setter
@@ -36,6 +42,9 @@ class GroupMembershipArgs:
     @property
     @pulumi.getter
     def uuid(self) -> pulumi.Input[str]:
+        """
+        The member UUID to add to the group.
+        """
         return pulumi.get(self, "uuid")
 
     @uuid.setter
@@ -45,6 +54,9 @@ class GroupMembershipArgs:
     @property
     @pulumi.getter
     def workspace(self) -> pulumi.Input[str]:
+        """
+        The workspace of this repository.
+        """
         return pulumi.get(self, "workspace")
 
     @workspace.setter
@@ -61,6 +73,9 @@ class _GroupMembershipState:
                  workspace: Optional[pulumi.Input[str]] = None):
         """
         Input properties used for looking up and filtering GroupMembership resources.
+        :param pulumi.Input[str] group_slug: The slug of the group.
+        :param pulumi.Input[str] uuid: The member UUID to add to the group.
+        :param pulumi.Input[str] workspace: The workspace of this repository.
         """
         if group_slug is not None:
             pulumi.set(__self__, "group_slug", group_slug)
@@ -74,6 +89,9 @@ class _GroupMembershipState:
     @property
     @pulumi.getter(name="groupSlug")
     def group_slug(self) -> Optional[pulumi.Input[str]]:
+        """
+        The slug of the group.
+        """
         return pulumi.get(self, "group_slug")
 
     @group_slug.setter
@@ -92,6 +110,9 @@ class _GroupMembershipState:
     @property
     @pulumi.getter
     def uuid(self) -> Optional[pulumi.Input[str]]:
+        """
+        The member UUID to add to the group.
+        """
         return pulumi.get(self, "uuid")
 
     @uuid.setter
@@ -101,6 +122,9 @@ class _GroupMembershipState:
     @property
     @pulumi.getter
     def workspace(self) -> Optional[pulumi.Input[str]]:
+        """
+        The workspace of this repository.
+        """
         return pulumi.get(self, "workspace")
 
     @workspace.setter
@@ -118,9 +142,38 @@ class GroupMembership(pulumi.CustomResource):
                  workspace: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         """
-        Create a GroupMembership resource with the given unique name, props, and options.
+        Provides a Bitbucket group membership resource.
+
+        This allows you to manage your group membership.
+
+        ## Example Usage
+
+        ```python
+        import pulumi
+        import pulumi_bitbucket as bitbucket
+
+        test_workspace = bitbucket.get_workspace(workspace="example")
+        test_group = bitbucket.Group("testGroup", workspace=test_workspace.id)
+        test_current_user = bitbucket.get_current_user()
+        test_group_membership = bitbucket.GroupMembership("testGroupMembership",
+            workspace=test_group.workspace,
+            group_slug=test_group.slug,
+            uuid=test_current_user.id)
+        ```
+
+        ## Import
+
+        Group Members can be imported using their `workspace/group-slug/member-uuid` ID, e.g.
+
+        ```sh
+         $ pulumi import bitbucket:index/groupMembership:GroupMembership group my-workspace/group-slug/member-uuid
+        ```
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[str] group_slug: The slug of the group.
+        :param pulumi.Input[str] uuid: The member UUID to add to the group.
+        :param pulumi.Input[str] workspace: The workspace of this repository.
         """
         ...
     @overload
@@ -129,7 +182,33 @@ class GroupMembership(pulumi.CustomResource):
                  args: GroupMembershipArgs,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
-        Create a GroupMembership resource with the given unique name, props, and options.
+        Provides a Bitbucket group membership resource.
+
+        This allows you to manage your group membership.
+
+        ## Example Usage
+
+        ```python
+        import pulumi
+        import pulumi_bitbucket as bitbucket
+
+        test_workspace = bitbucket.get_workspace(workspace="example")
+        test_group = bitbucket.Group("testGroup", workspace=test_workspace.id)
+        test_current_user = bitbucket.get_current_user()
+        test_group_membership = bitbucket.GroupMembership("testGroupMembership",
+            workspace=test_group.workspace,
+            group_slug=test_group.slug,
+            uuid=test_current_user.id)
+        ```
+
+        ## Import
+
+        Group Members can be imported using their `workspace/group-slug/member-uuid` ID, e.g.
+
+        ```sh
+         $ pulumi import bitbucket:index/groupMembership:GroupMembership group my-workspace/group-slug/member-uuid
+        ```
+
         :param str resource_name: The name of the resource.
         :param GroupMembershipArgs args: The arguments to use to populate this resource's properties.
         :param pulumi.ResourceOptions opts: Options for the resource.
@@ -188,6 +267,9 @@ class GroupMembership(pulumi.CustomResource):
         :param str resource_name: The unique name of the resulting resource.
         :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[str] group_slug: The slug of the group.
+        :param pulumi.Input[str] uuid: The member UUID to add to the group.
+        :param pulumi.Input[str] workspace: The workspace of this repository.
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
 
@@ -202,6 +284,9 @@ class GroupMembership(pulumi.CustomResource):
     @property
     @pulumi.getter(name="groupSlug")
     def group_slug(self) -> pulumi.Output[str]:
+        """
+        The slug of the group.
+        """
         return pulumi.get(self, "group_slug")
 
     @property
@@ -212,10 +297,16 @@ class GroupMembership(pulumi.CustomResource):
     @property
     @pulumi.getter
     def uuid(self) -> pulumi.Output[str]:
+        """
+        The member UUID to add to the group.
+        """
         return pulumi.get(self, "uuid")
 
     @property
     @pulumi.getter
     def workspace(self) -> pulumi.Output[str]:
+        """
+        The workspace of this repository.
+        """
         return pulumi.get(self, "workspace")
 

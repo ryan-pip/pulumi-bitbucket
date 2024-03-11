@@ -8,10 +8,36 @@ import (
 	"reflect"
 
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket/internal"
 )
 
+// Provides a way to fetch data of groups in a workspace.
+//
+// ## Example Usage
+//
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := bitbucket.GetGroups(ctx, &bitbucket.GetGroupsArgs{
+//				Workspace: "example",
+//			}, nil)
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
 func GetGroups(ctx *pulumi.Context, args *GetGroupsArgs, opts ...pulumi.InvokeOption) (*GetGroupsResult, error) {
 	opts = internal.PkgInvokeDefaultOpts(opts)
 	var rv GetGroupsResult
@@ -24,11 +50,13 @@ func GetGroups(ctx *pulumi.Context, args *GetGroupsArgs, opts ...pulumi.InvokeOp
 
 // A collection of arguments for invoking getGroups.
 type GetGroupsArgs struct {
+	// The UUID that bitbucket groupss to connect a groups to various objects
 	Workspace string `pulumi:"workspace"`
 }
 
 // A collection of values returned by getGroups.
 type GetGroupsResult struct {
+	// The list of groups in the workspace. See Group below for structure of each element
 	Groups []GetGroupsGroup `pulumi:"groups"`
 	// The provider-assigned unique ID for this managed resource.
 	Id        string `pulumi:"id"`
@@ -50,6 +78,7 @@ func GetGroupsOutput(ctx *pulumi.Context, args GetGroupsOutputArgs, opts ...pulu
 
 // A collection of arguments for invoking getGroups.
 type GetGroupsOutputArgs struct {
+	// The UUID that bitbucket groupss to connect a groups to various objects
 	Workspace pulumi.StringInput `pulumi:"workspace"`
 }
 
@@ -72,12 +101,7 @@ func (o GetGroupsResultOutput) ToGetGroupsResultOutputWithContext(ctx context.Co
 	return o
 }
 
-func (o GetGroupsResultOutput) ToOutput(ctx context.Context) pulumix.Output[GetGroupsResult] {
-	return pulumix.Output[GetGroupsResult]{
-		OutputState: o.OutputState,
-	}
-}
-
+// The list of groups in the workspace. See Group below for structure of each element
 func (o GetGroupsResultOutput) Groups() GetGroupsGroupArrayOutput {
 	return o.ApplyT(func(v GetGroupsResult) []GetGroupsGroup { return v.Groups }).(GetGroupsGroupArrayOutput)
 }

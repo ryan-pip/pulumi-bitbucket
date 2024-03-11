@@ -9,18 +9,97 @@ import (
 
 	"errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket/internal"
 )
 
+// Provides a Bitbucket project branching model resource.
+//
+// This allows you for setting up branching models for your project.
+//
+// OAuth2 Scopes: `project:admin`
+//
+// ## Example Usage
+//
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			exampleProject, err := bitbucket.NewProject(ctx, "exampleProject", &bitbucket.ProjectArgs{
+//				Owner: pulumi.String("example"),
+//				Key:   pulumi.String("FFFFF"),
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			_, err = bitbucket.NewProjectBranchingModel(ctx, "exampleProjectBranchingModel", &bitbucket.ProjectBranchingModelArgs{
+//				Workspace: pulumi.String("example"),
+//				Project:   exampleProject.Key,
+//				Development: &bitbucket.ProjectBranchingModelDevelopmentArgs{
+//					UseMainbranch: pulumi.Bool(true),
+//				},
+//				BranchTypes: bitbucket.ProjectBranchingModelBranchTypeArray{
+//					&bitbucket.ProjectBranchingModelBranchTypeArgs{
+//						Enabled: pulumi.Bool(true),
+//						Kind:    pulumi.String("feature"),
+//						Prefix:  pulumi.String("example/"),
+//					},
+//					&bitbucket.ProjectBranchingModelBranchTypeArgs{
+//						Enabled: pulumi.Bool(true),
+//						Kind:    pulumi.String("hotfix"),
+//						Prefix:  pulumi.String("hotfix/"),
+//					},
+//					&bitbucket.ProjectBranchingModelBranchTypeArgs{
+//						Enabled: pulumi.Bool(true),
+//						Kind:    pulumi.String("release"),
+//						Prefix:  pulumi.String("release/"),
+//					},
+//					&bitbucket.ProjectBranchingModelBranchTypeArgs{
+//						Enabled: pulumi.Bool(true),
+//						Kind:    pulumi.String("bugfix"),
+//						Prefix:  pulumi.String("bugfix/"),
+//					},
+//				},
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
+//
+// ## Import
+//
+// Branching Models can be imported using the workspace and project separated by a (`/`), e.g.,
+//
+// ```sh
+//
+//	$ pulumi import bitbucket:index/projectBranchingModel:ProjectBranchingModel example workspace/project
+//
+// ```
 type ProjectBranchingModel struct {
 	pulumi.CustomResourceState
 
+	// A set of branch type to define `feature`, `bugfix`, `release`, `hotfix` prefixes. See Branch Type below.
 	BranchTypes ProjectBranchingModelBranchTypeArrayOutput `pulumi:"branchTypes"`
-	Development ProjectBranchingModelDevelopmentOutput     `pulumi:"development"`
-	Production  ProjectBranchingModelProductionPtrOutput   `pulumi:"production"`
-	Project     pulumi.StringOutput                        `pulumi:"project"`
-	Workspace   pulumi.StringOutput                        `pulumi:"workspace"`
+	// The development branch can be configured to a specific branch or to track the main branch. When set to a specific branch it must currently exist. Only the passed properties will be updated. The properties not passed will be left unchanged. A request without a development property will leave the development branch unchanged. See Development below.
+	Development ProjectBranchingModelDevelopmentOutput `pulumi:"development"`
+	// The production branch can be a specific branch, the main branch or disabled. When set to a specific branch it must currently exist. The enabled property can be used to enable (true) or disable (false) it. Only the passed properties will be updated. The properties not passed will be left unchanged. A request without a production property will leave the production branch unchanged. See Production below.
+	Production ProjectBranchingModelProductionPtrOutput `pulumi:"production"`
+	// The key of the project.
+	Project pulumi.StringOutput `pulumi:"project"`
+	// The workspace of this project. Can be you or any team you
+	// have write access to.
+	Workspace pulumi.StringOutput `pulumi:"workspace"`
 }
 
 // NewProjectBranchingModel registers a new resource with the given unique name, arguments, and options.
@@ -62,19 +141,31 @@ func GetProjectBranchingModel(ctx *pulumi.Context,
 
 // Input properties used for looking up and filtering ProjectBranchingModel resources.
 type projectBranchingModelState struct {
+	// A set of branch type to define `feature`, `bugfix`, `release`, `hotfix` prefixes. See Branch Type below.
 	BranchTypes []ProjectBranchingModelBranchType `pulumi:"branchTypes"`
+	// The development branch can be configured to a specific branch or to track the main branch. When set to a specific branch it must currently exist. Only the passed properties will be updated. The properties not passed will be left unchanged. A request without a development property will leave the development branch unchanged. See Development below.
 	Development *ProjectBranchingModelDevelopment `pulumi:"development"`
-	Production  *ProjectBranchingModelProduction  `pulumi:"production"`
-	Project     *string                           `pulumi:"project"`
-	Workspace   *string                           `pulumi:"workspace"`
+	// The production branch can be a specific branch, the main branch or disabled. When set to a specific branch it must currently exist. The enabled property can be used to enable (true) or disable (false) it. Only the passed properties will be updated. The properties not passed will be left unchanged. A request without a production property will leave the production branch unchanged. See Production below.
+	Production *ProjectBranchingModelProduction `pulumi:"production"`
+	// The key of the project.
+	Project *string `pulumi:"project"`
+	// The workspace of this project. Can be you or any team you
+	// have write access to.
+	Workspace *string `pulumi:"workspace"`
 }
 
 type ProjectBranchingModelState struct {
+	// A set of branch type to define `feature`, `bugfix`, `release`, `hotfix` prefixes. See Branch Type below.
 	BranchTypes ProjectBranchingModelBranchTypeArrayInput
+	// The development branch can be configured to a specific branch or to track the main branch. When set to a specific branch it must currently exist. Only the passed properties will be updated. The properties not passed will be left unchanged. A request without a development property will leave the development branch unchanged. See Development below.
 	Development ProjectBranchingModelDevelopmentPtrInput
-	Production  ProjectBranchingModelProductionPtrInput
-	Project     pulumi.StringPtrInput
-	Workspace   pulumi.StringPtrInput
+	// The production branch can be a specific branch, the main branch or disabled. When set to a specific branch it must currently exist. The enabled property can be used to enable (true) or disable (false) it. Only the passed properties will be updated. The properties not passed will be left unchanged. A request without a production property will leave the production branch unchanged. See Production below.
+	Production ProjectBranchingModelProductionPtrInput
+	// The key of the project.
+	Project pulumi.StringPtrInput
+	// The workspace of this project. Can be you or any team you
+	// have write access to.
+	Workspace pulumi.StringPtrInput
 }
 
 func (ProjectBranchingModelState) ElementType() reflect.Type {
@@ -82,20 +173,32 @@ func (ProjectBranchingModelState) ElementType() reflect.Type {
 }
 
 type projectBranchingModelArgs struct {
+	// A set of branch type to define `feature`, `bugfix`, `release`, `hotfix` prefixes. See Branch Type below.
 	BranchTypes []ProjectBranchingModelBranchType `pulumi:"branchTypes"`
-	Development ProjectBranchingModelDevelopment  `pulumi:"development"`
-	Production  *ProjectBranchingModelProduction  `pulumi:"production"`
-	Project     string                            `pulumi:"project"`
-	Workspace   string                            `pulumi:"workspace"`
+	// The development branch can be configured to a specific branch or to track the main branch. When set to a specific branch it must currently exist. Only the passed properties will be updated. The properties not passed will be left unchanged. A request without a development property will leave the development branch unchanged. See Development below.
+	Development ProjectBranchingModelDevelopment `pulumi:"development"`
+	// The production branch can be a specific branch, the main branch or disabled. When set to a specific branch it must currently exist. The enabled property can be used to enable (true) or disable (false) it. Only the passed properties will be updated. The properties not passed will be left unchanged. A request without a production property will leave the production branch unchanged. See Production below.
+	Production *ProjectBranchingModelProduction `pulumi:"production"`
+	// The key of the project.
+	Project string `pulumi:"project"`
+	// The workspace of this project. Can be you or any team you
+	// have write access to.
+	Workspace string `pulumi:"workspace"`
 }
 
 // The set of arguments for constructing a ProjectBranchingModel resource.
 type ProjectBranchingModelArgs struct {
+	// A set of branch type to define `feature`, `bugfix`, `release`, `hotfix` prefixes. See Branch Type below.
 	BranchTypes ProjectBranchingModelBranchTypeArrayInput
+	// The development branch can be configured to a specific branch or to track the main branch. When set to a specific branch it must currently exist. Only the passed properties will be updated. The properties not passed will be left unchanged. A request without a development property will leave the development branch unchanged. See Development below.
 	Development ProjectBranchingModelDevelopmentInput
-	Production  ProjectBranchingModelProductionPtrInput
-	Project     pulumi.StringInput
-	Workspace   pulumi.StringInput
+	// The production branch can be a specific branch, the main branch or disabled. When set to a specific branch it must currently exist. The enabled property can be used to enable (true) or disable (false) it. Only the passed properties will be updated. The properties not passed will be left unchanged. A request without a production property will leave the production branch unchanged. See Production below.
+	Production ProjectBranchingModelProductionPtrInput
+	// The key of the project.
+	Project pulumi.StringInput
+	// The workspace of this project. Can be you or any team you
+	// have write access to.
+	Workspace pulumi.StringInput
 }
 
 func (ProjectBranchingModelArgs) ElementType() reflect.Type {
@@ -119,12 +222,6 @@ func (i *ProjectBranchingModel) ToProjectBranchingModelOutput() ProjectBranching
 
 func (i *ProjectBranchingModel) ToProjectBranchingModelOutputWithContext(ctx context.Context) ProjectBranchingModelOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(ProjectBranchingModelOutput)
-}
-
-func (i *ProjectBranchingModel) ToOutput(ctx context.Context) pulumix.Output[*ProjectBranchingModel] {
-	return pulumix.Output[*ProjectBranchingModel]{
-		OutputState: i.ToProjectBranchingModelOutputWithContext(ctx).OutputState,
-	}
 }
 
 // ProjectBranchingModelArrayInput is an input type that accepts ProjectBranchingModelArray and ProjectBranchingModelArrayOutput values.
@@ -152,12 +249,6 @@ func (i ProjectBranchingModelArray) ToProjectBranchingModelArrayOutputWithContex
 	return pulumi.ToOutputWithContext(ctx, i).(ProjectBranchingModelArrayOutput)
 }
 
-func (i ProjectBranchingModelArray) ToOutput(ctx context.Context) pulumix.Output[[]*ProjectBranchingModel] {
-	return pulumix.Output[[]*ProjectBranchingModel]{
-		OutputState: i.ToProjectBranchingModelArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 // ProjectBranchingModelMapInput is an input type that accepts ProjectBranchingModelMap and ProjectBranchingModelMapOutput values.
 // You can construct a concrete instance of `ProjectBranchingModelMapInput` via:
 //
@@ -183,12 +274,6 @@ func (i ProjectBranchingModelMap) ToProjectBranchingModelMapOutputWithContext(ct
 	return pulumi.ToOutputWithContext(ctx, i).(ProjectBranchingModelMapOutput)
 }
 
-func (i ProjectBranchingModelMap) ToOutput(ctx context.Context) pulumix.Output[map[string]*ProjectBranchingModel] {
-	return pulumix.Output[map[string]*ProjectBranchingModel]{
-		OutputState: i.ToProjectBranchingModelMapOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ProjectBranchingModelOutput struct{ *pulumi.OutputState }
 
 func (ProjectBranchingModelOutput) ElementType() reflect.Type {
@@ -203,28 +288,28 @@ func (o ProjectBranchingModelOutput) ToProjectBranchingModelOutputWithContext(ct
 	return o
 }
 
-func (o ProjectBranchingModelOutput) ToOutput(ctx context.Context) pulumix.Output[*ProjectBranchingModel] {
-	return pulumix.Output[*ProjectBranchingModel]{
-		OutputState: o.OutputState,
-	}
-}
-
+// A set of branch type to define `feature`, `bugfix`, `release`, `hotfix` prefixes. See Branch Type below.
 func (o ProjectBranchingModelOutput) BranchTypes() ProjectBranchingModelBranchTypeArrayOutput {
 	return o.ApplyT(func(v *ProjectBranchingModel) ProjectBranchingModelBranchTypeArrayOutput { return v.BranchTypes }).(ProjectBranchingModelBranchTypeArrayOutput)
 }
 
+// The development branch can be configured to a specific branch or to track the main branch. When set to a specific branch it must currently exist. Only the passed properties will be updated. The properties not passed will be left unchanged. A request without a development property will leave the development branch unchanged. See Development below.
 func (o ProjectBranchingModelOutput) Development() ProjectBranchingModelDevelopmentOutput {
 	return o.ApplyT(func(v *ProjectBranchingModel) ProjectBranchingModelDevelopmentOutput { return v.Development }).(ProjectBranchingModelDevelopmentOutput)
 }
 
+// The production branch can be a specific branch, the main branch or disabled. When set to a specific branch it must currently exist. The enabled property can be used to enable (true) or disable (false) it. Only the passed properties will be updated. The properties not passed will be left unchanged. A request without a production property will leave the production branch unchanged. See Production below.
 func (o ProjectBranchingModelOutput) Production() ProjectBranchingModelProductionPtrOutput {
 	return o.ApplyT(func(v *ProjectBranchingModel) ProjectBranchingModelProductionPtrOutput { return v.Production }).(ProjectBranchingModelProductionPtrOutput)
 }
 
+// The key of the project.
 func (o ProjectBranchingModelOutput) Project() pulumi.StringOutput {
 	return o.ApplyT(func(v *ProjectBranchingModel) pulumi.StringOutput { return v.Project }).(pulumi.StringOutput)
 }
 
+// The workspace of this project. Can be you or any team you
+// have write access to.
 func (o ProjectBranchingModelOutput) Workspace() pulumi.StringOutput {
 	return o.ApplyT(func(v *ProjectBranchingModel) pulumi.StringOutput { return v.Workspace }).(pulumi.StringOutput)
 }
@@ -241,12 +326,6 @@ func (o ProjectBranchingModelArrayOutput) ToProjectBranchingModelArrayOutput() P
 
 func (o ProjectBranchingModelArrayOutput) ToProjectBranchingModelArrayOutputWithContext(ctx context.Context) ProjectBranchingModelArrayOutput {
 	return o
-}
-
-func (o ProjectBranchingModelArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]*ProjectBranchingModel] {
-	return pulumix.Output[[]*ProjectBranchingModel]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ProjectBranchingModelArrayOutput) Index(i pulumi.IntInput) ProjectBranchingModelOutput {
@@ -267,12 +346,6 @@ func (o ProjectBranchingModelMapOutput) ToProjectBranchingModelMapOutput() Proje
 
 func (o ProjectBranchingModelMapOutput) ToProjectBranchingModelMapOutputWithContext(ctx context.Context) ProjectBranchingModelMapOutput {
 	return o
-}
-
-func (o ProjectBranchingModelMapOutput) ToOutput(ctx context.Context) pulumix.Output[map[string]*ProjectBranchingModel] {
-	return pulumix.Output[map[string]*ProjectBranchingModel]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ProjectBranchingModelMapOutput) MapIndex(k pulumi.StringInput) ProjectBranchingModelOutput {

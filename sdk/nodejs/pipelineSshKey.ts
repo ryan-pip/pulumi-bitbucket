@@ -4,6 +4,35 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "./utilities";
 
+/**
+ * Provides a Bitbucket Pipeline Ssh Key resource.
+ *
+ * This allows you to manage your Pipeline Ssh Keys for a repository.
+ *
+ * OAuth2 Scopes: `none`
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as bitbucket from "@pulumi/bitbucket";
+ *
+ * const test = new bitbucket.PipelineSshKey("test", {
+ *     privateKey: "test-key",
+ *     publicKey: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKqP3Cr632C2dNhhgKVcon4ldUSAeKiku2yP9O9/bDtY",
+ *     repository: "example",
+ *     workspace: "example",
+ * });
+ * ```
+ *
+ * ## Import
+ *
+ * Pipeline Ssh Keys can be imported using their `workspace/repo-slug` ID, e.g.
+ *
+ * ```sh
+ *  $ pulumi import bitbucket:index/pipelineSshKey:PipelineSshKey key workspace/repo-slug
+ * ```
+ */
 export class PipelineSshKey extends pulumi.CustomResource {
     /**
      * Get an existing PipelineSshKey resource's state with the given name, ID, and optional extra
@@ -32,9 +61,21 @@ export class PipelineSshKey extends pulumi.CustomResource {
         return obj['__pulumiType'] === PipelineSshKey.__pulumiType;
     }
 
+    /**
+     * The SSH private key value in OpenSSH format.
+     */
     public readonly privateKey!: pulumi.Output<string | undefined>;
+    /**
+     * The SSH public key value in OpenSSH format.
+     */
     public readonly publicKey!: pulumi.Output<string | undefined>;
+    /**
+     * The Repository to create ssh key in.
+     */
     public readonly repository!: pulumi.Output<string>;
+    /**
+     * The Workspace where the repository resides.
+     */
     public readonly workspace!: pulumi.Output<string>;
 
     /**
@@ -76,9 +117,21 @@ export class PipelineSshKey extends pulumi.CustomResource {
  * Input properties used for looking up and filtering PipelineSshKey resources.
  */
 export interface PipelineSshKeyState {
+    /**
+     * The SSH private key value in OpenSSH format.
+     */
     privateKey?: pulumi.Input<string>;
+    /**
+     * The SSH public key value in OpenSSH format.
+     */
     publicKey?: pulumi.Input<string>;
+    /**
+     * The Repository to create ssh key in.
+     */
     repository?: pulumi.Input<string>;
+    /**
+     * The Workspace where the repository resides.
+     */
     workspace?: pulumi.Input<string>;
 }
 
@@ -86,8 +139,20 @@ export interface PipelineSshKeyState {
  * The set of arguments for constructing a PipelineSshKey resource.
  */
 export interface PipelineSshKeyArgs {
+    /**
+     * The SSH private key value in OpenSSH format.
+     */
     privateKey?: pulumi.Input<string>;
+    /**
+     * The SSH public key value in OpenSSH format.
+     */
     publicKey?: pulumi.Input<string>;
+    /**
+     * The Repository to create ssh key in.
+     */
     repository: pulumi.Input<string>;
+    /**
+     * The Workspace where the repository resides.
+     */
     workspace: pulumi.Input<string>;
 }

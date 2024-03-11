@@ -20,6 +20,10 @@ class PipelineSshKeyArgs:
                  public_key: Optional[pulumi.Input[str]] = None):
         """
         The set of arguments for constructing a PipelineSshKey resource.
+        :param pulumi.Input[str] repository: The Repository to create ssh key in.
+        :param pulumi.Input[str] workspace: The Workspace where the repository resides.
+        :param pulumi.Input[str] private_key: The SSH private key value in OpenSSH format.
+        :param pulumi.Input[str] public_key: The SSH public key value in OpenSSH format.
         """
         pulumi.set(__self__, "repository", repository)
         pulumi.set(__self__, "workspace", workspace)
@@ -31,6 +35,9 @@ class PipelineSshKeyArgs:
     @property
     @pulumi.getter
     def repository(self) -> pulumi.Input[str]:
+        """
+        The Repository to create ssh key in.
+        """
         return pulumi.get(self, "repository")
 
     @repository.setter
@@ -40,6 +47,9 @@ class PipelineSshKeyArgs:
     @property
     @pulumi.getter
     def workspace(self) -> pulumi.Input[str]:
+        """
+        The Workspace where the repository resides.
+        """
         return pulumi.get(self, "workspace")
 
     @workspace.setter
@@ -49,6 +59,9 @@ class PipelineSshKeyArgs:
     @property
     @pulumi.getter(name="privateKey")
     def private_key(self) -> Optional[pulumi.Input[str]]:
+        """
+        The SSH private key value in OpenSSH format.
+        """
         return pulumi.get(self, "private_key")
 
     @private_key.setter
@@ -58,6 +71,9 @@ class PipelineSshKeyArgs:
     @property
     @pulumi.getter(name="publicKey")
     def public_key(self) -> Optional[pulumi.Input[str]]:
+        """
+        The SSH public key value in OpenSSH format.
+        """
         return pulumi.get(self, "public_key")
 
     @public_key.setter
@@ -74,6 +90,10 @@ class _PipelineSshKeyState:
                  workspace: Optional[pulumi.Input[str]] = None):
         """
         Input properties used for looking up and filtering PipelineSshKey resources.
+        :param pulumi.Input[str] private_key: The SSH private key value in OpenSSH format.
+        :param pulumi.Input[str] public_key: The SSH public key value in OpenSSH format.
+        :param pulumi.Input[str] repository: The Repository to create ssh key in.
+        :param pulumi.Input[str] workspace: The Workspace where the repository resides.
         """
         if private_key is not None:
             pulumi.set(__self__, "private_key", private_key)
@@ -87,6 +107,9 @@ class _PipelineSshKeyState:
     @property
     @pulumi.getter(name="privateKey")
     def private_key(self) -> Optional[pulumi.Input[str]]:
+        """
+        The SSH private key value in OpenSSH format.
+        """
         return pulumi.get(self, "private_key")
 
     @private_key.setter
@@ -96,6 +119,9 @@ class _PipelineSshKeyState:
     @property
     @pulumi.getter(name="publicKey")
     def public_key(self) -> Optional[pulumi.Input[str]]:
+        """
+        The SSH public key value in OpenSSH format.
+        """
         return pulumi.get(self, "public_key")
 
     @public_key.setter
@@ -105,6 +131,9 @@ class _PipelineSshKeyState:
     @property
     @pulumi.getter
     def repository(self) -> Optional[pulumi.Input[str]]:
+        """
+        The Repository to create ssh key in.
+        """
         return pulumi.get(self, "repository")
 
     @repository.setter
@@ -114,6 +143,9 @@ class _PipelineSshKeyState:
     @property
     @pulumi.getter
     def workspace(self) -> Optional[pulumi.Input[str]]:
+        """
+        The Workspace where the repository resides.
+        """
         return pulumi.get(self, "workspace")
 
     @workspace.setter
@@ -132,9 +164,39 @@ class PipelineSshKey(pulumi.CustomResource):
                  workspace: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         """
-        Create a PipelineSshKey resource with the given unique name, props, and options.
+        Provides a Bitbucket Pipeline Ssh Key resource.
+
+        This allows you to manage your Pipeline Ssh Keys for a repository.
+
+        OAuth2 Scopes: `none`
+
+        ## Example Usage
+
+        ```python
+        import pulumi
+        import pulumi_bitbucket as bitbucket
+
+        test = bitbucket.PipelineSshKey("test",
+            private_key="test-key",
+            public_key="ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKqP3Cr632C2dNhhgKVcon4ldUSAeKiku2yP9O9/bDtY",
+            repository="example",
+            workspace="example")
+        ```
+
+        ## Import
+
+        Pipeline Ssh Keys can be imported using their `workspace/repo-slug` ID, e.g.
+
+        ```sh
+         $ pulumi import bitbucket:index/pipelineSshKey:PipelineSshKey key workspace/repo-slug
+        ```
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[str] private_key: The SSH private key value in OpenSSH format.
+        :param pulumi.Input[str] public_key: The SSH public key value in OpenSSH format.
+        :param pulumi.Input[str] repository: The Repository to create ssh key in.
+        :param pulumi.Input[str] workspace: The Workspace where the repository resides.
         """
         ...
     @overload
@@ -143,7 +205,33 @@ class PipelineSshKey(pulumi.CustomResource):
                  args: PipelineSshKeyArgs,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
-        Create a PipelineSshKey resource with the given unique name, props, and options.
+        Provides a Bitbucket Pipeline Ssh Key resource.
+
+        This allows you to manage your Pipeline Ssh Keys for a repository.
+
+        OAuth2 Scopes: `none`
+
+        ## Example Usage
+
+        ```python
+        import pulumi
+        import pulumi_bitbucket as bitbucket
+
+        test = bitbucket.PipelineSshKey("test",
+            private_key="test-key",
+            public_key="ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKqP3Cr632C2dNhhgKVcon4ldUSAeKiku2yP9O9/bDtY",
+            repository="example",
+            workspace="example")
+        ```
+
+        ## Import
+
+        Pipeline Ssh Keys can be imported using their `workspace/repo-slug` ID, e.g.
+
+        ```sh
+         $ pulumi import bitbucket:index/pipelineSshKey:PipelineSshKey key workspace/repo-slug
+        ```
+
         :param str resource_name: The name of the resource.
         :param PipelineSshKeyArgs args: The arguments to use to populate this resource's properties.
         :param pulumi.ResourceOptions opts: Options for the resource.
@@ -201,6 +289,10 @@ class PipelineSshKey(pulumi.CustomResource):
         :param str resource_name: The unique name of the resulting resource.
         :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[str] private_key: The SSH private key value in OpenSSH format.
+        :param pulumi.Input[str] public_key: The SSH public key value in OpenSSH format.
+        :param pulumi.Input[str] repository: The Repository to create ssh key in.
+        :param pulumi.Input[str] workspace: The Workspace where the repository resides.
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
 
@@ -215,20 +307,32 @@ class PipelineSshKey(pulumi.CustomResource):
     @property
     @pulumi.getter(name="privateKey")
     def private_key(self) -> pulumi.Output[Optional[str]]:
+        """
+        The SSH private key value in OpenSSH format.
+        """
         return pulumi.get(self, "private_key")
 
     @property
     @pulumi.getter(name="publicKey")
     def public_key(self) -> pulumi.Output[Optional[str]]:
+        """
+        The SSH public key value in OpenSSH format.
+        """
         return pulumi.get(self, "public_key")
 
     @property
     @pulumi.getter
     def repository(self) -> pulumi.Output[str]:
+        """
+        The Repository to create ssh key in.
+        """
         return pulumi.get(self, "repository")
 
     @property
     @pulumi.getter
     def workspace(self) -> pulumi.Output[str]:
+        """
+        The Workspace where the repository resides.
+        """
         return pulumi.get(self, "workspace")
 

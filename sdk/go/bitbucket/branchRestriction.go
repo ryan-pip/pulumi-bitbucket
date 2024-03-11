@@ -9,22 +9,81 @@ import (
 
 	"errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket/internal"
 )
 
+// Provides a Bitbucket branch restriction resource.
+//
+// This allows you for setting up branch restrictions for your repository.
+//
+// OAuth2 Scopes: `repository:admin`
+//
+// ## Example Usage
+//
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := bitbucket.NewBranchRestriction(ctx, "master", &bitbucket.BranchRestrictionArgs{
+//				Groups: bitbucket.BranchRestrictionGroupArray{
+//					&bitbucket.BranchRestrictionGroupArgs{
+//						Owner: pulumi.String("my-owner"),
+//						Slug:  pulumi.String("my-group"),
+//					},
+//				},
+//				Kind:       pulumi.String("push"),
+//				Owner:      pulumi.String("myteam"),
+//				Pattern:    pulumi.String("master"),
+//				Repository: pulumi.String("terraform-code"),
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
+//
+// ## Import
+//
+// Branch Restrictions can be imported using their `owner/repo-name/branch-restriction-id` ID, e.g.
+//
+// ```sh
+//
+//	$ pulumi import bitbucket:index/branchRestriction:BranchRestriction example my-account/my-repo/branch-rest-id
+//
+// ```
 type BranchRestriction struct {
 	pulumi.CustomResourceState
 
-	BranchMatchKind pulumi.StringPtrOutput            `pulumi:"branchMatchKind"`
-	BranchType      pulumi.StringPtrOutput            `pulumi:"branchType"`
-	Groups          BranchRestrictionGroupArrayOutput `pulumi:"groups"`
-	Kind            pulumi.StringOutput               `pulumi:"kind"`
-	Owner           pulumi.StringOutput               `pulumi:"owner"`
-	Pattern         pulumi.StringPtrOutput            `pulumi:"pattern"`
-	Repository      pulumi.StringOutput               `pulumi:"repository"`
-	Users           pulumi.StringArrayOutput          `pulumi:"users"`
-	Value           pulumi.IntPtrOutput               `pulumi:"value"`
+	// Indicates how the restriction is matched against a branch. The default is `glob`. Valid values: `branchingModel`, `glob`.
+	BranchMatchKind pulumi.StringPtrOutput `pulumi:"branchMatchKind"`
+	// Apply the restriction to branches of this type. Active when `branchMatchKind` is `branchingModel`. The branch type will be calculated using the branching model configured for the repository. Valid values: `feature`, `bugfix`, `release`, `hotfix`, `development`, `production`.
+	BranchType pulumi.StringPtrOutput `pulumi:"branchType"`
+	// A list of groups to use.
+	Groups BranchRestrictionGroupArrayOutput `pulumi:"groups"`
+	// The type of restriction that is being applied. Valid values can be found in [docs](https://developer.atlassian.com/cloud/bitbucket/rest/api-group-branch-restrictions/#api-group-branch-restrictions).
+	Kind pulumi.StringOutput `pulumi:"kind"`
+	// The owner of this repository. Can be you or any team you
+	// have write access to.
+	Owner pulumi.StringOutput `pulumi:"owner"`
+	// Apply the restriction to branches that match this pattern. Active when `branchMatchKind` is `glob`. Will be empty when `branchMatchKind` is `branchingModel`.
+	Pattern pulumi.StringPtrOutput `pulumi:"pattern"`
+	// The name of the repository.
+	Repository pulumi.StringOutput `pulumi:"repository"`
+	// A list of users to use.
+	Users pulumi.StringArrayOutput `pulumi:"users"`
+	// A value applied to the restriction kind. Currently only applicable to `requirePassingBuildsToMerge`, `requireDefaultReviewerApprovalsToMerge` and `requireApprovalsToMerge`.
+	Value pulumi.IntPtrOutput `pulumi:"value"`
 }
 
 // NewBranchRestriction registers a new resource with the given unique name, arguments, and options.
@@ -66,27 +125,47 @@ func GetBranchRestriction(ctx *pulumi.Context,
 
 // Input properties used for looking up and filtering BranchRestriction resources.
 type branchRestrictionState struct {
-	BranchMatchKind *string                  `pulumi:"branchMatchKind"`
-	BranchType      *string                  `pulumi:"branchType"`
-	Groups          []BranchRestrictionGroup `pulumi:"groups"`
-	Kind            *string                  `pulumi:"kind"`
-	Owner           *string                  `pulumi:"owner"`
-	Pattern         *string                  `pulumi:"pattern"`
-	Repository      *string                  `pulumi:"repository"`
-	Users           []string                 `pulumi:"users"`
-	Value           *int                     `pulumi:"value"`
+	// Indicates how the restriction is matched against a branch. The default is `glob`. Valid values: `branchingModel`, `glob`.
+	BranchMatchKind *string `pulumi:"branchMatchKind"`
+	// Apply the restriction to branches of this type. Active when `branchMatchKind` is `branchingModel`. The branch type will be calculated using the branching model configured for the repository. Valid values: `feature`, `bugfix`, `release`, `hotfix`, `development`, `production`.
+	BranchType *string `pulumi:"branchType"`
+	// A list of groups to use.
+	Groups []BranchRestrictionGroup `pulumi:"groups"`
+	// The type of restriction that is being applied. Valid values can be found in [docs](https://developer.atlassian.com/cloud/bitbucket/rest/api-group-branch-restrictions/#api-group-branch-restrictions).
+	Kind *string `pulumi:"kind"`
+	// The owner of this repository. Can be you or any team you
+	// have write access to.
+	Owner *string `pulumi:"owner"`
+	// Apply the restriction to branches that match this pattern. Active when `branchMatchKind` is `glob`. Will be empty when `branchMatchKind` is `branchingModel`.
+	Pattern *string `pulumi:"pattern"`
+	// The name of the repository.
+	Repository *string `pulumi:"repository"`
+	// A list of users to use.
+	Users []string `pulumi:"users"`
+	// A value applied to the restriction kind. Currently only applicable to `requirePassingBuildsToMerge`, `requireDefaultReviewerApprovalsToMerge` and `requireApprovalsToMerge`.
+	Value *int `pulumi:"value"`
 }
 
 type BranchRestrictionState struct {
+	// Indicates how the restriction is matched against a branch. The default is `glob`. Valid values: `branchingModel`, `glob`.
 	BranchMatchKind pulumi.StringPtrInput
-	BranchType      pulumi.StringPtrInput
-	Groups          BranchRestrictionGroupArrayInput
-	Kind            pulumi.StringPtrInput
-	Owner           pulumi.StringPtrInput
-	Pattern         pulumi.StringPtrInput
-	Repository      pulumi.StringPtrInput
-	Users           pulumi.StringArrayInput
-	Value           pulumi.IntPtrInput
+	// Apply the restriction to branches of this type. Active when `branchMatchKind` is `branchingModel`. The branch type will be calculated using the branching model configured for the repository. Valid values: `feature`, `bugfix`, `release`, `hotfix`, `development`, `production`.
+	BranchType pulumi.StringPtrInput
+	// A list of groups to use.
+	Groups BranchRestrictionGroupArrayInput
+	// The type of restriction that is being applied. Valid values can be found in [docs](https://developer.atlassian.com/cloud/bitbucket/rest/api-group-branch-restrictions/#api-group-branch-restrictions).
+	Kind pulumi.StringPtrInput
+	// The owner of this repository. Can be you or any team you
+	// have write access to.
+	Owner pulumi.StringPtrInput
+	// Apply the restriction to branches that match this pattern. Active when `branchMatchKind` is `glob`. Will be empty when `branchMatchKind` is `branchingModel`.
+	Pattern pulumi.StringPtrInput
+	// The name of the repository.
+	Repository pulumi.StringPtrInput
+	// A list of users to use.
+	Users pulumi.StringArrayInput
+	// A value applied to the restriction kind. Currently only applicable to `requirePassingBuildsToMerge`, `requireDefaultReviewerApprovalsToMerge` and `requireApprovalsToMerge`.
+	Value pulumi.IntPtrInput
 }
 
 func (BranchRestrictionState) ElementType() reflect.Type {
@@ -94,28 +173,48 @@ func (BranchRestrictionState) ElementType() reflect.Type {
 }
 
 type branchRestrictionArgs struct {
-	BranchMatchKind *string                  `pulumi:"branchMatchKind"`
-	BranchType      *string                  `pulumi:"branchType"`
-	Groups          []BranchRestrictionGroup `pulumi:"groups"`
-	Kind            string                   `pulumi:"kind"`
-	Owner           string                   `pulumi:"owner"`
-	Pattern         *string                  `pulumi:"pattern"`
-	Repository      string                   `pulumi:"repository"`
-	Users           []string                 `pulumi:"users"`
-	Value           *int                     `pulumi:"value"`
+	// Indicates how the restriction is matched against a branch. The default is `glob`. Valid values: `branchingModel`, `glob`.
+	BranchMatchKind *string `pulumi:"branchMatchKind"`
+	// Apply the restriction to branches of this type. Active when `branchMatchKind` is `branchingModel`. The branch type will be calculated using the branching model configured for the repository. Valid values: `feature`, `bugfix`, `release`, `hotfix`, `development`, `production`.
+	BranchType *string `pulumi:"branchType"`
+	// A list of groups to use.
+	Groups []BranchRestrictionGroup `pulumi:"groups"`
+	// The type of restriction that is being applied. Valid values can be found in [docs](https://developer.atlassian.com/cloud/bitbucket/rest/api-group-branch-restrictions/#api-group-branch-restrictions).
+	Kind string `pulumi:"kind"`
+	// The owner of this repository. Can be you or any team you
+	// have write access to.
+	Owner string `pulumi:"owner"`
+	// Apply the restriction to branches that match this pattern. Active when `branchMatchKind` is `glob`. Will be empty when `branchMatchKind` is `branchingModel`.
+	Pattern *string `pulumi:"pattern"`
+	// The name of the repository.
+	Repository string `pulumi:"repository"`
+	// A list of users to use.
+	Users []string `pulumi:"users"`
+	// A value applied to the restriction kind. Currently only applicable to `requirePassingBuildsToMerge`, `requireDefaultReviewerApprovalsToMerge` and `requireApprovalsToMerge`.
+	Value *int `pulumi:"value"`
 }
 
 // The set of arguments for constructing a BranchRestriction resource.
 type BranchRestrictionArgs struct {
+	// Indicates how the restriction is matched against a branch. The default is `glob`. Valid values: `branchingModel`, `glob`.
 	BranchMatchKind pulumi.StringPtrInput
-	BranchType      pulumi.StringPtrInput
-	Groups          BranchRestrictionGroupArrayInput
-	Kind            pulumi.StringInput
-	Owner           pulumi.StringInput
-	Pattern         pulumi.StringPtrInput
-	Repository      pulumi.StringInput
-	Users           pulumi.StringArrayInput
-	Value           pulumi.IntPtrInput
+	// Apply the restriction to branches of this type. Active when `branchMatchKind` is `branchingModel`. The branch type will be calculated using the branching model configured for the repository. Valid values: `feature`, `bugfix`, `release`, `hotfix`, `development`, `production`.
+	BranchType pulumi.StringPtrInput
+	// A list of groups to use.
+	Groups BranchRestrictionGroupArrayInput
+	// The type of restriction that is being applied. Valid values can be found in [docs](https://developer.atlassian.com/cloud/bitbucket/rest/api-group-branch-restrictions/#api-group-branch-restrictions).
+	Kind pulumi.StringInput
+	// The owner of this repository. Can be you or any team you
+	// have write access to.
+	Owner pulumi.StringInput
+	// Apply the restriction to branches that match this pattern. Active when `branchMatchKind` is `glob`. Will be empty when `branchMatchKind` is `branchingModel`.
+	Pattern pulumi.StringPtrInput
+	// The name of the repository.
+	Repository pulumi.StringInput
+	// A list of users to use.
+	Users pulumi.StringArrayInput
+	// A value applied to the restriction kind. Currently only applicable to `requirePassingBuildsToMerge`, `requireDefaultReviewerApprovalsToMerge` and `requireApprovalsToMerge`.
+	Value pulumi.IntPtrInput
 }
 
 func (BranchRestrictionArgs) ElementType() reflect.Type {
@@ -139,12 +238,6 @@ func (i *BranchRestriction) ToBranchRestrictionOutput() BranchRestrictionOutput 
 
 func (i *BranchRestriction) ToBranchRestrictionOutputWithContext(ctx context.Context) BranchRestrictionOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(BranchRestrictionOutput)
-}
-
-func (i *BranchRestriction) ToOutput(ctx context.Context) pulumix.Output[*BranchRestriction] {
-	return pulumix.Output[*BranchRestriction]{
-		OutputState: i.ToBranchRestrictionOutputWithContext(ctx).OutputState,
-	}
 }
 
 // BranchRestrictionArrayInput is an input type that accepts BranchRestrictionArray and BranchRestrictionArrayOutput values.
@@ -172,12 +265,6 @@ func (i BranchRestrictionArray) ToBranchRestrictionArrayOutputWithContext(ctx co
 	return pulumi.ToOutputWithContext(ctx, i).(BranchRestrictionArrayOutput)
 }
 
-func (i BranchRestrictionArray) ToOutput(ctx context.Context) pulumix.Output[[]*BranchRestriction] {
-	return pulumix.Output[[]*BranchRestriction]{
-		OutputState: i.ToBranchRestrictionArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 // BranchRestrictionMapInput is an input type that accepts BranchRestrictionMap and BranchRestrictionMapOutput values.
 // You can construct a concrete instance of `BranchRestrictionMapInput` via:
 //
@@ -203,12 +290,6 @@ func (i BranchRestrictionMap) ToBranchRestrictionMapOutputWithContext(ctx contex
 	return pulumi.ToOutputWithContext(ctx, i).(BranchRestrictionMapOutput)
 }
 
-func (i BranchRestrictionMap) ToOutput(ctx context.Context) pulumix.Output[map[string]*BranchRestriction] {
-	return pulumix.Output[map[string]*BranchRestriction]{
-		OutputState: i.ToBranchRestrictionMapOutputWithContext(ctx).OutputState,
-	}
-}
-
 type BranchRestrictionOutput struct{ *pulumi.OutputState }
 
 func (BranchRestrictionOutput) ElementType() reflect.Type {
@@ -223,44 +304,48 @@ func (o BranchRestrictionOutput) ToBranchRestrictionOutputWithContext(ctx contex
 	return o
 }
 
-func (o BranchRestrictionOutput) ToOutput(ctx context.Context) pulumix.Output[*BranchRestriction] {
-	return pulumix.Output[*BranchRestriction]{
-		OutputState: o.OutputState,
-	}
-}
-
+// Indicates how the restriction is matched against a branch. The default is `glob`. Valid values: `branchingModel`, `glob`.
 func (o BranchRestrictionOutput) BranchMatchKind() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *BranchRestriction) pulumi.StringPtrOutput { return v.BranchMatchKind }).(pulumi.StringPtrOutput)
 }
 
+// Apply the restriction to branches of this type. Active when `branchMatchKind` is `branchingModel`. The branch type will be calculated using the branching model configured for the repository. Valid values: `feature`, `bugfix`, `release`, `hotfix`, `development`, `production`.
 func (o BranchRestrictionOutput) BranchType() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *BranchRestriction) pulumi.StringPtrOutput { return v.BranchType }).(pulumi.StringPtrOutput)
 }
 
+// A list of groups to use.
 func (o BranchRestrictionOutput) Groups() BranchRestrictionGroupArrayOutput {
 	return o.ApplyT(func(v *BranchRestriction) BranchRestrictionGroupArrayOutput { return v.Groups }).(BranchRestrictionGroupArrayOutput)
 }
 
+// The type of restriction that is being applied. Valid values can be found in [docs](https://developer.atlassian.com/cloud/bitbucket/rest/api-group-branch-restrictions/#api-group-branch-restrictions).
 func (o BranchRestrictionOutput) Kind() pulumi.StringOutput {
 	return o.ApplyT(func(v *BranchRestriction) pulumi.StringOutput { return v.Kind }).(pulumi.StringOutput)
 }
 
+// The owner of this repository. Can be you or any team you
+// have write access to.
 func (o BranchRestrictionOutput) Owner() pulumi.StringOutput {
 	return o.ApplyT(func(v *BranchRestriction) pulumi.StringOutput { return v.Owner }).(pulumi.StringOutput)
 }
 
+// Apply the restriction to branches that match this pattern. Active when `branchMatchKind` is `glob`. Will be empty when `branchMatchKind` is `branchingModel`.
 func (o BranchRestrictionOutput) Pattern() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *BranchRestriction) pulumi.StringPtrOutput { return v.Pattern }).(pulumi.StringPtrOutput)
 }
 
+// The name of the repository.
 func (o BranchRestrictionOutput) Repository() pulumi.StringOutput {
 	return o.ApplyT(func(v *BranchRestriction) pulumi.StringOutput { return v.Repository }).(pulumi.StringOutput)
 }
 
+// A list of users to use.
 func (o BranchRestrictionOutput) Users() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v *BranchRestriction) pulumi.StringArrayOutput { return v.Users }).(pulumi.StringArrayOutput)
 }
 
+// A value applied to the restriction kind. Currently only applicable to `requirePassingBuildsToMerge`, `requireDefaultReviewerApprovalsToMerge` and `requireApprovalsToMerge`.
 func (o BranchRestrictionOutput) Value() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v *BranchRestriction) pulumi.IntPtrOutput { return v.Value }).(pulumi.IntPtrOutput)
 }
@@ -277,12 +362,6 @@ func (o BranchRestrictionArrayOutput) ToBranchRestrictionArrayOutput() BranchRes
 
 func (o BranchRestrictionArrayOutput) ToBranchRestrictionArrayOutputWithContext(ctx context.Context) BranchRestrictionArrayOutput {
 	return o
-}
-
-func (o BranchRestrictionArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]*BranchRestriction] {
-	return pulumix.Output[[]*BranchRestriction]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o BranchRestrictionArrayOutput) Index(i pulumi.IntInput) BranchRestrictionOutput {
@@ -303,12 +382,6 @@ func (o BranchRestrictionMapOutput) ToBranchRestrictionMapOutput() BranchRestric
 
 func (o BranchRestrictionMapOutput) ToBranchRestrictionMapOutputWithContext(ctx context.Context) BranchRestrictionMapOutput {
 	return o
-}
-
-func (o BranchRestrictionMapOutput) ToOutput(ctx context.Context) pulumix.Output[map[string]*BranchRestriction] {
-	return pulumix.Output[map[string]*BranchRestriction]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o BranchRestrictionMapOutput) MapIndex(k pulumi.StringInput) BranchRestrictionOutput {

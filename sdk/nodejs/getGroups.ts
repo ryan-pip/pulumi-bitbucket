@@ -6,6 +6,20 @@ import * as inputs from "./types/input";
 import * as outputs from "./types/output";
 import * as utilities from "./utilities";
 
+/**
+ * Provides a way to fetch data of groups in a workspace.
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as bitbucket from "@pulumi/bitbucket";
+ *
+ * const example = bitbucket.getGroups({
+ *     workspace: "example",
+ * });
+ * ```
+ */
 export function getGroups(args: GetGroupsArgs, opts?: pulumi.InvokeOptions): Promise<GetGroupsResult> {
 
     opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
@@ -18,6 +32,9 @@ export function getGroups(args: GetGroupsArgs, opts?: pulumi.InvokeOptions): Pro
  * A collection of arguments for invoking getGroups.
  */
 export interface GetGroupsArgs {
+    /**
+     * The UUID that bitbucket groupss to connect a groups to various objects
+     */
     workspace: string;
 }
 
@@ -25,6 +42,9 @@ export interface GetGroupsArgs {
  * A collection of values returned by getGroups.
  */
 export interface GetGroupsResult {
+    /**
+     * The list of groups in the workspace. See Group below for structure of each element
+     */
     readonly groups: outputs.GetGroupsGroup[];
     /**
      * The provider-assigned unique ID for this managed resource.
@@ -32,6 +52,20 @@ export interface GetGroupsResult {
     readonly id: string;
     readonly workspace: string;
 }
+/**
+ * Provides a way to fetch data of groups in a workspace.
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as bitbucket from "@pulumi/bitbucket";
+ *
+ * const example = bitbucket.getGroups({
+ *     workspace: "example",
+ * });
+ * ```
+ */
 export function getGroupsOutput(args: GetGroupsOutputArgs, opts?: pulumi.InvokeOptions): pulumi.Output<GetGroupsResult> {
     return pulumi.output(args).apply((a: any) => getGroups(a, opts))
 }
@@ -40,5 +74,8 @@ export function getGroupsOutput(args: GetGroupsOutputArgs, opts?: pulumi.InvokeO
  * A collection of arguments for invoking getGroups.
  */
 export interface GetGroupsOutputArgs {
+    /**
+     * The UUID that bitbucket groupss to connect a groups to various objects
+     */
     workspace: pulumi.Input<string>;
 }

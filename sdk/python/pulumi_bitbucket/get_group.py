@@ -47,11 +47,17 @@ class GetGroupResult:
     @property
     @pulumi.getter(name="autoAdd")
     def auto_add(self) -> bool:
+        """
+        Whether to automatically add users the group
+        """
         return pulumi.get(self, "auto_add")
 
     @property
     @pulumi.getter(name="emailForwardingDisabled")
     def email_forwarding_disabled(self) -> bool:
+        """
+        Whether to disable email forwarding for group.
+        """
         return pulumi.get(self, "email_forwarding_disabled")
 
     @property
@@ -65,11 +71,17 @@ class GetGroupResult:
     @property
     @pulumi.getter
     def name(self) -> str:
+        """
+        The name of the group.
+        """
         return pulumi.get(self, "name")
 
     @property
     @pulumi.getter
     def permission(self) -> str:
+        """
+        One of `read`, `write`, and `admin`.
+        """
         return pulumi.get(self, "permission")
 
     @property
@@ -102,7 +114,21 @@ def get_group(slug: Optional[str] = None,
               workspace: Optional[str] = None,
               opts: Optional[pulumi.InvokeOptions] = None) -> AwaitableGetGroupResult:
     """
-    Use this data source to access information about an existing resource.
+    Provides a way to fetch data of a group.
+
+    ## Example Usage
+
+    ```python
+    import pulumi
+    import pulumi_bitbucket as bitbucket
+
+    example = bitbucket.get_group(slug="example",
+        workspace="example")
+    ```
+
+
+    :param str slug: The group's slug.
+    :param str workspace: The UUID that bitbucket groups to connect a group to various objects
     """
     __args__ = dict()
     __args__['slug'] = slug
@@ -125,6 +151,20 @@ def get_group_output(slug: Optional[pulumi.Input[str]] = None,
                      workspace: Optional[pulumi.Input[str]] = None,
                      opts: Optional[pulumi.InvokeOptions] = None) -> pulumi.Output[GetGroupResult]:
     """
-    Use this data source to access information about an existing resource.
+    Provides a way to fetch data of a group.
+
+    ## Example Usage
+
+    ```python
+    import pulumi
+    import pulumi_bitbucket as bitbucket
+
+    example = bitbucket.get_group(slug="example",
+        workspace="example")
+    ```
+
+
+    :param str slug: The group's slug.
+    :param str workspace: The UUID that bitbucket groups to connect a group to various objects
     """
     ...

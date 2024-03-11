@@ -49,16 +49,25 @@ class GetWorkspaceResult:
     @property
     @pulumi.getter(name="isPrivate")
     def is_private(self) -> bool:
+        """
+        Indicates whether the workspace is publicly accessible, or whether it is private to the members and consequently only visible to members.
+        """
         return pulumi.get(self, "is_private")
 
     @property
     @pulumi.getter
     def name(self) -> str:
+        """
+        The name of the workspace.
+        """
         return pulumi.get(self, "name")
 
     @property
     @pulumi.getter
     def slug(self) -> str:
+        """
+        The short label that identifies this workspace.
+        """
         return pulumi.get(self, "slug")
 
     @property
@@ -83,7 +92,21 @@ class AwaitableGetWorkspaceResult(GetWorkspaceResult):
 def get_workspace(workspace: Optional[str] = None,
                   opts: Optional[pulumi.InvokeOptions] = None) -> AwaitableGetWorkspaceResult:
     """
-    Use this data source to access information about an existing resource.
+    Provides a way to fetch data on a workspace.
+
+    OAuth2 Scopes: `none`
+
+    ## Example Usage
+
+    ```python
+    import pulumi
+    import pulumi_bitbucket as bitbucket
+
+    example = bitbucket.get_workspace(workspace="gob")
+    ```
+
+
+    :param str workspace: This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces
     """
     __args__ = dict()
     __args__['workspace'] = workspace
@@ -102,6 +125,20 @@ def get_workspace(workspace: Optional[str] = None,
 def get_workspace_output(workspace: Optional[pulumi.Input[str]] = None,
                          opts: Optional[pulumi.InvokeOptions] = None) -> pulumi.Output[GetWorkspaceResult]:
     """
-    Use this data source to access information about an existing resource.
+    Provides a way to fetch data on a workspace.
+
+    OAuth2 Scopes: `none`
+
+    ## Example Usage
+
+    ```python
+    import pulumi
+    import pulumi_bitbucket as bitbucket
+
+    example = bitbucket.get_workspace(workspace="gob")
+    ```
+
+
+    :param str workspace: This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces
     """
     ...

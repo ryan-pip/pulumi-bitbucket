@@ -20,6 +20,10 @@ class RepositoryUserPermissionArgs:
                  workspace: pulumi.Input[str]):
         """
         The set of arguments for constructing a RepositoryUserPermission resource.
+        :param pulumi.Input[str] permission: Permissions can be one of `read`, `write`, `none`, and `admin`.
+        :param pulumi.Input[str] repo_slug: The repository slug.
+        :param pulumi.Input[str] user_id: The UUID of the user.
+        :param pulumi.Input[str] workspace: The workspace id.
         """
         pulumi.set(__self__, "permission", permission)
         pulumi.set(__self__, "repo_slug", repo_slug)
@@ -29,6 +33,9 @@ class RepositoryUserPermissionArgs:
     @property
     @pulumi.getter
     def permission(self) -> pulumi.Input[str]:
+        """
+        Permissions can be one of `read`, `write`, `none`, and `admin`.
+        """
         return pulumi.get(self, "permission")
 
     @permission.setter
@@ -38,6 +45,9 @@ class RepositoryUserPermissionArgs:
     @property
     @pulumi.getter(name="repoSlug")
     def repo_slug(self) -> pulumi.Input[str]:
+        """
+        The repository slug.
+        """
         return pulumi.get(self, "repo_slug")
 
     @repo_slug.setter
@@ -47,6 +57,9 @@ class RepositoryUserPermissionArgs:
     @property
     @pulumi.getter(name="userId")
     def user_id(self) -> pulumi.Input[str]:
+        """
+        The UUID of the user.
+        """
         return pulumi.get(self, "user_id")
 
     @user_id.setter
@@ -56,6 +69,9 @@ class RepositoryUserPermissionArgs:
     @property
     @pulumi.getter
     def workspace(self) -> pulumi.Input[str]:
+        """
+        The workspace id.
+        """
         return pulumi.get(self, "workspace")
 
     @workspace.setter
@@ -72,6 +88,10 @@ class _RepositoryUserPermissionState:
                  workspace: Optional[pulumi.Input[str]] = None):
         """
         Input properties used for looking up and filtering RepositoryUserPermission resources.
+        :param pulumi.Input[str] permission: Permissions can be one of `read`, `write`, `none`, and `admin`.
+        :param pulumi.Input[str] repo_slug: The repository slug.
+        :param pulumi.Input[str] user_id: The UUID of the user.
+        :param pulumi.Input[str] workspace: The workspace id.
         """
         if permission is not None:
             pulumi.set(__self__, "permission", permission)
@@ -85,6 +105,9 @@ class _RepositoryUserPermissionState:
     @property
     @pulumi.getter
     def permission(self) -> Optional[pulumi.Input[str]]:
+        """
+        Permissions can be one of `read`, `write`, `none`, and `admin`.
+        """
         return pulumi.get(self, "permission")
 
     @permission.setter
@@ -94,6 +117,9 @@ class _RepositoryUserPermissionState:
     @property
     @pulumi.getter(name="repoSlug")
     def repo_slug(self) -> Optional[pulumi.Input[str]]:
+        """
+        The repository slug.
+        """
         return pulumi.get(self, "repo_slug")
 
     @repo_slug.setter
@@ -103,6 +129,9 @@ class _RepositoryUserPermissionState:
     @property
     @pulumi.getter(name="userId")
     def user_id(self) -> Optional[pulumi.Input[str]]:
+        """
+        The UUID of the user.
+        """
         return pulumi.get(self, "user_id")
 
     @user_id.setter
@@ -112,6 +141,9 @@ class _RepositoryUserPermissionState:
     @property
     @pulumi.getter
     def workspace(self) -> Optional[pulumi.Input[str]]:
+        """
+        The workspace id.
+        """
         return pulumi.get(self, "workspace")
 
     @workspace.setter
@@ -130,9 +162,39 @@ class RepositoryUserPermission(pulumi.CustomResource):
                  workspace: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         """
-        Create a RepositoryUserPermission resource with the given unique name, props, and options.
+        Provides a Bitbucket Repository User Permission Resource.
+
+        This allows you set explicit user permission for a repository.
+
+        OAuth2 Scopes: `repository:admin`
+
+        ## Example Usage
+
+        ```python
+        import pulumi
+        import pulumi_bitbucket as bitbucket
+
+        example = bitbucket.RepositoryUserPermission("example",
+            workspace="example",
+            repo_slug=bitbucket_repository["example"]["name"],
+            user_id="user-id",
+            permission="read")
+        ```
+
+        ## Import
+
+        Repository User Permissions can be imported using their `workspace:repo-slug:user-id` ID, e.g.
+
+        ```sh
+         $ pulumi import bitbucket:index/repositoryUserPermission:RepositoryUserPermission example workspace:repo-slug:user-id
+        ```
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[str] permission: Permissions can be one of `read`, `write`, `none`, and `admin`.
+        :param pulumi.Input[str] repo_slug: The repository slug.
+        :param pulumi.Input[str] user_id: The UUID of the user.
+        :param pulumi.Input[str] workspace: The workspace id.
         """
         ...
     @overload
@@ -141,7 +203,33 @@ class RepositoryUserPermission(pulumi.CustomResource):
                  args: RepositoryUserPermissionArgs,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
-        Create a RepositoryUserPermission resource with the given unique name, props, and options.
+        Provides a Bitbucket Repository User Permission Resource.
+
+        This allows you set explicit user permission for a repository.
+
+        OAuth2 Scopes: `repository:admin`
+
+        ## Example Usage
+
+        ```python
+        import pulumi
+        import pulumi_bitbucket as bitbucket
+
+        example = bitbucket.RepositoryUserPermission("example",
+            workspace="example",
+            repo_slug=bitbucket_repository["example"]["name"],
+            user_id="user-id",
+            permission="read")
+        ```
+
+        ## Import
+
+        Repository User Permissions can be imported using their `workspace:repo-slug:user-id` ID, e.g.
+
+        ```sh
+         $ pulumi import bitbucket:index/repositoryUserPermission:RepositoryUserPermission example workspace:repo-slug:user-id
+        ```
+
         :param str resource_name: The name of the resource.
         :param RepositoryUserPermissionArgs args: The arguments to use to populate this resource's properties.
         :param pulumi.ResourceOptions opts: Options for the resource.
@@ -203,6 +291,10 @@ class RepositoryUserPermission(pulumi.CustomResource):
         :param str resource_name: The unique name of the resulting resource.
         :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[str] permission: Permissions can be one of `read`, `write`, `none`, and `admin`.
+        :param pulumi.Input[str] repo_slug: The repository slug.
+        :param pulumi.Input[str] user_id: The UUID of the user.
+        :param pulumi.Input[str] workspace: The workspace id.
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
 
@@ -217,20 +309,32 @@ class RepositoryUserPermission(pulumi.CustomResource):
     @property
     @pulumi.getter
     def permission(self) -> pulumi.Output[str]:
+        """
+        Permissions can be one of `read`, `write`, `none`, and `admin`.
+        """
         return pulumi.get(self, "permission")
 
     @property
     @pulumi.getter(name="repoSlug")
     def repo_slug(self) -> pulumi.Output[str]:
+        """
+        The repository slug.
+        """
         return pulumi.get(self, "repo_slug")
 
     @property
     @pulumi.getter(name="userId")
     def user_id(self) -> pulumi.Output[str]:
+        """
+        The UUID of the user.
+        """
         return pulumi.get(self, "user_id")
 
     @property
     @pulumi.getter
     def workspace(self) -> pulumi.Output[str]:
+        """
+        The workspace id.
+        """
         return pulumi.get(self, "workspace")
 

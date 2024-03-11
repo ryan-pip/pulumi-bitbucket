@@ -9,17 +9,64 @@ import (
 
 	"errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket/internal"
 )
 
+// Provides a Bitbucket Pipeline Ssh Key resource.
+//
+// This allows you to manage your Pipeline Ssh Keys for a repository.
+//
+// OAuth2 Scopes: `none`
+//
+// ## Example Usage
+//
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := bitbucket.NewPipelineSshKey(ctx, "test", &bitbucket.PipelineSshKeyArgs{
+//				PrivateKey: pulumi.String("test-key"),
+//				PublicKey:  pulumi.String("ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKqP3Cr632C2dNhhgKVcon4ldUSAeKiku2yP9O9/bDtY"),
+//				Repository: pulumi.String("example"),
+//				Workspace:  pulumi.String("example"),
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
+//
+// ## Import
+//
+// Pipeline Ssh Keys can be imported using their `workspace/repo-slug` ID, e.g.
+//
+// ```sh
+//
+//	$ pulumi import bitbucket:index/pipelineSshKey:PipelineSshKey key workspace/repo-slug
+//
+// ```
 type PipelineSshKey struct {
 	pulumi.CustomResourceState
 
+	// The SSH private key value in OpenSSH format.
 	PrivateKey pulumi.StringPtrOutput `pulumi:"privateKey"`
-	PublicKey  pulumi.StringPtrOutput `pulumi:"publicKey"`
-	Repository pulumi.StringOutput    `pulumi:"repository"`
-	Workspace  pulumi.StringOutput    `pulumi:"workspace"`
+	// The SSH public key value in OpenSSH format.
+	PublicKey pulumi.StringPtrOutput `pulumi:"publicKey"`
+	// The Repository to create ssh key in.
+	Repository pulumi.StringOutput `pulumi:"repository"`
+	// The Workspace where the repository resides.
+	Workspace pulumi.StringOutput `pulumi:"workspace"`
 }
 
 // NewPipelineSshKey registers a new resource with the given unique name, arguments, and options.
@@ -58,17 +105,25 @@ func GetPipelineSshKey(ctx *pulumi.Context,
 
 // Input properties used for looking up and filtering PipelineSshKey resources.
 type pipelineSshKeyState struct {
+	// The SSH private key value in OpenSSH format.
 	PrivateKey *string `pulumi:"privateKey"`
-	PublicKey  *string `pulumi:"publicKey"`
+	// The SSH public key value in OpenSSH format.
+	PublicKey *string `pulumi:"publicKey"`
+	// The Repository to create ssh key in.
 	Repository *string `pulumi:"repository"`
-	Workspace  *string `pulumi:"workspace"`
+	// The Workspace where the repository resides.
+	Workspace *string `pulumi:"workspace"`
 }
 
 type PipelineSshKeyState struct {
+	// The SSH private key value in OpenSSH format.
 	PrivateKey pulumi.StringPtrInput
-	PublicKey  pulumi.StringPtrInput
+	// The SSH public key value in OpenSSH format.
+	PublicKey pulumi.StringPtrInput
+	// The Repository to create ssh key in.
 	Repository pulumi.StringPtrInput
-	Workspace  pulumi.StringPtrInput
+	// The Workspace where the repository resides.
+	Workspace pulumi.StringPtrInput
 }
 
 func (PipelineSshKeyState) ElementType() reflect.Type {
@@ -76,18 +131,26 @@ func (PipelineSshKeyState) ElementType() reflect.Type {
 }
 
 type pipelineSshKeyArgs struct {
+	// The SSH private key value in OpenSSH format.
 	PrivateKey *string `pulumi:"privateKey"`
-	PublicKey  *string `pulumi:"publicKey"`
-	Repository string  `pulumi:"repository"`
-	Workspace  string  `pulumi:"workspace"`
+	// The SSH public key value in OpenSSH format.
+	PublicKey *string `pulumi:"publicKey"`
+	// The Repository to create ssh key in.
+	Repository string `pulumi:"repository"`
+	// The Workspace where the repository resides.
+	Workspace string `pulumi:"workspace"`
 }
 
 // The set of arguments for constructing a PipelineSshKey resource.
 type PipelineSshKeyArgs struct {
+	// The SSH private key value in OpenSSH format.
 	PrivateKey pulumi.StringPtrInput
-	PublicKey  pulumi.StringPtrInput
+	// The SSH public key value in OpenSSH format.
+	PublicKey pulumi.StringPtrInput
+	// The Repository to create ssh key in.
 	Repository pulumi.StringInput
-	Workspace  pulumi.StringInput
+	// The Workspace where the repository resides.
+	Workspace pulumi.StringInput
 }
 
 func (PipelineSshKeyArgs) ElementType() reflect.Type {
@@ -111,12 +174,6 @@ func (i *PipelineSshKey) ToPipelineSshKeyOutput() PipelineSshKeyOutput {
 
 func (i *PipelineSshKey) ToPipelineSshKeyOutputWithContext(ctx context.Context) PipelineSshKeyOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(PipelineSshKeyOutput)
-}
-
-func (i *PipelineSshKey) ToOutput(ctx context.Context) pulumix.Output[*PipelineSshKey] {
-	return pulumix.Output[*PipelineSshKey]{
-		OutputState: i.ToPipelineSshKeyOutputWithContext(ctx).OutputState,
-	}
 }
 
 // PipelineSshKeyArrayInput is an input type that accepts PipelineSshKeyArray and PipelineSshKeyArrayOutput values.
@@ -144,12 +201,6 @@ func (i PipelineSshKeyArray) ToPipelineSshKeyArrayOutputWithContext(ctx context.
 	return pulumi.ToOutputWithContext(ctx, i).(PipelineSshKeyArrayOutput)
 }
 
-func (i PipelineSshKeyArray) ToOutput(ctx context.Context) pulumix.Output[[]*PipelineSshKey] {
-	return pulumix.Output[[]*PipelineSshKey]{
-		OutputState: i.ToPipelineSshKeyArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 // PipelineSshKeyMapInput is an input type that accepts PipelineSshKeyMap and PipelineSshKeyMapOutput values.
 // You can construct a concrete instance of `PipelineSshKeyMapInput` via:
 //
@@ -175,12 +226,6 @@ func (i PipelineSshKeyMap) ToPipelineSshKeyMapOutputWithContext(ctx context.Cont
 	return pulumi.ToOutputWithContext(ctx, i).(PipelineSshKeyMapOutput)
 }
 
-func (i PipelineSshKeyMap) ToOutput(ctx context.Context) pulumix.Output[map[string]*PipelineSshKey] {
-	return pulumix.Output[map[string]*PipelineSshKey]{
-		OutputState: i.ToPipelineSshKeyMapOutputWithContext(ctx).OutputState,
-	}
-}
-
 type PipelineSshKeyOutput struct{ *pulumi.OutputState }
 
 func (PipelineSshKeyOutput) ElementType() reflect.Type {
@@ -195,24 +240,22 @@ func (o PipelineSshKeyOutput) ToPipelineSshKeyOutputWithContext(ctx context.Cont
 	return o
 }
 
-func (o PipelineSshKeyOutput) ToOutput(ctx context.Context) pulumix.Output[*PipelineSshKey] {
-	return pulumix.Output[*PipelineSshKey]{
-		OutputState: o.OutputState,
-	}
-}
-
+// The SSH private key value in OpenSSH format.
 func (o PipelineSshKeyOutput) PrivateKey() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *PipelineSshKey) pulumi.StringPtrOutput { return v.PrivateKey }).(pulumi.StringPtrOutput)
 }
 
+// The SSH public key value in OpenSSH format.
 func (o PipelineSshKeyOutput) PublicKey() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *PipelineSshKey) pulumi.StringPtrOutput { return v.PublicKey }).(pulumi.StringPtrOutput)
 }
 
+// The Repository to create ssh key in.
 func (o PipelineSshKeyOutput) Repository() pulumi.StringOutput {
 	return o.ApplyT(func(v *PipelineSshKey) pulumi.StringOutput { return v.Repository }).(pulumi.StringOutput)
 }
 
+// The Workspace where the repository resides.
 func (o PipelineSshKeyOutput) Workspace() pulumi.StringOutput {
 	return o.ApplyT(func(v *PipelineSshKey) pulumi.StringOutput { return v.Workspace }).(pulumi.StringOutput)
 }
@@ -229,12 +272,6 @@ func (o PipelineSshKeyArrayOutput) ToPipelineSshKeyArrayOutput() PipelineSshKeyA
 
 func (o PipelineSshKeyArrayOutput) ToPipelineSshKeyArrayOutputWithContext(ctx context.Context) PipelineSshKeyArrayOutput {
 	return o
-}
-
-func (o PipelineSshKeyArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]*PipelineSshKey] {
-	return pulumix.Output[[]*PipelineSshKey]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o PipelineSshKeyArrayOutput) Index(i pulumi.IntInput) PipelineSshKeyOutput {
@@ -255,12 +292,6 @@ func (o PipelineSshKeyMapOutput) ToPipelineSshKeyMapOutput() PipelineSshKeyMapOu
 
 func (o PipelineSshKeyMapOutput) ToPipelineSshKeyMapOutputWithContext(ctx context.Context) PipelineSshKeyMapOutput {
 	return o
-}
-
-func (o PipelineSshKeyMapOutput) ToOutput(ctx context.Context) pulumix.Output[map[string]*PipelineSshKey] {
-	return pulumix.Output[map[string]*PipelineSshKey]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o PipelineSshKeyMapOutput) MapIndex(k pulumi.StringInput) PipelineSshKeyOutput {

@@ -22,6 +22,10 @@ class DeploymentArgs:
                  restrictions: Optional[pulumi.Input['DeploymentRestrictionsArgs']] = None):
         """
         The set of arguments for constructing a Deployment resource.
+        :param pulumi.Input[str] repository: The repository ID to which you want to assign this deployment environment to
+        :param pulumi.Input[str] stage: The stage (Test, Staging, Production)
+        :param pulumi.Input[str] name: The name of the deployment environment
+        :param pulumi.Input['DeploymentRestrictionsArgs'] restrictions: Deployment restrictions. See Restrictions below.
         """
         pulumi.set(__self__, "repository", repository)
         pulumi.set(__self__, "stage", stage)
@@ -33,6 +37,9 @@ class DeploymentArgs:
     @property
     @pulumi.getter
     def repository(self) -> pulumi.Input[str]:
+        """
+        The repository ID to which you want to assign this deployment environment to
+        """
         return pulumi.get(self, "repository")
 
     @repository.setter
@@ -42,6 +49,9 @@ class DeploymentArgs:
     @property
     @pulumi.getter
     def stage(self) -> pulumi.Input[str]:
+        """
+        The stage (Test, Staging, Production)
+        """
         return pulumi.get(self, "stage")
 
     @stage.setter
@@ -51,6 +61,9 @@ class DeploymentArgs:
     @property
     @pulumi.getter
     def name(self) -> Optional[pulumi.Input[str]]:
+        """
+        The name of the deployment environment
+        """
         return pulumi.get(self, "name")
 
     @name.setter
@@ -60,6 +73,9 @@ class DeploymentArgs:
     @property
     @pulumi.getter
     def restrictions(self) -> Optional[pulumi.Input['DeploymentRestrictionsArgs']]:
+        """
+        Deployment restrictions. See Restrictions below.
+        """
         return pulumi.get(self, "restrictions")
 
     @restrictions.setter
@@ -77,6 +93,11 @@ class _DeploymentState:
                  uuid: Optional[pulumi.Input[str]] = None):
         """
         Input properties used for looking up and filtering Deployment resources.
+        :param pulumi.Input[str] name: The name of the deployment environment
+        :param pulumi.Input[str] repository: The repository ID to which you want to assign this deployment environment to
+        :param pulumi.Input['DeploymentRestrictionsArgs'] restrictions: Deployment restrictions. See Restrictions below.
+        :param pulumi.Input[str] stage: The stage (Test, Staging, Production)
+        :param pulumi.Input[str] uuid: (Computed) The UUID identifying the deployment.
         """
         if name is not None:
             pulumi.set(__self__, "name", name)
@@ -92,6 +113,9 @@ class _DeploymentState:
     @property
     @pulumi.getter
     def name(self) -> Optional[pulumi.Input[str]]:
+        """
+        The name of the deployment environment
+        """
         return pulumi.get(self, "name")
 
     @name.setter
@@ -101,6 +125,9 @@ class _DeploymentState:
     @property
     @pulumi.getter
     def repository(self) -> Optional[pulumi.Input[str]]:
+        """
+        The repository ID to which you want to assign this deployment environment to
+        """
         return pulumi.get(self, "repository")
 
     @repository.setter
@@ -110,6 +137,9 @@ class _DeploymentState:
     @property
     @pulumi.getter
     def restrictions(self) -> Optional[pulumi.Input['DeploymentRestrictionsArgs']]:
+        """
+        Deployment restrictions. See Restrictions below.
+        """
         return pulumi.get(self, "restrictions")
 
     @restrictions.setter
@@ -119,6 +149,9 @@ class _DeploymentState:
     @property
     @pulumi.getter
     def stage(self) -> Optional[pulumi.Input[str]]:
+        """
+        The stage (Test, Staging, Production)
+        """
         return pulumi.get(self, "stage")
 
     @stage.setter
@@ -128,6 +161,9 @@ class _DeploymentState:
     @property
     @pulumi.getter
     def uuid(self) -> Optional[pulumi.Input[str]]:
+        """
+        (Computed) The UUID identifying the deployment.
+        """
         return pulumi.get(self, "uuid")
 
     @uuid.setter
@@ -146,9 +182,38 @@ class Deployment(pulumi.CustomResource):
                  stage: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         """
-        Create a Deployment resource with the given unique name, props, and options.
+        This resource allows you to setup pipelines deployment environments.
+
+        OAuth2 Scopes: `none`
+
+        ## Example Usage
+
+        ```python
+        import pulumi
+        import pulumi_bitbucket as bitbucket
+
+        monorepo = bitbucket.Repository("monorepo",
+            owner="gob",
+            pipelines_enabled=True)
+        test = bitbucket.Deployment("test",
+            repository=monorepo.id,
+            stage="Test")
+        ```
+
+        ## Import
+
+        Deployments can be imported using their `repository/uuid` ID, e.g.
+
+        ```sh
+         $ pulumi import bitbucket:index/deployment:Deployment example repository/uuid
+        ```
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[str] name: The name of the deployment environment
+        :param pulumi.Input[str] repository: The repository ID to which you want to assign this deployment environment to
+        :param pulumi.Input[pulumi.InputType['DeploymentRestrictionsArgs']] restrictions: Deployment restrictions. See Restrictions below.
+        :param pulumi.Input[str] stage: The stage (Test, Staging, Production)
         """
         ...
     @overload
@@ -157,7 +222,32 @@ class Deployment(pulumi.CustomResource):
                  args: DeploymentArgs,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
-        Create a Deployment resource with the given unique name, props, and options.
+        This resource allows you to setup pipelines deployment environments.
+
+        OAuth2 Scopes: `none`
+
+        ## Example Usage
+
+        ```python
+        import pulumi
+        import pulumi_bitbucket as bitbucket
+
+        monorepo = bitbucket.Repository("monorepo",
+            owner="gob",
+            pipelines_enabled=True)
+        test = bitbucket.Deployment("test",
+            repository=monorepo.id,
+            stage="Test")
+        ```
+
+        ## Import
+
+        Deployments can be imported using their `repository/uuid` ID, e.g.
+
+        ```sh
+         $ pulumi import bitbucket:index/deployment:Deployment example repository/uuid
+        ```
+
         :param str resource_name: The name of the resource.
         :param DeploymentArgs args: The arguments to use to populate this resource's properties.
         :param pulumi.ResourceOptions opts: Options for the resource.
@@ -217,6 +307,11 @@ class Deployment(pulumi.CustomResource):
         :param str resource_name: The unique name of the resulting resource.
         :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[str] name: The name of the deployment environment
+        :param pulumi.Input[str] repository: The repository ID to which you want to assign this deployment environment to
+        :param pulumi.Input[pulumi.InputType['DeploymentRestrictionsArgs']] restrictions: Deployment restrictions. See Restrictions below.
+        :param pulumi.Input[str] stage: The stage (Test, Staging, Production)
+        :param pulumi.Input[str] uuid: (Computed) The UUID identifying the deployment.
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
 
@@ -232,25 +327,40 @@ class Deployment(pulumi.CustomResource):
     @property
     @pulumi.getter
     def name(self) -> pulumi.Output[str]:
+        """
+        The name of the deployment environment
+        """
         return pulumi.get(self, "name")
 
     @property
     @pulumi.getter
     def repository(self) -> pulumi.Output[str]:
+        """
+        The repository ID to which you want to assign this deployment environment to
+        """
         return pulumi.get(self, "repository")
 
     @property
     @pulumi.getter
     def restrictions(self) -> pulumi.Output['outputs.DeploymentRestrictions']:
+        """
+        Deployment restrictions. See Restrictions below.
+        """
         return pulumi.get(self, "restrictions")
 
     @property
     @pulumi.getter
     def stage(self) -> pulumi.Output[str]:
+        """
+        The stage (Test, Staging, Production)
+        """
         return pulumi.get(self, "stage")
 
     @property
     @pulumi.getter
     def uuid(self) -> pulumi.Output[str]:
+        """
+        (Computed) The UUID identifying the deployment.
+        """
         return pulumi.get(self, "uuid")
 

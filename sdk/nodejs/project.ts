@@ -6,6 +6,31 @@ import * as inputs from "./types/input";
 import * as outputs from "./types/output";
 import * as utilities from "./utilities";
 
+/**
+ * This resource allows you to manage your projects in your bitbucket team.
+ *
+ * OAuth2 Scopes: `project` and `project:admin`
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as bitbucket from "@pulumi/bitbucket";
+ *
+ * const devops = new bitbucket.Project("devops", {
+ *     key: "DEVOPS",
+ *     owner: "my-team",
+ * });
+ * ```
+ *
+ * ## Import
+ *
+ * Repositories can be imported using their `owner/key` ID, e.g.
+ *
+ * ```sh
+ *  $ pulumi import bitbucket:index/project:Project my_project my-account/project_key
+ * ```
+ */
 export class Project extends pulumi.CustomResource {
     /**
      * Get an existing Project resource's state with the given name, ID, and optional extra
@@ -34,13 +59,37 @@ export class Project extends pulumi.CustomResource {
         return obj['__pulumiType'] === Project.__pulumiType;
     }
 
+    /**
+     * The description of the project
+     */
     public readonly description!: pulumi.Output<string | undefined>;
+    /**
+     * Indicates whether the project contains publicly visible repositories. Note that private projects cannot contain public repositories.
+     */
     public /*out*/ readonly hasPubliclyVisibleRepos!: pulumi.Output<boolean>;
+    /**
+     * If you want to keep the project private - defaults to `true`
+     */
     public readonly isPrivate!: pulumi.Output<boolean | undefined>;
+    /**
+     * The key used for this project
+     */
     public readonly key!: pulumi.Output<string>;
+    /**
+     * A set of links to a resource related to this object. See Link Below.
+     */
     public readonly link!: pulumi.Output<outputs.ProjectLink>;
+    /**
+     * The name of the project
+     */
     public readonly name!: pulumi.Output<string>;
+    /**
+     * The owner of this project. Can be you or any team you have write access to.
+     */
     public readonly owner!: pulumi.Output<string>;
+    /**
+     * The project's immutable id.
+     */
     public /*out*/ readonly uuid!: pulumi.Output<string>;
 
     /**
@@ -90,13 +139,37 @@ export class Project extends pulumi.CustomResource {
  * Input properties used for looking up and filtering Project resources.
  */
 export interface ProjectState {
+    /**
+     * The description of the project
+     */
     description?: pulumi.Input<string>;
+    /**
+     * Indicates whether the project contains publicly visible repositories. Note that private projects cannot contain public repositories.
+     */
     hasPubliclyVisibleRepos?: pulumi.Input<boolean>;
+    /**
+     * If you want to keep the project private - defaults to `true`
+     */
     isPrivate?: pulumi.Input<boolean>;
+    /**
+     * The key used for this project
+     */
     key?: pulumi.Input<string>;
+    /**
+     * A set of links to a resource related to this object. See Link Below.
+     */
     link?: pulumi.Input<inputs.ProjectLink>;
+    /**
+     * The name of the project
+     */
     name?: pulumi.Input<string>;
+    /**
+     * The owner of this project. Can be you or any team you have write access to.
+     */
     owner?: pulumi.Input<string>;
+    /**
+     * The project's immutable id.
+     */
     uuid?: pulumi.Input<string>;
 }
 
@@ -104,10 +177,28 @@ export interface ProjectState {
  * The set of arguments for constructing a Project resource.
  */
 export interface ProjectArgs {
+    /**
+     * The description of the project
+     */
     description?: pulumi.Input<string>;
+    /**
+     * If you want to keep the project private - defaults to `true`
+     */
     isPrivate?: pulumi.Input<boolean>;
+    /**
+     * The key used for this project
+     */
     key: pulumi.Input<string>;
+    /**
+     * A set of links to a resource related to this object. See Link Below.
+     */
     link?: pulumi.Input<inputs.ProjectLink>;
+    /**
+     * The name of the project
+     */
     name?: pulumi.Input<string>;
+    /**
+     * The owner of this project. Can be you or any team you have write access to.
+     */
     owner: pulumi.Input<string>;
 }

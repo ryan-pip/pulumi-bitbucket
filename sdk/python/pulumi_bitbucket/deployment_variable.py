@@ -20,6 +20,10 @@ class DeploymentVariableArgs:
                  secured: Optional[pulumi.Input[bool]] = None):
         """
         The set of arguments for constructing a DeploymentVariable resource.
+        :param pulumi.Input[str] deployment: The deployment ID you want to assign this variable to.
+        :param pulumi.Input[str] key: The unique name of the variable.
+        :param pulumi.Input[str] value: The value of the variable.
+        :param pulumi.Input[bool] secured: If true, this variable will be treated as secured. The value will never be exposed in the logs or the REST API.
         """
         pulumi.set(__self__, "deployment", deployment)
         pulumi.set(__self__, "key", key)
@@ -30,6 +34,9 @@ class DeploymentVariableArgs:
     @property
     @pulumi.getter
     def deployment(self) -> pulumi.Input[str]:
+        """
+        The deployment ID you want to assign this variable to.
+        """
         return pulumi.get(self, "deployment")
 
     @deployment.setter
@@ -39,6 +46,9 @@ class DeploymentVariableArgs:
     @property
     @pulumi.getter
     def key(self) -> pulumi.Input[str]:
+        """
+        The unique name of the variable.
+        """
         return pulumi.get(self, "key")
 
     @key.setter
@@ -48,6 +58,9 @@ class DeploymentVariableArgs:
     @property
     @pulumi.getter
     def value(self) -> pulumi.Input[str]:
+        """
+        The value of the variable.
+        """
         return pulumi.get(self, "value")
 
     @value.setter
@@ -57,6 +70,9 @@ class DeploymentVariableArgs:
     @property
     @pulumi.getter
     def secured(self) -> Optional[pulumi.Input[bool]]:
+        """
+        If true, this variable will be treated as secured. The value will never be exposed in the logs or the REST API.
+        """
         return pulumi.get(self, "secured")
 
     @secured.setter
@@ -74,6 +90,11 @@ class _DeploymentVariableState:
                  value: Optional[pulumi.Input[str]] = None):
         """
         Input properties used for looking up and filtering DeploymentVariable resources.
+        :param pulumi.Input[str] deployment: The deployment ID you want to assign this variable to.
+        :param pulumi.Input[str] key: The unique name of the variable.
+        :param pulumi.Input[bool] secured: If true, this variable will be treated as secured. The value will never be exposed in the logs or the REST API.
+        :param pulumi.Input[str] uuid: (Computed) The UUID identifying the variable.
+        :param pulumi.Input[str] value: The value of the variable.
         """
         if deployment is not None:
             pulumi.set(__self__, "deployment", deployment)
@@ -89,6 +110,9 @@ class _DeploymentVariableState:
     @property
     @pulumi.getter
     def deployment(self) -> Optional[pulumi.Input[str]]:
+        """
+        The deployment ID you want to assign this variable to.
+        """
         return pulumi.get(self, "deployment")
 
     @deployment.setter
@@ -98,6 +122,9 @@ class _DeploymentVariableState:
     @property
     @pulumi.getter
     def key(self) -> Optional[pulumi.Input[str]]:
+        """
+        The unique name of the variable.
+        """
         return pulumi.get(self, "key")
 
     @key.setter
@@ -107,6 +134,9 @@ class _DeploymentVariableState:
     @property
     @pulumi.getter
     def secured(self) -> Optional[pulumi.Input[bool]]:
+        """
+        If true, this variable will be treated as secured. The value will never be exposed in the logs or the REST API.
+        """
         return pulumi.get(self, "secured")
 
     @secured.setter
@@ -116,6 +146,9 @@ class _DeploymentVariableState:
     @property
     @pulumi.getter
     def uuid(self) -> Optional[pulumi.Input[str]]:
+        """
+        (Computed) The UUID identifying the variable.
+        """
         return pulumi.get(self, "uuid")
 
     @uuid.setter
@@ -125,6 +158,9 @@ class _DeploymentVariableState:
     @property
     @pulumi.getter
     def value(self) -> Optional[pulumi.Input[str]]:
+        """
+        The value of the variable.
+        """
         return pulumi.get(self, "value")
 
     @value.setter
@@ -143,9 +179,43 @@ class DeploymentVariable(pulumi.CustomResource):
                  value: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         """
-        Create a DeploymentVariable resource with the given unique name, props, and options.
+        This resource allows you to configure deployment variables.
+
+        OAuth2 Scopes: `none`
+
+        ## Example Usage
+
+        ```python
+        import pulumi
+        import pulumi_bitbucket as bitbucket
+
+        monorepo = bitbucket.Repository("monorepo",
+            owner="gob",
+            pipelines_enabled=True)
+        test = bitbucket.Deployment("test",
+            repository=monorepo.id,
+            stage="Test")
+        country = bitbucket.DeploymentVariable("country",
+            deployment=test.id,
+            key="COUNTRY",
+            value="Kenya",
+            secured=False)
+        ```
+
+        ## Import
+
+        Deployment Variables can be imported using their `deployment-id/uuid` ID, e.g.
+
+        ```sh
+         $ pulumi import bitbucket:index/deploymentVariable:DeploymentVariable example deployment-id/uuid
+        ```
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[str] deployment: The deployment ID you want to assign this variable to.
+        :param pulumi.Input[str] key: The unique name of the variable.
+        :param pulumi.Input[bool] secured: If true, this variable will be treated as secured. The value will never be exposed in the logs or the REST API.
+        :param pulumi.Input[str] value: The value of the variable.
         """
         ...
     @overload
@@ -154,7 +224,37 @@ class DeploymentVariable(pulumi.CustomResource):
                  args: DeploymentVariableArgs,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
-        Create a DeploymentVariable resource with the given unique name, props, and options.
+        This resource allows you to configure deployment variables.
+
+        OAuth2 Scopes: `none`
+
+        ## Example Usage
+
+        ```python
+        import pulumi
+        import pulumi_bitbucket as bitbucket
+
+        monorepo = bitbucket.Repository("monorepo",
+            owner="gob",
+            pipelines_enabled=True)
+        test = bitbucket.Deployment("test",
+            repository=monorepo.id,
+            stage="Test")
+        country = bitbucket.DeploymentVariable("country",
+            deployment=test.id,
+            key="COUNTRY",
+            value="Kenya",
+            secured=False)
+        ```
+
+        ## Import
+
+        Deployment Variables can be imported using their `deployment-id/uuid` ID, e.g.
+
+        ```sh
+         $ pulumi import bitbucket:index/deploymentVariable:DeploymentVariable example deployment-id/uuid
+        ```
+
         :param str resource_name: The name of the resource.
         :param DeploymentVariableArgs args: The arguments to use to populate this resource's properties.
         :param pulumi.ResourceOptions opts: Options for the resource.
@@ -218,6 +318,11 @@ class DeploymentVariable(pulumi.CustomResource):
         :param str resource_name: The unique name of the resulting resource.
         :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[str] deployment: The deployment ID you want to assign this variable to.
+        :param pulumi.Input[str] key: The unique name of the variable.
+        :param pulumi.Input[bool] secured: If true, this variable will be treated as secured. The value will never be exposed in the logs or the REST API.
+        :param pulumi.Input[str] uuid: (Computed) The UUID identifying the variable.
+        :param pulumi.Input[str] value: The value of the variable.
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
 
@@ -233,25 +338,40 @@ class DeploymentVariable(pulumi.CustomResource):
     @property
     @pulumi.getter
     def deployment(self) -> pulumi.Output[str]:
+        """
+        The deployment ID you want to assign this variable to.
+        """
         return pulumi.get(self, "deployment")
 
     @property
     @pulumi.getter
     def key(self) -> pulumi.Output[str]:
+        """
+        The unique name of the variable.
+        """
         return pulumi.get(self, "key")
 
     @property
     @pulumi.getter
     def secured(self) -> pulumi.Output[Optional[bool]]:
+        """
+        If true, this variable will be treated as secured. The value will never be exposed in the logs or the REST API.
+        """
         return pulumi.get(self, "secured")
 
     @property
     @pulumi.getter
     def uuid(self) -> pulumi.Output[str]:
+        """
+        (Computed) The UUID identifying the variable.
+        """
         return pulumi.get(self, "uuid")
 
     @property
     @pulumi.getter
     def value(self) -> pulumi.Output[str]:
+        """
+        The value of the variable.
+        """
         return pulumi.get(self, "value")
 

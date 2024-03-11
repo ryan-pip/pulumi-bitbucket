@@ -6,6 +6,60 @@ import * as inputs from "./types/input";
 import * as outputs from "./types/output";
 import * as utilities from "./utilities";
 
+/**
+ * Provides a Bitbucket branching model resource.
+ *
+ * This allows you for setting up branching models for your repository.
+ *
+ * OAuth2 Scopes: `repository:admin`
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as bitbucket from "@pulumi/bitbucket";
+ *
+ * // Manage your repositories branching models
+ * const testRepository = new bitbucket.Repository("testRepository", {owner: "example"});
+ * const testBranchingModel = new bitbucket.BranchingModel("testBranchingModel", {
+ *     owner: "example",
+ *     repository: testRepository.name,
+ *     development: {
+ *         useMainbranch: true,
+ *     },
+ *     branchTypes: [
+ *         {
+ *             enabled: true,
+ *             kind: "feature",
+ *             prefix: "test/",
+ *         },
+ *         {
+ *             enabled: true,
+ *             kind: "hotfix",
+ *             prefix: "hotfix/",
+ *         },
+ *         {
+ *             enabled: true,
+ *             kind: "release",
+ *             prefix: "release/",
+ *         },
+ *         {
+ *             enabled: true,
+ *             kind: "bugfix",
+ *             prefix: "bugfix/",
+ *         },
+ *     ],
+ * });
+ * ```
+ *
+ * ## Import
+ *
+ * Branching Models can be imported using the owner and repo separated by a (`/`), e.g.,
+ *
+ * ```sh
+ *  $ pulumi import bitbucket:index/branchingModel:BranchingModel example owner/repo
+ * ```
+ */
 export class BranchingModel extends pulumi.CustomResource {
     /**
      * Get an existing BranchingModel resource's state with the given name, ID, and optional extra
@@ -34,10 +88,26 @@ export class BranchingModel extends pulumi.CustomResource {
         return obj['__pulumiType'] === BranchingModel.__pulumiType;
     }
 
+    /**
+     * A set of branch type to define `feature`, `bugfix`, `release`, `hotfix` prefixes. See Branch Type below.
+     */
     public readonly branchTypes!: pulumi.Output<outputs.BranchingModelBranchType[]>;
+    /**
+     * The development branch can be configured to a specific branch or to track the main branch. When set to a specific branch it must currently exist. Only the passed properties will be updated. The properties not passed will be left unchanged. A request without a development property will leave the development branch unchanged. See Development below.
+     */
     public readonly development!: pulumi.Output<outputs.BranchingModelDevelopment>;
+    /**
+     * The owner of this repository. Can be you or any team you
+     * have write access to.
+     */
     public readonly owner!: pulumi.Output<string>;
+    /**
+     * The production branch can be a specific branch, the main branch or disabled. When set to a specific branch it must currently exist. The enabled property can be used to enable (true) or disable (false) it. Only the passed properties will be updated. The properties not passed will be left unchanged. A request without a production property will leave the production branch unchanged. See Production below.
+     */
     public readonly production!: pulumi.Output<outputs.BranchingModelProduction | undefined>;
+    /**
+     * The name of the repository.
+     */
     public readonly repository!: pulumi.Output<string>;
 
     /**
@@ -84,10 +154,26 @@ export class BranchingModel extends pulumi.CustomResource {
  * Input properties used for looking up and filtering BranchingModel resources.
  */
 export interface BranchingModelState {
+    /**
+     * A set of branch type to define `feature`, `bugfix`, `release`, `hotfix` prefixes. See Branch Type below.
+     */
     branchTypes?: pulumi.Input<pulumi.Input<inputs.BranchingModelBranchType>[]>;
+    /**
+     * The development branch can be configured to a specific branch or to track the main branch. When set to a specific branch it must currently exist. Only the passed properties will be updated. The properties not passed will be left unchanged. A request without a development property will leave the development branch unchanged. See Development below.
+     */
     development?: pulumi.Input<inputs.BranchingModelDevelopment>;
+    /**
+     * The owner of this repository. Can be you or any team you
+     * have write access to.
+     */
     owner?: pulumi.Input<string>;
+    /**
+     * The production branch can be a specific branch, the main branch or disabled. When set to a specific branch it must currently exist. The enabled property can be used to enable (true) or disable (false) it. Only the passed properties will be updated. The properties not passed will be left unchanged. A request without a production property will leave the production branch unchanged. See Production below.
+     */
     production?: pulumi.Input<inputs.BranchingModelProduction>;
+    /**
+     * The name of the repository.
+     */
     repository?: pulumi.Input<string>;
 }
 
@@ -95,9 +181,25 @@ export interface BranchingModelState {
  * The set of arguments for constructing a BranchingModel resource.
  */
 export interface BranchingModelArgs {
+    /**
+     * A set of branch type to define `feature`, `bugfix`, `release`, `hotfix` prefixes. See Branch Type below.
+     */
     branchTypes?: pulumi.Input<pulumi.Input<inputs.BranchingModelBranchType>[]>;
+    /**
+     * The development branch can be configured to a specific branch or to track the main branch. When set to a specific branch it must currently exist. Only the passed properties will be updated. The properties not passed will be left unchanged. A request without a development property will leave the development branch unchanged. See Development below.
+     */
     development: pulumi.Input<inputs.BranchingModelDevelopment>;
+    /**
+     * The owner of this repository. Can be you or any team you
+     * have write access to.
+     */
     owner: pulumi.Input<string>;
+    /**
+     * The production branch can be a specific branch, the main branch or disabled. When set to a specific branch it must currently exist. The enabled property can be used to enable (true) or disable (false) it. Only the passed properties will be updated. The properties not passed will be left unchanged. A request without a production property will leave the production branch unchanged. See Production below.
+     */
     production?: pulumi.Input<inputs.BranchingModelProduction>;
+    /**
+     * The name of the repository.
+     */
     repository: pulumi.Input<string>;
 }

@@ -9,20 +9,79 @@ import (
 
 	"errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket/internal"
 )
 
+// Provides a Bitbucket workspace hook resource.
+//
+// This allows you to manage your webhooks on a workspace.
+//
+// OAuth2 Scopes: `webhook`
+//
+// ## Example Usage
+//
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := bitbucket.NewWorkspaceHook(ctx, "deployOnPush", &bitbucket.WorkspaceHookArgs{
+//				Description: pulumi.String("Deploy the code via my webhook"),
+//				Events: pulumi.StringArray{
+//					pulumi.String("repo:push"),
+//				},
+//				Url:       pulumi.String("https://mywebhookservice.mycompany.com/deploy-on-push"),
+//				Workspace: pulumi.String("myteam"),
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
+//
+// ## Import
+//
+// Hooks can be imported using their `workspace/hook-id` ID, e.g.
+//
+// ```sh
+//
+//	$ pulumi import bitbucket:index/workspaceHook:WorkspaceHook hook my-account/hook-id
+//
+// ```
 type WorkspaceHook struct {
 	pulumi.CustomResourceState
 
-	Active               pulumi.BoolPtrOutput     `pulumi:"active"`
-	Description          pulumi.StringOutput      `pulumi:"description"`
-	Events               pulumi.StringArrayOutput `pulumi:"events"`
-	SkipCertVerification pulumi.BoolPtrOutput     `pulumi:"skipCertVerification"`
-	Url                  pulumi.StringOutput      `pulumi:"url"`
-	Uuid                 pulumi.StringOutput      `pulumi:"uuid"`
-	Workspace            pulumi.StringOutput      `pulumi:"workspace"`
+	// Whether the webhook configuration is active or not (Default: `true`).
+	Active pulumi.BoolPtrOutput `pulumi:"active"`
+	// The name / description to show in the UI.
+	Description pulumi.StringOutput `pulumi:"description"`
+	// The events this webhook is subscribed to. Valid values can be found at [Bitbucket Webhook Docs](https://developer.atlassian.com/cloud/bitbucket/rest/api-group-repositories/#api-repositories-workspace-repo-slug-hooks-post).
+	Events pulumi.StringArrayOutput `pulumi:"events"`
+	// Whether a webhook history is enabled.
+	HistoryEnabled pulumi.BoolPtrOutput `pulumi:"historyEnabled"`
+	// A Webhook secret value. Passing a null or empty secret or not passing a secret will leave the webhook's secret unset. This value is not returned on read and cannot resolve diffs or be imported as its not returned back from bitbucket API.
+	Secret pulumi.StringPtrOutput `pulumi:"secret"`
+	// Whether a webhook secret is set.
+	SecretSet pulumi.BoolOutput `pulumi:"secretSet"`
+	// Whether to skip certificate verification or not (Default: `true`).
+	SkipCertVerification pulumi.BoolPtrOutput `pulumi:"skipCertVerification"`
+	// Where to POST to.
+	Url pulumi.StringOutput `pulumi:"url"`
+	// The UUID of the workspace webhook.
+	Uuid pulumi.StringOutput `pulumi:"uuid"`
+	// The workspace of this repository. Can be you or any team you
+	// have write access to.
+	Workspace pulumi.StringOutput `pulumi:"workspace"`
 }
 
 // NewWorkspaceHook registers a new resource with the given unique name, arguments, and options.
@@ -44,6 +103,13 @@ func NewWorkspaceHook(ctx *pulumi.Context,
 	if args.Workspace == nil {
 		return nil, errors.New("invalid value for required argument 'Workspace'")
 	}
+	if args.Secret != nil {
+		args.Secret = pulumi.ToSecret(args.Secret).(pulumi.StringPtrInput)
+	}
+	secrets := pulumi.AdditionalSecretOutputs([]string{
+		"secret",
+	})
+	opts = append(opts, secrets)
 	opts = internal.PkgResourceDefaultOpts(opts)
 	var resource WorkspaceHook
 	err := ctx.RegisterResource("bitbucket:index/workspaceHook:WorkspaceHook", name, args, &resource, opts...)
@@ -67,23 +133,51 @@ func GetWorkspaceHook(ctx *pulumi.Context,
 
 // Input properties used for looking up and filtering WorkspaceHook resources.
 type workspaceHookState struct {
-	Active               *bool    `pulumi:"active"`
-	Description          *string  `pulumi:"description"`
-	Events               []string `pulumi:"events"`
-	SkipCertVerification *bool    `pulumi:"skipCertVerification"`
-	Url                  *string  `pulumi:"url"`
-	Uuid                 *string  `pulumi:"uuid"`
-	Workspace            *string  `pulumi:"workspace"`
+	// Whether the webhook configuration is active or not (Default: `true`).
+	Active *bool `pulumi:"active"`
+	// The name / description to show in the UI.
+	Description *string `pulumi:"description"`
+	// The events this webhook is subscribed to. Valid values can be found at [Bitbucket Webhook Docs](https://developer.atlassian.com/cloud/bitbucket/rest/api-group-repositories/#api-repositories-workspace-repo-slug-hooks-post).
+	Events []string `pulumi:"events"`
+	// Whether a webhook history is enabled.
+	HistoryEnabled *bool `pulumi:"historyEnabled"`
+	// A Webhook secret value. Passing a null or empty secret or not passing a secret will leave the webhook's secret unset. This value is not returned on read and cannot resolve diffs or be imported as its not returned back from bitbucket API.
+	Secret *string `pulumi:"secret"`
+	// Whether a webhook secret is set.
+	SecretSet *bool `pulumi:"secretSet"`
+	// Whether to skip certificate verification or not (Default: `true`).
+	SkipCertVerification *bool `pulumi:"skipCertVerification"`
+	// Where to POST to.
+	Url *string `pulumi:"url"`
+	// The UUID of the workspace webhook.
+	Uuid *string `pulumi:"uuid"`
+	// The workspace of this repository. Can be you or any team you
+	// have write access to.
+	Workspace *string `pulumi:"workspace"`
 }
 
 type WorkspaceHookState struct {
-	Active               pulumi.BoolPtrInput
-	Description          pulumi.StringPtrInput
-	Events               pulumi.StringArrayInput
+	// Whether the webhook configuration is active or not (Default: `true`).
+	Active pulumi.BoolPtrInput
+	// The name / description to show in the UI.
+	Description pulumi.StringPtrInput
+	// The events this webhook is subscribed to. Valid values can be found at [Bitbucket Webhook Docs](https://developer.atlassian.com/cloud/bitbucket/rest/api-group-repositories/#api-repositories-workspace-repo-slug-hooks-post).
+	Events pulumi.StringArrayInput
+	// Whether a webhook history is enabled.
+	HistoryEnabled pulumi.BoolPtrInput
+	// A Webhook secret value. Passing a null or empty secret or not passing a secret will leave the webhook's secret unset. This value is not returned on read and cannot resolve diffs or be imported as its not returned back from bitbucket API.
+	Secret pulumi.StringPtrInput
+	// Whether a webhook secret is set.
+	SecretSet pulumi.BoolPtrInput
+	// Whether to skip certificate verification or not (Default: `true`).
 	SkipCertVerification pulumi.BoolPtrInput
-	Url                  pulumi.StringPtrInput
-	Uuid                 pulumi.StringPtrInput
-	Workspace            pulumi.StringPtrInput
+	// Where to POST to.
+	Url pulumi.StringPtrInput
+	// The UUID of the workspace webhook.
+	Uuid pulumi.StringPtrInput
+	// The workspace of this repository. Can be you or any team you
+	// have write access to.
+	Workspace pulumi.StringPtrInput
 }
 
 func (WorkspaceHookState) ElementType() reflect.Type {
@@ -91,22 +185,44 @@ func (WorkspaceHookState) ElementType() reflect.Type {
 }
 
 type workspaceHookArgs struct {
-	Active               *bool    `pulumi:"active"`
-	Description          string   `pulumi:"description"`
-	Events               []string `pulumi:"events"`
-	SkipCertVerification *bool    `pulumi:"skipCertVerification"`
-	Url                  string   `pulumi:"url"`
-	Workspace            string   `pulumi:"workspace"`
+	// Whether the webhook configuration is active or not (Default: `true`).
+	Active *bool `pulumi:"active"`
+	// The name / description to show in the UI.
+	Description string `pulumi:"description"`
+	// The events this webhook is subscribed to. Valid values can be found at [Bitbucket Webhook Docs](https://developer.atlassian.com/cloud/bitbucket/rest/api-group-repositories/#api-repositories-workspace-repo-slug-hooks-post).
+	Events []string `pulumi:"events"`
+	// Whether a webhook history is enabled.
+	HistoryEnabled *bool `pulumi:"historyEnabled"`
+	// A Webhook secret value. Passing a null or empty secret or not passing a secret will leave the webhook's secret unset. This value is not returned on read and cannot resolve diffs or be imported as its not returned back from bitbucket API.
+	Secret *string `pulumi:"secret"`
+	// Whether to skip certificate verification or not (Default: `true`).
+	SkipCertVerification *bool `pulumi:"skipCertVerification"`
+	// Where to POST to.
+	Url string `pulumi:"url"`
+	// The workspace of this repository. Can be you or any team you
+	// have write access to.
+	Workspace string `pulumi:"workspace"`
 }
 
 // The set of arguments for constructing a WorkspaceHook resource.
 type WorkspaceHookArgs struct {
-	Active               pulumi.BoolPtrInput
-	Description          pulumi.StringInput
-	Events               pulumi.StringArrayInput
+	// Whether the webhook configuration is active or not (Default: `true`).
+	Active pulumi.BoolPtrInput
+	// The name / description to show in the UI.
+	Description pulumi.StringInput
+	// The events this webhook is subscribed to. Valid values can be found at [Bitbucket Webhook Docs](https://developer.atlassian.com/cloud/bitbucket/rest/api-group-repositories/#api-repositories-workspace-repo-slug-hooks-post).
+	Events pulumi.StringArrayInput
+	// Whether a webhook history is enabled.
+	HistoryEnabled pulumi.BoolPtrInput
+	// A Webhook secret value. Passing a null or empty secret or not passing a secret will leave the webhook's secret unset. This value is not returned on read and cannot resolve diffs or be imported as its not returned back from bitbucket API.
+	Secret pulumi.StringPtrInput
+	// Whether to skip certificate verification or not (Default: `true`).
 	SkipCertVerification pulumi.BoolPtrInput
-	Url                  pulumi.StringInput
-	Workspace            pulumi.StringInput
+	// Where to POST to.
+	Url pulumi.StringInput
+	// The workspace of this repository. Can be you or any team you
+	// have write access to.
+	Workspace pulumi.StringInput
 }
 
 func (WorkspaceHookArgs) ElementType() reflect.Type {
@@ -130,12 +246,6 @@ func (i *WorkspaceHook) ToWorkspaceHookOutput() WorkspaceHookOutput {
 
 func (i *WorkspaceHook) ToWorkspaceHookOutputWithContext(ctx context.Context) WorkspaceHookOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(WorkspaceHookOutput)
-}
-
-func (i *WorkspaceHook) ToOutput(ctx context.Context) pulumix.Output[*WorkspaceHook] {
-	return pulumix.Output[*WorkspaceHook]{
-		OutputState: i.ToWorkspaceHookOutputWithContext(ctx).OutputState,
-	}
 }
 
 // WorkspaceHookArrayInput is an input type that accepts WorkspaceHookArray and WorkspaceHookArrayOutput values.
@@ -163,12 +273,6 @@ func (i WorkspaceHookArray) ToWorkspaceHookArrayOutputWithContext(ctx context.Co
 	return pulumi.ToOutputWithContext(ctx, i).(WorkspaceHookArrayOutput)
 }
 
-func (i WorkspaceHookArray) ToOutput(ctx context.Context) pulumix.Output[[]*WorkspaceHook] {
-	return pulumix.Output[[]*WorkspaceHook]{
-		OutputState: i.ToWorkspaceHookArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 // WorkspaceHookMapInput is an input type that accepts WorkspaceHookMap and WorkspaceHookMapOutput values.
 // You can construct a concrete instance of `WorkspaceHookMapInput` via:
 //
@@ -194,12 +298,6 @@ func (i WorkspaceHookMap) ToWorkspaceHookMapOutputWithContext(ctx context.Contex
 	return pulumi.ToOutputWithContext(ctx, i).(WorkspaceHookMapOutput)
 }
 
-func (i WorkspaceHookMap) ToOutput(ctx context.Context) pulumix.Output[map[string]*WorkspaceHook] {
-	return pulumix.Output[map[string]*WorkspaceHook]{
-		OutputState: i.ToWorkspaceHookMapOutputWithContext(ctx).OutputState,
-	}
-}
-
 type WorkspaceHookOutput struct{ *pulumi.OutputState }
 
 func (WorkspaceHookOutput) ElementType() reflect.Type {
@@ -214,36 +312,53 @@ func (o WorkspaceHookOutput) ToWorkspaceHookOutputWithContext(ctx context.Contex
 	return o
 }
 
-func (o WorkspaceHookOutput) ToOutput(ctx context.Context) pulumix.Output[*WorkspaceHook] {
-	return pulumix.Output[*WorkspaceHook]{
-		OutputState: o.OutputState,
-	}
-}
-
+// Whether the webhook configuration is active or not (Default: `true`).
 func (o WorkspaceHookOutput) Active() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *WorkspaceHook) pulumi.BoolPtrOutput { return v.Active }).(pulumi.BoolPtrOutput)
 }
 
+// The name / description to show in the UI.
 func (o WorkspaceHookOutput) Description() pulumi.StringOutput {
 	return o.ApplyT(func(v *WorkspaceHook) pulumi.StringOutput { return v.Description }).(pulumi.StringOutput)
 }
 
+// The events this webhook is subscribed to. Valid values can be found at [Bitbucket Webhook Docs](https://developer.atlassian.com/cloud/bitbucket/rest/api-group-repositories/#api-repositories-workspace-repo-slug-hooks-post).
 func (o WorkspaceHookOutput) Events() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v *WorkspaceHook) pulumi.StringArrayOutput { return v.Events }).(pulumi.StringArrayOutput)
 }
 
+// Whether a webhook history is enabled.
+func (o WorkspaceHookOutput) HistoryEnabled() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *WorkspaceHook) pulumi.BoolPtrOutput { return v.HistoryEnabled }).(pulumi.BoolPtrOutput)
+}
+
+// A Webhook secret value. Passing a null or empty secret or not passing a secret will leave the webhook's secret unset. This value is not returned on read and cannot resolve diffs or be imported as its not returned back from bitbucket API.
+func (o WorkspaceHookOutput) Secret() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *WorkspaceHook) pulumi.StringPtrOutput { return v.Secret }).(pulumi.StringPtrOutput)
+}
+
+// Whether a webhook secret is set.
+func (o WorkspaceHookOutput) SecretSet() pulumi.BoolOutput {
+	return o.ApplyT(func(v *WorkspaceHook) pulumi.BoolOutput { return v.SecretSet }).(pulumi.BoolOutput)
+}
+
+// Whether to skip certificate verification or not (Default: `true`).
 func (o WorkspaceHookOutput) SkipCertVerification() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *WorkspaceHook) pulumi.BoolPtrOutput { return v.SkipCertVerification }).(pulumi.BoolPtrOutput)
 }
 
+// Where to POST to.
 func (o WorkspaceHookOutput) Url() pulumi.StringOutput {
 	return o.ApplyT(func(v *WorkspaceHook) pulumi.StringOutput { return v.Url }).(pulumi.StringOutput)
 }
 
+// The UUID of the workspace webhook.
 func (o WorkspaceHookOutput) Uuid() pulumi.StringOutput {
 	return o.ApplyT(func(v *WorkspaceHook) pulumi.StringOutput { return v.Uuid }).(pulumi.StringOutput)
 }
 
+// The workspace of this repository. Can be you or any team you
+// have write access to.
 func (o WorkspaceHookOutput) Workspace() pulumi.StringOutput {
 	return o.ApplyT(func(v *WorkspaceHook) pulumi.StringOutput { return v.Workspace }).(pulumi.StringOutput)
 }
@@ -260,12 +375,6 @@ func (o WorkspaceHookArrayOutput) ToWorkspaceHookArrayOutput() WorkspaceHookArra
 
 func (o WorkspaceHookArrayOutput) ToWorkspaceHookArrayOutputWithContext(ctx context.Context) WorkspaceHookArrayOutput {
 	return o
-}
-
-func (o WorkspaceHookArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]*WorkspaceHook] {
-	return pulumix.Output[[]*WorkspaceHook]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o WorkspaceHookArrayOutput) Index(i pulumi.IntInput) WorkspaceHookOutput {
@@ -286,12 +395,6 @@ func (o WorkspaceHookMapOutput) ToWorkspaceHookMapOutput() WorkspaceHookMapOutpu
 
 func (o WorkspaceHookMapOutput) ToWorkspaceHookMapOutputWithContext(ctx context.Context) WorkspaceHookMapOutput {
 	return o
-}
-
-func (o WorkspaceHookMapOutput) ToOutput(ctx context.Context) pulumix.Output[map[string]*WorkspaceHook] {
-	return pulumix.Output[map[string]*WorkspaceHook]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o WorkspaceHookMapOutput) MapIndex(k pulumi.StringInput) WorkspaceHookOutput {

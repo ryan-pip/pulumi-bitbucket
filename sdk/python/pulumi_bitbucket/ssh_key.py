@@ -19,6 +19,9 @@ class SshKeyArgs:
                  label: Optional[pulumi.Input[str]] = None):
         """
         The set of arguments for constructing a SshKey resource.
+        :param pulumi.Input[str] user: This can either be the UUID of the account, surrounded by curly-braces, for example: {account UUID}, OR an Atlassian Account ID.
+        :param pulumi.Input[str] key: The SSH public key value in OpenSSH format.
+        :param pulumi.Input[str] label: The user-defined label for the SSH key
         """
         pulumi.set(__self__, "user", user)
         if key is not None:
@@ -29,6 +32,9 @@ class SshKeyArgs:
     @property
     @pulumi.getter
     def user(self) -> pulumi.Input[str]:
+        """
+        This can either be the UUID of the account, surrounded by curly-braces, for example: {account UUID}, OR an Atlassian Account ID.
+        """
         return pulumi.get(self, "user")
 
     @user.setter
@@ -38,6 +44,9 @@ class SshKeyArgs:
     @property
     @pulumi.getter
     def key(self) -> Optional[pulumi.Input[str]]:
+        """
+        The SSH public key value in OpenSSH format.
+        """
         return pulumi.get(self, "key")
 
     @key.setter
@@ -47,6 +56,9 @@ class SshKeyArgs:
     @property
     @pulumi.getter
     def label(self) -> Optional[pulumi.Input[str]]:
+        """
+        The user-defined label for the SSH key
+        """
         return pulumi.get(self, "label")
 
     @label.setter
@@ -64,6 +76,11 @@ class _SshKeyState:
                  uuid: Optional[pulumi.Input[str]] = None):
         """
         Input properties used for looking up and filtering SshKey resources.
+        :param pulumi.Input[str] comment: The comment parsed from the SSH key (if present)
+        :param pulumi.Input[str] key: The SSH public key value in OpenSSH format.
+        :param pulumi.Input[str] label: The user-defined label for the SSH key
+        :param pulumi.Input[str] user: This can either be the UUID of the account, surrounded by curly-braces, for example: {account UUID}, OR an Atlassian Account ID.
+        :param pulumi.Input[str] uuid: The SSH key's UUID value.
         """
         if comment is not None:
             pulumi.set(__self__, "comment", comment)
@@ -79,6 +96,9 @@ class _SshKeyState:
     @property
     @pulumi.getter
     def comment(self) -> Optional[pulumi.Input[str]]:
+        """
+        The comment parsed from the SSH key (if present)
+        """
         return pulumi.get(self, "comment")
 
     @comment.setter
@@ -88,6 +108,9 @@ class _SshKeyState:
     @property
     @pulumi.getter
     def key(self) -> Optional[pulumi.Input[str]]:
+        """
+        The SSH public key value in OpenSSH format.
+        """
         return pulumi.get(self, "key")
 
     @key.setter
@@ -97,6 +120,9 @@ class _SshKeyState:
     @property
     @pulumi.getter
     def label(self) -> Optional[pulumi.Input[str]]:
+        """
+        The user-defined label for the SSH key
+        """
         return pulumi.get(self, "label")
 
     @label.setter
@@ -106,6 +132,9 @@ class _SshKeyState:
     @property
     @pulumi.getter
     def user(self) -> Optional[pulumi.Input[str]]:
+        """
+        This can either be the UUID of the account, surrounded by curly-braces, for example: {account UUID}, OR an Atlassian Account ID.
+        """
         return pulumi.get(self, "user")
 
     @user.setter
@@ -115,6 +144,9 @@ class _SshKeyState:
     @property
     @pulumi.getter
     def uuid(self) -> Optional[pulumi.Input[str]]:
+        """
+        The SSH key's UUID value.
+        """
         return pulumi.get(self, "uuid")
 
     @uuid.setter
@@ -132,9 +164,37 @@ class SshKey(pulumi.CustomResource):
                  user: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         """
-        Create a SshKey resource with the given unique name, props, and options.
+        Provides a Bitbucket SSH Key resource.
+
+        This allows you to manage your SSH Keys for a user.
+
+        OAuth2 Scopes: `account` and `account:write`
+
+        ## Example Usage
+
+        ```python
+        import pulumi
+        import pulumi_bitbucket as bitbucket
+
+        test = bitbucket.SshKey("test",
+            user=data["bitbucket_current_user"]["test"]["uuid"],
+            key="ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKqP3Cr632C2dNhhgKVcon4ldUSAeKiku2yP9O9/bDtY",
+            label="test-key")
+        ```
+
+        ## Import
+
+        SSH Keys can be imported using their `user-id/key-id` ID, e.g.
+
+        ```sh
+         $ pulumi import bitbucket:index/sshKey:SshKey key user-id/key-id
+        ```
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[str] key: The SSH public key value in OpenSSH format.
+        :param pulumi.Input[str] label: The user-defined label for the SSH key
+        :param pulumi.Input[str] user: This can either be the UUID of the account, surrounded by curly-braces, for example: {account UUID}, OR an Atlassian Account ID.
         """
         ...
     @overload
@@ -143,7 +203,32 @@ class SshKey(pulumi.CustomResource):
                  args: SshKeyArgs,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
-        Create a SshKey resource with the given unique name, props, and options.
+        Provides a Bitbucket SSH Key resource.
+
+        This allows you to manage your SSH Keys for a user.
+
+        OAuth2 Scopes: `account` and `account:write`
+
+        ## Example Usage
+
+        ```python
+        import pulumi
+        import pulumi_bitbucket as bitbucket
+
+        test = bitbucket.SshKey("test",
+            user=data["bitbucket_current_user"]["test"]["uuid"],
+            key="ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKqP3Cr632C2dNhhgKVcon4ldUSAeKiku2yP9O9/bDtY",
+            label="test-key")
+        ```
+
+        ## Import
+
+        SSH Keys can be imported using their `user-id/key-id` ID, e.g.
+
+        ```sh
+         $ pulumi import bitbucket:index/sshKey:SshKey key user-id/key-id
+        ```
+
         :param str resource_name: The name of the resource.
         :param SshKeyArgs args: The arguments to use to populate this resource's properties.
         :param pulumi.ResourceOptions opts: Options for the resource.
@@ -200,6 +285,11 @@ class SshKey(pulumi.CustomResource):
         :param str resource_name: The unique name of the resulting resource.
         :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[str] comment: The comment parsed from the SSH key (if present)
+        :param pulumi.Input[str] key: The SSH public key value in OpenSSH format.
+        :param pulumi.Input[str] label: The user-defined label for the SSH key
+        :param pulumi.Input[str] user: This can either be the UUID of the account, surrounded by curly-braces, for example: {account UUID}, OR an Atlassian Account ID.
+        :param pulumi.Input[str] uuid: The SSH key's UUID value.
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
 
@@ -215,25 +305,40 @@ class SshKey(pulumi.CustomResource):
     @property
     @pulumi.getter
     def comment(self) -> pulumi.Output[str]:
+        """
+        The comment parsed from the SSH key (if present)
+        """
         return pulumi.get(self, "comment")
 
     @property
     @pulumi.getter
     def key(self) -> pulumi.Output[Optional[str]]:
+        """
+        The SSH public key value in OpenSSH format.
+        """
         return pulumi.get(self, "key")
 
     @property
     @pulumi.getter
     def label(self) -> pulumi.Output[Optional[str]]:
+        """
+        The user-defined label for the SSH key
+        """
         return pulumi.get(self, "label")
 
     @property
     @pulumi.getter
     def user(self) -> pulumi.Output[str]:
+        """
+        This can either be the UUID of the account, surrounded by curly-braces, for example: {account UUID}, OR an Atlassian Account ID.
+        """
         return pulumi.get(self, "user")
 
     @property
     @pulumi.getter
     def uuid(self) -> pulumi.Output[str]:
+        """
+        The SSH key's UUID value.
+        """
         return pulumi.get(self, "uuid")
 

@@ -4,6 +4,36 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "./utilities";
 
+/**
+ * Provides a Bitbucket hook resource.
+ *
+ * This allows you to manage your webhooks on a repository.
+ *
+ * OAuth2 Scopes: `webhook`
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as bitbucket from "@pulumi/bitbucket";
+ *
+ * const deployOnPush = new bitbucket.Hook("deployOnPush", {
+ *     description: "Deploy the code via my webhook",
+ *     events: ["repo:push"],
+ *     owner: "myteam",
+ *     repository: "terraform-code",
+ *     url: "https://mywebhookservice.mycompany.com/deploy-on-push",
+ * });
+ * ```
+ *
+ * ## Import
+ *
+ * Hooks can be imported using their `owner/repo-name/hook-id` ID, e.g.
+ *
+ * ```sh
+ *  $ pulumi import bitbucket:index/hook:Hook hook my-account/my-repo/hook-id
+ * ```
+ */
 export class Hook extends pulumi.CustomResource {
     /**
      * Get an existing Hook resource's state with the given name, ID, and optional extra
@@ -32,13 +62,50 @@ export class Hook extends pulumi.CustomResource {
         return obj['__pulumiType'] === Hook.__pulumiType;
     }
 
+    /**
+     * Whether the webhook configuration is active or not (Default: `true`).
+     */
     public readonly active!: pulumi.Output<boolean | undefined>;
+    /**
+     * The name / description to show in the UI.
+     */
     public readonly description!: pulumi.Output<string>;
+    /**
+     * The events this webhook is subscribed to. Valid values can be found at [Bitbucket Event Payloads Docs](https://support.atlassian.com/bitbucket-cloud/docs/event-payloads/).
+     */
     public readonly events!: pulumi.Output<string[]>;
+    /**
+     * Whether a webhook history is enabled.
+     */
+    public readonly historyEnabled!: pulumi.Output<boolean | undefined>;
+    /**
+     * The owner of this repository. Can be you or any team you
+     * have write access to.
+     */
     public readonly owner!: pulumi.Output<string>;
+    /**
+     * The name of the repository.
+     */
     public readonly repository!: pulumi.Output<string>;
+    /**
+     * A Webhook secret value. Passing a null or empty secret or not passing a secret will leave the webhook's secret unset. This value is not returned on read and cannot resolve diffs or be imported as its not returned back from bitbucket API.
+     */
+    public readonly secret!: pulumi.Output<string | undefined>;
+    /**
+     * Whether a webhook secret is set.
+     */
+    public /*out*/ readonly secretSet!: pulumi.Output<boolean>;
+    /**
+     * Whether to skip certificate verification or not (Default: `true`).
+     */
     public readonly skipCertVerification!: pulumi.Output<boolean | undefined>;
+    /**
+     * Where to POST to.
+     */
     public readonly url!: pulumi.Output<string>;
+    /**
+     * The UUID of the workspace webhook.
+     */
     public /*out*/ readonly uuid!: pulumi.Output<string>;
 
     /**
@@ -57,8 +124,11 @@ export class Hook extends pulumi.CustomResource {
             resourceInputs["active"] = state ? state.active : undefined;
             resourceInputs["description"] = state ? state.description : undefined;
             resourceInputs["events"] = state ? state.events : undefined;
+            resourceInputs["historyEnabled"] = state ? state.historyEnabled : undefined;
             resourceInputs["owner"] = state ? state.owner : undefined;
             resourceInputs["repository"] = state ? state.repository : undefined;
+            resourceInputs["secret"] = state ? state.secret : undefined;
+            resourceInputs["secretSet"] = state ? state.secretSet : undefined;
             resourceInputs["skipCertVerification"] = state ? state.skipCertVerification : undefined;
             resourceInputs["url"] = state ? state.url : undefined;
             resourceInputs["uuid"] = state ? state.uuid : undefined;
@@ -82,13 +152,18 @@ export class Hook extends pulumi.CustomResource {
             resourceInputs["active"] = args ? args.active : undefined;
             resourceInputs["description"] = args ? args.description : undefined;
             resourceInputs["events"] = args ? args.events : undefined;
+            resourceInputs["historyEnabled"] = args ? args.historyEnabled : undefined;
             resourceInputs["owner"] = args ? args.owner : undefined;
             resourceInputs["repository"] = args ? args.repository : undefined;
+            resourceInputs["secret"] = args?.secret ? pulumi.secret(args.secret) : undefined;
             resourceInputs["skipCertVerification"] = args ? args.skipCertVerification : undefined;
             resourceInputs["url"] = args ? args.url : undefined;
+            resourceInputs["secretSet"] = undefined /*out*/;
             resourceInputs["uuid"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
+        const secretOpts = { additionalSecretOutputs: ["secret"] };
+        opts = pulumi.mergeOptions(opts, secretOpts);
         super(Hook.__pulumiType, name, resourceInputs, opts);
     }
 }
@@ -97,13 +172,50 @@ export class Hook extends pulumi.CustomResource {
  * Input properties used for looking up and filtering Hook resources.
  */
 export interface HookState {
+    /**
+     * Whether the webhook configuration is active or not (Default: `true`).
+     */
     active?: pulumi.Input<boolean>;
+    /**
+     * The name / description to show in the UI.
+     */
     description?: pulumi.Input<string>;
+    /**
+     * The events this webhook is subscribed to. Valid values can be found at [Bitbucket Event Payloads Docs](https://support.atlassian.com/bitbucket-cloud/docs/event-payloads/).
+     */
     events?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * Whether a webhook history is enabled.
+     */
+    historyEnabled?: pulumi.Input<boolean>;
+    /**
+     * The owner of this repository. Can be you or any team you
+     * have write access to.
+     */
     owner?: pulumi.Input<string>;
+    /**
+     * The name of the repository.
+     */
     repository?: pulumi.Input<string>;
+    /**
+     * A Webhook secret value. Passing a null or empty secret or not passing a secret will leave the webhook's secret unset. This value is not returned on read and cannot resolve diffs or be imported as its not returned back from bitbucket API.
+     */
+    secret?: pulumi.Input<string>;
+    /**
+     * Whether a webhook secret is set.
+     */
+    secretSet?: pulumi.Input<boolean>;
+    /**
+     * Whether to skip certificate verification or not (Default: `true`).
+     */
     skipCertVerification?: pulumi.Input<boolean>;
+    /**
+     * Where to POST to.
+     */
     url?: pulumi.Input<string>;
+    /**
+     * The UUID of the workspace webhook.
+     */
     uuid?: pulumi.Input<string>;
 }
 
@@ -111,11 +223,41 @@ export interface HookState {
  * The set of arguments for constructing a Hook resource.
  */
 export interface HookArgs {
+    /**
+     * Whether the webhook configuration is active or not (Default: `true`).
+     */
     active?: pulumi.Input<boolean>;
+    /**
+     * The name / description to show in the UI.
+     */
     description: pulumi.Input<string>;
+    /**
+     * The events this webhook is subscribed to. Valid values can be found at [Bitbucket Event Payloads Docs](https://support.atlassian.com/bitbucket-cloud/docs/event-payloads/).
+     */
     events: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * Whether a webhook history is enabled.
+     */
+    historyEnabled?: pulumi.Input<boolean>;
+    /**
+     * The owner of this repository. Can be you or any team you
+     * have write access to.
+     */
     owner: pulumi.Input<string>;
+    /**
+     * The name of the repository.
+     */
     repository: pulumi.Input<string>;
+    /**
+     * A Webhook secret value. Passing a null or empty secret or not passing a secret will leave the webhook's secret unset. This value is not returned on read and cannot resolve diffs or be imported as its not returned back from bitbucket API.
+     */
+    secret?: pulumi.Input<string>;
+    /**
+     * Whether to skip certificate verification or not (Default: `true`).
+     */
     skipCertVerification?: pulumi.Input<boolean>;
+    /**
+     * Where to POST to.
+     */
     url: pulumi.Input<string>;
 }

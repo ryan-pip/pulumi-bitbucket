@@ -4,6 +4,22 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "./utilities";
 
+/**
+ * Provides a way to fetch data on a pipeline OIDC Config.
+ *
+ * OAuth2 Scopes: `none`
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as bitbucket from "@pulumi/bitbucket";
+ *
+ * const example = bitbucket.getPipelineOidcConfig({
+ *     workspace: "example",
+ * });
+ * ```
+ */
 export function getPipelineOidcConfig(args: GetPipelineOidcConfigArgs, opts?: pulumi.InvokeOptions): Promise<GetPipelineOidcConfigResult> {
 
     opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
@@ -16,6 +32,9 @@ export function getPipelineOidcConfig(args: GetPipelineOidcConfigArgs, opts?: pu
  * A collection of arguments for invoking getPipelineOidcConfig.
  */
 export interface GetPipelineOidcConfigArgs {
+    /**
+     * The workspace to fetch pipeline oidc config.
+     */
     workspace: string;
 }
 
@@ -27,9 +46,28 @@ export interface GetPipelineOidcConfigResult {
      * The provider-assigned unique ID for this managed resource.
      */
     readonly id: string;
+    /**
+     * The Json representing the OIDC config.
+     */
     readonly oidcConfig: string;
     readonly workspace: string;
 }
+/**
+ * Provides a way to fetch data on a pipeline OIDC Config.
+ *
+ * OAuth2 Scopes: `none`
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as bitbucket from "@pulumi/bitbucket";
+ *
+ * const example = bitbucket.getPipelineOidcConfig({
+ *     workspace: "example",
+ * });
+ * ```
+ */
 export function getPipelineOidcConfigOutput(args: GetPipelineOidcConfigOutputArgs, opts?: pulumi.InvokeOptions): pulumi.Output<GetPipelineOidcConfigResult> {
     return pulumi.output(args).apply((a: any) => getPipelineOidcConfig(a, opts))
 }
@@ -38,5 +76,8 @@ export function getPipelineOidcConfigOutput(args: GetPipelineOidcConfigOutputArg
  * A collection of arguments for invoking getPipelineOidcConfig.
  */
 export interface GetPipelineOidcConfigOutputArgs {
+    /**
+     * The workspace to fetch pipeline oidc config.
+     */
     workspace: pulumi.Input<string>;
 }

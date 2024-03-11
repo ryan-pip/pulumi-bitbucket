@@ -20,6 +20,10 @@ class RepositoryVariableArgs:
                  secured: Optional[pulumi.Input[bool]] = None):
         """
         The set of arguments for constructing a RepositoryVariable resource.
+        :param pulumi.Input[str] key: The key of the key value pair
+        :param pulumi.Input[str] repository: The repository ID you want to put this variable onto. (of form workspace-id/repository-id)
+        :param pulumi.Input[str] value: The value of the key. This will not be returned if `secured` is set to true from API and wont be drift detected by provider.
+        :param pulumi.Input[bool] secured: If you want to make this viewable in the UI.
         """
         pulumi.set(__self__, "key", key)
         pulumi.set(__self__, "repository", repository)
@@ -30,6 +34,9 @@ class RepositoryVariableArgs:
     @property
     @pulumi.getter
     def key(self) -> pulumi.Input[str]:
+        """
+        The key of the key value pair
+        """
         return pulumi.get(self, "key")
 
     @key.setter
@@ -39,6 +46,9 @@ class RepositoryVariableArgs:
     @property
     @pulumi.getter
     def repository(self) -> pulumi.Input[str]:
+        """
+        The repository ID you want to put this variable onto. (of form workspace-id/repository-id)
+        """
         return pulumi.get(self, "repository")
 
     @repository.setter
@@ -48,6 +58,9 @@ class RepositoryVariableArgs:
     @property
     @pulumi.getter
     def value(self) -> pulumi.Input[str]:
+        """
+        The value of the key. This will not be returned if `secured` is set to true from API and wont be drift detected by provider.
+        """
         return pulumi.get(self, "value")
 
     @value.setter
@@ -57,6 +70,9 @@ class RepositoryVariableArgs:
     @property
     @pulumi.getter
     def secured(self) -> Optional[pulumi.Input[bool]]:
+        """
+        If you want to make this viewable in the UI.
+        """
         return pulumi.get(self, "secured")
 
     @secured.setter
@@ -71,9 +87,16 @@ class _RepositoryVariableState:
                  repository: Optional[pulumi.Input[str]] = None,
                  secured: Optional[pulumi.Input[bool]] = None,
                  uuid: Optional[pulumi.Input[str]] = None,
-                 value: Optional[pulumi.Input[str]] = None):
+                 value: Optional[pulumi.Input[str]] = None,
+                 workspace: Optional[pulumi.Input[str]] = None):
         """
         Input properties used for looking up and filtering RepositoryVariable resources.
+        :param pulumi.Input[str] key: The key of the key value pair
+        :param pulumi.Input[str] repository: The repository ID you want to put this variable onto. (of form workspace-id/repository-id)
+        :param pulumi.Input[bool] secured: If you want to make this viewable in the UI.
+        :param pulumi.Input[str] uuid: (Computed) The UUID identifying the variable.
+        :param pulumi.Input[str] value: The value of the key. This will not be returned if `secured` is set to true from API and wont be drift detected by provider.
+        :param pulumi.Input[str] workspace: (Computed) The workspace the variable is created in.
         """
         if key is not None:
             pulumi.set(__self__, "key", key)
@@ -85,10 +108,15 @@ class _RepositoryVariableState:
             pulumi.set(__self__, "uuid", uuid)
         if value is not None:
             pulumi.set(__self__, "value", value)
+        if workspace is not None:
+            pulumi.set(__self__, "workspace", workspace)
 
     @property
     @pulumi.getter
     def key(self) -> Optional[pulumi.Input[str]]:
+        """
+        The key of the key value pair
+        """
         return pulumi.get(self, "key")
 
     @key.setter
@@ -98,6 +126,9 @@ class _RepositoryVariableState:
     @property
     @pulumi.getter
     def repository(self) -> Optional[pulumi.Input[str]]:
+        """
+        The repository ID you want to put this variable onto. (of form workspace-id/repository-id)
+        """
         return pulumi.get(self, "repository")
 
     @repository.setter
@@ -107,6 +138,9 @@ class _RepositoryVariableState:
     @property
     @pulumi.getter
     def secured(self) -> Optional[pulumi.Input[bool]]:
+        """
+        If you want to make this viewable in the UI.
+        """
         return pulumi.get(self, "secured")
 
     @secured.setter
@@ -116,6 +150,9 @@ class _RepositoryVariableState:
     @property
     @pulumi.getter
     def uuid(self) -> Optional[pulumi.Input[str]]:
+        """
+        (Computed) The UUID identifying the variable.
+        """
         return pulumi.get(self, "uuid")
 
     @uuid.setter
@@ -125,11 +162,26 @@ class _RepositoryVariableState:
     @property
     @pulumi.getter
     def value(self) -> Optional[pulumi.Input[str]]:
+        """
+        The value of the key. This will not be returned if `secured` is set to true from API and wont be drift detected by provider.
+        """
         return pulumi.get(self, "value")
 
     @value.setter
     def value(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "value", value)
+
+    @property
+    @pulumi.getter
+    def workspace(self) -> Optional[pulumi.Input[str]]:
+        """
+        (Computed) The workspace the variable is created in.
+        """
+        return pulumi.get(self, "workspace")
+
+    @workspace.setter
+    def workspace(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "workspace", value)
 
 
 class RepositoryVariable(pulumi.CustomResource):
@@ -143,9 +195,40 @@ class RepositoryVariable(pulumi.CustomResource):
                  value: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         """
-        Create a RepositoryVariable resource with the given unique name, props, and options.
+        This resource allows you to setup pipelines variables to manage your builds with. Once you have enabled pipelines on your repository you can then further setup variables here to use.
+
+        OAuth2 Scopes: `none`
+
+        ## Example Usage
+
+        ```python
+        import pulumi
+        import pulumi_bitbucket as bitbucket
+
+        monorepo = bitbucket.Repository("monorepo",
+            owner="gob",
+            pipelines_enabled=True)
+        debug = bitbucket.RepositoryVariable("debug",
+            key="DEBUG",
+            value="true",
+            repository=monorepo.id,
+            secured=False)
+        ```
+
+        ## Import
+
+        Repository Variables can be imported using their `workspace/repository/key/uuid` ID, e.g.
+
+        ```sh
+         $ pulumi import bitbucket:index/repositoryVariable:RepositoryVariable example workspace/repository/key/uuid
+        ```
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[str] key: The key of the key value pair
+        :param pulumi.Input[str] repository: The repository ID you want to put this variable onto. (of form workspace-id/repository-id)
+        :param pulumi.Input[bool] secured: If you want to make this viewable in the UI.
+        :param pulumi.Input[str] value: The value of the key. This will not be returned if `secured` is set to true from API and wont be drift detected by provider.
         """
         ...
     @overload
@@ -154,7 +237,34 @@ class RepositoryVariable(pulumi.CustomResource):
                  args: RepositoryVariableArgs,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
-        Create a RepositoryVariable resource with the given unique name, props, and options.
+        This resource allows you to setup pipelines variables to manage your builds with. Once you have enabled pipelines on your repository you can then further setup variables here to use.
+
+        OAuth2 Scopes: `none`
+
+        ## Example Usage
+
+        ```python
+        import pulumi
+        import pulumi_bitbucket as bitbucket
+
+        monorepo = bitbucket.Repository("monorepo",
+            owner="gob",
+            pipelines_enabled=True)
+        debug = bitbucket.RepositoryVariable("debug",
+            key="DEBUG",
+            value="true",
+            repository=monorepo.id,
+            secured=False)
+        ```
+
+        ## Import
+
+        Repository Variables can be imported using their `workspace/repository/key/uuid` ID, e.g.
+
+        ```sh
+         $ pulumi import bitbucket:index/repositoryVariable:RepositoryVariable example workspace/repository/key/uuid
+        ```
+
         :param str resource_name: The name of the resource.
         :param RepositoryVariableArgs args: The arguments to use to populate this resource's properties.
         :param pulumi.ResourceOptions opts: Options for the resource.
@@ -194,6 +304,7 @@ class RepositoryVariable(pulumi.CustomResource):
                 raise TypeError("Missing required property 'value'")
             __props__.__dict__["value"] = None if value is None else pulumi.Output.secret(value)
             __props__.__dict__["uuid"] = None
+            __props__.__dict__["workspace"] = None
         secret_opts = pulumi.ResourceOptions(additional_secret_outputs=["value"])
         opts = pulumi.ResourceOptions.merge(opts, secret_opts)
         super(RepositoryVariable, __self__).__init__(
@@ -210,7 +321,8 @@ class RepositoryVariable(pulumi.CustomResource):
             repository: Optional[pulumi.Input[str]] = None,
             secured: Optional[pulumi.Input[bool]] = None,
             uuid: Optional[pulumi.Input[str]] = None,
-            value: Optional[pulumi.Input[str]] = None) -> 'RepositoryVariable':
+            value: Optional[pulumi.Input[str]] = None,
+            workspace: Optional[pulumi.Input[str]] = None) -> 'RepositoryVariable':
         """
         Get an existing RepositoryVariable resource's state with the given name, id, and optional extra
         properties used to qualify the lookup.
@@ -218,6 +330,12 @@ class RepositoryVariable(pulumi.CustomResource):
         :param str resource_name: The unique name of the resulting resource.
         :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[str] key: The key of the key value pair
+        :param pulumi.Input[str] repository: The repository ID you want to put this variable onto. (of form workspace-id/repository-id)
+        :param pulumi.Input[bool] secured: If you want to make this viewable in the UI.
+        :param pulumi.Input[str] uuid: (Computed) The UUID identifying the variable.
+        :param pulumi.Input[str] value: The value of the key. This will not be returned if `secured` is set to true from API and wont be drift detected by provider.
+        :param pulumi.Input[str] workspace: (Computed) The workspace the variable is created in.
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
 
@@ -228,30 +346,54 @@ class RepositoryVariable(pulumi.CustomResource):
         __props__.__dict__["secured"] = secured
         __props__.__dict__["uuid"] = uuid
         __props__.__dict__["value"] = value
+        __props__.__dict__["workspace"] = workspace
         return RepositoryVariable(resource_name, opts=opts, __props__=__props__)
 
     @property
     @pulumi.getter
     def key(self) -> pulumi.Output[str]:
+        """
+        The key of the key value pair
+        """
         return pulumi.get(self, "key")
 
     @property
     @pulumi.getter
     def repository(self) -> pulumi.Output[str]:
+        """
+        The repository ID you want to put this variable onto. (of form workspace-id/repository-id)
+        """
         return pulumi.get(self, "repository")
 
     @property
     @pulumi.getter
     def secured(self) -> pulumi.Output[Optional[bool]]:
+        """
+        If you want to make this viewable in the UI.
+        """
         return pulumi.get(self, "secured")
 
     @property
     @pulumi.getter
     def uuid(self) -> pulumi.Output[str]:
+        """
+        (Computed) The UUID identifying the variable.
+        """
         return pulumi.get(self, "uuid")
 
     @property
     @pulumi.getter
     def value(self) -> pulumi.Output[str]:
+        """
+        The value of the key. This will not be returned if `secured` is set to true from API and wont be drift detected by provider.
+        """
         return pulumi.get(self, "value")
+
+    @property
+    @pulumi.getter
+    def workspace(self) -> pulumi.Output[str]:
+        """
+        (Computed) The workspace the variable is created in.
+        """
+        return pulumi.get(self, "workspace")
 

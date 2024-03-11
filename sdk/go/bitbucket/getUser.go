@@ -8,10 +8,36 @@ import (
 	"reflect"
 
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket/internal"
 )
 
+// Provides a way to fetch data on a user.
+//
+// ## Example Usage
+//
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := bitbucket.GetUser(ctx, &bitbucket.GetUserArgs{
+//				Uuid: pulumi.StringRef("{account UUID}"),
+//			}, nil)
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
 func GetUser(ctx *pulumi.Context, args *GetUserArgs, opts ...pulumi.InvokeOption) (*GetUserResult, error) {
 	opts = internal.PkgInvokeDefaultOpts(opts)
 	var rv GetUserResult
@@ -24,17 +50,21 @@ func GetUser(ctx *pulumi.Context, args *GetUserArgs, opts ...pulumi.InvokeOption
 
 // A collection of arguments for invoking getUser.
 type GetUserArgs struct {
+	// the display name that the user wants to use for GDPR
 	DisplayName *string `pulumi:"displayName"`
-	Uuid        *string `pulumi:"uuid"`
+	// The UUID that bitbucket users to connect a user to various objects
+	Uuid *string `pulumi:"uuid"`
 }
 
 // A collection of values returned by getUser.
 type GetUserResult struct {
+	// the display name that the user wants to use for GDPR
 	DisplayName *string `pulumi:"displayName"`
 	// The provider-assigned unique ID for this managed resource.
-	Id       string  `pulumi:"id"`
-	Username string  `pulumi:"username"`
-	Uuid     *string `pulumi:"uuid"`
+	Id       string `pulumi:"id"`
+	Username string `pulumi:"username"`
+	// the uuid that bitbucket users to connect a user to various objects
+	Uuid *string `pulumi:"uuid"`
 }
 
 func GetUserOutput(ctx *pulumi.Context, args GetUserOutputArgs, opts ...pulumi.InvokeOption) GetUserResultOutput {
@@ -52,8 +82,10 @@ func GetUserOutput(ctx *pulumi.Context, args GetUserOutputArgs, opts ...pulumi.I
 
 // A collection of arguments for invoking getUser.
 type GetUserOutputArgs struct {
+	// the display name that the user wants to use for GDPR
 	DisplayName pulumi.StringPtrInput `pulumi:"displayName"`
-	Uuid        pulumi.StringPtrInput `pulumi:"uuid"`
+	// The UUID that bitbucket users to connect a user to various objects
+	Uuid pulumi.StringPtrInput `pulumi:"uuid"`
 }
 
 func (GetUserOutputArgs) ElementType() reflect.Type {
@@ -75,12 +107,7 @@ func (o GetUserResultOutput) ToGetUserResultOutputWithContext(ctx context.Contex
 	return o
 }
 
-func (o GetUserResultOutput) ToOutput(ctx context.Context) pulumix.Output[GetUserResult] {
-	return pulumix.Output[GetUserResult]{
-		OutputState: o.OutputState,
-	}
-}
-
+// the display name that the user wants to use for GDPR
 func (o GetUserResultOutput) DisplayName() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v GetUserResult) *string { return v.DisplayName }).(pulumi.StringPtrOutput)
 }
@@ -94,6 +121,7 @@ func (o GetUserResultOutput) Username() pulumi.StringOutput {
 	return o.ApplyT(func(v GetUserResult) string { return v.Username }).(pulumi.StringOutput)
 }
 
+// the uuid that bitbucket users to connect a user to various objects
 func (o GetUserResultOutput) Uuid() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v GetUserResult) *string { return v.Uuid }).(pulumi.StringPtrOutput)
 }

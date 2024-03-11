@@ -9,21 +9,82 @@ import (
 
 	"errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket/internal"
 )
 
+// Provides a Bitbucket hook resource.
+//
+// This allows you to manage your webhooks on a repository.
+//
+// OAuth2 Scopes: `webhook`
+//
+// ## Example Usage
+//
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := bitbucket.NewHook(ctx, "deployOnPush", &bitbucket.HookArgs{
+//				Description: pulumi.String("Deploy the code via my webhook"),
+//				Events: pulumi.StringArray{
+//					pulumi.String("repo:push"),
+//				},
+//				Owner:      pulumi.String("myteam"),
+//				Repository: pulumi.String("terraform-code"),
+//				Url:        pulumi.String("https://mywebhookservice.mycompany.com/deploy-on-push"),
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
+//
+// ## Import
+//
+// Hooks can be imported using their `owner/repo-name/hook-id` ID, e.g.
+//
+// ```sh
+//
+//	$ pulumi import bitbucket:index/hook:Hook hook my-account/my-repo/hook-id
+//
+// ```
 type Hook struct {
 	pulumi.CustomResourceState
 
-	Active               pulumi.BoolPtrOutput     `pulumi:"active"`
-	Description          pulumi.StringOutput      `pulumi:"description"`
-	Events               pulumi.StringArrayOutput `pulumi:"events"`
-	Owner                pulumi.StringOutput      `pulumi:"owner"`
-	Repository           pulumi.StringOutput      `pulumi:"repository"`
-	SkipCertVerification pulumi.BoolPtrOutput     `pulumi:"skipCertVerification"`
-	Url                  pulumi.StringOutput      `pulumi:"url"`
-	Uuid                 pulumi.StringOutput      `pulumi:"uuid"`
+	// Whether the webhook configuration is active or not (Default: `true`).
+	Active pulumi.BoolPtrOutput `pulumi:"active"`
+	// The name / description to show in the UI.
+	Description pulumi.StringOutput `pulumi:"description"`
+	// The events this webhook is subscribed to. Valid values can be found at [Bitbucket Event Payloads Docs](https://support.atlassian.com/bitbucket-cloud/docs/event-payloads/).
+	Events pulumi.StringArrayOutput `pulumi:"events"`
+	// Whether a webhook history is enabled.
+	HistoryEnabled pulumi.BoolPtrOutput `pulumi:"historyEnabled"`
+	// The owner of this repository. Can be you or any team you
+	// have write access to.
+	Owner pulumi.StringOutput `pulumi:"owner"`
+	// The name of the repository.
+	Repository pulumi.StringOutput `pulumi:"repository"`
+	// A Webhook secret value. Passing a null or empty secret or not passing a secret will leave the webhook's secret unset. This value is not returned on read and cannot resolve diffs or be imported as its not returned back from bitbucket API.
+	Secret pulumi.StringPtrOutput `pulumi:"secret"`
+	// Whether a webhook secret is set.
+	SecretSet pulumi.BoolOutput `pulumi:"secretSet"`
+	// Whether to skip certificate verification or not (Default: `true`).
+	SkipCertVerification pulumi.BoolPtrOutput `pulumi:"skipCertVerification"`
+	// Where to POST to.
+	Url pulumi.StringOutput `pulumi:"url"`
+	// The UUID of the workspace webhook.
+	Uuid pulumi.StringOutput `pulumi:"uuid"`
 }
 
 // NewHook registers a new resource with the given unique name, arguments, and options.
@@ -48,6 +109,13 @@ func NewHook(ctx *pulumi.Context,
 	if args.Url == nil {
 		return nil, errors.New("invalid value for required argument 'Url'")
 	}
+	if args.Secret != nil {
+		args.Secret = pulumi.ToSecret(args.Secret).(pulumi.StringPtrInput)
+	}
+	secrets := pulumi.AdditionalSecretOutputs([]string{
+		"secret",
+	})
+	opts = append(opts, secrets)
 	opts = internal.PkgResourceDefaultOpts(opts)
 	var resource Hook
 	err := ctx.RegisterResource("bitbucket:index/hook:Hook", name, args, &resource, opts...)
@@ -71,25 +139,55 @@ func GetHook(ctx *pulumi.Context,
 
 // Input properties used for looking up and filtering Hook resources.
 type hookState struct {
-	Active               *bool    `pulumi:"active"`
-	Description          *string  `pulumi:"description"`
-	Events               []string `pulumi:"events"`
-	Owner                *string  `pulumi:"owner"`
-	Repository           *string  `pulumi:"repository"`
-	SkipCertVerification *bool    `pulumi:"skipCertVerification"`
-	Url                  *string  `pulumi:"url"`
-	Uuid                 *string  `pulumi:"uuid"`
+	// Whether the webhook configuration is active or not (Default: `true`).
+	Active *bool `pulumi:"active"`
+	// The name / description to show in the UI.
+	Description *string `pulumi:"description"`
+	// The events this webhook is subscribed to. Valid values can be found at [Bitbucket Event Payloads Docs](https://support.atlassian.com/bitbucket-cloud/docs/event-payloads/).
+	Events []string `pulumi:"events"`
+	// Whether a webhook history is enabled.
+	HistoryEnabled *bool `pulumi:"historyEnabled"`
+	// The owner of this repository. Can be you or any team you
+	// have write access to.
+	Owner *string `pulumi:"owner"`
+	// The name of the repository.
+	Repository *string `pulumi:"repository"`
+	// A Webhook secret value. Passing a null or empty secret or not passing a secret will leave the webhook's secret unset. This value is not returned on read and cannot resolve diffs or be imported as its not returned back from bitbucket API.
+	Secret *string `pulumi:"secret"`
+	// Whether a webhook secret is set.
+	SecretSet *bool `pulumi:"secretSet"`
+	// Whether to skip certificate verification or not (Default: `true`).
+	SkipCertVerification *bool `pulumi:"skipCertVerification"`
+	// Where to POST to.
+	Url *string `pulumi:"url"`
+	// The UUID of the workspace webhook.
+	Uuid *string `pulumi:"uuid"`
 }
 
 type HookState struct {
-	Active               pulumi.BoolPtrInput
-	Description          pulumi.StringPtrInput
-	Events               pulumi.StringArrayInput
-	Owner                pulumi.StringPtrInput
-	Repository           pulumi.StringPtrInput
+	// Whether the webhook configuration is active or not (Default: `true`).
+	Active pulumi.BoolPtrInput
+	// The name / description to show in the UI.
+	Description pulumi.StringPtrInput
+	// The events this webhook is subscribed to. Valid values can be found at [Bitbucket Event Payloads Docs](https://support.atlassian.com/bitbucket-cloud/docs/event-payloads/).
+	Events pulumi.StringArrayInput
+	// Whether a webhook history is enabled.
+	HistoryEnabled pulumi.BoolPtrInput
+	// The owner of this repository. Can be you or any team you
+	// have write access to.
+	Owner pulumi.StringPtrInput
+	// The name of the repository.
+	Repository pulumi.StringPtrInput
+	// A Webhook secret value. Passing a null or empty secret or not passing a secret will leave the webhook's secret unset. This value is not returned on read and cannot resolve diffs or be imported as its not returned back from bitbucket API.
+	Secret pulumi.StringPtrInput
+	// Whether a webhook secret is set.
+	SecretSet pulumi.BoolPtrInput
+	// Whether to skip certificate verification or not (Default: `true`).
 	SkipCertVerification pulumi.BoolPtrInput
-	Url                  pulumi.StringPtrInput
-	Uuid                 pulumi.StringPtrInput
+	// Where to POST to.
+	Url pulumi.StringPtrInput
+	// The UUID of the workspace webhook.
+	Uuid pulumi.StringPtrInput
 }
 
 func (HookState) ElementType() reflect.Type {
@@ -97,24 +195,48 @@ func (HookState) ElementType() reflect.Type {
 }
 
 type hookArgs struct {
-	Active               *bool    `pulumi:"active"`
-	Description          string   `pulumi:"description"`
-	Events               []string `pulumi:"events"`
-	Owner                string   `pulumi:"owner"`
-	Repository           string   `pulumi:"repository"`
-	SkipCertVerification *bool    `pulumi:"skipCertVerification"`
-	Url                  string   `pulumi:"url"`
+	// Whether the webhook configuration is active or not (Default: `true`).
+	Active *bool `pulumi:"active"`
+	// The name / description to show in the UI.
+	Description string `pulumi:"description"`
+	// The events this webhook is subscribed to. Valid values can be found at [Bitbucket Event Payloads Docs](https://support.atlassian.com/bitbucket-cloud/docs/event-payloads/).
+	Events []string `pulumi:"events"`
+	// Whether a webhook history is enabled.
+	HistoryEnabled *bool `pulumi:"historyEnabled"`
+	// The owner of this repository. Can be you or any team you
+	// have write access to.
+	Owner string `pulumi:"owner"`
+	// The name of the repository.
+	Repository string `pulumi:"repository"`
+	// A Webhook secret value. Passing a null or empty secret or not passing a secret will leave the webhook's secret unset. This value is not returned on read and cannot resolve diffs or be imported as its not returned back from bitbucket API.
+	Secret *string `pulumi:"secret"`
+	// Whether to skip certificate verification or not (Default: `true`).
+	SkipCertVerification *bool `pulumi:"skipCertVerification"`
+	// Where to POST to.
+	Url string `pulumi:"url"`
 }
 
 // The set of arguments for constructing a Hook resource.
 type HookArgs struct {
-	Active               pulumi.BoolPtrInput
-	Description          pulumi.StringInput
-	Events               pulumi.StringArrayInput
-	Owner                pulumi.StringInput
-	Repository           pulumi.StringInput
+	// Whether the webhook configuration is active or not (Default: `true`).
+	Active pulumi.BoolPtrInput
+	// The name / description to show in the UI.
+	Description pulumi.StringInput
+	// The events this webhook is subscribed to. Valid values can be found at [Bitbucket Event Payloads Docs](https://support.atlassian.com/bitbucket-cloud/docs/event-payloads/).
+	Events pulumi.StringArrayInput
+	// Whether a webhook history is enabled.
+	HistoryEnabled pulumi.BoolPtrInput
+	// The owner of this repository. Can be you or any team you
+	// have write access to.
+	Owner pulumi.StringInput
+	// The name of the repository.
+	Repository pulumi.StringInput
+	// A Webhook secret value. Passing a null or empty secret or not passing a secret will leave the webhook's secret unset. This value is not returned on read and cannot resolve diffs or be imported as its not returned back from bitbucket API.
+	Secret pulumi.StringPtrInput
+	// Whether to skip certificate verification or not (Default: `true`).
 	SkipCertVerification pulumi.BoolPtrInput
-	Url                  pulumi.StringInput
+	// Where to POST to.
+	Url pulumi.StringInput
 }
 
 func (HookArgs) ElementType() reflect.Type {
@@ -138,12 +260,6 @@ func (i *Hook) ToHookOutput() HookOutput {
 
 func (i *Hook) ToHookOutputWithContext(ctx context.Context) HookOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(HookOutput)
-}
-
-func (i *Hook) ToOutput(ctx context.Context) pulumix.Output[*Hook] {
-	return pulumix.Output[*Hook]{
-		OutputState: i.ToHookOutputWithContext(ctx).OutputState,
-	}
 }
 
 // HookArrayInput is an input type that accepts HookArray and HookArrayOutput values.
@@ -171,12 +287,6 @@ func (i HookArray) ToHookArrayOutputWithContext(ctx context.Context) HookArrayOu
 	return pulumi.ToOutputWithContext(ctx, i).(HookArrayOutput)
 }
 
-func (i HookArray) ToOutput(ctx context.Context) pulumix.Output[[]*Hook] {
-	return pulumix.Output[[]*Hook]{
-		OutputState: i.ToHookArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 // HookMapInput is an input type that accepts HookMap and HookMapOutput values.
 // You can construct a concrete instance of `HookMapInput` via:
 //
@@ -202,12 +312,6 @@ func (i HookMap) ToHookMapOutputWithContext(ctx context.Context) HookMapOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(HookMapOutput)
 }
 
-func (i HookMap) ToOutput(ctx context.Context) pulumix.Output[map[string]*Hook] {
-	return pulumix.Output[map[string]*Hook]{
-		OutputState: i.ToHookMapOutputWithContext(ctx).OutputState,
-	}
-}
-
 type HookOutput struct{ *pulumi.OutputState }
 
 func (HookOutput) ElementType() reflect.Type {
@@ -222,40 +326,58 @@ func (o HookOutput) ToHookOutputWithContext(ctx context.Context) HookOutput {
 	return o
 }
 
-func (o HookOutput) ToOutput(ctx context.Context) pulumix.Output[*Hook] {
-	return pulumix.Output[*Hook]{
-		OutputState: o.OutputState,
-	}
-}
-
+// Whether the webhook configuration is active or not (Default: `true`).
 func (o HookOutput) Active() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *Hook) pulumi.BoolPtrOutput { return v.Active }).(pulumi.BoolPtrOutput)
 }
 
+// The name / description to show in the UI.
 func (o HookOutput) Description() pulumi.StringOutput {
 	return o.ApplyT(func(v *Hook) pulumi.StringOutput { return v.Description }).(pulumi.StringOutput)
 }
 
+// The events this webhook is subscribed to. Valid values can be found at [Bitbucket Event Payloads Docs](https://support.atlassian.com/bitbucket-cloud/docs/event-payloads/).
 func (o HookOutput) Events() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v *Hook) pulumi.StringArrayOutput { return v.Events }).(pulumi.StringArrayOutput)
 }
 
+// Whether a webhook history is enabled.
+func (o HookOutput) HistoryEnabled() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *Hook) pulumi.BoolPtrOutput { return v.HistoryEnabled }).(pulumi.BoolPtrOutput)
+}
+
+// The owner of this repository. Can be you or any team you
+// have write access to.
 func (o HookOutput) Owner() pulumi.StringOutput {
 	return o.ApplyT(func(v *Hook) pulumi.StringOutput { return v.Owner }).(pulumi.StringOutput)
 }
 
+// The name of the repository.
 func (o HookOutput) Repository() pulumi.StringOutput {
 	return o.ApplyT(func(v *Hook) pulumi.StringOutput { return v.Repository }).(pulumi.StringOutput)
 }
 
+// A Webhook secret value. Passing a null or empty secret or not passing a secret will leave the webhook's secret unset. This value is not returned on read and cannot resolve diffs or be imported as its not returned back from bitbucket API.
+func (o HookOutput) Secret() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *Hook) pulumi.StringPtrOutput { return v.Secret }).(pulumi.StringPtrOutput)
+}
+
+// Whether a webhook secret is set.
+func (o HookOutput) SecretSet() pulumi.BoolOutput {
+	return o.ApplyT(func(v *Hook) pulumi.BoolOutput { return v.SecretSet }).(pulumi.BoolOutput)
+}
+
+// Whether to skip certificate verification or not (Default: `true`).
 func (o HookOutput) SkipCertVerification() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *Hook) pulumi.BoolPtrOutput { return v.SkipCertVerification }).(pulumi.BoolPtrOutput)
 }
 
+// Where to POST to.
 func (o HookOutput) Url() pulumi.StringOutput {
 	return o.ApplyT(func(v *Hook) pulumi.StringOutput { return v.Url }).(pulumi.StringOutput)
 }
 
+// The UUID of the workspace webhook.
 func (o HookOutput) Uuid() pulumi.StringOutput {
 	return o.ApplyT(func(v *Hook) pulumi.StringOutput { return v.Uuid }).(pulumi.StringOutput)
 }
@@ -272,12 +394,6 @@ func (o HookArrayOutput) ToHookArrayOutput() HookArrayOutput {
 
 func (o HookArrayOutput) ToHookArrayOutputWithContext(ctx context.Context) HookArrayOutput {
 	return o
-}
-
-func (o HookArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]*Hook] {
-	return pulumix.Output[[]*Hook]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o HookArrayOutput) Index(i pulumi.IntInput) HookOutput {
@@ -298,12 +414,6 @@ func (o HookMapOutput) ToHookMapOutput() HookMapOutput {
 
 func (o HookMapOutput) ToHookMapOutputWithContext(ctx context.Context) HookMapOutput {
 	return o
-}
-
-func (o HookMapOutput) ToOutput(ctx context.Context) pulumix.Output[map[string]*Hook] {
-	return pulumix.Output[map[string]*Hook]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o HookMapOutput) MapIndex(k pulumi.StringInput) HookOutput {

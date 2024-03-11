@@ -8,10 +8,38 @@ import (
 	"reflect"
 
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket/internal"
 )
 
+// Provides a way to fetch data on a pipeline OIDC Config Keys.
+//
+// OAuth2 Scopes: `none`
+//
+// ## Example Usage
+//
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//	"github.com/ryan-pip/pulumi-bitbucket/sdk/go/bitbucket"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := bitbucket.GetPipelineOidcConfigKeys(ctx, &bitbucket.GetPipelineOidcConfigKeysArgs{
+//				Workspace: "example",
+//			}, nil)
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
 func GetPipelineOidcConfigKeys(ctx *pulumi.Context, args *GetPipelineOidcConfigKeysArgs, opts ...pulumi.InvokeOption) (*GetPipelineOidcConfigKeysResult, error) {
 	opts = internal.PkgInvokeDefaultOpts(opts)
 	var rv GetPipelineOidcConfigKeysResult
@@ -24,6 +52,7 @@ func GetPipelineOidcConfigKeys(ctx *pulumi.Context, args *GetPipelineOidcConfigK
 
 // A collection of arguments for invoking getPipelineOidcConfigKeys.
 type GetPipelineOidcConfigKeysArgs struct {
+	// The workspace to fetch pipeline oidc config keys.
 	Workspace string `pulumi:"workspace"`
 }
 
@@ -50,6 +79,7 @@ func GetPipelineOidcConfigKeysOutput(ctx *pulumi.Context, args GetPipelineOidcCo
 
 // A collection of arguments for invoking getPipelineOidcConfigKeys.
 type GetPipelineOidcConfigKeysOutputArgs struct {
+	// The workspace to fetch pipeline oidc config keys.
 	Workspace pulumi.StringInput `pulumi:"workspace"`
 }
 
@@ -70,12 +100,6 @@ func (o GetPipelineOidcConfigKeysResultOutput) ToGetPipelineOidcConfigKeysResult
 
 func (o GetPipelineOidcConfigKeysResultOutput) ToGetPipelineOidcConfigKeysResultOutputWithContext(ctx context.Context) GetPipelineOidcConfigKeysResultOutput {
 	return o
-}
-
-func (o GetPipelineOidcConfigKeysResultOutput) ToOutput(ctx context.Context) pulumix.Output[GetPipelineOidcConfigKeysResult] {
-	return pulumix.Output[GetPipelineOidcConfigKeysResult]{
-		OutputState: o.OutputState,
-	}
 }
 
 // The provider-assigned unique ID for this managed resource.

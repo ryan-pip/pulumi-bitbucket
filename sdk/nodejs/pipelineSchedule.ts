@@ -6,6 +6,42 @@ import * as inputs from "./types/input";
 import * as outputs from "./types/output";
 import * as utilities from "./utilities";
 
+/**
+ * Provides a Bitbucket Pipeline Schedule resource.
+ *
+ * This allows you to manage your Pipeline Schedules for a repository.
+ *
+ * OAuth2 Scopes: `none`
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as bitbucket from "@pulumi/bitbucket";
+ *
+ * const test = new bitbucket.PipelineSchedule("test", {
+ *     workspace: "example",
+ *     repository: bitbucket_repository.test.name,
+ *     cronPattern: "0 30 * * * ? *",
+ *     enabled: true,
+ *     target: {
+ *         refName: "master",
+ *         refType: "branch",
+ *         selector: {
+ *             pattern: "staging",
+ *         },
+ *     },
+ * });
+ * ```
+ *
+ * ## Import
+ *
+ * Pipeline Schedules can be imported using their `workspace/repo-slug/uuid` ID, e.g.
+ *
+ * ```sh
+ *  $ pulumi import bitbucket:index/pipelineSchedule:PipelineSchedule schedule workspace/repo-slug/uuid
+ * ```
+ */
 export class PipelineSchedule extends pulumi.CustomResource {
     /**
      * Get an existing PipelineSchedule resource's state with the given name, ID, and optional extra
@@ -34,11 +70,29 @@ export class PipelineSchedule extends pulumi.CustomResource {
         return obj['__pulumiType'] === PipelineSchedule.__pulumiType;
     }
 
+    /**
+     * The cron expression that the schedule applies.
+     */
     public readonly cronPattern!: pulumi.Output<string>;
+    /**
+     * Whether the schedule is enabled.
+     */
     public readonly enabled!: pulumi.Output<boolean>;
+    /**
+     * The Repository to create schedule in.
+     */
     public readonly repository!: pulumi.Output<string>;
+    /**
+     * Schedule Target definition. See Target below.
+     */
     public readonly target!: pulumi.Output<outputs.PipelineScheduleTarget>;
+    /**
+     * The UUID identifying the schedule.
+     */
     public /*out*/ readonly uuid!: pulumi.Output<string>;
+    /**
+     * The Workspace where the repository resides.
+     */
     public readonly workspace!: pulumi.Output<string>;
 
     /**
@@ -93,11 +147,29 @@ export class PipelineSchedule extends pulumi.CustomResource {
  * Input properties used for looking up and filtering PipelineSchedule resources.
  */
 export interface PipelineScheduleState {
+    /**
+     * The cron expression that the schedule applies.
+     */
     cronPattern?: pulumi.Input<string>;
+    /**
+     * Whether the schedule is enabled.
+     */
     enabled?: pulumi.Input<boolean>;
+    /**
+     * The Repository to create schedule in.
+     */
     repository?: pulumi.Input<string>;
+    /**
+     * Schedule Target definition. See Target below.
+     */
     target?: pulumi.Input<inputs.PipelineScheduleTarget>;
+    /**
+     * The UUID identifying the schedule.
+     */
     uuid?: pulumi.Input<string>;
+    /**
+     * The Workspace where the repository resides.
+     */
     workspace?: pulumi.Input<string>;
 }
 
@@ -105,9 +177,24 @@ export interface PipelineScheduleState {
  * The set of arguments for constructing a PipelineSchedule resource.
  */
 export interface PipelineScheduleArgs {
+    /**
+     * The cron expression that the schedule applies.
+     */
     cronPattern: pulumi.Input<string>;
+    /**
+     * Whether the schedule is enabled.
+     */
     enabled: pulumi.Input<boolean>;
+    /**
+     * The Repository to create schedule in.
+     */
     repository: pulumi.Input<string>;
+    /**
+     * Schedule Target definition. See Target below.
+     */
     target: pulumi.Input<inputs.PipelineScheduleTarget>;
+    /**
+     * The Workspace where the repository resides.
+     */
     workspace: pulumi.Input<string>;
 }

@@ -6,94 +6,200 @@ import * as inputs from "../types/input";
 import * as outputs from "../types/output";
 
 export interface BranchRestrictionGroup {
+    /**
+     * The owner of this repository. Can be you or any team you
+     * have write access to.
+     */
     owner: pulumi.Input<string>;
     slug: pulumi.Input<string>;
 }
 
 export interface BranchingModelBranchType {
+    /**
+     * Whether the branch type is enabled or not. A disabled branch type may contain an invalid `prefix`.
+     */
     enabled?: pulumi.Input<boolean>;
+    /**
+     * The kind of the branch type. Valid values are `feature`, `bugfix`, `release`, `hotfix`.
+     */
     kind: pulumi.Input<string>;
+    /**
+     * The prefix for this branch type. A branch with this prefix will be classified as per kind. The prefix of an enabled branch type must be a valid branch prefix. Additionally, it cannot be blank, empty or null. The prefix for a disabled branch type can be empty or invalid.
+     */
     prefix?: pulumi.Input<string>;
 }
 
 export interface BranchingModelDevelopment {
+    /**
+     * Optional and only returned for a repository's branching model. Indicates if the indicated branch exists on the repository (`false`) or not (`true`). This is useful for determining a fallback to the mainbranch when a repository is inheriting its project's branching model.
+     */
     branchDoesNotExist?: pulumi.Input<boolean>;
     isValid?: pulumi.Input<boolean>;
+    /**
+     * The configured branch. It must be null when `useMainbranch` is true. Otherwise it must be a non-empty value. It is possible for the configured branch to not exist (e.g. it was deleted after the settings are set).
+     */
     name?: pulumi.Input<string>;
+    /**
+     * Indicates if the setting points at an explicit branch (`false`) or tracks the main branch (`true`). When `true` the name must be null or not provided. When `false` the name must contain a non-empty branch name.
+     */
     useMainbranch?: pulumi.Input<boolean>;
 }
 
 export interface BranchingModelProduction {
+    /**
+     * Optional and only returned for a repository's branching model. Indicates if the indicated branch exists on the repository (`false`) or not (`true`). This is useful for determining a fallback to the mainbranch when a repository is inheriting its project's branching model.
+     */
     branchDoesNotExist?: pulumi.Input<boolean>;
+    /**
+     * Indicates if branch is enabled or not.
+     */
     enabled?: pulumi.Input<boolean>;
     isValid?: pulumi.Input<boolean>;
+    /**
+     * The configured branch. It must be null when `useMainbranch` is true. Otherwise it must be a non-empty value. It is possible for the configured branch to not exist (e.g. it was deleted after the settings are set).
+     */
     name?: pulumi.Input<string>;
+    /**
+     * Indicates if the setting points at an explicit branch (`false`) or tracks the main branch (`true`). When `true` the name must be null or not provided. When `false` the name must contain a non-empty branch name.
+     */
     useMainbranch?: pulumi.Input<boolean>;
 }
 
 export interface DeploymentRestrictions {
+    /**
+     * Only Admins can deploy this deployment stage.
+     */
     adminOnly?: pulumi.Input<boolean>;
 }
 
 export interface ForkedRepositoryLink {
+    /**
+     * An avatar link to a resource related to this object. See Avatar Below.
+     */
     avatar?: pulumi.Input<inputs.ForkedRepositoryLinkAvatar>;
 }
 
 export interface ForkedRepositoryLinkAvatar {
+    /**
+     * href of the avatar.
+     */
     href?: pulumi.Input<string>;
 }
 
 export interface PipelineScheduleTarget {
+    /**
+     * The name of the reference.
+     */
     refName: pulumi.Input<string>;
+    /**
+     * The type of reference. Valid values are `branch` and `tag`.
+     */
     refType: pulumi.Input<string>;
+    /**
+     * Selector spec. See Selector below.
+     */
     selector: pulumi.Input<inputs.PipelineScheduleTargetSelector>;
 }
 
 export interface PipelineScheduleTargetSelector {
+    /**
+     * The name of the matching pipeline definition.
+     */
     pattern: pulumi.Input<string>;
+    /**
+     * Selector type. Default value is `branches`.
+     */
     type?: pulumi.Input<string>;
 }
 
 export interface PipelineSshKnownHostPublicKey {
+    /**
+     * The plain public key.
+     */
     key: pulumi.Input<string>;
+    /**
+     * The type of the public key. Valid values are `ssh-ed25519`, `ecdsa-sha2-nistp256`, `ssh-rsa`, and `ssh-dss`.
+     */
     keyType: pulumi.Input<string>;
     md5Fingerprint?: pulumi.Input<string>;
     sha256Fingerprint?: pulumi.Input<string>;
 }
 
 export interface ProjectBranchingModelBranchType {
+    /**
+     * Whether the branch type is enabled or not. A disabled branch type may contain an invalid `prefix`.
+     */
     enabled?: pulumi.Input<boolean>;
+    /**
+     * The kind of the branch type. Valid values are `feature`, `bugfix`, `release`, `hotfix`.
+     */
     kind: pulumi.Input<string>;
+    /**
+     * The prefix for this branch type. A branch with this prefix will be classified as per kind. The prefix of an enabled branch type must be a valid branch prefix. Additionally, it cannot be blank, empty or null. The prefix for a disabled branch type can be empty or invalid.
+     */
     prefix?: pulumi.Input<string>;
 }
 
 export interface ProjectBranchingModelDevelopment {
+    /**
+     * Optional and only returned for a project's branching model. Indicates if the indicated branch exists on the project (`false`) or not (`true`). This is useful for determining a fallback to the mainbranch when a project is inheriting its project's branching model.
+     */
     branchDoesNotExist?: pulumi.Input<boolean>;
     isValid?: pulumi.Input<boolean>;
+    /**
+     * The configured branch. It must be null when `useMainbranch` is true. Otherwise it must be a non-empty value. It is possible for the configured branch to not exist (e.g. it was deleted after the settings are set).
+     */
     name?: pulumi.Input<string>;
+    /**
+     * Indicates if the setting points at an explicit branch (`false`) or tracks the main branch (`true`). When `true` the name must be null or not provided. When `false` the name must contain a non-empty branch name.
+     */
     useMainbranch?: pulumi.Input<boolean>;
 }
 
 export interface ProjectBranchingModelProduction {
+    /**
+     * Optional and only returned for a project's branching model. Indicates if the indicated branch exists on the project (`false`) or not (`true`). This is useful for determining a fallback to the mainbranch when a project is inheriting its project's branching model.
+     */
     branchDoesNotExist?: pulumi.Input<boolean>;
+    /**
+     * Indicates if branch is enabled or not.
+     */
     enabled?: pulumi.Input<boolean>;
     isValid?: pulumi.Input<boolean>;
+    /**
+     * The configured branch. It must be null when `useMainbranch` is true. Otherwise it must be a non-empty value. It is possible for the configured branch to not exist (e.g. it was deleted after the settings are set).
+     */
     name?: pulumi.Input<string>;
+    /**
+     * Indicates if the setting points at an explicit branch (`false`) or tracks the main branch (`true`). When `true` the name must be null or not provided. When `false` the name must contain a non-empty branch name.
+     */
     useMainbranch?: pulumi.Input<boolean>;
 }
 
 export interface ProjectLink {
+    /**
+     * An avatar link to a resource related to this object. See Avatar Below.
+     */
     avatar?: pulumi.Input<inputs.ProjectLinkAvatar>;
 }
 
 export interface ProjectLinkAvatar {
+    /**
+     * href of the avatar.
+     */
     href?: pulumi.Input<string>;
 }
 
 export interface RepositoryLink {
+    /**
+     * An avatar link to a resource related to this object. See Avatar Below.
+     */
     avatar?: pulumi.Input<inputs.RepositoryLinkAvatar>;
 }
 
 export interface RepositoryLinkAvatar {
+    /**
+     * href of the avatar.
+     */
     href?: pulumi.Input<string>;
 }
